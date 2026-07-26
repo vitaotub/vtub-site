@@ -1,3 +1,16 @@
+// --- INTEGRAÇÃO ONESIGNAL PUSH ---
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+OneSignalDeferred.push(function(OneSignal) {
+  OneSignal.init({
+    appId: "24dbec09-7c58-4193-9d90-8417abc8564e", // <--- SUBSTITUA PELO SEU ID REAL
+    safari_web_id: "SEU_ID_SAFARI_AQUI_SE_HOUVER", // Opcional, para iPhone antigo
+    notifyButton: {
+      enable: true, // Mostra o sininho flutuante padrão
+    },
+  });
+});
+// ---------------------------------
+
 /**
  * Portfólio Victor Lopes - v1.5.1
  */
