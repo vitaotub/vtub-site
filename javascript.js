@@ -28,56 +28,59 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// --- LÓGICA DO POPUP DE INSTALAÇÃO FORÇADA (FASE 1 - REVISADA) ---
-const pwaPopup = document.getElementById('pwa-install-popup');
-const installBtn = document.getElementById('pwa-install-btn');
-const closeBtn = document.getElementById('pwa-close-btn');
+// --- LÓGICA DO POPUP DE INSTALAÇÃO FORÇADA (FASE 1) ---
+document.addEventListener("DOMContentLoaded", () => {
+  const pwaPopup = document.getElementById('pwa-install-popup');
+  const installBtn = document.getElementById('pwa-install-btn');
+  const closeBtn = document.getElementById('pwa-close-btn');
 
-// Só executa se os elementos do popup existirem na página (ex: index.html)
-if (pwaPopup && installBtn && closeBtn) {
+  // Verifica se o HTML da popup realmente existe na página atual
+  if (!pwaPopup) {
+    console.log("Aviso: O HTML do popup não está nesta página.");
+    return; // Para o código aqui se não achar a popup
+  }
+
+  console.log("Sucesso: HTML do popup encontrado! Preparando o gatilho de 2 segundos...");
   let deferredPrompt = null;
 
-  // 1. Tenta capturar o evento nativo o mais rápido possível
+  // 1. Tenta capturar o evento nativo
   window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); // Impede o banner padrão do rodapé
-    deferredPrompt = e; // Salva o evento para o nosso botão usar
-    pwaPopup.style.display = 'flex'; // Exibe a nossa popup gigante
+    e.preventDefault(); 
+    deferredPrompt = e; 
+    pwaPopup.style.display = 'flex'; 
   });
 
-  // 2. Verifica se o site JÁ ESTÁ rodando como App (Standalone)
+  // 2. Verifica se já é App
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 
-  // 3. O "Gatilho Forçado": Se não estiver no App, mostra a popup de qualquer jeito após 2 segundos
+  // 3. Gatilho forçado de 2 segundos
   if (!isStandalone) {
     setTimeout(() => {
       if (pwaPopup.style.display !== 'flex') {
+        console.log("Forçando a exibição do popup agora!");
         pwaPopup.style.display = 'flex';
       }
     }, 2000);
   }
 
-  // 4. Lógica do botão "Instalar App"
+  // 4. Botão de Instalar
   installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
-      // O navegador cooperou! O botão vai abrir a tela de instalação nativa
       pwaPopup.style.display = 'none';
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        console.log('App instalado com sucesso!');
-      }
+      if (outcome === 'accepted') console.log('App instalado!');
       deferredPrompt = null;
     } else {
-      // O navegador bloqueou o botão via código (ex: Edge, Opera, iOS)
       alert('O seu navegador bloqueou a instalação automática.\n\nPara instalar: Clique no ícone de "Aplicativo" ou "Instalar" na barra de endereços (no PC) ou escolha "Adicionar à Tela Inicial" no menu do navegador (no celular).');
     }
   });
 
-  // 5. Botão de fechar a popup
+  // 5. Botão de Fechar
   closeBtn.addEventListener('click', () => {
     pwaPopup.style.display = 'none';
   });
-}
+});
 
 
 // 1. CONFIGURAÇÕES GERAIS
