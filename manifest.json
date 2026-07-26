@@ -2,7 +2,7 @@
   "name": "VitãoTub",
   "short_name": "VitãoTub",
   "description": "Tecnologia, Segurança Digital e Games de forma acessível.",
-  "start_url": "/index.html",
+  "start_url": "/feed.html",
   "display": "standalone",
   "background_color": "#050505",
   "theme_color": "#8b5cf6",

@@ -245,4 +245,60 @@ function initCookieBanner() {
 // Inicializa quando o HTML terminar de carregar
 document.addEventListener("DOMContentLoaded", initCookieBanner);
 
-// Se tiver outras funções de inicialização no futuro, coloque-as aqui.
+
+// --- LÓGICA DO FEED EXCLUSIVO ---
+const feedContainer = document.getElementById('feed-container');
+
+// Só executa esse código se a pessoa estiver na página feed.html
+if (feedContainer) {
+    async function carregarFeed() {
+        try {
+            // Busca o arquivo JSON
+            const response = await fetch('feed.json');
+            const publicacoes = await response.json();
+            
+            // Limpa o aviso de "Carregando..."
+            feedContainer.innerHTML = ''; 
+            
+            // Cria os posts um a um
+            publicacoes.forEach(post => {
+                const postElement = document.createElement('article');
+                postElement.className = 'feed-card';
+                
+                let midiaHTML = '';
+                
+                // Se for um vídeo, cria o iframe do YouTube
+                if (post.tipo === 'video' && post.url_video) {
+                    midiaHTML = `
+                    <div class="video-container">
+                        <iframe src="${post.url_video}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>`;
+                } 
+                // Se for um artigo com imagem, cria a tag img
+                else if (post.tipo === 'artigo' && post.imagem) {
+                    midiaHTML = `<img src="${post.imagem}" alt="Imagem do post" class="feed-image">`;
+                }
+                
+                // Monta o visual do Card
+                postElement.innerHTML = `
+                    ${midiaHTML}
+                    <div class="feed-content">
+                        <h2>${post.titulo}</h2>
+                        <span class="feed-date">${post.data}</span>
+                        <p>${post.descricao}</p>
+                    </div>
+                `;
+                
+                // Adiciona o Card finalizado na tela
+                feedContainer.appendChild(postElement);
+            });
+            
+        } catch (error) {
+            console.error("Erro ao carregar o feed:", error);
+            feedContainer.innerHTML = '<p style="text-align: center;">Erro ao carregar as novidades. Tente novamente mais tarde.</p>';
+        }
+    }
+    
+    // Chama a função ao abrir a página
+    carregarFeed();
+}

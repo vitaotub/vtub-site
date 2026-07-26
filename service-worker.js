@@ -7,6 +7,7 @@ const CACHE_NAME = 'vitaotub-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/feed.html',
   '/bio.html',
   '/style.css',
   '/bio-style.css',
