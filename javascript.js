@@ -339,13 +339,12 @@ function mudarAba(aba) {
     }
 }
 
-// 1. CARREGAMENTO MÁXIMO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE (VIA RSS)
+// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE
 const ytContainer = document.getElementById('youtube-feed-container');
 
 if (ytContainer) {
     async function carregarYouTubeAutomatico() {
         try {
-            // Substitua 'SEU_CHANNEL_ID_AQUI' pelo ID real do seu canal (ex: UCxxxxxxxxxxxxxx)
             const channelID = 'SEU_CHANNEL_ID_AQUI'; 
             const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}`;
             
@@ -355,7 +354,6 @@ if (ytContainer) {
             if (data.status === 'ok' && data.items.length > 0) {
                 ytContainer.innerHTML = '';
                 
-                // Exibe todos os vídeos entregues pelo feed em ordem do mais recente para o mais antigo
                 data.items.forEach(video => {
                     const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
                     const videoId = videoIdMatch ? videoIdMatch[1] : '';
@@ -366,15 +364,16 @@ if (ytContainer) {
                         
                         const dataPub = new Date(video.pubDate).toLocaleDateString('pt-BR');
 
-                       postElement.innerHTML = `
-    <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/${videoId}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-    <div class="feed-content">
-        <h2>${video.title}</h2>
-        <span class="feed-date">${dataPub}</span>
-    </div>
-`;
+                        // Mensagem padrão removida, exibindo apenas player, título e data
+                        postElement.innerHTML = `
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <div class="feed-content">
+                                <h2>${video.title}</h2>
+                                <span class="feed-date">${dataPub}</span>
+                            </div>
+                        `;
                         ytContainer.appendChild(postElement);
                     }
                 });
