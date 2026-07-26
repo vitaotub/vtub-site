@@ -373,7 +373,6 @@ if (ytContainer) {
                             <div class="feed-content">
                                 <h2>${video.title}</h2>
                                 <span class="feed-date">${dataPub}</span>
-                                <p>Assista ao vídeo mais recente publicado no canal do VitãoTub!</p>
                             </div>
                         `;
                         ytContainer.appendChild(postElement);
