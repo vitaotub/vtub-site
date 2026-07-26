@@ -1,3 +1,9 @@
+/**
+ * Website do canal VitãoTub - v1.1
+ * Desenvolvido por: Victor (Vitão)
+ */
+
+
 // --- INTEGRAÇÃO ONESIGNAL PUSH ---
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 OneSignalDeferred.push(function(OneSignal) {
@@ -9,11 +15,21 @@ OneSignalDeferred.push(function(OneSignal) {
     },
   });
 });
-// ---------------------------------
 
-/**
- * Portfólio Victor Lopes - v1.5.1
- */
+
+// --- INICIA O SERVICE WORKER (Obrigatório para o PWA e para o Popup) ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('Service Worker registrado com sucesso!');
+      })
+      .catch(error => {
+        console.log('Erro ao registrar o Service Worker:', error);
+      });
+  });
+}
+
 
 // 1. CONFIGURAÇÕES
 const CONFIG = {
