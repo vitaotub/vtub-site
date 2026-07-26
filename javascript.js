@@ -345,7 +345,7 @@ const ytContainer = document.getElementById('youtube-feed-container');
 if (ytContainer) {
     async function carregarYouTubeAutomatico() {
         try {
-            const channelID = 'SEU_CHANNEL_ID_AQUI'; 
+            const channelID = 'UCUNyU0HewM1JQVVKMAEAfyQ'; 
             const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}`;
             
             const response = await fetch(RSS_URL);
