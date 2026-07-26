@@ -1590,18 +1590,32 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
 
 .feed-header {
     background-color: #111111;
-    padding: 15px;
+    padding: 20px 15px;
     text-align: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 2px solid #8b5cf6;
+    border-bottom: none; /* Linha roxa removida conforme pedido */
 }
 
-.feed-header h1 {
-    margin: 0;
+/* Estilo da imagem/logo eu-frente-feed.png (800x800) perfeitamente redonda */
+.feed-logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 10px auto;
+    display: block;
+    border: 2px solid #8b5cf6;
+}
+
+.feed-header h1,
+.feed-title {
+    margin: 0 0 15px 0;
     font-size: 1.5rem;
-    color: #8b5cf6;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 0.5px;
 }
 
 .feed-container {
@@ -1669,31 +1683,36 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
 }
 
 
-/* --- ESTILOS DAS ABAS DO FEED --- */
+/* --- ESTILOS DAS ABAS DO FEED (ESTILO BOTÕES DO SITE) --- */
 .feed-tabs {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 12px;
+    margin-top: 5px;
 }
 
 .tab-btn {
     background-color: #1a1a1a;
-    color: #aaa;
-    border: 1px solid #333;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
+    color: #b0b0b0;
+    border: 1px solid #333333;
+    padding: 10px 20px;
+    border-radius: 8px; /* Cantos arredondados modernos do site */
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
+.tab-btn:hover {
+    border-color: #8b5cf6;
+    color: #ffffff;
+}
+
 .tab-btn.active {
-    background-color: #8b5cf6;
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9); /* Degradê roxo oficial */
     color: #fff;
     border-color: #8b5cf6;
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
 }
 
 .feed-section {
