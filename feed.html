@@ -10,17 +10,17 @@
 <body class="feed-body">
     
     <header class="feed-header">
-    <!-- Sua Logo -->
-    <img src="eu-frente-feed.png" alt="Logo VitãoTub" class="feed-logo">
-    
-    <!-- Nome com o estilo do site -->
-    <h1 class="feed-title">VitãoTub</h1>
-    
-    <!-- Navegação por abas com o estilo de botões do site -->
-    <div class="feed-tabs">
-        <button class="tab-btn active" onclick="mudarAba('videos')">Vídeos & Lives</button>
-        <button class="tab-btn" onclick="mudarAba('artigos')">Artigos & Dicas</button>
-    </div>
+        <!-- Sua Logo -->
+        <img src="eu-frente-feed.png" alt="Logo VitãoTub" class="feed-logo">
+        
+        <!-- Nome com o estilo do site -->
+        <h1 class="feed-title">VitãoTub</h1>
+        
+        <!-- Navegação por abas com o estilo de botões do site -->
+        <div class="feed-tabs">
+            <button class="tab-btn active" onclick="mudarAba('videos')">Vídeos & Lives</button>
+            <button class="tab-btn" onclick="mudarAba('artigos')">Artigos & Dicas</button>
+        </div>
     </header>
 
     <main class="feed-container">
@@ -31,13 +31,23 @@
             </div>
         </section>
 
-        <!-- Seção 2: Artigos Manuais (Seu JSON atual) -->
+        <!-- Seção 2: Artigos & Dicas (Personalizados) -->
         <section id="secao-artigos" class="feed-section" style="display: none;">
             <div id="artigos-feed-container">
                 <p style="text-align: center; color: #aaa;">Carregando artigos...</p>
             </div>
         </section>
     </main>
+
+    <!-- Janela Sobreposta (Modal) para leitura completa do artigo -->
+    <div id="article-modal" class="article-modal-overlay" style="display: none;">
+        <div class="article-modal-content">
+            <button class="modal-close-btn" onclick="fecharArtigoCompleto()">✕ Voltar para os Feeds</button>
+            <div id="modal-body-content">
+                <!-- O conteúdo completo do artigo será injetado aqui via JavaScript -->
+            </div>
+        </div>
+    </div>
 
     <script src="javascript.js"></script>
 </body>
