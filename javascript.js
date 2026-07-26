@@ -339,15 +339,14 @@ function mudarAba(aba) {
     }
 }
 
-// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE
+// 1. CARREGAMENTO MÁXIMO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE (VIA RSS)
 const ytContainer = document.getElementById('youtube-feed-container');
 
 if (ytContainer) {
     async function carregarYouTubeAutomatico() {
         try {
-            // ATENÇÃO: Substitua 'SEU_CHANNEL_ID_AQUI' pelo ID real do seu canal do YouTube (ex: UCxxxxxxxxxxxxxx)
-            // Caso prefira, você também pode usar o link do RSS direto do seu canal formatado.
-            const channelID = 'UCUNyU0HewM1JQVVKMAEAfyQ'; 
+            // Substitua 'SEU_CHANNEL_ID_AQUI' pelo ID real do seu canal (ex: UCxxxxxxxxxxxxxx)
+            const channelID = 'SEU_CHANNEL_ID_AQUI'; 
             const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}`;
             
             const response = await fetch(RSS_URL);
@@ -356,7 +355,7 @@ if (ytContainer) {
             if (data.status === 'ok' && data.items.length > 0) {
                 ytContainer.innerHTML = '';
                 
-                // O YouTube já entrega do mais novo para o mais antigo por padrão
+                // Exibe todos os vídeos entregues pelo feed em ordem do mais recente para o mais antigo
                 data.items.forEach(video => {
                     const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
                     const videoId = videoIdMatch ? videoIdMatch[1] : '';
