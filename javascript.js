@@ -1,8 +1,8 @@
 /**
- * Website do canal VitãoTub - v1.2 (Com PWA Forçado)
+ * Website do canal VitãoTub - v1.2 (Com PWA Forçado e Feed Automático do YouTube)
  * Desenvolvido por: Victor (Vitão)
  */
-
+	
 // --- INTEGRAÇÃO ONESIGNAL PUSH ---
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 OneSignalDeferred.push(function(OneSignal) {
@@ -103,8 +103,8 @@ const observer = new IntersectionObserver((entries) => {
             fills.forEach(fill => {
                 // Lê o valor diretamente da barra ou do pai (como backup)
                 const targetWidth = fill.getAttribute('data-width') || 
-                                   fill.parentElement.getAttribute('data-width') || 
-                                   "100%";
+                                    fill.parentElement.getAttribute('data-width') || 
+                                    "100%";
                 
                 fill.style.width = targetWidth;
             });
@@ -314,59 +314,123 @@ function initCookieBanner() {
 document.addEventListener("DOMContentLoaded", initCookieBanner);
 
 
-// --- LÓGICA DO FEED EXCLUSIVO ---
-const feedContainer = document.getElementById('feed-container');
+// --- LÓGICA DE ABAS E FEED AUTOMÁTICO (FASE 3) ---
 
-// Só executa esse código se a pessoa estiver na página feed.html
-if (feedContainer) {
-    async function carregarFeed() {
+// Função que controla a troca de abas no app
+function mudarAba(aba) {
+    const btnVideos = document.querySelector('.feed-tabs button:nth-child(1)');
+    const btnArtigos = document.querySelector('.feed-tabs button:nth-child(2)');
+    const secaoVideos = document.getElementById('secao-videos');
+    const secaoArtigos = document.getElementById('secao-artigos');
+
+    // Se os botões ou seções não existirem na página, para a execução
+    if (!btnVideos || !secaoVideos) return;
+
+    if (aba === 'videos') {
+        btnVideos.classList.add('active');
+        if (btnArtigos) btnArtigos.classList.remove('active');
+        secaoVideos.style.display = 'block';
+        if (secaoArtigos) secaoArtigos.style.display = 'none';
+    } else {
+        if (btnArtigos) btnArtigos.classList.add('active');
+        btnVideos.classList.remove('active');
+        if (secaoArtigos) secaoArtigos.style.display = 'block';
+        secaoVideos.style.display = 'none';
+    }
+}
+
+// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE
+const ytContainer = document.getElementById('youtube-feed-container');
+
+if (ytContainer) {
+    async function carregarYouTubeAutomatico() {
         try {
-            // Busca o arquivo JSON
-            const response = await fetch('feed.json');
+            // ATENÇÃO: Substitua 'SEU_CHANNEL_ID_AQUI' pelo ID real do seu canal do YouTube (ex: UCxxxxxxxxxxxxxx)
+            // Caso prefira, você também pode usar o link do RSS direto do seu canal formatado.
+            const channelID = 'UCUNyU0HewM1JQVVKMAEAfyQ'; 
+            const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}`;
+            
+            const response = await fetch(RSS_URL);
+            const data = await response.json();
+            
+            if (data.status === 'ok' && data.items.length > 0) {
+                ytContainer.innerHTML = '';
+                
+                // O YouTube já entrega do mais novo para o mais antigo por padrão
+                data.items.forEach(video => {
+                    const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
+                    const videoId = videoIdMatch ? videoIdMatch[1] : '';
+                    
+                    if (videoId) {
+                        const postElement = document.createElement('article');
+                        postElement.className = 'feed-card';
+                        
+                        const dataPub = new Date(video.pubDate).toLocaleDateString('pt-BR');
+
+                        postElement.innerHTML = `
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <div class="feed-content">
+                                <h2>${video.title}</h2>
+                                <span class="feed-date">${dataPub}</span>
+                                <p>Assista ao vídeo mais recente publicado no canal do VitãoTub!</p>
+                            </div>
+                        `;
+                        ytContainer.appendChild(postElement);
+                    }
+                });
+            } else {
+                ytContainer.innerHTML = '<p style="text-align: center; color: #aaa;">Não foi possível carregar os vídeos automáticos no momento.</p>';
+            }
+        } catch (error) {
+            console.error("Erro ao buscar feed do YouTube:", error);
+            ytContainer.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro de conexão ao carregar vídeos.</p>';
+        }
+    }
+
+    carregarYouTubeAutomatico();
+}
+
+// 2. CARREGAMENTO MANUAL DOS ARTIGOS (VIA JSON)
+const artigosContainer = document.getElementById('artigos-feed-container');
+
+if (artigosContainer) {
+    async function carregarArtigosManuais() {
+        try {
+            const response = await fetch(`feed.json?v=${new Date().getTime()}`);
+            if (!response.ok) throw new Error('Erro ao carregar artigos.');
+            
             const publicacoes = await response.json();
+            artigosContainer.innerHTML = ''; 
             
-            // Limpa o aviso de "Carregando..."
-            feedContainer.innerHTML = ''; 
+            const apenasArtigos = publicacoes.filter(item => item.tipo === 'artigo');
+
+            if (apenasArtigos.length === 0) {
+                artigosContainer.innerHTML = '<p style="text-align: center; color: #aaa;">Nenhum artigo publicado ainda.</p>';
+                return;
+            }
             
-            // Cria os posts um a um
-            publicacoes.forEach(post => {
+            apenasArtigos.forEach(post => {
                 const postElement = document.createElement('article');
                 postElement.className = 'feed-card';
                 
-                let midiaHTML = '';
-                
-                // Se for um vídeo, cria o iframe do YouTube
-                if (post.tipo === 'video' && post.url_video) {
-                    midiaHTML = `
-                    <div class="video-container">
-                        <iframe src="${post.url_video}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>`;
-                } 
-                // Se for um artigo com imagem, cria a tag img
-                else if (post.tipo === 'artigo' && post.imagem) {
-                    midiaHTML = `<img src="${post.imagem}" alt="Imagem do post" class="feed-image">`;
-                }
-                
-                // Monta o visual do Card
                 postElement.innerHTML = `
-                    ${midiaHTML}
+                    <img src="${post.imagem}" alt="${post.titulo}" class="feed-image" loading="lazy">
                     <div class="feed-content">
                         <h2>${post.titulo}</h2>
                         <span class="feed-date">${post.data}</span>
                         <p>${post.descricao}</p>
                     </div>
                 `;
-                
-                // Adiciona o Card finalizado na tela
-                feedContainer.appendChild(postElement);
+                artigosContainer.appendChild(postElement);
             });
             
         } catch (error) {
-            console.error("Erro ao carregar o feed:", error);
-            feedContainer.innerHTML = '<p style="text-align: center;">Erro ao carregar as novidades. Tente novamente mais tarde.</p>';
+            console.error("Erro ao carregar artigos:", error);
+            artigosContainer.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro ao carregar os artigos.</p>';
         }
     }
-    
-    // Chama a função ao abrir a página
-    carregarFeed();
+
+    carregarArtigosManuais();
 }

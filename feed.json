@@ -2,17 +2,17 @@
   {
     "id": 1,
     "tipo": "video",
-    "titulo": "Dica rápida de Segurança: Roteadores",
+    "titulo": "Como Proteger Seu Roteador em 2026",
     "data": "26 de Julho de 2026",
     "url_video": "https://www.youtube.com/embed/SEU_ID_DO_VIDEO",
-    "descricao": "Neste vídeo, mostro o passo a passo para configurar seu roteador de forma segura e evitar invasões na sua rede Wi-Fi."
+    "descricao": "Neste vídeo, mostro o passo a passo definitivo para blindar sua rede Wi-Fi contra invasões e ataques modernos."
   },
   {
     "id": 2,
     "tipo": "artigo",
-    "titulo": "5 Dicas Essenciais para Navegar Seguro",
+    "titulo": "5 Configurações Ocultas no Celular para Aumentar sua Privacidade",
     "data": "20 de Julho de 2026",
     "imagem": "desktop-screen.png",
-    "descricao": "Se você usa o Chrome no celular, ative estas 3 funções agora mesmo para bloquear rastreadores e popups maliciosos. Leia o guia completo!"
+    "descricao": "Se você usa smartphone, desative estas 3 permissões agora mesmo para impedir que aplicativos rastreiem a sua localização em segundo plano."
   }
 ]

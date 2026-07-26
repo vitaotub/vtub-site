@@ -3,19 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VitãoTub - App Oficial</title>
+    <title>VitãoTub - Feed Oficial</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="feed-body">
     
     <header class="feed-header">
-        <h1>VitãoTub Feed</h1>
+        <h1>VitãoTub</h1>
+        <!-- Navegação por Abas Internas -->
+        <div class="feed-tabs">
+            <button class="tab-btn active" onclick="mudarAba('videos')">Vídeos & Lives</button>
+            <button class="tab-btn" onclick="mudarAba('artigos')">Artigos & Dicas</button>
+        </div>
     </header>
 
-    <!-- Onde as publicações vão aparecer magicamente -->
-    <main id="feed-container" class="feed-container">
-        <p style="text-align: center;">Carregando novidades...</p>
+    <main class="feed-container">
+        <!-- Seção 1: Vídeos do YouTube (Automático) -->
+        <section id="secao-videos" class="feed-section active">
+            <div id="youtube-feed-container">
+                <p style="text-align: center; color: #aaa;">Buscando vídeos recentes do canal...</p>
+            </div>
+        </section>
+
+        <!-- Seção 2: Artigos Manuais (Seu JSON atual) -->
+        <section id="secao-artigos" class="feed-section" style="display: none;">
+            <div id="artigos-feed-container">
+                <p style="text-align: center; color: #aaa;">Carregando artigos...</p>
+            </div>
+        </section>
     </main>
 
     <script src="javascript.js"></script>
