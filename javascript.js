@@ -366,15 +366,15 @@ if (ytContainer) {
                         
                         const dataPub = new Date(video.pubDate).toLocaleDateString('pt-BR');
 
-                        postElement.innerHTML = `
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/${videoId}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                            <div class="feed-content">
-                                <h2>${video.title}</h2>
-                                <span class="feed-date">${dataPub}</span>
-                            </div>
-                        `;
+                       postElement.innerHTML = `
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/${videoId}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="feed-content">
+        <h2>${video.title}</h2>
+        <span class="feed-date">${dataPub}</span>
+    </div>
+`;
                         ytContainer.appendChild(postElement);
                     }
                 });
