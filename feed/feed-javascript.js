@@ -239,7 +239,7 @@ function abrirArtigoHtml(botaoElemento) {
                 </div>
                 
                 <div class="article-modal-actions">
-                    <button class="btn-action-icon btn-share-icon" onclick="compartilharArtigoModal('${escapeHtml(titulo).replace(/'/g, "\\'")}')" title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button>
+                    <button class="btn-action-icon btn-share-icon" onclick="compartilharArtigoModal('${escapeHtml(titulo).replace(/'/g, "\\'")}', this)" title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button>
                     <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action-icon btn-subscribe-icon" title="Inscrever-se"><i class="fa-brands fa-youtube"></i></a>
                 </div>
             </div>
@@ -250,30 +250,55 @@ function abrirArtigoHtml(botaoElemento) {
 }
 
 // --- FUNÇÃO DE COMPARTILHAMENTO INTELIGENTE (PC E CELULAR) ---
-function compartilharArtigoModal(tituloArtigo) {
-    // Detecta se o usuário está em um dispositivo móvel
+// --- FUNÇÃO DE COMPARTILHAMENTO INTELIGENTE (PC E CELULAR) ---
+function compartilharArtigoModal(tituloArtigo, elementoBotao) {
+    let linkParaCompartilhar = window.location.href.split('#')[0]; // Pega a URL limpa sem hashes antigos
+    
+    if (elementoBotao) {
+        // Tenta achar o card normalmente
+        let card = elementoBotao.closest('.article-card, .feed-card');
+        
+        // Se foi clicado de dentro do modal, o botão está no modal, então buscamos o card pelo título atual do modal
+        if (!card) {
+            const tituloModal = document.querySelector('.article-modal-title');
+            if (tituloModal) {
+                // Procura na página o card que possui o título correspondente
+                const cards = document.querySelectorAll('.article-card, .feed-card');
+                for (let c of cards) {
+                    const t = c.getAttribute('data-titulo') || c.querySelector('h2')?.innerText;
+                    if (t === tituloModal.innerText) {
+                        card = c;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (card && card.id) {
+            linkParaCompartilhar += '#' + card.id;
+        }
+    }
+
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
-    // No celular usa o menu nativo; no computador copia direto para a área de transferência (evita o bug do popup)
     if (isMobile && navigator.share) {
         navigator.share({ 
             title: tituloArtigo || document.title, 
-            url: window.location.href 
+            url: linkParaCompartilhar 
         }).catch(() => {});
     } else {
-        navigator.clipboard.writeText(window.location.href)
+        navigator.clipboard.writeText(linkParaCompartilhar)
             .then(() => {
-                alert('Link copiado para a área de transferência!');
+                alert('Link direto para o artigo copiado para a área de transferência!');
             })
-            .catch(err => {
-                // Fallback de segurança caso o navegador bloqueie o clipboard direto
+            .catch(() => {
                 const tempInput = document.createElement('input');
-                tempInput.value = window.location.href;
+                tempInput.value = linkParaCompartilhar;
                 document.body.appendChild(tempInput);
                 tempInput.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
-                alert('Link copiado para a área de transferência!');
+                alert('Link direto copiado!');
             });
     }
 }
