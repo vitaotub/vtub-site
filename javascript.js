@@ -1,5 +1,5 @@
 /**
- * Website do canal VitãoTub - v1.2
+ * Website do canal VitãoTub - v0.2
  * Desenvolvido por: Victor (Vitão)
  */
 	
