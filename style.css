@@ -1856,7 +1856,7 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
     color: #3b82f6; /* Destaca levemente o autor com a cor padrão */
 }
 
-/* --- REDES SOCIAIS DOS AUTORES NA MODAL (APENAS ÍCONES) --- */
+/* --- REDES SOCIAIS DOS AUTORES NA MODAL (APENAS ÍCONES COLORIDOS E COM GLOW) --- */
 .author-social-links {
     display: flex;
     flex-wrap: nowrap; /* Impede que quebrem de linha */
@@ -1866,36 +1866,69 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
     padding-bottom: 4px;
 }
 
-.btn-author-social {
-    background: #222;
-    color: #fff;
-    width: 36px;  /* Largura fixa igual à altura para virar um botão quadrado/redondo */
-    height: 36px;
-    border-radius: 8px;
+.author-social-btn {
+    background: #1e1e1e;
+    color: #ffffff;
+    width: 38px;  /* Largura fixa igual à altura */
+    height: 38px;
+    border-radius: 8px; /* Mantém o formato arredondado/suave */
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.1rem;
     display: inline-flex;
     align-items: center;
     justify-content: center; /* Centraliza perfeitamente o ícone */
-    border: 1px solid #444;
-    transition: all 0.2s ease;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
     flex-shrink: 0; /* Impede que o botão encolha */
 }
 
-.btn-author-social:hover {
-    background: #333;
-    border-color: #3b82f6;
-    transform: translateY(-2px);
+/* Efeito leve de elevação geral no hover */
+.author-social-btn:hover {
+    transform: translateY(-3px);
 }
 
-/* Cores específicas opcionais para o hover dos ícones */
-.btn-author-social.facebook:hover { border-color: #1877f2; color: #1877f2; }
-.btn-author-social.instagram:hover { border-color: #e1306c; color: #e1306c; }
-.btn-author-social.tiktok:hover { border-color: #00f2ea; color: #00f2ea; }
-.btn-author-social.twitter:hover { border-color: #ffffff; color: #ffffff; }
-.btn-author-social.youtube:hover { border-color: #ff0000; color: #ff0000; }
-.btn-author-social.website:hover { border-color: #8b5cf6; color: #8b5cf6; }
+/* Cores Oficiais e Efeito de Brilho (Glow) ao Passar o Mouse */
+.author-social-btn[title="Facebook"]:hover {
+    background-color: #1877f2;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(24, 119, 242, 0.8);
+    border-color: #1877f2;
+}
 
+.author-social-btn[title="Instagram"]:hover {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(214, 36, 159, 0.8);
+    border-color: transparent;
+}
+
+.author-social-btn[title="TikTok"]:hover {
+    background-color: #000000;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(254, 44, 85, 0.8), 0 0 12px rgba(37, 244, 238, 0.8);
+    border-color: #fe2c55;
+}
+
+.author-social-btn[title="X / Twitter"]:hover {
+    background-color: #000000;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+    border-color: #ffffff;
+}
+
+.author-social-btn[title="YouTube"]:hover {
+    background-color: #ff0000;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
+    border-color: #ff0000;
+}
+
+.author-social-btn[title="Site / GitHub"]:hover {
+    background-color: #333333;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+    border-color: #888888;
+}
 
 /* --- AJUSTE MOBILE: MODAL DE ARTIGOS 100% DA TELA --- */
 @media (max-width: 768px) {
