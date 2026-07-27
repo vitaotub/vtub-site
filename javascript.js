@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         deferredPrompt = null;
       } else {
         // Redireciona para o novo local do app dentro da pasta feed
-        window.location.href = 'http://www.vitaotub.com/feed/index.html';
+        window.location.href = '/feed/feed.html';
       }
     });
   }
