@@ -1846,87 +1846,94 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 8px;
-    font-size: 0.85rem;
+    gap: 10px;
+    font-size: 0.85rem; /* Ajuste leve para telas menores */
     color: #aaa;
+    margin-bottom: 12px;
+}
+
+.feed-date, 
+.feed-author {
+    white-space: nowrap; /* Impede que o texto quebre linhas individualmente */
 }
 
 .feed-author {
+    color: #3b82f6;
     font-weight: 600;
-    color: #3b82f6; /* Destaca levemente o autor com a cor padrão */
 }
 
 /* --- REDES SOCIAIS DOS AUTORES NA MODAL (APENAS ÍCONES COLORIDOS E COM GLOW) --- */
 .author-social-links {
     display: flex;
-    flex-wrap: nowrap; /* Impede que quebrem de linha */
+    flex-wrap: nowrap;
     gap: 8px;
     align-items: center;
-    overflow-x: auto; /* Permite rolar suavemente caso ultrapasse a tela */
-    padding-bottom: 4px;
+    overflow-x: auto;
+    /* Adicionada margem e padding superiores para o ícone não bater no limite ao subir */
+    padding: 6px 4px 4px 4px; 
 }
 
 .author-social-btn {
     background: #1e1e1e;
     color: #ffffff;
-    width: 38px;  /* Largura fixa igual à altura */
-    height: 38px;
-    border-radius: 8px; /* Mantém o formato arredondado/suave */
+    width: 32px;  /* Reduzido de 38px para 32px para ficarem mais compactos */
+    height: 32px; /* Reduzido de 38px para 32px */
+    border-radius: 8px;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 0.9rem; /* Ícone interno menor e proporcional */
     display: inline-flex;
     align-items: center;
-    justify-content: center; /* Centraliza perfeitamente o ícone */
+    justify-content: center;
     border: 1px solid #333;
     transition: all 0.3s ease;
-    flex-shrink: 0; /* Impede que o botão encolha */
+    flex-shrink: 0;
 }
 
-/* Efeito leve de elevação geral no hover */
+/* Efeito ajustado para subir menos, evitando cortar no topo */
 .author-social-btn:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 }
 
-/* Cores Oficiais e Efeito de Brilho (Glow) ao Passar o Mouse */
+/* Cores Oficiais e Efeito de Brilho (Glow) */
 .author-social-btn[title="Facebook"]:hover {
     background-color: #1877f2;
     color: #fff;
-    box-shadow: 0 0 12px rgba(24, 119, 242, 0.8);
+    box-shadow: 0 0 10px rgba(24, 119, 242, 0.8);
     border-color: #1877f2;
 }
 
 .author-social-btn[title="Instagram"]:hover {
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
     color: #fff;
-    box-shadow: 0 0 12px rgba(214, 36, 159, 0.8);
+    box-shadow: 0 0 10px rgba(214, 36, 159, 0.8);
     border-color: transparent;
 }
 
 .author-social-btn[title="TikTok"]:hover {
     background-color: #000000;
     color: #fff;
-    box-shadow: 0 0 12px rgba(254, 44, 85, 0.8), 0 0 12px rgba(37, 244, 238, 0.8);
+    box-shadow: 0 0 10px rgba(254, 44, 85, 0.8), 0 0 10px rgba(37, 244, 238, 0.8);
     border-color: #fe2c55;
 }
 
 .author-social-btn[title="X / Twitter"]:hover {
     background-color: #000000;
     color: #fff;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
     border-color: #ffffff;
 }
 
 .author-social-btn[title="YouTube"]:hover {
     background-color: #ff0000;
     color: #fff;
-    box-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
     border-color: #ff0000;
 }
 
 .author-social-btn[title="Site / GitHub"]:hover {
     background-color: #333333;
     color: #fff;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
     border-color: #888888;
 }
 
