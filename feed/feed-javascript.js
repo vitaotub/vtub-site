@@ -249,10 +249,15 @@ function abrirArtigoHtml(botaoElemento) {
     }
 }
 
+// --- FUNÇÃO DE COMPARTILHAMENTO INTELIGENTE (PC E CELULAR) ---
 function compartilharArtigoModal(tituloArtigo) {
-    if (navigator.share) {
+    // Detecta se o usuário está em um dispositivo móvel
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+    // No celular usa o menu nativo; no computador copia direto para a área de transferência (evita o bug do popup)
+    if (isMobile && navigator.share) {
         navigator.share({ 
-            title: tituloArtigo, 
+            title: tituloArtigo || document.title, 
             url: window.location.href 
         }).catch(() => {});
     } else {
@@ -261,7 +266,14 @@ function compartilharArtigoModal(tituloArtigo) {
                 alert('Link copiado para a área de transferência!');
             })
             .catch(err => {
-                console.error('Erro ao copiar link: ', err);
+                // Fallback de segurança caso o navegador bloqueie o clipboard direto
+                const tempInput = document.createElement('input');
+                tempInput.value = window.location.href;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('Link copiado para a área de transferência!');
             });
     }
 }
