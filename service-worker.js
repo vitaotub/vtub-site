@@ -3,7 +3,7 @@
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 // Versão do cache (incremente para 'v2', 'v3', etc. quando quiser forçar a atualização dos arquivos)
-const CACHE_NAME = 'vitaotub-cache-v2';
+const CACHE_NAME = 'vitaotub-cache-v0';
 const urlsToCache = [
   '/',
   '/index.html',
