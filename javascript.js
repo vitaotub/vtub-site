@@ -320,7 +320,7 @@ function mudarAba(aba) {
     }
 }
 
-// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE
+// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE (LIMITADO AOS 15 DO FEED RSS)
 const ytContainer = document.getElementById('youtube-feed-container');
 
 if (ytContainer) {
@@ -335,6 +335,7 @@ if (ytContainer) {
             if (data.status === 'ok' && data.items.length > 0) {
                 ytContainer.innerHTML = '';
                 
+                // Exibe os vídeos disponíveis no feed RSS oficial do YouTube
                 data.items.forEach(video => {
                     const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
                     const videoId = videoIdMatch ? videoIdMatch[1] : '';
@@ -357,6 +358,18 @@ if (ytContainer) {
                         ytContainer.appendChild(postElement);
                     }
                 });
+
+                // Adiciona a mensagem e o botão estilizado logo após o último vídeo listado
+                const rodapeFeed = document.createElement('div');
+                rodapeFeed.style.cssText = 'text-align: center; padding: 30px 15px; margin-top: 20px; border-top: 1px solid #222;';
+                rodapeFeed.innerHTML = `
+                    <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;">
+                        Esta página exibe apenas os últimos vídeos e lives do Canal VitãoTub. Para conferir todos os outros conteúdos, acesse o canal clicando 
+                        <a href="https://www.youtube.com/@VitaoTub" target="_blank" class="btn-action btn-subscribe" style="display: inline-block; text-decoration: none; padding: 6px 14px; margin-left: 5px; margin-right: 5px; vertical-align: middle;">AQUI</a>.
+                    </p>
+                `;
+                ytContainer.appendChild(rodapeFeed);
+
             } else {
                 ytContainer.innerHTML = '<p style="text-align: center; color: #aaa;">Não foi possível carregar os vídeos automáticos no momento.</p>';
             }
