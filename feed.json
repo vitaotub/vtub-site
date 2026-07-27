@@ -1,18 +1,39 @@
 [
   {
-    "id": 1,
-    "tipo": "video",
-    "titulo": "Como Proteger Seu Roteador em 2026",
+    "tipo": "artigo",
     "data": "26 de Julho de 2026",
-    "url_video": "https://www.youtube.com/embed/SEU_ID_DO_VIDEO",
-    "descricao": "Neste vídeo, mostro o passo a passo definitivo para blindar sua rede Wi-Fi contra invasões e ataques modernos."
+    "titulo": "GUIA COMPLETO WINDOWS SERVER 2022: Instalação e configuração AD, DNS e DHCP",
+    "descricao": "Neste vídeo ensino como instalar e configurar o Windows Server 2022 com Active Directory, serviço DNS e serviço DHCP.
+
+🚀 Se inscreva no @vitaotub para mais dicas de tecnologia e segurança!
+
+❤️ Apoie o canal enviando um Pix: vitaotub@gmail.com
+
+🔗 https://bio.site/vitaotub
+🌐 Git: https://github.com/vitaotek/gitdovitao
+
+#VitãoTub #VitãoTek #windowsserver #servidor.</p>",
+    "videoId": "BbQccfi-1D8"
   },
   {
-    "id": 2,
     "tipo": "artigo",
-    "titulo": "5 Configurações Ocultas no Celular para Aumentar sua Privacidade",
-    "data": "20 de Julho de 2026",
-    "imagem": "desktop-screen.png",
-    "descricao": "Se você usa smartphone, desative estas 3 permissões agora mesmo para impedir que aplicativos rastreiem a sua localização em segundo plano."
+    "data": "20 de Janeiro de 1980",
+    "titulo": "Papai Noel aparece de cueca e assusta população!",
+    "descricao": "Pessoal, aproveitando que estou de molho (gripe forte mas melhorando), estou organizando o canal.
+
+Alguns vídeos e lives ficaram exclusivos apenas para membros do canal.
+
+Ou era isso ou privar de vez, então, pra quem ainda quiser assistir estes materiais, basta se tornar membro que estará tudo por lá.
+
+Estou reestruturando o canal para começar a fazer isso aqui dar certo. A partir de agora, lives que não forem sobre os temas centrais do canal, serão liberadas ao público geral durante a transmissão e até alguns dias depois. Após isso, serão marcadas como exclusivas apenas para membros. Estes conteúdos que fogem o foco do canal fazem o algoritmo surtar e não entregar os meus vídeos. Para não parar de fazer esses conteúdos meio aleatórios, e para não continuar prejudicando o canal inteiro, vou fazer assim:
+
+Tudo que não tiver muito a ver com os assuntos centrais do canal, será liberado ao público geral por alguns dias e depois será marcado como exclusivo apenas para membros. Assim, estes vídeos que afundam o ctr do canal passarão a não ser mais classificados nem utilizados como métrica de classificação de público para entrega de conteúdo. Desta forma estes vídeos e lives não irão prejudicar mais o canal (bom, em partes, mas já ameniza bastante).
+
+Acredito que até o fim desta semana tudo estará devidamente configurado e o canal inteiro ajustado.
+
+Conto com sua compreensão e colaboração se tornando um membro do canal.
+
+Tmj galera!",
+    "imagem": "print-artigo-1.jpg"
   }
 ]
