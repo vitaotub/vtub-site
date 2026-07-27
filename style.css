@@ -1033,12 +1033,31 @@ button[type="submit"]:hover {
     background-color: #050505;
     color: #ffffff;
     width: 80%;
-    max-width: 400px;
-    padding: 24px;
-    border-radius: 12px;
+    max-width: 450px;          /* Aumentado de 400px para 520px (ajuste como preferir) */
+    padding: 40px;             /* Opcional: aumentou um pouco o espaçamento interno */
+    border-radius: 16px;       /* Opcional: arredondamento levemente maior */
     text-align: center;
     border: 2px solid #8b5cf6;
     box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+}
+
+.pwa-popup-content h2 {
+    font-size: 1.7rem;          /* Você pode ajustar para 1.8rem ou 2rem se quiser ainda maior */
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 5px;         
+}
+
+.pwa-popup-content h2::after {
+    display: none !important;
+}
+
+/* Estilização e posicionamento da imagem PNG */
+.pwa-welcome-img {
+    display: block;
+    width: 200px;               
+    height: auto;
+    margin: 5px auto 15px auto; 
 }
 
 .pwa-btn-install {
