@@ -1,13 +1,8 @@
-/**
- * Website do canal VitãoTub - v0.2
- * Desenvolvido por: Victor (Vitão)
- */
-	
 // --- INTEGRAÇÃO ONESIGNAL PUSH ---
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 OneSignalDeferred.push(function(OneSignal) {
   OneSignal.init({
-    appId: "24dbec09-7c58-4193-9d90-8417abc8564e", // <--- ID DO CANAL
+    appId: "24dbec09-7c58-4193-9d90-8417abc8564e",
     safari_web_id: "SEU_ID_SAFARI_AQUI_SE_HOUVER",
     notifyButton: {
       enable: true,
@@ -31,14 +26,12 @@ if ('serviceWorker' in navigator) {
 // --- AUTO-ATUALIZAÇÃO DO PWA ---
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.ready.then(registration => {
-    // Verifica por atualizações no servidor periodicamente ou ao abrir
     registration.update();
 
     registration.addEventListener('updatefound', () => {
       const newWorker = registration.installing;
       newWorker.addEventListener('statechange', () => {
         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          // Nova versão detectada! Recarrega a página automaticamente para exibir as mudanças
           console.log('Nova versão do app disponível. Atualizando...');
           window.location.reload();
         }
@@ -47,7 +40,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// --- LÓGICA DO POPUP DE INSTALAÇÃO FORÇADA (FASE 1) ---
+// --- LÓGICA DO POPUP DE INSTALAÇÃO DO APP (APONTANDO PARA A PASTA FEED) ---
 document.addEventListener("DOMContentLoaded", () => {
   const pwaPopup = document.getElementById('pwa-install-popup');
   const installBtn = document.getElementById('pwa-install-btn');
@@ -84,7 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (outcome === 'accepted') console.log('App instalado!');
         deferredPrompt = null;
       } else {
-        alert('O seu navegador bloqueou a instalação automática.\n\nPara instalar: Clique no ícone de "Aplicativo" ou "Instalar" na barra de endereços (no PC) ou escolha "Adicionar à Tela Inicial" no menu do navegador (no celular).');
+        // Redireciona para o novo local do app dentro da pasta feed
+        window.location.href = 'feed/feed.html';
       }
     });
   }
@@ -96,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
 // 1. CONFIGURAÇÕES GERAIS
 const CONFIG = {
     modalId: 'video-modal',
@@ -104,20 +97,8 @@ const CONFIG = {
     toastContainerId: 'toast-overlay',
     privacyModalId: 'privacy-modal',
     privacyTargetId: 'privacy-content-target',
-    articleModalId: 'article-modal',
     scriptURL: 'https://script.google.com/macros/s/AKfycbwOnJ8aLNMfbOss06eRh_glZRNULpJ3j9HqeL7PCGPDfr80_vcCB5-hLEHkDddO-LFrqA/exec'
 };
-
-// FUNÇÃO AUXILIAR: SANITIZADOR DE HTML
-function escapeHtml(text) {
-    if (!text) return '';
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
 
 // 2. ANIMAÇÃO DE ESTATÍSTICAS
 const observer = new IntersectionObserver((entries) => {
@@ -159,6 +140,14 @@ function closeVideo() {
 
 // 4. MODAL DE PRIVACIDADE
 async function openPrivacyModal() {
+    await loadModalContent('./politica-de-privacidade.html');
+}
+
+async function openTermsModal() {
+    await loadModalContent('./termos-de-uso.html');
+}
+
+async function loadModalContent(filePath) {
     const modal = document.getElementById(CONFIG.privacyModalId);
     const target = document.getElementById(CONFIG.privacyTargetId);
     
@@ -166,14 +155,15 @@ async function openPrivacyModal() {
         modal.style.display = 'flex';
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        target.innerHTML = '<p>Carregando conteúdo...</p>';
 
         try {
-            const response = await fetch('./politica-de-privacidade.html');
+            const response = await fetch(filePath);
             if (!response.ok) throw new Error('Arquivo não encontrado');
             const htmlContent = await response.text();
             target.innerHTML = htmlContent; 
         } catch (error) {
-            target.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar o conteúdo. <a href="politica-de-privacidade.html" target="_blank">Clique aqui para abrir.</a></p>`;
+            target.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar o conteúdo. Certifique-se de estar rodando o site através de um servidor local (Live Server).</p><p><a href="${filePath}" target="_blank" style="color: var(--primary-purple);">Clique aqui para abrir em uma nova aba.</a></p>`;
         }
     }
 }
@@ -251,41 +241,28 @@ function closeToast() {
     }
 }
 
-// FECHAR MODAL DE ARTIGO
-function fecharArtigoCompleto() {
-    const modal = document.getElementById(CONFIG.articleModalId);
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-}
-
 // EVENTOS DE TECLADO (ESC)
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeVideo();
         closeToast();
         closePrivacyModal();
-        fecharArtigoCompleto();
     }
 });
 
 // EVENTOS DE CLIQUE FORA DA MODAL
 document.addEventListener('click', function(e) {
-    if (e.target.id === CONFIG.modalId || e.target.classList.contains('modal-overlay')) {
+    if (e.target.id === CONFIG.modalId || e.target.classList.contains('modal-overlay') && e.target.closest('#video-modal')) {
         closeVideo();
     }
     if (e.target.id === CONFIG.toastContainerId || e.target.classList.contains('toast-close-btn')) {
         closeToast();
     }
+    // Fechamento seguro do modal de privacidade/termos
     if (e.target.id === CONFIG.privacyModalId || 
-        e.target.classList.contains('modal-overlay') || 
-        e.target.classList.contains('modal-close') ||
-        e.target.innerText === '×') {
+        (e.target.classList.contains('modal-overlay') && e.target.closest('#privacy-modal')) || 
+        e.target.classList.contains('modal-close')) {
         closePrivacyModal();
-    }
-    if (e.target.id === CONFIG.articleModalId) {
-        fecharArtigoCompleto();
     }
 });
 
@@ -325,181 +302,3 @@ function initCookieBanner() {
 }
 
 document.addEventListener("DOMContentLoaded", initCookieBanner);
-
-
-// --- LÓGICA DE ABAS E FEED AUTOMÁTICO ---
-
-function mudarAba(aba) {
-    const btnVideos = document.querySelector('.feed-tabs button:nth-child(1)');
-    const btnArtigos = document.querySelector('.feed-tabs button:nth-child(2)');
-    const secaoVideos = document.getElementById('secao-videos');
-    const secaoArtigos = document.getElementById('secao-artigos');
-
-    if (!btnVideos || !secaoVideos) return;
-
-    if (aba === 'videos') {
-        btnVideos.classList.add('active');
-        if (btnArtigos) btnArtigos.classList.remove('active');
-        secaoVideos.style.display = 'block';
-        if (secaoArtigos) secaoArtigos.style.display = 'none';
-    } else {
-        if (btnArtigos) btnArtigos.classList.add('active');
-        btnVideos.classList.remove('active');
-        if (secaoArtigos) secaoArtigos.style.display = 'block';
-        secaoVideos.style.display = 'none';
-    }
-}
-
-// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE
-const ytContainer = document.getElementById('youtube-feed-container');
-
-if (ytContainer) {
-    async function carregarYouTubeAutomatico() {
-        try {
-            const channelID = 'UCUNyU0HewM1JQVVKMAEAfyQ'; 
-            const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}`;
-            
-            const response = await fetch(RSS_URL);
-            const data = await response.json();
-            
-            if (data.status === 'ok' && data.items.length > 0) {
-                ytContainer.innerHTML = '';
-                
-                const ultimosVideos = data.items.slice(0, 15);
-                
-                ultimosVideos.forEach(video => {
-                    const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
-                    const videoId = videoIdMatch ? videoIdMatch[1] : '';
-                    
-                    if (videoId) {
-                        const postElement = document.createElement('article');
-                        postElement.className = 'feed-card';
-                        
-                        const dataPub = new Date(video.pubDate).toLocaleDateString('pt-BR');
-
-                        postElement.innerHTML = `
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/${videoId}" title="${escapeHtml(video.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                            <div class="feed-content">
-                                <h2>${escapeHtml(video.title)}</h2>
-                                <span class="feed-date">${dataPub}</span>
-                            </div>
-                        `;
-                        ytContainer.appendChild(postElement);
-                    }
-                });
-
-                const rodapeFeed = document.createElement('div');
-                rodapeFeed.style.cssText = 'text-align: center; padding: 30px 15px; margin-top: 20px; border-top: 1px solid #222;';
-                rodapeFeed.innerHTML = `
-                    <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;">
-                        Esta página exibe apenas os últimos vídeos e lives do Canal VitãoTub. Para conferir todos os demais conteúdos, acesse o canal clicando 
-                        <a href="https://www.youtube.com/@VitaoTub" target="_blank" class="btn-action btn-subscribe" style="display: inline-block; text-decoration: none; padding: 6px 14px; margin-left: 5px; margin-right: 5px; vertical-align: middle;">AQUI</a>.
-                    </p>
-                `;
-                ytContainer.appendChild(rodapeFeed);
-
-            } else {
-                ytContainer.innerHTML = '<p style="text-align: center; color: #aaa;">Não foi possível carregar os vídeos automáticos no momento.</p>';
-            }
-        } catch (error) {
-            console.error("Erro ao buscar feed do YouTube:", error);
-            ytContainer.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro de conexão ao carregar vídeos.</p>';
-        }
-    }
-
-    carregarYouTubeAutomatico();
-}
-
-// 2. FUNÇÕES DA MODAL DE LEITURA E COMPARTILHAMENTO DOS ARTIGOS
-
-function abrirArtigoHtml(botaoElemento) {
-    const card = botaoElemento.closest('.article-card, .feed-card, .card-artigo, article');
-    if (!card) {
-        console.error('Não foi possível localizar o container do artigo.');
-        return;
-    }
-
-    const titulo = card.getAttribute('data-titulo') || card.querySelector('h2, h3')?.innerText || 'Artigo';
-    const dataPub = card.getAttribute('data-data') || '';
-    const autor = card.getAttribute('data-autor') || 'VitãoTub';
-    const conteudoCompleto = card.getAttribute('data-conteudo') || card.querySelector('.artigo-conteudo, p')?.innerHTML || 'Conteúdo em breve...';
-
-    const facebook = card.getAttribute('data-facebook');
-    const instagram = card.getAttribute('data-instagram');
-    const tiktok = card.getAttribute('data-tiktok');
-    const twitter = card.getAttribute('data-twitter');
-    const youtube = card.getAttribute('data-youtube');
-    const website = card.getAttribute('data-website');
-
-    let redesSociaisHtml = '';
-    if (facebook) redesSociaisHtml += `<a href="${facebook}" target="_blank" class="author-social-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>`;
-    if (instagram) redesSociaisHtml += `<a href="${instagram}" target="_blank" class="author-social-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>`;
-    if (tiktok) redesSociaisHtml += `<a href="${tiktok}" target="_blank" class="author-social-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>`;
-    if (twitter) redesSociaisHtml += `<a href="${twitter}" target="_blank" class="author-social-btn" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>`;
-    if (youtube) redesSociaisHtml += `<a href="${youtube}" target="_blank" class="author-social-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>`;
-    if (website) redesSociaisHtml += `<a href="${website}" target="_blank" class="author-social-btn" title="Site / GitHub"><i class="fa-solid fa-globe"></i></a>`;
-
-    const modal = document.getElementById(CONFIG.articleModalId);
-    const modalBody = document.getElementById('modal-body-content') || document.getElementById('modal-body');
-
-    if (modal && modalBody) {
-        modalBody.innerHTML = `
-            <h1 style="color: #fff; margin-bottom: 10px; font-size: 1.6rem; line-height: 1.3;">${escapeHtml(titulo)}</h1>
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; color: #aaa; font-size: 0.9rem; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;">
-                <span>📅 ${dataPub}</span>
-                <span style="color: #3b82f6; font-weight: 600;">✍️ Autor: ${escapeHtml(autor)}</span>
-            </div>
-
-            <div style="color: #ccc; line-height: 1.6; font-size: 1rem; margin-bottom: 20px;">
-                ${conteudoCompleto}
-            </div>
-            
-            <div class="modal-footer-actions">
-                <!-- Lado Esquerdo: Redes Sociais do Autor -->
-                <div class="author-social-links">
-                    ${redesSociaisHtml}
-                </div>
-
-                <!-- Lado Direito: Ações -->
-                <div class="modal-action-buttons">
-                    <button class="icon-action-btn btn-share" id="modal-btn-share" title="Compartilhar Artigo" aria-label="Compartilhar">
-                        <i class="fa-solid fa-share-nodes"></i>
-                    </button>
-                    <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="icon-action-btn btn-subscribe" title="Inscrever-se no Canal" aria-label="Inscrever-se">
-                        <i class="fa-brands fa-youtube"></i>
-                    </a>
-                </div>
-            </div>
-        `;
-
-        const btnShare = document.getElementById('modal-btn-share');
-        if (btnShare) {
-            btnShare.addEventListener('click', () => compartilharArtigoPorTitulo(titulo));
-        }
-
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function compartilharArtigo(botaoElemento) {
-    const card = botaoElemento.closest('.article-card, .feed-card, .card-artigo, article');
-    const titulo = card ? (card.getAttribute('data-titulo') || card.querySelector('h2, h3')?.innerText || 'VitãoTub') : 'VitãoTub';
-    compartilharArtigoPorTitulo(titulo);
-}
-
-function compartilharArtigoPorTitulo(titulo) {
-    const urlAtual = window.location.href;
-    if (navigator.share) {
-        navigator.share({
-            title: titulo,
-            url: urlAtual
-        }).catch(err => console.log('Compartilhamento cancelado:', err));
-    } else {
-        navigator.clipboard.writeText(urlAtual);
-        alert('Link copiado para a área de transferência!');
-    }
-}

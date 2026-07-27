@@ -1,13 +1,11 @@
 // service-worker.js para PWA com OneSignal integrado
-// Importa o script do OneSignal
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
-// Versão do cache (incremente para 'v2', 'v3', etc. quando quiser forçar a atualização dos arquivos)
-const CACHE_NAME = 'vitaotub-cache-v0.2';
+const CACHE_NAME = 'vitaotub-cache-v0.5';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/feed.html',
+  '/feed/feed.html',
   '/bio.html',
   '/style.css',
   '/bio-style.css',
@@ -15,7 +13,6 @@ const urlsToCache = [
   '/logo-app.png'
 ];
 
-// Instalação do Service Worker e cache dos arquivos estáticos
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -23,11 +20,9 @@ self.addEventListener('install', event => {
         return cache.addAll(urlsToCache);
       })
   );
-  // Força o novo service worker a assumir o controle imediatamente
   self.skipWaiting();
 });
 
-// Ativação e limpeza de caches antigos
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -44,15 +39,14 @@ self.addEventListener('activate', event => {
   return self.clients.claim();
 });
 
-// Responde às requisições buscando no cache primeiro, com fallback para a rede
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
         if (response) {
-          return response; // Retorna do cache
+          return response;
         }
-        return fetch(event.request); // Busca na rede
+        return fetch(event.request);
       })
   );
 });
