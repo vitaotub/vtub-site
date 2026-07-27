@@ -320,15 +320,15 @@ function mudarAba(aba) {
     }
 }
 
-// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE (FORÇANDO ATÉ 15 ITENS)
+// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE (VERSÃO ESTÁVEL)
 const ytContainer = document.getElementById('youtube-feed-container');
 
 if (ytContainer) {
     async function carregarYouTubeAutomatico() {
         try {
             const channelID = 'UCUNyU0HewM1JQVVKMAEAfyQ'; 
-            // Adicionado '&count=15' para forçar a API a trazer o limite máximo do feed do YouTube
-            const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}&count=15`;
+            // URL padrão limpa e 100% estável para a API rss2json
+            const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}`;
             
             const response = await fetch(RSS_URL);
             const data = await response.json();
@@ -336,7 +336,7 @@ if (ytContainer) {
             if (data.status === 'ok' && data.items.length > 0) {
                 ytContainer.innerHTML = '';
                 
-                // Pega os itens retornados (limitando a 15 caso venha mais)
+                // Exibe os vídeos disponíveis no feed (limitando com segurança caso venha mais)
                 const ultimosVideos = data.items.slice(0, 15);
                 
                 ultimosVideos.forEach(video => {
@@ -367,7 +367,7 @@ if (ytContainer) {
                 rodapeFeed.style.cssText = 'text-align: center; padding: 30px 15px; margin-top: 20px; border-top: 1px solid #222;';
                 rodapeFeed.innerHTML = `
                     <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;">
-                        Esta página exibe apenas os últimos vídeos e lives do Canal VitãoTub. Para conferir todos os outros conteúdos, acesse o canal clicando 
+                        Esta página exibe apenas os últimos 8 ou 15 vídeos e lives do Canal VitãoTub. Para conferir todos os demais conteúdos, acesse o canal clicando 
                         <a href="https://www.youtube.com/@VitaoTub" target="_blank" class="btn-action btn-subscribe" style="display: inline-block; text-decoration: none; padding: 6px 14px; margin-left: 5px; margin-right: 5px; vertical-align: middle;">AQUI</a>.
                     </p>
                 `;
