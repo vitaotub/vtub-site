@@ -1762,12 +1762,26 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
 
 /* Botão Compartilhar */
 .btn-share {
-    background-color: #1a1a1a;
-    color: #b0b0b0;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8); /* Azul moderno e agradável */
+    color: #ffffff;
+    border-color: #3b82f6;
 }
 .btn-share:hover {
-    border-color: #8b5cf6;
-    color: #fff;
+    opacity: 0.9;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    border-color: #60a5fa;
+}
+
+/* --- BOTÕES NO CANTO INFERIOR DIREITO DA MODAL --- */
+.modal-footer-actions {
+    display: flex;
+    justify-content: flex-end; /* Alinha tudo à direita */
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #222; /* Linha sutil de separação */
+    flex-wrap: wrap;
 }
 
 /* Botão Inscrever-se */

@@ -431,8 +431,15 @@ function abrirArtigoCompleto(artigoId) {
     if (modal && modalBody && artigo) {
         modalBody.innerHTML = `
             <h1 style="color: #fff; margin-bottom: 15px; font-size: 1.6rem; line-height: 1.3;">${artigo.titulo}</h1>
-            <div style="color: #ccc; line-height: 1.6; font-size: 1rem;">
+            <div style="color: #ccc; line-height: 1.6; font-size: 1rem; margin-bottom: 20px;">
                 ${artigo.conteudo}
+            </div>
+            
+            <!-- Botões úteis no rodapé da modal (alinhados à direita) -->
+            <div class="modal-footer-actions">
+                <button class="btn-action btn-share" onclick="compartilharArtigo('${artigo.titulo.replace(/'/g, "\\'")}')">Compartilhar</button>
+                <a href="https://www.youtube.com/@VitaoTub" target="_blank" class="btn-action btn-read">Ver Canal</a>
+                <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action btn-subscribe">Inscrever-se</a>
             </div>
         `;
         modal.style.display = 'block';
