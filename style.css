@@ -1881,3 +1881,51 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
     background: #333;
     border-color: #3b82f6;
 }
+
+
+/* --- REDES SOCIAIS DOS AUTORES NA MODAL --- */
+.author-social-links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-author-social {
+    background: #222;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #444;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-author-social:hover {
+    background: #333;
+    border-color: #3b82f6;
+}
+
+/* --- AJUSTE MOBILE: MODAL DE ARTIGOS 100% DA TELA --- */
+@media (max-width: 768px) {
+    .article-modal-overlay {
+        padding: 0 !important;
+        background-color: #111111 !important; /* Garante fundo sólido e sem bordas sobrando */
+    }
+
+    .article-modal-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        padding: 15px !important;
+        box-shadow: none !important;
+        overflow-y: auto !important;
+    }
+}
