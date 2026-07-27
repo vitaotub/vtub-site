@@ -1874,19 +1874,27 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
 }
 
 .author-social-btn {
-    background: #1e1e1e;
-    color: #ffffff;
-    width: 32px;  /* Reduzido de 38px para 32px para ficarem mais compactos */
-    height: 32px; /* Reduzido de 38px para 32px */
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 0.9rem; /* Ícone interno menor e proporcional */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #333;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background-color: #18181b;       /* Fundo escuro padrão */
+    color: #ffffff !important;        /* Cor branca para o link */
+    border: 1px solid #333333;
+    text-decoration: none;
     transition: all 0.3s ease;
-    flex-shrink: 0;
+    cursor: pointer;
+}
+
+/* Força TODOS os ícones internos (FontAwesome <i>, <svg> ou <path>) a herdarem a cor branca */
+.author-social-btn i,
+.author-social-btn svg,
+.author-social-btn path {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    font-size: 1.1rem;
 }
 
 /* Efeito ajustado para subir menos, evitando cortar no topo */
@@ -1894,48 +1902,47 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
     transform: translateY(-2px);
 }
 
-/* Cores Oficiais e Efeito de Brilho (Glow) */
-.author-social-btn[title="Facebook"]:hover {
-    background-color: #1877f2;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(24, 119, 242, 0.8);
-    border-color: #1877f2;
+/* ==========================================
+   EFEITOS HOVER ESPECÍFICOS POR REDE SOCIAL
+   ========================================== */
+
+/* X / Twitter (Fundo Preto + Borda Branca + Glow) */
+.author-social-btn[title*="Twitter"]:hover,
+.author-social-btn[title*="X"]:hover {
+    background-color: #000000 !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5) !important;
 }
 
-.author-social-btn[title="Instagram"]:hover {
-    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-    color: #fff;
-    box-shadow: 0 0 10px rgba(214, 36, 159, 0.8);
-    border-color: transparent;
+/* Facebook */
+.author-social-btn[title*="Facebook"]:hover {
+    background-color: #1877f2 !important;
+    border-color: #1877f2 !important;
+    box-shadow: 0 0 10px rgba(24, 119, 242, 0.6) !important;
 }
 
-.author-social-btn[title="TikTok"]:hover {
-    background-color: #000000;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(254, 44, 85, 0.8), 0 0 10px rgba(37, 244, 238, 0.8);
-    border-color: #fe2c55;
+/* Instagram */
+.author-social-btn[title*="Instagram"]:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+    border-color: #dc2743 !important;
+    box-shadow: 0 0 10px rgba(220, 39, 67, 0.6) !important;
 }
 
-/* Correção específica para o ícone do X / Twitter */
-.author-social-btn[title="X / Twitter"]:hover {
-    background-color: #000000;
-    color: #ffffff !important; /* Força o ícone a ficar branco */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-    border-color: #ffffff;
+/* TikTok */
+.author-social-btn[title*="TikTok"]:hover {
+    background-color: #000000 !important;
+    border-color: #fe2c55 !important;
+    box-shadow: 0 0 10px rgba(254, 44, 85, 0.8), 0 0 10px rgba(37, 244, 238, 0.8) !important;
 }
 
-/* Garante também que o ícone interno herde a cor corretamente em todos os botões */
-.author-social-btn i {
-    color: inherit;
+/* YouTube */
+.author-social-btn[title*="YouTube"]:hover {
+    background-color: #ff0000 !important;
+    border-color: #ff0000 !important;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.6) !important;
 }
 
-.author-social-btn[title="YouTube"]:hover {
-    background-color: #ff0000;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
-    border-color: #ff0000;
-}
-
+/* Site ou Github */
 .author-social-btn[title="Site / GitHub"]:hover {
     background-color: #333333;
     color: #fff;
