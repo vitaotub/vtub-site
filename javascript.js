@@ -396,17 +396,21 @@ function abrirArtigoHtml(botaoElemento) {
     const autor = card.getAttribute('data-autor') || 'VitãoTub';
     const conteudoCompleto = card.getAttribute('data-conteudo');
 
-    // Captura redes sociais opcionais do autor inseridas no HTML
+    // Captura redes sociais completas do autor inseridas no HTML
+    const facebook = card.getAttribute('data-facebook');
     const instagram = card.getAttribute('data-instagram');
-    const github = card.getAttribute('data-github');
+    const tiktok = card.getAttribute('data-tiktok');
     const twitter = card.getAttribute('data-twitter');
-    const linkedin = card.getAttribute('data-linkedin');
+    const youtube = card.getAttribute('data-youtube');
+    const website = card.getAttribute('data-website');
 
     let redesSociaisHtml = '';
-    if (instagram) redesSociaisHtml += `<a href="${instagram}" target="_blank" class="btn-author-social">📸 Instagram</a>`;
-    if (github) redesSociaisHtml += `<a href="${github}" target="_blank" class="btn-author-social">🐙 GitHub</a>`;
-    if (twitter) redesSociaisHtml += `<a href="${twitter}" target="_blank" class="btn-author-social">🐦 Twitter</a>`;
-    if (linkedin) redesSociaisHtml += `<a href="${linkedin}" target="_blank" class="btn-author-social">💼 LinkedIn</a>`;
+    if (facebook) redesSociaisHtml += `<a href="${facebook}" target="_blank" class="author-social-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>`;
+    if (instagram) redesSociaisHtml += `<a href="${instagram}" target="_blank" class="author-social-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>`;
+    if (tiktok) redesSociaisHtml += `<a href="${tiktok}" target="_blank" class="author-social-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>`;
+    if (twitter) redesSociaisHtml += `<a href="${twitter}" target="_blank" class="author-social-btn" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>`;
+    if (youtube) redesSociaisHtml += `<a href="${youtube}" target="_blank" class="author-social-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>`;
+    if (website) redesSociaisHtml += `<a href="${website}" target="_blank" class="author-social-btn" title="Site / GitHub"><i class="fa-solid fa-globe"></i></a>`;
 
     const modal = document.getElementById('article-modal');
     const modalBody = document.getElementById('modal-body-content');
