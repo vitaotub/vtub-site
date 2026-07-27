@@ -75,21 +75,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 
-  installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-      pwaPopup.style.display = 'none';
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') console.log('App instalado!');
-      deferredPrompt = null;
-    } else {
-      alert('O seu navegador bloqueou a instalação automática.\n\nPara instalar: Clique no ícone de "Aplicativo" ou "Instalar" na barra de endereços (no PC) ou escolha "Adicionar à Tela Inicial" no menu do navegador (no celular).');
-    }
-  });
+  if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        pwaPopup.style.display = 'none';
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') console.log('App instalado!');
+        deferredPrompt = null;
+      } else {
+        alert('O seu navegador bloqueou a instalação automática.\n\nPara instalar: Clique no ícone de "Aplicativo" ou "Instalar" na barra de endereços (no PC) ou escolha "Adicionar à Tela Inicial" no menu do navegador (no celular).');
+      }
+    });
+  }
 
-  closeBtn.addEventListener('click', () => {
-    pwaPopup.style.display = 'none';
-  });
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      pwaPopup.style.display = 'none';
+    });
+  }
 });
 
 
@@ -100,8 +104,20 @@ const CONFIG = {
     toastContainerId: 'toast-overlay',
     privacyModalId: 'privacy-modal',
     privacyTargetId: 'privacy-content-target',
+    articleModalId: 'article-modal',
     scriptURL: 'https://script.google.com/macros/s/AKfycbwOnJ8aLNMfbOss06eRh_glZRNULpJ3j9HqeL7PCGPDfr80_vcCB5-hLEHkDddO-LFrqA/exec'
 };
+
+// FUNÇÃO AUXILIAR: SANITIZADOR DE HTML
+function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
 // 2. ANIMAÇÃO DE ESTATÍSTICAS
 const observer = new IntersectionObserver((entries) => {
@@ -235,6 +251,16 @@ function closeToast() {
     }
 }
 
+// FECHAR MODAL DE ARTIGO
+function fecharArtigoCompleto() {
+    const modal = document.getElementById(CONFIG.articleModalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+// EVENTOS DE TECLADO (ESC)
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeVideo();
@@ -244,6 +270,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// EVENTOS DE CLIQUE FORA DA MODAL
 document.addEventListener('click', function(e) {
     if (e.target.id === CONFIG.modalId || e.target.classList.contains('modal-overlay')) {
         closeVideo();
@@ -256,6 +283,9 @@ document.addEventListener('click', function(e) {
         e.target.classList.contains('modal-close') ||
         e.target.innerText === '×') {
         closePrivacyModal();
+    }
+    if (e.target.id === CONFIG.articleModalId) {
+        fecharArtigoCompleto();
     }
 });
 
@@ -297,7 +327,7 @@ function initCookieBanner() {
 document.addEventListener("DOMContentLoaded", initCookieBanner);
 
 
-// --- LÓGICA DE ABAS E FEED AUTOMÁTICO (FASE 3) ---
+// --- LÓGICA DE ABAS E FEED AUTOMÁTICO ---
 
 function mudarAba(aba) {
     const btnVideos = document.querySelector('.feed-tabs button:nth-child(1)');
@@ -320,14 +350,13 @@ function mudarAba(aba) {
     }
 }
 
-// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE (VERSÃO ESTÁVEL)
+// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE
 const ytContainer = document.getElementById('youtube-feed-container');
 
 if (ytContainer) {
     async function carregarYouTubeAutomatico() {
         try {
             const channelID = 'UCUNyU0HewM1JQVVKMAEAfyQ'; 
-            // URL padrão limpa e 100% estável para a API rss2json
             const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}`;
             
             const response = await fetch(RSS_URL);
@@ -336,7 +365,6 @@ if (ytContainer) {
             if (data.status === 'ok' && data.items.length > 0) {
                 ytContainer.innerHTML = '';
                 
-                // Exibe os vídeos disponíveis no feed (limitando com segurança caso venha mais)
                 const ultimosVideos = data.items.slice(0, 15);
                 
                 ultimosVideos.forEach(video => {
@@ -351,10 +379,10 @@ if (ytContainer) {
 
                         postElement.innerHTML = `
                             <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/${videoId}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <iframe src="https://www.youtube.com/embed/${videoId}" title="${escapeHtml(video.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             </div>
                             <div class="feed-content">
-                                <h2>${video.title}</h2>
+                                <h2>${escapeHtml(video.title)}</h2>
                                 <span class="feed-date">${dataPub}</span>
                             </div>
                         `;
@@ -362,12 +390,11 @@ if (ytContainer) {
                     }
                 });
 
-                // Adiciona a mensagem e o botão estilizado logo após o último vídeo listado
                 const rodapeFeed = document.createElement('div');
                 rodapeFeed.style.cssText = 'text-align: center; padding: 30px 15px; margin-top: 20px; border-top: 1px solid #222;';
                 rodapeFeed.innerHTML = `
                     <p style="color: #aaa; font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;">
-                        Esta página exibe apenas os últimos 8 ou 15 vídeos e lives do Canal VitãoTub. Para conferir todos os demais conteúdos, acesse o canal clicando 
+                        Esta página exibe apenas os últimos vídeos e lives do Canal VitãoTub. Para conferir todos os demais conteúdos, acesse o canal clicando 
                         <a href="https://www.youtube.com/@VitaoTub" target="_blank" class="btn-action btn-subscribe" style="display: inline-block; text-decoration: none; padding: 6px 14px; margin-left: 5px; margin-right: 5px; vertical-align: middle;">AQUI</a>.
                     </p>
                 `;
@@ -385,18 +412,20 @@ if (ytContainer) {
     carregarYouTubeAutomatico();
 }
 
-// 2. FUNÇÕES DA MODAL DE LEITURA E COMPARTILHAMENTO DOS ARTIGOS (DIRETO DO HTML)
+// 2. FUNÇÕES DA MODAL DE LEITURA E COMPARTILHAMENTO DOS ARTIGOS
 
 function abrirArtigoHtml(botaoElemento) {
-    const card = botaoElemento.closest('.article-card');
-    if (!card) return;
+    const card = botaoElemento.closest('.article-card, .feed-card, .card-artigo, article');
+    if (!card) {
+        console.error('Não foi possível localizar o container do artigo.');
+        return;
+    }
 
-    const titulo = card.getAttribute('data-titulo');
+    const titulo = card.getAttribute('data-titulo') || card.querySelector('h2, h3')?.innerText || 'Artigo';
     const dataPub = card.getAttribute('data-data') || '';
     const autor = card.getAttribute('data-autor') || 'VitãoTub';
-    const conteudoCompleto = card.getAttribute('data-conteudo');
+    const conteudoCompleto = card.getAttribute('data-conteudo') || card.querySelector('.artigo-conteudo, p')?.innerHTML || 'Conteúdo em breve...';
 
-    // Captura redes sociais completas do autor inseridas no HTML
     const facebook = card.getAttribute('data-facebook');
     const instagram = card.getAttribute('data-instagram');
     const tiktok = card.getAttribute('data-tiktok');
@@ -412,50 +441,53 @@ function abrirArtigoHtml(botaoElemento) {
     if (youtube) redesSociaisHtml += `<a href="${youtube}" target="_blank" class="author-social-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>`;
     if (website) redesSociaisHtml += `<a href="${website}" target="_blank" class="author-social-btn" title="Site / GitHub"><i class="fa-solid fa-globe"></i></a>`;
 
-    const modal = document.getElementById('article-modal');
-    const modalBody = document.getElementById('modal-body-content');
+    const modal = document.getElementById(CONFIG.articleModalId);
+    const modalBody = document.getElementById('modal-body-content') || document.getElementById('modal-body');
 
     if (modal && modalBody) {
         modalBody.innerHTML = `
-            <h1 style="color: #fff; margin-bottom: 10px; font-size: 1.6rem; line-height: 1.3;">${titulo}</h1>
+            <h1 style="color: #fff; margin-bottom: 10px; font-size: 1.6rem; line-height: 1.3;">${escapeHtml(titulo)}</h1>
             
-            <!-- Data e Autor no topo do artigo aberto -->
             <div style="display: flex; justify-content: space-between; align-items: center; color: #aaa; font-size: 0.9rem; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;">
                 <span>📅 ${dataPub}</span>
-                <span style="color: #3b82f6; font-weight: 600;">✍️ Autor: ${autor}</span>
+                <span style="color: #3b82f6; font-weight: 600;">✍️ Autor: ${escapeHtml(autor)}</span>
             </div>
 
             <div style="color: #ccc; line-height: 1.6; font-size: 1rem; margin-bottom: 20px;">
                 ${conteudoCompleto}
             </div>
             
-            <!-- Rodapé da modal com Redes do Autor (esquerda) e Ações (direita) -->
-            <div class="modal-footer-actions" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 20px; border-top: 1px solid #222; padding-top: 15px;">
-                <div class="author-social-links" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <div class="modal-footer-actions">
+                <!-- Lado Esquerdo: Redes Sociais do Autor -->
+                <div class="author-social-links">
                     ${redesSociaisHtml}
                 </div>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn-action btn-share" onclick="compartilharArtigoPorTitulo('${titulo.replace(/'/g, "\\'")}')">Compartilhar</button>
-                    <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action btn-subscribe">Inscrever-se</a>
+
+                <!-- Lado Direito: Ações -->
+                <div class="modal-action-buttons">
+                    <button class="icon-action-btn btn-share" id="modal-btn-share" title="Compartilhar Artigo" aria-label="Compartilhar">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                    <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="icon-action-btn btn-subscribe" title="Inscrever-se no Canal" aria-label="Inscrever-se">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
                 </div>
             </div>
         `;
-        modal.style.display = 'block';
+
+        const btnShare = document.getElementById('modal-btn-share');
+        if (btnShare) {
+            btnShare.addEventListener('click', () => compartilharArtigoPorTitulo(titulo));
+        }
+
+        modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
 }
 
-function fecharArtigoCompleto() {
-    const modal = document.getElementById('article-modal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-}
-
 function compartilharArtigo(botaoElemento) {
-    const card = botaoElemento.closest('.article-card');
-    const titulo = card ? card.getAttribute('data-titulo') : 'VitãoTub';
+    const card = botaoElemento.closest('.article-card, .feed-card, .card-artigo, article');
+    const titulo = card ? (card.getAttribute('data-titulo') || card.querySelector('h2, h3')?.innerText || 'VitãoTub') : 'VitãoTub';
     compartilharArtigoPorTitulo(titulo);
 }
 
@@ -465,7 +497,7 @@ function compartilharArtigoPorTitulo(titulo) {
         navigator.share({
             title: titulo,
             url: urlAtual
-        }).catch(console.error);
+        }).catch(err => console.log('Compartilhamento cancelado:', err));
     } else {
         navigator.clipboard.writeText(urlAtual);
         alert('Link copiado para a área de transferência!');
