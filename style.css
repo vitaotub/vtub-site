@@ -1916,11 +1916,17 @@ footer { padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
     border-color: #fe2c55;
 }
 
+/* Correção específica para o ícone do X / Twitter */
 .author-social-btn[title="X / Twitter"]:hover {
     background-color: #000000;
-    color: #fff;
+    color: #ffffff !important; /* Força o ícone a ficar branco */
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
     border-color: #ffffff;
+}
+
+/* Garante também que o ícone interno herde a cor corretamente em todos os botões */
+.author-social-btn i {
+    color: inherit;
 }
 
 .author-social-btn[title="YouTube"]:hover {
