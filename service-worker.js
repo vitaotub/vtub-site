@@ -2,8 +2,8 @@
 // Importa o script do OneSignal
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
-// Configuração básica de cache para funcionamento offline (opcional, mas recomendado)
-const CACHE_NAME = 'vitaotub-cache-v1';
+// Versão do cache (incremente para 'v2', 'v3', etc. quando quiser forçar a atualização dos arquivos)
+const CACHE_NAME = 'vitaotub-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -12,7 +12,7 @@ const urlsToCache = [
   '/style.css',
   '/bio-style.css',
   '/javascript.js',
-  '/favicon.png'
+  '/logo-app.png'
 ];
 
 // Instalação do Service Worker e cache dos arquivos estáticos
@@ -23,9 +23,28 @@ self.addEventListener('install', event => {
         return cache.addAll(urlsToCache);
       })
   );
+  // Força o novo service worker a assumir o controle imediatamente
+  self.skipWaiting();
 });
 
-// Responde às requisições buscando no cache primeiro (estratégia Cache First)
+// Ativação e limpeza de caches antigos
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Removendo cache antigo:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  return self.clients.claim();
+});
+
+// Responde às requisições buscando no cache primeiro, com fallback para a rede
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
@@ -34,7 +53,6 @@ self.addEventListener('fetch', event => {
           return response; // Retorna do cache
         }
         return fetch(event.request); // Busca na rede
-      }
-    )
+      })
   );
 });

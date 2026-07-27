@@ -28,6 +28,25 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// --- AUTO-ATUALIZAÇÃO DO PWA ---
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.ready.then(registration => {
+    // Verifica por atualizações no servidor periodicamente ou ao abrir
+    registration.update();
+
+    registration.addEventListener('updatefound', () => {
+      const newWorker = registration.installing;
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          // Nova versão detectada! Recarrega a página automaticamente para exibir as mudanças
+          console.log('Nova versão do app disponível. Atualizando...');
+          window.location.reload();
+        }
+      });
+    });
+  });
+}
+
 // --- LÓGICA DO POPUP DE INSTALAÇÃO FORÇADA (FASE 1) ---
 document.addEventListener("DOMContentLoaded", () => {
   const pwaPopup = document.getElementById('pwa-install-popup');
