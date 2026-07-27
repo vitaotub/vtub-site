@@ -320,14 +320,15 @@ function mudarAba(aba) {
     }
 }
 
-// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE (LIMITADO AOS 15 DO FEED RSS)
+// 1. CARREGAMENTO AUTOMÁTICO DOS VÍDEOS DO YOUTUBE (FORÇANDO ATÉ 15 ITENS)
 const ytContainer = document.getElementById('youtube-feed-container');
 
 if (ytContainer) {
     async function carregarYouTubeAutomatico() {
         try {
             const channelID = 'UCUNyU0HewM1JQVVKMAEAfyQ'; 
-            const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}`;
+            // Adicionado '&count=15' para forçar a API a trazer o limite máximo do feed do YouTube
+            const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2ffeeds%2Fvideos.xml%3Fchannel_id%3D${channelID}&count=15`;
             
             const response = await fetch(RSS_URL);
             const data = await response.json();
@@ -335,8 +336,10 @@ if (ytContainer) {
             if (data.status === 'ok' && data.items.length > 0) {
                 ytContainer.innerHTML = '';
                 
-                // Exibe os vídeos disponíveis no feed RSS oficial do YouTube
-                data.items.forEach(video => {
+                // Pega os itens retornados (limitando a 15 caso venha mais)
+                const ultimosVideos = data.items.slice(0, 15);
+                
+                ultimosVideos.forEach(video => {
                     const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
                     const videoId = videoIdMatch ? videoIdMatch[1] : '';
                     
