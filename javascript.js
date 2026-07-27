@@ -1,5 +1,5 @@
 /**
- * Website do canal VitãoTub - v1.3 (Com PWA, Feed do YouTube e Novo Sistema de Artigos)
+ * Website do canal VitãoTub - v1.1
  * Desenvolvido por: Victor (Vitão)
  */
 	
@@ -350,100 +350,33 @@ if (ytContainer) {
     carregarYouTubeAutomatico();
 }
 
-// 2. CARREGAMENTO MANUAL DOS ARTIGOS E SISTEMA DE MODAL DE LEITURA
-const artigosContainer = document.getElementById('artigos-feed-container');
+// 2. FUNÇÕES DA MODAL DE LEITURA E COMPARTILHAMENTO DOS ARTIGOS (DIRETO DO HTML)
 
-// Banco de dados em memória para armazenar o conteúdo completo dos artigos injetados via JSON
-let cacheArtigosCompletos = {};
+function abrirArtigoHtml(botaoElemento) {
+    const card = botaoElemento.closest('.article-card');
+    if (!card) return;
 
-if (artigosContainer) {
-    async function carregarArtigosManuais() {
-        try {
-            const response = await fetch(`feed.json?v=${new Date().getTime()}`);
-            if (!response.ok) throw new Error('Erro ao carregar artigos.');
-            
-            const publicacoes = await response.json();
-            artigosContainer.innerHTML = ''; 
-            
-            const apenasArtigos = publicacoes.filter(item => item.tipo === 'artigo');
-
-            if (apenasArtigos.length === 0) {
-                artigosContainer.innerHTML = '<p style="text-align: center; color: #aaa;">Nenhum artigo publicado ainda.</p>';
-                return;
-            }
-            
-            apenasArtigos.forEach((post, index) => {
-                // Atribui um ID único para cada artigo
-                const artigoId = `artigo-${index}`;
-                cacheArtigosCompletos[artigoId] = {
-                    titulo: post.titulo,
-                    conteudo: post.conteudoCompleto || post.descricao // Fallback caso não tenha conteúdo completo dedicado
-                };
-
-                const postElement = document.createElement('article');
-                postElement.className = 'feed-card article-card';
-                
-                // Suporte a miniatura de vídeo ou banner de imagem
-                let midiaHtml = '';
-                if (post.videoId) {
-                    midiaHtml = `
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/${post.videoId}" title="${post.titulo}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    `;
-                } else if (post.imagem) {
-                    midiaHtml = `<img src="${post.imagem}" alt="${post.titulo}" class="feed-image" loading="lazy">`;
-                }
-
-                postElement.innerHTML = `
-                    ${midiaHtml}
-                    <div class="feed-content">
-                        <span class="feed-date">${post.data}</span>
-                        <h2>${post.titulo}</h2>
-                        <p>${post.descricao}</p>
-                        
-                        <!-- Botões centralizados na horizontal -->
-                        <div class="article-actions">
-                            <button class="btn-action btn-read" onclick="abrirArtigoCompleto('${artigoId}')">Ler Artigo</button>
-                            <button class="btn-action btn-share" onclick="compartilharArtigo('${post.titulo.replace(/'/g, "\\'")}')">Compartilhar</button>
-                            <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action btn-subscribe">Inscrever-se</a>
-                        </div>
-                    </div>
-                `;
-                artigosContainer.appendChild(postElement);
-            });
-            
-        } catch (error) {
-            console.error("Erro ao carregar artigos:", error);
-            artigosContainer.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro ao carregar os artigos.</p>';
-        }
-    }
-
-    carregarArtigosManuais();
-}
-
-// 3. FUNÇÕES DA MODAL DE LEITURA DOS ARTIGOS
-function abrirArtigoCompleto(artigoId) {
+    const titulo = card.getAttribute('data-titulo');
+    const conteudoCompleto = card.getAttribute('data-conteudo');
     const modal = document.getElementById('article-modal');
     const modalBody = document.getElementById('modal-body-content');
-    const artigo = cacheArtigosCompletos[artigoId];
 
-    if (modal && modalBody && artigo) {
+    if (modal && modalBody) {
         modalBody.innerHTML = `
-            <h1 style="color: #fff; margin-bottom: 15px; font-size: 1.6rem; line-height: 1.3;">${artigo.titulo}</h1>
+            <h1 style="color: #fff; margin-bottom: 15px; font-size: 1.6rem; line-height: 1.3;">${titulo}</h1>
             <div style="color: #ccc; line-height: 1.6; font-size: 1rem; margin-bottom: 20px;">
-                ${artigo.conteudo}
+                ${conteudoCompleto}
             </div>
             
             <!-- Botões úteis no rodapé da modal (alinhados à direita) -->
             <div class="modal-footer-actions">
-                <button class="btn-action btn-share" onclick="compartilharArtigo('${artigo.titulo.replace(/'/g, "\\'")}')">Compartilhar</button>
+                <button class="btn-action btn-share" onclick="compartilharArtigoPorTitulo('${titulo.replace(/'/g, "\\'")}')">Compartilhar</button>
                 <a href="https://www.youtube.com/@VitaoTub" target="_blank" class="btn-action btn-read">Ver Canal</a>
                 <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action btn-subscribe">Inscrever-se</a>
             </div>
         `;
         modal.style.display = 'block';
-        document.body.style.overflow = 'hidden'; // Trava o fundo
+        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -451,11 +384,17 @@ function fecharArtigoCompleto() {
     const modal = document.getElementById('article-modal');
     if (modal) {
         modal.style.display = 'none';
-        document.body.style.overflow = ''; // Restaura o scroll do feed
+        document.body.style.overflow = '';
     }
 }
 
-function compartilharArtigo(titulo) {
+function compartilharArtigo(botaoElemento) {
+    const card = botaoElemento.closest('.article-card');
+    const titulo = card ? card.getAttribute('data-titulo') : 'VitãoTub';
+    compartilharArtigoPorTitulo(titulo);
+}
+
+function compartilharArtigoPorTitulo(titulo) {
     const urlAtual = window.location.href;
     if (navigator.share) {
         navigator.share({
