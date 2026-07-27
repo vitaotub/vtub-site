@@ -1,5 +1,5 @@
 /**
- * Website do canal VitãoTub - v1.1
+ * Website do canal VitãoTub - v1.2
  * Desenvolvido por: Victor (Vitão)
  */
 	
@@ -357,22 +357,48 @@ function abrirArtigoHtml(botaoElemento) {
     if (!card) return;
 
     const titulo = card.getAttribute('data-titulo');
+    const dataPub = card.getAttribute('data-data') || '';
+    const autor = card.getAttribute('data-autor') || 'VitãoTub';
     const conteudoCompleto = card.getAttribute('data-conteudo');
+
+    // Captura redes sociais opcionais do autor inseridas no HTML
+    const instagram = card.getAttribute('data-instagram');
+    const github = card.getAttribute('data-github');
+    const twitter = card.getAttribute('data-twitter');
+    const linkedin = card.getAttribute('data-linkedin');
+
+    let redesSociaisHtml = '';
+    if (instagram) redesSociaisHtml += `<a href="${instagram}" target="_blank" class="btn-author-social">📸 Instagram</a>`;
+    if (github) redesSociaisHtml += `<a href="${github}" target="_blank" class="btn-author-social">🐙 GitHub</a>`;
+    if (twitter) redesSociaisHtml += `<a href="${twitter}" target="_blank" class="btn-author-social">🐦 Twitter</a>`;
+    if (linkedin) redesSociaisHtml += `<a href="${linkedin}" target="_blank" class="btn-author-social">💼 LinkedIn</a>`;
+
     const modal = document.getElementById('article-modal');
     const modalBody = document.getElementById('modal-body-content');
 
     if (modal && modalBody) {
         modalBody.innerHTML = `
-            <h1 style="color: #fff; margin-bottom: 15px; font-size: 1.6rem; line-height: 1.3;">${titulo}</h1>
+            <h1 style="color: #fff; margin-bottom: 10px; font-size: 1.6rem; line-height: 1.3;">${titulo}</h1>
+            
+            <!-- Data e Autor no topo do artigo aberto -->
+            <div style="display: flex; justify-content: space-between; align-items: center; color: #aaa; font-size: 0.9rem; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;">
+                <span>📅 ${dataPub}</span>
+                <span style="color: #3b82f6; font-weight: 600;">✍️ Autor: ${autor}</span>
+            </div>
+
             <div style="color: #ccc; line-height: 1.6; font-size: 1rem; margin-bottom: 20px;">
                 ${conteudoCompleto}
             </div>
             
-            <!-- Botões úteis no rodapé da modal (alinhados à direita) -->
-            <div class="modal-footer-actions">
-                <button class="btn-action btn-share" onclick="compartilharArtigoPorTitulo('${titulo.replace(/'/g, "\\'")}')">Compartilhar</button>
-                <a href="https://www.youtube.com/@VitaoTub" target="_blank" class="btn-action btn-read">Ver Canal</a>
-                <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action btn-subscribe">Inscrever-se</a>
+            <!-- Rodapé da modal com Redes do Autor (esquerda) e Ações (direita) -->
+            <div class="modal-footer-actions" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 20px; border-top: 1px solid #222; padding-top: 15px;">
+                <div class="author-social-links" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    ${redesSociaisHtml}
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn-action btn-share" onclick="compartilharArtigoPorTitulo('${titulo.replace(/'/g, "\\'")}')">Compartilhar</button>
+                    <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action btn-subscribe">Inscrever-se</a>
+                </div>
             </div>
         `;
         modal.style.display = 'block';
