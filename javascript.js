@@ -91,6 +91,24 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 1. CONFIGURAÇÕES GERAIS
+function lockScroll() {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+    
+    // Se o header for fixed, precisamos aplicar o padding nele também
+    const header = document.querySelector('header');
+    if (header) header.style.paddingRight = `${scrollbarWidth}px`;
+}
+
+function unlockScroll() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    
+    const header = document.querySelector('header');
+    if (header) header.style.paddingRight = '';
+}
+
 const CONFIG = {
     modalId: 'video-modal',
     iframeTargetId: 'modal-iframe-target',
@@ -124,7 +142,7 @@ function openVideo(videoId) {
     if (modal && target) {
         target.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
         modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        lockScroll(); // Substituído aqui
     }
 }
 
@@ -134,11 +152,11 @@ function closeVideo() {
     if (modal) {
         if (target) target.innerHTML = '';
         modal.classList.remove('active');
-        document.body.style.overflow = '';
+        unlockScroll(); // Substituído aqui
     }
 }
 
-// 4. MODAL DE PRIVACIDADE
+// 4. MODAL DE PRIVACIDADE E TERMOS (Corrigido)
 async function openPrivacyModal() {
     await loadModalContent('./politica-de-privacidade.html');
 }
@@ -154,7 +172,7 @@ async function loadModalContent(filePath) {
     if (modal && target) {
         modal.style.display = 'flex';
         modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        lockScroll(); // Substituído aqui
         target.innerHTML = '<p>Carregando conteúdo...</p>';
 
         try {
@@ -168,26 +186,6 @@ async function loadModalContent(filePath) {
     }
 }
 
-async function openTermsModal() {
-    const modal = document.getElementById(CONFIG.privacyModalId);
-    const target = document.getElementById(CONFIG.privacyTargetId);
-    
-    if (modal && target) {
-        modal.style.display = 'flex';
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-
-        try {
-            const response = await fetch('./termos-de-uso.html');
-            if (!response.ok) throw new Error('Arquivo não encontrado');
-            const htmlContent = await response.text();
-            target.innerHTML = htmlContent;
-        } catch (error) {
-            target.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar os termos. <a href="termos-de-uso.html" target="_blank" style="color: var(--primary-purple);">Clique aqui para abrir em uma nova aba.</a></p>`;
-        }
-    }
-}
-
 function closePrivacyModal() {
     const modal = document.getElementById(CONFIG.privacyModalId);
     if (modal) {
@@ -197,7 +195,7 @@ function closePrivacyModal() {
                 modal.style.display = 'none';
             }
         }, 300); 
-        document.body.style.overflow = '';
+        unlockScroll(); // Substituído aqui
     }
 }
 
@@ -226,9 +224,8 @@ if (contactForm) {
         const toast = document.getElementById(CONFIG.toastContainerId);
         if (toast) {
             toast.classList.add('show');
-            document.body.style.overflow = 'hidden';
+            lockScroll(); // Substituído aqui
         }
-
         contactForm.reset();
     });
 }
@@ -237,7 +234,7 @@ function closeToast() {
     const toast = document.getElementById(CONFIG.toastContainerId);
     if (toast) {
         toast.classList.remove('show');
-        document.body.style.overflow = '';
+        unlockScroll(); // Substituído aqui
     }
 }
 

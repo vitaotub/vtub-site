@@ -35,8 +35,8 @@ body {
     font-family: 'Satoshi', 'Inter', system-ui, -apple-system, sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
-    top: 0 !important;
-    position: static !important;
+    /* top: 0 !important; REMOVIDO: Evita quebra de modais fixos em dispositivos mobile (Safari) */
+    /* position: static !important; REMOVIDO: Evita quebra de modais fixos em dispositivos mobile (Safari) */
 }
 
 h1, h2, h3, nav a, button { 
@@ -67,7 +67,6 @@ h1, h2, h3, nav a, button {
     position: absolute; 
     inset: 0; 
     opacity: 0.03; 
-    background-image: url('https://grainy-gradients.vercel.app/noise.svg'); 
 }
 
 /* ==========================================
@@ -780,17 +779,104 @@ h2::after {
     cursor: pointer; 
 }
 
+/* ==========================================
+   ESTILIZAÇÃO INTERNA DE TEXTOS DO MODAL
+   ========================================== */
+#privacy-content-target {
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+#privacy-content-target h1,
+#privacy-content-target h2,
+#privacy-content-target h3 {
+    color: var(--text-main);
+    font-family: 'Satoshi', sans-serif;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    text-align: left;
+}
+
+#privacy-content-target h1 {
+    font-size: 2rem;
+    text-align: center;
+    color: var(--primary-purple);
+    margin-top: 0;
+}
+
+#privacy-content-target h2 {
+    font-size: 1.4rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Remove a linha gradiente roxa de h2 dentro do modal para um visual mais limpo na leitura */
+#privacy-content-target h2::after {
+    display: none;
+}
+
+#privacy-content-target p,
+#privacy-content-target li {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 1.2em;
+}
+
+#privacy-content-target ul,
+#privacy-content-target ol {
+    padding-left: 20px;
+    margin-bottom: 1.5em;
+}
+
+#privacy-content-target a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+#privacy-content-target a:hover {
+    color: var(--primary-purple);
+    text-decoration: underline;
+}
+
 #privacy-modal .modal-content {
     background: #111;
     border: 1px solid #333;
     border-radius: 12px;
-    width: 90%;
+    width: 92% !important;
     max-width: 800px;
-    max-height: 85vh;
-    padding: 40px;
+    max-height: 80vh !important;
+    padding: 25px !important; /* Padding menor no celular para não estourar */
     overflow-y: auto;
     position: relative;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    margin: auto;
+}
+
+/* Texto justificado e com hifenização no Modal de Privacidade */
+#privacy-content-target,
+#privacy-content-target p,
+#privacy-content-target li {
+    text-align: justify !important;
+    -webkit-hyphens: auto !important;
+    -moz-hyphens: auto !important;
+    -ms-hyphens: auto !important;
+    hyphens: auto !important;
+    word-wrap: break-word !important; 
+    overflow-wrap: break-word !important;
+    line-break: strict !important; /* Força o limite das palavras */
+}
+
+@media (max-width: 600px) {
+    #privacy-modal .modal-content {
+        padding: 20px 15px !important;
+        max-height: 85vh !important;
+    }
 }
 
 /* ==========================================
@@ -1016,6 +1102,33 @@ button[type="submit"]:hover {
     white-space: nowrap;
 }
 
+/* --- REGRAS MOBILE MOVIDAS PARA CÁ PARA RESPEITAR A CASCATA DO CSS --- */
+@media (max-width: 768px) {
+    .lgpd-overlay {
+        padding: 20px;
+        width: 95%;
+        bottom: 15px;
+    }
+    
+    .lgpd-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .lgpd-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+    
+    .lgpd-btn-main, .lgpd-btn-secondary {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        flex: 1;
+    }
+}
+
 .pwa-popup-overlay {
     position: fixed;
     top: 0;
@@ -1033,16 +1146,16 @@ button[type="submit"]:hover {
     background-color: #050505;
     color: #ffffff;
     width: 80%;
-    max-width: 450px;          /* Aumentado de 400px para 520px (ajuste como preferir) */
-    padding: 40px;             /* Opcional: aumentou um pouco o espaçamento interno */
-    border-radius: 16px;       /* Opcional: arredondamento levemente maior */
+    max-width: 450px;
+    padding: 40px;             
+    border-radius: 16px;       
     text-align: center;
     border: 2px solid #8b5cf6;
     box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
 }
 
 .pwa-popup-content h2 {
-    font-size: 1.7rem;          /* Você pode ajustar para 1.8rem ou 2rem se quiser ainda maior */
+    font-size: 1.7rem;          
     border-bottom: none !important;
     padding-bottom: 0 !important;
     margin-bottom: 5px;         
@@ -1052,7 +1165,6 @@ button[type="submit"]:hover {
     display: none !important;
 }
 
-/* Estilização e posicionamento da imagem PNG */
 .pwa-welcome-img {
     display: block;
     width: 200px;               
@@ -1070,7 +1182,7 @@ button[type="submit"]:hover {
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    margin-top: 20px; /* Adiciona o espaçamento desejado entre o texto e o botão */
+    margin-top: 20px; 
     margin-bottom: 10px;
     transition: background 0.3s;
 }
