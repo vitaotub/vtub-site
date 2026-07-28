@@ -1,7 +1,8 @@
 /* ============================================================
    VITÃOTUB - ESTILOS DO FEED
    Descrição: Tema escuro para feed de vídeos, artigos,
-   abas de navegação e modal de leitura
+   abas de navegação, modal de leitura e botões flutuantes
+   Otimizado para mobile (PWA)
    Organizado por seções para facilitar manutenção
    ============================================================ */
 
@@ -10,713 +11,249 @@
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,900&display=swap');
 
 :root {
-    /* Cores de fundo */
     --bg-color: #050505;
     --card-bg: #111111;
-    
-    /* Cores de destaque */
     --primary-purple: #8b5cf6;
     --primary-blue: #3b82f6;
-    
-    /* Cores de texto */
     --text-main: #ffffff;
     --text-dim: rgba(255, 255, 255, 0.7);
-    
-    /* Layout */
     --container-max: 1100px;
-    
-    /* Efeitos */
     --gradient-brand: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==================== 2. RESET E BASE ==================== */
-*, 
-*::before, 
-*::after { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-}
-
-html { 
-    scroll-behavior: smooth; 
-    overflow-y: scroll; 
-}
-
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-y: scroll; }
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
     font-family: 'Satoshi', 'Inter', system-ui, -apple-system, sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+    top: 0 !important;
 }
 
 /* ==================== 3. BODY DO FEED ==================== */
-.feed-body { 
-    background-color: #050505; 
-    color: #ffffff; 
-    margin: 0; 
-    padding: 0; 
-}
+.feed-body { background-color: #050505; color: #ffffff; margin: 0; padding: 0; }
 
 /* ==================== 4. HEADER DO FEED ==================== */
-.feed-header { 
-    background-color: #111111; 
-    padding: 20px 15px; 
-    text-align: center; 
-    position: sticky; 
-    top: 0; 
-    z-index: 100; 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-}
+.feed-header { background-color: #111111; padding: 20px 15px; text-align: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+.feed-logo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px auto; display: block; border: 2px solid #8b5cf6; }
+.feed-title { margin: 0 0 15px 0; font-size: 1.5rem; font-weight: bold; color: #ffffff; font-family: 'Satoshi', sans-serif; }
 
-.feed-logo { 
-    width: 150px; 
-    height: 150px; 
-    border-radius: 50%; 
-    object-fit: cover; 
-    margin: 0 auto 10px auto; 
-    display: block; 
-    border: 2px solid #8b5cf6; 
-}
-
-.feed-title { 
-    margin: 0 0 15px 0; 
-    font-size: 1.5rem; 
-    font-weight: bold; 
-    color: #ffffff; 
-    font-family: 'Satoshi', sans-serif;
-}
-
-/* Container da logo com botão de inscrição sobreposto */
-.logo-container { 
-    position: relative; 
-    display: inline-block; 
-    margin-bottom: 15px; 
-}
-
+.logo-container { position: relative; display: inline-block; margin-bottom: 15px; }
 .logo-subscribe-btn {
-    position: absolute; 
-    bottom: -14px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    background-color: #ff0000; 
-    color: #fff;
-    padding: 6px 12px; 
-    border-radius: 25px; 
-    font-size: 1.35rem; 
-    font-weight: bold; 
-    text-decoration: none; 
-    display: flex; 
-    align-items: center; 
-    gap: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
-    border: 2px solid #121212; 
-    white-space: nowrap;
-    transition: var(--transition-smooth);
-    font-family: 'Satoshi', sans-serif;
+    position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); background-color: #ff0000; color: #fff;
+    padding: 6px 12px; border-radius: 25px; font-size: 1.35rem; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); border: 2px solid #121212; white-space: nowrap;
+    transition: var(--transition-smooth); font-family: 'Satoshi', sans-serif;
 }
-
-.logo-subscribe-btn:hover {
-    transform: translateX(-50%) scale(1.05);
-    box-shadow: 0 6px 15px rgba(255, 0, 0, 0.4);
-}
-
-.logo-subscribe-btn i {
-    font-size: 1.4rem; 
-}
+.logo-subscribe-btn:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 6px 15px rgba(255, 0, 0, 0.4); }
+.logo-subscribe-btn i { font-size: 1.4rem; }
 
 /* ==================== 5. ABAS DE NAVEGAÇÃO ==================== */
-.feed-tabs { 
-    display: flex; 
-    justify-content: center; 
-    gap: 12px; 
-    margin-top: 5px; 
-}
-
+.feed-tabs { display: flex; justify-content: center; gap: 12px; margin-top: 5px; }
 .tab-btn {
-    background-color: #1a1a1a; 
-    color: #b0b0b0; 
-    border: 1px solid #333333; 
-    padding: 10px 20px;
-    border-radius: 8px; 
-    font-size: 0.95rem; 
-    font-weight: 600; 
-    cursor: pointer; 
-    transition: all 0.3s ease;
+    background-color: #1a1a1a; color: #b0b0b0; border: 1px solid #333333; padding: 10px 20px;
+    border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
     font-family: 'Satoshi', sans-serif;
 }
-
-.tab-btn:hover { 
-    border-color: #8b5cf6; 
-    color: #ffffff; 
-}
-
-.tab-btn.active { 
-    background: linear-gradient(135deg, #8b5cf6, #6d28d9); 
-    color: #fff; 
-    border-color: #8b5cf6; 
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); 
-}
+.tab-btn:hover { border-color: #8b5cf6; color: #ffffff; }
+.tab-btn.active { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border-color: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); }
 
 /* ==================== 6. CONTAINER DO FEED ==================== */
-.feed-container { 
-    max-width: 600px; 
-    margin: 20px auto; 
-    padding: 0 15px 50px; 
-}
-
-/* Seções do feed */
-.feed-section {
-    /* display controlado pelo JavaScript */
-}
-
-.feed-section.active {
-    /* seção visível */
-}
+.feed-container { max-width: 600px; margin: 20px auto; padding: 0 15px 50px; }
 
 /* ==================== 7. CARDS DO FEED ==================== */
-.feed-card { 
-    background-color: #1a1a1a; 
-    border-radius: 12px; 
-    overflow: hidden; 
-    margin-bottom: 25px; 
-    border: 1px solid #333; 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); 
-}
+.feed-card { background-color: #1a1a1a; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
 
 /* ==================== 8. CONTAINER DE VÍDEO ==================== */
-.video-container, 
-.video-thumbnail-container { 
-    position: relative; 
-    width: 100%; 
-    padding-bottom: 56.25%; 
-    background-color: #000; 
-    cursor: pointer; 
-    overflow: hidden; 
-}
-
-.video-container iframe, 
-.video-thumbnail { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-}
-
-/* Ícone de play sobre thumbnail */
+.video-container, .video-thumbnail-container { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; cursor: pointer; overflow: hidden; }
+.video-container iframe, .video-thumbnail { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
 .play-icon-overlay {
-    position: absolute; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); 
-    color: rgba(255, 255, 255, 0.9); 
-    font-size: 3rem;
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5)); 
-    transition: transform 0.3s;
-    pointer-events: none;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.9); font-size: 3rem;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5)); transition: transform 0.3s; pointer-events: none;
 }
-
-.video-thumbnail-container:hover .play-icon-overlay { 
-    transform: translate(-50%, -50%) scale(1.1); 
-    color: #ff0000; 
-}
+.video-thumbnail-container:hover .play-icon-overlay { transform: translate(-50%, -50%) scale(1.1); color: #ff0000; }
 
 /* ==================== 9. CONTEÚDO DOS CARDS ==================== */
-.feed-content { 
-    padding: 15px; 
-}
-
-.feed-content h2 { 
-    margin: 0 0 8px 0; 
-    font-size: 1.3rem; 
-    color: #ffffff; 
-    text-align: justify; 
-    font-family: 'Satoshi', sans-serif;
-}
-
-/* Metadados (data e autor) */
-.feed-meta-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    font-size: 0.85rem; 
-    color: #aaa; 
-    margin-bottom: 12px; 
-}
-
-.feed-date { 
-    color: #8b5cf6; 
-    font-weight: bold; 
-}
-
-.feed-author { 
-    color: #3b82f6; 
-    font-weight: 600; 
-}
-
-/* Texto do artigo */
+.feed-content { padding: 15px; }
+.feed-content h2 { margin: 0 0 8px 0; font-size: 1.3rem; color: #ffffff; text-align: justify; font-family: 'Satoshi', sans-serif; }
+.feed-meta-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #aaa; margin-bottom: 12px; }
+.feed-date { color: #8b5cf6; font-weight: bold; }
+.feed-author { color: #3b82f6; font-weight: 600; }
 .feed-content p,
 .feed-card.article-card .feed-content p {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #cccccc;
-    margin: 0;
-    text-align: justify;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
-    overflow-wrap: break-word;
+    font-size: 1rem; line-height: 1.5; color: #cccccc; margin: 0;
+    text-align: justify; -webkit-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word;
 }
 
 /* ==================== 10. AÇÕES DOS ARTIGOS ==================== */
-.article-actions { 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    margin-top: 15px; 
-    flex-wrap: wrap; 
-}
-
-.article-actions-right {
-    display: flex;
-    gap: 10px;
-    margin-left: auto;
-    align-items: center;
-}
-
-/* Botões de ação */
+.article-actions { display: flex; align-items: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+.article-actions-right { display: flex; gap: 10px; margin-left: auto; align-items: center; }
 .btn-action {
-    display: inline-flex; 
-    align-items: center; 
-    justify-content: center; 
-    height: 38px; 
-    padding: 0 14px;
-    font-size: 0.85rem; 
-    font-weight: 600; 
-    border-radius: 6px; 
-    border: none; 
-    cursor: pointer; 
-    text-decoration: none; 
-    transition: 0.2s;
+    display: inline-flex; align-items: center; justify-content: center; height: 38px; padding: 0 14px;
+    font-size: 0.85rem; font-weight: 600; border-radius: 6px; border: none; cursor: pointer; text-decoration: none; transition: 0.2s;
     font-family: 'Satoshi', sans-serif;
 }
+.btn-read { background-color: #2563eb; color: #ffffff; }
+.btn-read:hover { background-color: #1d4ed8; }
 
-.btn-read { 
-    background-color: #2563eb; 
-    color: #ffffff; 
-}
-
-.btn-read:hover {
-    background-color: #1d4ed8;
-}
-
-/* Botões de ícone */
 .btn-action-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    background-color: #1a1a1a;
-    color: #ffffff;
-    border: 1px solid #333333;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px;
+    background-color: #1a1a1a; color: #ffffff; border: 1px solid #333333; border-radius: 8px;
+    font-size: 1.2rem; text-decoration: none; cursor: pointer; transition: all 0.3s ease;
 }
-
-/* Hover: Compartilhar */
-.btn-share-icon:hover {
-    color: #8b5cf6;
-    border-color: #8b5cf6;
-    background-color: #1a1a1a;
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
-    transform: translateY(-2px);
-}
-
-/* Hover: Inscrever-se */
-.btn-subscribe-icon:hover {
-    color: #FF0000;
-    border-color: #FF0000;
-    background-color: #1a1a1a;
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-    transform: translateY(-2px);
-}
+.btn-share-icon:hover { color: #8b5cf6; border-color: #8b5cf6; background-color: #1a1a1a; box-shadow: 0 0 15px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
+.btn-subscribe-icon:hover { color: #FF0000; border-color: #FF0000; background-color: #1a1a1a; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); transform: translateY(-2px); }
 
 /* ==================== 11. MODAL DE ARTIGO ==================== */
 .article-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    display: none; position: fixed; inset: 0; z-index: 10000; justify-content: center; align-items: center;
+    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
-
-.article-modal-overlay.active {
-    display: flex !important;
-}
-
+.article-modal-overlay.active { display: flex !important; }
 .article-modal-content {
-    position: relative;
-    width: 90%;
-    max-width: 900px;
-    max-height: 85vh;
-    background: #111;
-    padding: 30px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    overflow-y: auto;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-    z-index: 2;
+    position: relative; width: 90%; max-width: 900px; max-height: 85vh; background: #111;
+    padding: 30px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-y: auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); z-index: 2;
 }
-
-/* Cabeçalho do modal */
-.article-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.article-close-hint {
-    color: var(--text-dim);
-    font-size: 0.9rem;
-    font-style: italic;
-    font-family: 'Inter', sans-serif;
-}
-
+.article-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.article-close-hint { color: var(--text-dim); font-size: 0.9rem; font-style: italic; font-family: 'Inter', sans-serif; }
 .article-close-x-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #fff;
-    font-size: 1.1rem;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff;
+    font-size: 1.1rem; width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
 }
-
-.article-close-x-btn:hover {
-    background-color: #ff0000;
-    border-color: #ff0000;
-    color: #fff;
-    transform: scale(1.05);
-}
-
-/* Título do artigo no modal */
-.article-modal-title {
-    color: #fff;
-    margin-bottom: 12px;
-    font-size: 1.5rem;
-    text-align: left;
-    font-family: 'Satoshi', sans-serif;
-}
-
-/* Metadados no modal */
-.article-modal-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    color: #aaa;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.article-modal-date {
-    color: #8b5cf6;
-    font-weight: bold;
-}
-
-.article-modal-author {
-    color: #3b82f6;
-    font-weight: 600;
-}
-
-/* Corpo do texto no modal */
+.article-close-x-btn:hover { background-color: #ff0000; border-color: #ff0000; color: #fff; transform: scale(1.05); }
+.article-modal-title { color: #fff; margin-bottom: 12px; font-size: 1.5rem; text-align: left; font-family: 'Satoshi', sans-serif; }
+.article-modal-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #aaa; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.article-modal-date { color: #8b5cf6; font-weight: bold; }
+.article-modal-author { color: #3b82f6; font-weight: 600; }
 .article-modal-text,
 .article-modal-content p,
 #modal-body-content p {
-    color: #ccc;
-    line-height: 1.6;
-    font-size: 1rem;
-    margin-bottom: 25px;
-    text-align: justify;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
-    overflow-wrap: break-word;
+    color: #ccc; line-height: 1.6; font-size: 1rem; margin-bottom: 25px;
+    text-align: justify; -webkit-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word;
 }
-
-/* Rodapé do modal */
-.article-modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.article-modal-socials {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.article-modal-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-/* Botões sociais no modal */
+.article-modal-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); flex-wrap: wrap; gap: 15px; }
+.article-modal-socials { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.article-modal-actions { display: flex; gap: 10px; align-items: center; }
 .social-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    background-color: #1a1a1a;
-    color: #ffffff;
-    border: 1px solid #333333;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+    background-color: #1a1a1a; color: #ffffff; border: 1px solid #333333; border-radius: 8px;
+    font-size: 1.1rem; text-decoration: none; cursor: pointer; transition: all 0.3s ease;
 }
-
-/* Hover: Instagram */
-.social-btn.instagram:hover {
-    color: #E1306C;
-    border-color: #E1306C;
-    background-color: #1a1a1a;
-    box-shadow: 0 0 15px rgba(225, 48, 108, 0.6);
-    transform: translateY(-2px);
-}
-
-/* Hover: YouTube */
-.social-btn.youtube:hover {
-    color: #FF0000;
-    border-color: #FF0000;
-    background-color: #1a1a1a;
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-    transform: translateY(-2px);
-}
+.social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; background-color: #1a1a1a; box-shadow: 0 0 15px rgba(225, 48, 108, 0.6); transform: translateY(-2px); }
+.social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; background-color: #1a1a1a; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); transform: translateY(-2px); }
 
 /* ==================== 12. SEÇÃO SOBRE ==================== */
-.about-container { 
-    background: #1e1e1e; 
-    border-radius: 8px; 
-    padding: 30px 20px; 
-    text-align: center; 
-    border: 1px solid #333; 
-}
-
-.about-profile h2 { 
-    color: #fff; 
-    margin-bottom: 5px; 
-    font-family: 'Satoshi', sans-serif;
-}
-
-.about-subtitle { 
-    color: #aaa; 
-    font-size: 0.9rem; 
-    margin-bottom: 20px; 
-}
-
-.about-bio p { 
-    color: #ccc; 
-    line-height: 1.6; 
-    margin-bottom: 15px; 
-    text-align: justify; 
-}
+.about-container { background: #1e1e1e; border-radius: 8px; padding: 30px 20px; text-align: center; border: 1px solid #333; }
+.about-profile h2 { color: #fff; margin-bottom: 5px; font-family: 'Satoshi', sans-serif; }
+.about-subtitle { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; }
+.about-bio p { color: #ccc; line-height: 1.6; margin-bottom: 15px; text-align: justify; }
 
 /* ==================== 13. POPUP PWA ==================== */
 .pwa-popup-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    display: none; position: fixed; inset: 0; z-index: 10000; justify-content: center; align-items: center;
+    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.pwa-popup-overlay.show { display: flex !important; }
+.pwa-popup-content { background-color: #050505; color: #ffffff; width: 90%; max-width: 400px; padding: 24px; border-radius: 12px; text-align: center; border: 2px solid #8b5cf6; }
+.pwa-popup-content h2 { font-family: 'Satoshi', sans-serif; font-size: 1.3rem; margin-bottom: 10px; }
+.pwa-popup-content p { color: var(--text-dim); margin-bottom: 15px; font-size: 0.95rem; }
+.pwa-btn-install { background-color: #8b5cf6; color: #fff; border: none; padding: 12px 20px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 10px; font-family: 'Satoshi', sans-serif; transition: var(--transition-smooth); }
+.pwa-btn-install:hover { background-color: #7c4dff; }
+.pwa-btn-close { background-color: transparent; color: #aaa; border: none; cursor: pointer; text-decoration: underline; font-family: 'Satoshi', sans-serif; }
+.pwa-btn-close:hover { color: #ffffff; }
+
+/* ==================== 14. BOTÃO DE TRADUÇÃO FLUTUANTE ==================== */
+.translate-widget {
+    position: fixed; bottom: 80px; left: 12px; z-index: 999;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+}
+.translate-toggle {
+    width: 42px; height: 42px; background-color: var(--primary-purple); color: #ffffff;
+    border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.translate-toggle:active { transform: scale(0.95); background-color: var(--primary-blue); }
+
+.translate-dropdown {
+    display: none; flex-direction: column; gap: 2px; background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 8px;
+    min-width: 180px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); animation: fadeInDown 0.2s ease;
+}
+.translate-dropdown.active { display: flex; }
+.translate-dropdown-title { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px 2px; font-weight: 600; }
+.translate-option {
+    background: transparent; border: none; color: var(--text-main); padding: 10px 12px;
+    text-align: left; font-size: 0.85rem; cursor: pointer; border-radius: 8px;
+    transition: var(--transition-smooth); font-family: 'Satoshi', sans-serif; font-weight: 500; width: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+.translate-option:active { background: rgba(139, 92, 246, 0.3); color: var(--primary-purple); }
+.translate-option.active-lang { background: rgba(139, 92, 246, 0.2); color: var(--primary-purple); font-weight: 700; }
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.pwa-popup-overlay.show {
-    display: flex !important;
+/* Esconde Google Tradutor */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-balloon-frame,
+.goog-te-gadget-icon { display: none !important; }
+.skiptranslate { display: none !important; height: 0 !important; }
+.goog-te-banner-frame { display: none !important; height: 0 !important; }
+.goog-te-gadget { display: none !important; }
+
+/* ==================== 15. BOTÃO VOLTAR AO TOPO ==================== */
+.back-to-top {
+    position: fixed; bottom: 16px; right: 12px; width: 42px; height: 42px;
+    background-color: var(--primary-purple); color: #ffffff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 1000; cursor: pointer;
+    transition: all 0.3s ease; text-decoration: none; -webkit-tap-highlight-color: transparent;
 }
+.back-to-top:active { background-color: var(--primary-blue); transform: scale(0.95); }
 
-.pwa-popup-content { 
-    background-color: #050505; 
-    color: #ffffff; 
-    width: 90%; 
-    max-width: 400px; 
-    padding: 24px; 
-    border-radius: 12px; 
-    text-align: center; 
-    border: 2px solid #8b5cf6; 
-}
+/* ==================== 16. RESPONSIVIDADE ==================== */
 
-.pwa-popup-content h2 {
-    font-family: 'Satoshi', sans-serif;
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-}
-
-.pwa-popup-content p {
-    color: var(--text-dim);
-    margin-bottom: 15px;
-    font-size: 0.95rem;
-}
-
-.pwa-btn-install { 
-    background-color: #8b5cf6; 
-    color: #fff; 
-    border: none; 
-    padding: 12px 20px; 
-    font-weight: bold; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    width: 100%; 
-    margin-bottom: 10px; 
-    font-family: 'Satoshi', sans-serif;
-    transition: var(--transition-smooth);
-}
-
-.pwa-btn-install:hover {
-    background-color: #7c4dff;
-}
-
-.pwa-btn-close { 
-    background-color: transparent; 
-    color: #aaa; 
-    border: none; 
-    cursor: pointer; 
-    text-decoration: underline; 
-    font-family: 'Satoshi', sans-serif;
-}
-
-.pwa-btn-close:hover {
-    color: #ffffff;
-}
-
-/* ==================== 14. RESPONSIVIDADE ==================== */
-
-/* Tablet (até 768px) */
 @media (max-width: 768px) {
-    .feed-header {
-        padding: 15px 10px;
-    }
-    
-    .feed-logo {
-        width: 120px;
-        height: 120px;
-    }
-    
-    .feed-tabs {
-        gap: 8px;
-    }
-    
-    .tab-btn {
-        padding: 8px 14px;
-        font-size: 0.85rem;
-    }
-    
-    .feed-container {
-        padding: 0 10px 40px;
-    }
-    
-    .article-modal-content {
-        padding: 20px;
-        width: 95%;
-    }
-    
-    .article-modal-title {
-        font-size: 1.3rem;
-    }
+    .feed-header { padding: 15px 10px; }
+    .feed-logo { width: 120px; height: 120px; }
+    .feed-tabs { gap: 8px; }
+    .tab-btn { padding: 8px 14px; font-size: 0.85rem; }
+    .feed-container { padding: 0 10px 40px; }
+    .article-modal-content { padding: 20px; width: 95%; }
+    .article-modal-title { font-size: 1.3rem; }
+    .translate-widget { bottom: 70px; }
+    .back-to-top { bottom: 12px; }
 }
 
-/* Mobile (até 480px) */
 @media (max-width: 480px) {
-    .feed-logo {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .feed-title {
-        font-size: 1.2rem;
-    }
-    
-    .logo-subscribe-btn {
-        font-size: 1.1rem;
-        padding: 4px 10px;
-    }
-    
-    .feed-tabs {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .tab-btn {
-        width: 100%;
-        max-width: 250px;
-    }
-    
-    .article-actions {
-        flex-direction: column;
-    }
-    
-    .article-actions-right {
-        margin-left: 0;
-    }
-    
-    .article-modal-header {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
+    .feed-logo { width: 100px; height: 100px; }
+    .feed-title { font-size: 1.2rem; }
+    .logo-subscribe-btn { font-size: 1.1rem; padding: 4px 10px; }
+    .feed-tabs { flex-direction: column; align-items: center; }
+    .tab-btn { width: 100%; max-width: 250px; }
+    .article-actions { flex-direction: column; }
+    .article-actions-right { margin-left: 0; }
+    .article-modal-header { flex-direction: column; gap: 10px; text-align: center; }
+    .translate-widget { bottom: 70px; left: 8px; }
+    .translate-toggle { width: 38px; height: 38px; }
+    .translate-toggle svg { width: 18px; height: 18px; }
+    .translate-dropdown { min-width: 160px; }
+    .translate-option { font-size: 0.8rem; padding: 8px 10px; }
+    .back-to-top { bottom: 12px; right: 8px; width: 38px; height: 38px; }
+    .back-to-top svg { width: 18px; height: 18px; }
 }
 
-/* ==================== 15. ACESSIBILIDADE ==================== */
-
-/* Respeita preferência de redução de movimento */
+/* ==================== 17. ACESSIBILIDADE ==================== */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
-
-/* Foco visível para navegação por teclado */
-a:focus-visible,
-button:focus-visible {
-    outline: 2px solid var(--primary-purple);
-    outline-offset: 3px;
-    border-radius: 4px;
-}
+a:focus-visible, button:focus-visible { outline: 2px solid var(--primary-purple); outline-offset: 3px; border-radius: 4px; }

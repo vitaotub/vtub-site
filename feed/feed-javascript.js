@@ -2,7 +2,7 @@
  * ============================================================
  * VITÃOTUB - JAVASCRIPT DO FEED
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
- * modal de artigo, compartilhamento e PWA
+ * modal de artigo, compartilhamento, PWA e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
@@ -14,11 +14,6 @@ const CONFIG = {
 };
 
 // ==================== 2. UTILITÁRIOS ====================
-/**
- * Sanitiza texto para evitar injeção de HTML
- * @param {string} text - Texto a ser sanitizado
- * @returns {string} Texto seguro
- */
 function escapeHtml(text) {
     if (!text) return '';
     return String(text)
@@ -39,10 +34,6 @@ if ('serviceWorker' in navigator) {
 }
 
 // ==================== 4. NAVEGAÇÃO POR ABAS ====================
-/**
- * Alterna entre as abas do feed (Vídeos, Artigos, Sobre)
- * @param {string} aba - Identificador da aba ('videos', 'artigos', 'sobre')
- */
 function mudarAba(aba) {
     const btnVideos = document.getElementById('btn-tab-videos');
     const btnArtigos = document.getElementById('btn-tab-artigos');
@@ -52,61 +43,33 @@ function mudarAba(aba) {
     const secaoArtigos = document.getElementById('secao-artigos');
     const secaoSobre = document.getElementById('secao-sobre');
 
-    // Oculta todas as seções
     if (secaoVideos) secaoVideos.style.display = 'none';
     if (secaoArtigos) secaoArtigos.style.display = 'none';
     if (secaoSobre) secaoSobre.style.display = 'none';
     
-    // Remove estado ativo de todos os botões
-    if (btnVideos) {
-        btnVideos.classList.remove('active');
-        btnVideos.setAttribute('aria-pressed', 'false');
-    }
-    if (btnArtigos) {
-        btnArtigos.classList.remove('active');
-        btnArtigos.setAttribute('aria-pressed', 'false');
-    }
-    if (btnSobre) {
-        btnSobre.classList.remove('active');
-        btnSobre.setAttribute('aria-pressed', 'false');
-    }
+    if (btnVideos) { btnVideos.classList.remove('active'); btnVideos.setAttribute('aria-pressed', 'false'); }
+    if (btnArtigos) { btnArtigos.classList.remove('active'); btnArtigos.setAttribute('aria-pressed', 'false'); }
+    if (btnSobre) { btnSobre.classList.remove('active'); btnSobre.setAttribute('aria-pressed', 'false'); }
 
-    // Ativa a aba selecionada
     if (aba === 'videos') {
-        if (btnVideos) {
-            btnVideos.classList.add('active');
-            btnVideos.setAttribute('aria-pressed', 'true');
-        }
+        if (btnVideos) { btnVideos.classList.add('active'); btnVideos.setAttribute('aria-pressed', 'true'); }
         if (secaoVideos) secaoVideos.style.display = 'block';
     } else if (aba === 'artigos') {
-        if (btnArtigos) {
-            btnArtigos.classList.add('active');
-            btnArtigos.setAttribute('aria-pressed', 'true');
-        }
+        if (btnArtigos) { btnArtigos.classList.add('active'); btnArtigos.setAttribute('aria-pressed', 'true'); }
         if (secaoArtigos) secaoArtigos.style.display = 'block';
     } else if (aba === 'sobre') {
-        if (btnSobre) {
-            btnSobre.classList.add('active');
-            btnSobre.setAttribute('aria-pressed', 'true');
-        }
+        if (btnSobre) { btnSobre.classList.add('active'); btnSobre.setAttribute('aria-pressed', 'true'); }
         if (secaoSobre) secaoSobre.style.display = 'block';
     }
 }
 
 // ==================== 5. CARREGAMENTO DO FEED DO YOUTUBE (RSS) ====================
 const ytContainer = document.getElementById('youtube-feed-container');
+if (ytContainer) { carregarYouTubeAutomatico(); }
 
-if (ytContainer) {
-    carregarYouTubeAutomatico();
-}
-
-/**
- * Busca os vídeos mais recentes do canal via RSS e exibe no feed
- */
 async function carregarYouTubeAutomatico() {
     try {
         const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2Ffeeds%2Fvideos.xml%3Fchannel_id%3D${CONFIG.channelID}`;
-        
         const response = await fetch(RSS_URL);
         const data = await response.json();
         
@@ -125,18 +88,9 @@ async function carregarYouTubeAutomatico() {
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
                     postElement.innerHTML = `
-                        <a href="https://www.youtube.com/watch?v=${videoId}" 
-                           target="_blank" 
-                           rel="noopener noreferrer" 
-                           class="video-thumbnail-container" 
-                           aria-label="Assistir: ${escapeHtml(video.title)}">
-                            <img src="${thumbnailUrl}" 
-                                 alt="${escapeHtml(video.title)}" 
-                                 loading="lazy" 
-                                 class="video-thumbnail">
-                            <div class="play-icon-overlay">
-                                <i class="fa-solid fa-circle-play"></i>
-                            </div>
+                        <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="video-thumbnail-container" aria-label="Assistir: ${escapeHtml(video.title)}">
+                            <img src="${thumbnailUrl}" alt="${escapeHtml(video.title)}" loading="lazy" class="video-thumbnail">
+                            <div class="play-icon-overlay"><i class="fa-solid fa-circle-play"></i></div>
                         </a>
                         <div class="feed-content">
                             <h2>${escapeHtml(video.title)}</h2>
@@ -159,10 +113,6 @@ async function carregarYouTubeAutomatico() {
 }
 
 // ==================== 6. MODAL DE ARTIGO ====================
-/**
- * Abre o modal com o conteúdo completo do artigo
- * @param {HTMLElement} botaoElemento - Botão que acionou a abertura
- */
 function abrirArtigoHtml(botaoElemento) {
     const card = botaoElemento.closest('.article-card, .feed-card');
     if (!card) return;
@@ -178,20 +128,16 @@ function abrirArtigoHtml(botaoElemento) {
     if (modal && modalBody) {
         modalBody.innerHTML = `
             <h1 class="article-modal-title">${escapeHtml(titulo)}</h1>
-            
             <div class="article-modal-meta">
                 <span class="article-modal-date">📅 ${escapeHtml(dataPub)}</span>
                 <span class="article-modal-author">Por: ${escapeHtml(autor)}</span>
             </div>
-
             <div class="article-modal-text">${conteudoCompleto}</div>
-
             <div class="article-modal-footer">
                 <div class="article-modal-socials">
                     <a href="https://instagram.com/vitaotub" target="_blank" class="social-btn instagram" title="Instagram" rel="noopener noreferrer" aria-label="Instagram do VitãoTub"><i class="fa-brands fa-instagram"></i></a>
                     <a href="https://youtube.com/@VitaoTub" target="_blank" class="social-btn youtube" title="YouTube" rel="noopener noreferrer" aria-label="Canal do YouTube"><i class="fa-brands fa-youtube"></i></a>
                 </div>
-                
                 <div class="article-modal-actions">
                     <button class="btn-action-icon btn-share-icon" onclick="compartilharArtigoModal('${escapeHtml(titulo).replace(/'/g, "\\'")}', this)" title="Compartilhar" aria-label="Compartilhar artigo"><i class="fa-solid fa-share-nodes"></i></button>
                     <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action-icon btn-subscribe-icon" title="Inscrever-se" rel="noopener noreferrer" aria-label="Inscrever-se no canal"><i class="fa-brands fa-youtube"></i></a>
@@ -203,9 +149,6 @@ function abrirArtigoHtml(botaoElemento) {
     }
 }
 
-/**
- * Fecha o modal de artigo
- */
 function fecharArtigoCompleto() {
     const modal = document.getElementById(CONFIG.articleModalId);
     if (modal) {
@@ -215,52 +158,32 @@ function fecharArtigoCompleto() {
 }
 
 // ==================== 7. COMPARTILHAMENTO ====================
-/**
- * Compartilha o artigo usando Web Share API (mobile) ou copia o link (desktop)
- * @param {string} tituloArtigo - Título do artigo a ser compartilhado
- * @param {HTMLElement} elementoBotao - Botão que acionou o compartilhamento
- */
 function compartilharArtigoModal(tituloArtigo, elementoBotao) {
     let linkParaCompartilhar = window.location.href.split('#')[0];
     
     if (elementoBotao) {
         let card = elementoBotao.closest('.article-card, .feed-card');
-        
-        // Se o botão está dentro do modal, busca o card pelo título
         if (!card) {
             const tituloModal = document.querySelector('.article-modal-title');
             if (tituloModal) {
                 const cards = document.querySelectorAll('.article-card, .feed-card');
                 for (let c of cards) {
                     const t = c.getAttribute('data-titulo') || c.querySelector('h2')?.innerText;
-                    if (t === tituloModal.innerText) {
-                        card = c;
-                        break;
-                    }
+                    if (t === tituloModal.innerText) { card = c; break; }
                 }
             }
         }
-
-        if (card && card.id) {
-            linkParaCompartilhar += '#' + card.id;
-        }
+        if (card && card.id) { linkParaCompartilhar += '#' + card.id; }
     }
 
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
     if (isMobile && navigator.share) {
-        navigator.share({ 
-            title: tituloArtigo || document.title, 
-            url: linkParaCompartilhar 
-        }).catch(() => {});
+        navigator.share({ title: tituloArtigo || document.title, url: linkParaCompartilhar }).catch(() => {});
     } else {
-        // Usa Clipboard API (método moderno)
         navigator.clipboard.writeText(linkParaCompartilhar)
-            .then(() => {
-                alert('Link direto para o artigo copiado para a área de transferência!');
-            })
+            .then(() => { alert('Link direto para o artigo copiado para a área de transferência!'); })
             .catch(() => {
-                // Fallback para navegadores antigos
                 const tempInput = document.createElement('input');
                 tempInput.value = linkParaCompartilhar;
                 document.body.appendChild(tempInput);
@@ -277,30 +200,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const pwaPopup = document.getElementById('pwa-install-popup');
     const installBtn = document.getElementById('pwa-install-btn');
     const closeBtn = document.getElementById('pwa-close-btn');
-
     if (!pwaPopup) return;
 
     let deferredPrompt = null;
 
-    // Captura o evento de instalação do PWA
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
         pwaPopup.classList.add('show');
     });
 
-    // Verifica se já está instalado
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
     if (!isStandalone) {
-        setTimeout(() => {
-            if (!pwaPopup.classList.contains('show')) {
-                pwaPopup.classList.add('show');
-            }
-        }, 2000);
+        setTimeout(() => { if (!pwaPopup.classList.contains('show')) pwaPopup.classList.add('show'); }, 2000);
     }
 
-    // Botão de instalar
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
@@ -315,27 +229,96 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Botão de fechar
     if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            pwaPopup.classList.remove('show');
-        });
+        closeBtn.addEventListener('click', () => { pwaPopup.classList.remove('show'); });
     }
 });
 
 // ==================== 9. EVENTOS GLOBAIS ====================
-
-// Fechar modal com tecla ESC
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         fecharArtigoCompleto();
+        const translateDropdown = document.getElementById('translate-dropdown');
+        if (translateDropdown) translateDropdown.classList.remove('active');
     }
 });
 
-// Fechar modal com clique fora
 document.addEventListener('click', function(e) {
-    if (e.target.id === CONFIG.articleModalId || 
-        e.target.classList.contains('article-modal-overlay')) {
+    if (e.target.id === CONFIG.articleModalId || e.target.classList.contains('article-modal-overlay')) {
         fecharArtigoCompleto();
     }
+    const translateDropdown = document.getElementById('translate-dropdown');
+    const translateToggle = document.getElementById('translate-toggle');
+    if (translateDropdown && translateToggle) {
+        if (!translateDropdown.contains(e.target) && e.target !== translateToggle) {
+            translateDropdown.classList.remove('active');
+        }
+    }
+});
+
+// ==================== 10. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
+function toggleTranslateDropdown() {
+    const dropdown = document.getElementById('translate-dropdown');
+    if (dropdown) dropdown.classList.toggle('active');
+}
+
+function translatePage(lang) {
+    if (lang === 'pt') { setGoogleTranslateCookie('pt'); window.location.reload(); return; }
+    setGoogleTranslateCookie(lang);
+    
+    const checkExist = setInterval(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+            clearInterval(checkExist);
+            select.value = lang;
+            select.dispatchEvent(new Event('change'));
+            const dropdown = document.getElementById('translate-dropdown');
+            if (dropdown) dropdown.classList.remove('active');
+            updateActiveLanguage(lang);
+        }
+    }, 100);
+    
+    setTimeout(() => { if (!document.querySelector('.goog-te-combo')) window.location.reload(); }, 3000);
+}
+
+function setGoogleTranslateCookie(lang) {
+    const date = new Date();
+    date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+    const expires = date.toUTCString();
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = lang === 'pt' ? `googtrans=/pt/pt; expires=${expires}; path=/` : `googtrans=/pt/${lang}; expires=${expires}; path=/`;
+}
+
+function updateActiveLanguage(lang) {
+    document.querySelectorAll('.translate-option').forEach(btn => {
+        btn.classList.remove('active-lang');
+        if (btn.getAttribute('data-lang') === lang) btn.classList.add('active-lang');
+    });
+}
+
+function initTranslateWidget() {
+    const toggleBtn = document.getElementById('translate-toggle');
+    const dropdown = document.getElementById('translate-dropdown');
+    if (!toggleBtn || !dropdown) return;
+    
+    toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTranslateDropdown(); });
+    
+    setTimeout(() => {
+        const match = document.cookie.match(/googtrans=\/pt\/([^;]+)/);
+        if (match && match[1]) updateActiveLanguage(match[1]);
+    }, 1500);
+}
+
+// ==================== 11. BOTÃO VOLTAR AO TOPO ====================
+const backToTopButton = document.getElementById('back-to-top');
+if (backToTopButton) {
+    backToTopButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+// ==================== 12. INICIALIZAÇÃO ====================
+document.addEventListener("DOMContentLoaded", () => {
+    initTranslateWidget();
 });
