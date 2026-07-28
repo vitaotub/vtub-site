@@ -779,16 +779,40 @@ h2::after {
     cursor: pointer; 
 }
 
+
 /* ==========================================
    ESTILIZAÇÃO INTERNA DE TEXTOS DO MODAL
    ========================================== */
-#privacy-content-target {
-    hyphens: auto;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+
+#privacy-modal .modal-content {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 12px;
+    width: 92% !important;
+    max-width: 800px;
+    max-height: 80vh !important;
+    padding: 25px !important;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    margin: auto;
+}
+
+/* Força justificação, quebra de linha correta e hifenização em todo o texto interno */
+#privacy-content-target,
+#privacy-content-target p,
+#privacy-content-target li {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 1.2em;
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    -webkit-hyphens: auto !important;
+    -moz-hyphens: auto !important;
+    -ms-hyphens: auto !important;
+    hyphens: auto !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
 }
 
 #privacy-content-target h1,
@@ -798,12 +822,12 @@ h2::after {
     font-family: 'Satoshi', sans-serif;
     margin-top: 1.5em;
     margin-bottom: 0.8em;
-    text-align: left;
+    text-align: left !important; /* Títulos sempre alinhados à esquerda */
 }
 
 #privacy-content-target h1 {
     font-size: 2rem;
-    text-align: center;
+    text-align: center !important;
     color: var(--primary-purple);
     margin-top: 0;
 }
@@ -814,16 +838,9 @@ h2::after {
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Remove a linha gradiente roxa de h2 dentro do modal para um visual mais limpo na leitura */
+/* Remove a linha gradiente roxa de h2 dentro do modal */
 #privacy-content-target h2::after {
-    display: none;
-}
-
-#privacy-content-target p,
-#privacy-content-target li {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    margin-bottom: 1.2em;
+    display: none !important;
 }
 
 #privacy-content-target ul,
@@ -844,40 +861,13 @@ h2::after {
     text-decoration: underline;
 }
 
-#privacy-modal .modal-content {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 12px;
-    width: 92% !important;
-    max-width: 800px;
-    max-height: 80vh !important;
-    padding: 25px !important; /* Padding menor no celular para não estourar */
-    overflow-y: auto;
-    position: relative;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    margin: auto;
-}
-
-/* Texto justificado e com hifenização no Modal de Privacidade */
-#privacy-content-target,
-#privacy-content-target p,
-#privacy-content-target li {
-    text-align: justify !important;
-    -webkit-hyphens: auto !important;
-    -moz-hyphens: auto !important;
-    -ms-hyphens: auto !important;
-    hyphens: auto !important;
-    word-wrap: break-word !important; 
-    overflow-wrap: break-word !important;
-    line-break: strict !important; /* Força o limite das palavras */
-}
-
 @media (max-width: 600px) {
     #privacy-modal .modal-content {
         padding: 20px 15px !important;
         max-height: 85vh !important;
     }
 }
+
 
 /* ==========================================
    11. FORMULÁRIO E TOAST
