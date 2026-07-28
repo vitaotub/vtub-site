@@ -1,0 +1,416 @@
+/* ============================================================
+   VITÃOTUB - ESTILOS DA PÁGINA BIO
+   Descrição: Tema escuro com links de redes sociais,
+   efeitos hover coloridos, toast e animações de pulso
+   Organizado por seções para facilitar manutenção
+   ============================================================ */
+
+/* ==================== 1. VARIÁVEIS CSS ==================== */
+:root {
+    /* Cores de fundo */
+    --bg-color: #050505;
+    --card-bg: #111111;
+    
+    /* Cores de destaque */
+    --primary-purple: #8b5cf6;
+    --primary-blue: #3b82f6;
+    
+    /* Cores de texto */
+    --text-main: #ffffff;
+    --text-dim: rgba(255, 255, 255, 0.7);
+    
+    /* Efeitos */
+    --gradient-brand: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==================== 2. RESET E BASE ==================== */
+*, 
+*::before, 
+*::after { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Satoshi', 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* ==================== 3. BACKGROUND VISUAL ==================== */
+.bg-wrapper { 
+    position: fixed; 
+    inset: 0; 
+    z-index: -1; 
+    pointer-events: none; 
+}
+
+.bg-gradient-1 {
+    position: absolute; 
+    width: 500px; 
+    height: 500px; 
+    top: -100px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+    filter: blur(60px);
+}
+
+.bg-noise { 
+    position: absolute; 
+    inset: 0; 
+    opacity: 0.03; 
+}
+
+/* ==================== 4. ESTRUTURA PRINCIPAL ==================== */
+.bio-main { 
+    display: flex; 
+    justify-content: center; 
+    padding: 60px 20px; 
+}
+
+.bio-container { 
+    width: 100%; 
+    max-width: 380px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+}
+
+/* ==================== 5. CABEÇALHO ==================== */
+.bio-header { 
+    margin-bottom: 35px; 
+    text-align: center; 
+}
+
+.bio-avatar {
+    width: 110px; 
+    height: 110px; 
+    border-radius: 50%;
+    border: 3px solid var(--primary-purple); 
+    object-fit: contain;
+    margin-bottom: 18px; 
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.25);
+}
+
+.bio-header h1 { 
+    font-family: 'Satoshi', sans-serif;
+    font-size: 1.7rem; 
+    font-weight: 800; 
+    margin-bottom: 6px; 
+}
+
+.bio-header h1 span { 
+    color: var(--primary-purple); 
+}
+
+/* ==================== 6. LISTA DE LINKS ==================== */
+.bio-list { 
+    width: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    margin-bottom: 30px; 
+}
+
+.bio-item {
+    background-color: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--text-main);
+    padding: 12px 18px; 
+    border-radius: 12px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    position: relative;
+    pointer-events: auto;
+    will-change: transform;
+}
+
+/* Impede que elementos internos capturem o clique */
+.bio-item * { 
+    pointer-events: none; 
+}
+
+/* Ícone principal da rede social */
+.bio-item i:not(.fa-chevron-right) {
+    width: 35px; 
+    font-size: 1.3rem;
+    display: flex; 
+    justify-content: center; 
+    margin-right: 18px;
+}
+
+/* Texto do link */
+.bio-text { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+    flex-grow: 1; 
+}
+
+.bio-title { 
+    font-family: 'Satoshi', sans-serif;
+    font-size: 1rem; 
+    font-weight: 700; 
+}
+
+.bio-subtitle { 
+    font-size: 0.7rem; 
+    color: var(--text-dim); 
+}
+
+/* Seta para direita */
+.fa-chevron-right { 
+    font-size: 0.8rem; 
+    opacity: 0.2; 
+    transition: var(--transition-smooth); 
+}
+
+/* ==================== 7. HOVER - CORES POR REDE SOCIAL ==================== */
+.bio-item:hover {
+    transform: translateX(4px);
+    color: #fff;
+}
+
+.bio-item:hover .bio-subtitle,
+.bio-item:hover .fa-chevron-right { 
+    color: #fff; 
+    opacity: 1; 
+}
+
+/* YouTube */
+.bio-item:hover:has(.fa-youtube) { 
+    background-color: #FF0000; 
+    border-color: #FF0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+}
+
+/* Instagram */
+.bio-item:hover:has(.fa-instagram) { 
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    border-color: #d6249f;
+    box-shadow: 0 0 20px rgba(214, 36, 159, 0.3);
+}
+
+/* TikTok */
+.bio-item:hover:has(.fa-tiktok) { 
+    background-color: #000; 
+    border-color: #ee1d52;
+    box-shadow: 0 0 20px rgba(105, 201, 208, 0.3);
+}
+
+/* Twitch */
+.bio-item:hover:has(.fa-twitch) { 
+    background-color: #9146FF; 
+    border-color: #9146FF;
+    box-shadow: 0 0 20px rgba(145, 70, 255, 0.3);
+}
+
+/* Telegram */
+.bio-item:hover:has(.fa-telegram) { 
+    background-color: #0088cc; 
+    border-color: #0088cc;
+    box-shadow: 0 0 20px rgba(0, 136, 204, 0.3);
+}
+
+/* GitHub */
+.bio-item:hover:has(.fa-github) { 
+    background-color: #24292e; 
+    border-color: #404448;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* ==================== 8. RODAPÉ ==================== */
+.bio-footer { 
+    width: 100%; 
+    text-align: center; 
+    padding-top: 10px; 
+}
+
+.btn-home {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--primary-purple);
+    color: var(--primary-purple);
+    padding: 10px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    font-family: 'Satoshi', sans-serif;
+    will-change: transform;
+}
+
+.btn-home:hover {
+    background: var(--primary-purple);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+.bio-footer p { 
+    font-size: 0.75rem; 
+    color: var(--text-dim); 
+    opacity: 0.5; 
+    letter-spacing: 1px; 
+}
+
+/* ==================== 9. BOTÃO DE COMPARTILHAR ==================== */
+.bio-share-btn {
+    position: fixed; 
+    top: 25px; 
+    right: 25px;
+    width: 45px; 
+    height: 45px; 
+    border-radius: 50%;
+    background-color: var(--card-bg); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer; 
+    z-index: 100; 
+    transition: var(--transition-smooth); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    will-change: transform;
+}
+
+.bio-share-btn:hover { 
+    background-color: var(--primary-purple); 
+    border-color: var(--primary-purple); 
+    transform: scale(1.1); 
+}
+
+/* ==================== 10. TOAST DE NOTIFICAÇÃO ==================== */
+.bio-toast {
+    position: fixed; 
+    bottom: -100px; 
+    left: 50%; 
+    transform: translateX(-50%);
+    background: rgba(139, 92, 246, 0.95); 
+    color: white; 
+    padding: 12px 24px;
+    border-radius: 50px; 
+    font-size: 0.9rem; 
+    font-weight: 600;
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    z-index: 1000;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+}
+
+.bio-toast.show { 
+    bottom: 40px; 
+}
+
+/* ==================== 11. ANIMAÇÕES DE PULSO ==================== */
+@keyframes buttonPulse {
+    0% { 
+        box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); 
+        transform: scale(0.98); 
+    }
+    70% { 
+        box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); 
+        transform: scale(1); 
+    }
+    100% { 
+        transform: scale(1); 
+    }
+}
+
+.pulse-active { 
+    animation: buttonPulse 0.4s linear; 
+    z-index: 10; 
+}
+
+@keyframes buttonPulseW {
+    0% { 
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); 
+        transform: scale(0.98); 
+    }
+    70% { 
+        box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); 
+        transform: scale(1); 
+    }
+    100% { 
+        transform: scale(1); 
+    }
+}
+
+/* Pulso branco quando o item já está com hover */
+.bio-item:hover.pulse-active { 
+    animation: buttonPulseW 0.4s linear; 
+}
+
+/* ==================== 12. RESPONSIVIDADE ==================== */
+
+/* Mobile (até 480px) */
+@media (max-width: 480px) {
+    .bio-main {
+        padding: 40px 16px;
+    }
+    
+    .bio-container {
+        max-width: 100%;
+    }
+    
+    .bio-avatar {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .bio-header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .bio-item {
+        padding: 14px 16px;
+    }
+    
+    .bio-share-btn {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* ==================== 13. ACESSIBILIDADE ==================== */
+
+/* Respeita preferência de redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Foco visível para navegação por teclado */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--primary-purple);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
