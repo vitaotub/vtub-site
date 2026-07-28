@@ -2,7 +2,8 @@
  * ============================================================
  * VITÃOTUB - JAVASCRIPT DO FEED
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
- * modal de artigo, compartilhamento e botões flutuantes
+ * modal de artigo, modal de vídeo em tela cheia,
+ * compartilhamento e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
@@ -86,13 +87,13 @@ async function carregarYouTubeAutomatico() {
                     const postElement = document.createElement('article');
                     postElement.className = 'feed-card';
                     const dataPub = new Date(video.pubDate).toLocaleDateString('pt-BR');
-                    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                    const thumbnailUrl = video.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
                     postElement.innerHTML = `
-                        <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="video-thumbnail-container" aria-label="Assistir: ${escapeHtml(video.title)}">
-                            <img src="${thumbnailUrl}" alt="${escapeHtml(video.title)}" loading="lazy" class="video-thumbnail">
+                        <div class="video-thumbnail-container" onclick="abrirVideoModal('${videoId}')" role="button" tabindex="0" aria-label="Assistir: ${escapeHtml(video.title)}">
+                            <img src="${thumbnailUrl}" alt="${escapeHtml(video.title)}" loading="lazy" class="video-thumbnail" onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'">
                             <div class="play-icon-overlay"><i class="fa-solid fa-circle-play"></i></div>
-                        </a>
+                        </div>
                         <div class="feed-content">
                             <h2>${escapeHtml(video.title)}</h2>
                             <div class="feed-meta-header">
@@ -110,6 +111,91 @@ async function carregarYouTubeAutomatico() {
     } catch (error) {
         console.error("Erro ao buscar feed do YouTube:", error);
         ytContainer.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro ao carregar vídeos. Verifique sua conexão.</p>';
+    }
+}
+
+// ==================== 5.1 MODAL DE VÍDEO EM TELA CHEIA ====================
+function abrirVideoModal(videoId) {
+    let modal = document.getElementById('video-fullscreen-modal');
+    
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'video-fullscreen-modal';
+        modal.className = 'video-fullscreen-modal';
+        modal.innerHTML = `
+            <button class="video-fullscreen-close" id="video-close-btn" aria-label="Fechar vídeo">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="video-fullscreen-container" id="video-container">
+                <iframe id="video-fullscreen-iframe" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+            </div>
+            <div class="video-tap-hint" id="video-tap-hint">Toque na tela para ver o botão fechar</div>
+        `;
+        document.body.appendChild(modal);
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) fecharVideoModal();
+        });
+        
+        let hideTimeout;
+        
+        modal.addEventListener('click', function() {
+            const closeBtn = document.getElementById('video-close-btn');
+            const tapHint = document.getElementById('video-tap-hint');
+            if (closeBtn) closeBtn.classList.add('visible');
+            if (tapHint) tapHint.classList.remove('visible');
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => { if (closeBtn) closeBtn.classList.remove('visible'); }, 3000);
+        });
+        
+        modal.addEventListener('mousemove', function() {
+            const closeBtn = document.getElementById('video-close-btn');
+            if (closeBtn) closeBtn.classList.add('visible');
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => { if (closeBtn) closeBtn.classList.remove('visible'); }, 3000);
+        });
+    }
+    
+    const iframe = document.getElementById('video-fullscreen-iframe');
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    const closeBtn = document.getElementById('video-close-btn');
+    const tapHint = document.getElementById('video-tap-hint');
+    if (closeBtn) closeBtn.classList.add('visible');
+    if (tapHint) tapHint.classList.add('visible');
+    
+    setTimeout(() => {
+        if (closeBtn) closeBtn.classList.remove('visible');
+        if (tapHint) tapHint.classList.remove('visible');
+    }, 4000);
+    
+    verificarOrientacao();
+    window.addEventListener('orientationchange', verificarOrientacao);
+}
+
+function fecharVideoModal() {
+    const modal = document.getElementById('video-fullscreen-modal');
+    const iframe = document.getElementById('video-fullscreen-iframe');
+    if (modal) {
+        modal.classList.remove('active');
+        if (iframe) iframe.src = '';
+        document.body.style.overflow = '';
+    }
+    window.removeEventListener('orientationchange', verificarOrientacao);
+}
+
+function verificarOrientacao() {
+    const container = document.getElementById('video-container');
+    if (!container) return;
+    
+    if (window.innerWidth > window.innerHeight) {
+        container.classList.add('landscape');
+        container.classList.remove('portrait');
+    } else {
+        container.classList.add('portrait');
+        container.classList.remove('landscape');
     }
 }
 
@@ -200,6 +286,7 @@ function compartilharArtigoModal(tituloArtigo, elementoBotao) {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         fecharArtigoCompleto();
+        fecharVideoModal();
         const translateDropdown = document.getElementById('translate-dropdown');
         if (translateDropdown) translateDropdown.classList.remove('active');
     }

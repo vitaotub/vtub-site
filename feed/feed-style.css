@@ -1,7 +1,8 @@
 /* ============================================================
    VITÃOTUB - ESTILOS DO FEED
    Descrição: Tema escuro para feed de vídeos, artigos,
-   abas de navegação, modal de leitura e botões flutuantes
+   abas de navegação, modal de leitura, modal de vídeo
+   em tela cheia e botões flutuantes
    Otimizado para mobile (PWA)
    Organizado por seções para facilitar manutenção
    ============================================================ */
@@ -69,13 +70,44 @@ body {
 .feed-card { background-color: #1a1a1a; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
 
 /* ==================== 8. CONTAINER DE VÍDEO ==================== */
-.video-container, .video-thumbnail-container { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; cursor: pointer; overflow: hidden; }
-.video-container iframe, .video-thumbnail { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-.play-icon-overlay {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.9); font-size: 3rem;
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5)); transition: transform 0.3s; pointer-events: none;
+.video-container, .video-thumbnail-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background-color: #000;
+    cursor: pointer;
+    overflow: hidden;
 }
-.video-thumbnail-container:hover .play-icon-overlay { transform: translate(-50%, -50%) scale(1.1); color: #ff0000; }
+.video-container iframe, .video-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.video-thumbnail {
+    background-color: #1a1a1a;
+    min-height: 100%;
+}
+.play-icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 3rem;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+    transition: transform 0.3s, color 0.3s;
+    pointer-events: none;
+    z-index: 2;
+}
+.video-thumbnail-container:hover .play-icon-overlay,
+.video-thumbnail-container:active .play-icon-overlay {
+    transform: translate(-50%, -50%) scale(1.15);
+    color: #ff0000;
+}
 
 /* ==================== 9. CONTEÚDO DOS CARDS ==================== */
 .feed-content { padding: 15px; }
@@ -206,8 +238,83 @@ body {
 }
 .back-to-top:active { background-color: var(--primary-blue); transform: scale(0.95); }
 
-/* ==================== 15. RESPONSIVIDADE ==================== */
+/* ==================== 15. MODAL DE VÍDEO EM TELA CHEIA ==================== */
+.video-fullscreen-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #000000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.video-fullscreen-modal.active { display: flex; }
 
+/* Botão de fechar (X) */
+.video-fullscreen-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 100000;
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s, background 0.3s, transform 0.3s;
+    opacity: 0;
+    pointer-events: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.video-fullscreen-close.visible { opacity: 1; pointer-events: all; }
+.video-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); transform: scale(1.1); }
+
+/* Dica "Toque na tela" */
+.video-tap-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-family: 'Satoshi', sans-serif;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px 16px;
+    border-radius: 20px;
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+.video-tap-hint.visible { opacity: 1; }
+
+/* Container do vídeo */
+.video-fullscreen-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+.video-fullscreen-container iframe { width: 100%; height: 100%; border: none; }
+
+/* Modo portrait (vertical) */
+.video-fullscreen-container.portrait { align-items: flex-start; padding-top: 15%; }
+.video-fullscreen-container.portrait iframe { width: 100%; height: auto; aspect-ratio: 16/9; max-height: 50vh; }
+
+/* Modo landscape (horizontal) */
+.video-fullscreen-container.landscape { align-items: center; padding-top: 0; }
+.video-fullscreen-container.landscape iframe { width: 100%; height: 100%; }
+
+/* ==================== 16. RESPONSIVIDADE ==================== */
 @media (max-width: 768px) {
     .feed-header { padding: 15px 10px; }
     .feed-logo { width: 120px; height: 120px; }
@@ -219,7 +326,6 @@ body {
     .translate-widget { bottom: 70px; }
     .back-to-top { bottom: 12px; }
 }
-
 @media (max-width: 480px) {
     .feed-logo { width: 100px; height: 100px; }
     .feed-title { font-size: 1.2rem; }
@@ -236,9 +342,12 @@ body {
     .translate-option { font-size: 0.8rem; padding: 8px 10px; }
     .back-to-top { bottom: 12px; right: 8px; width: 38px; height: 38px; }
     .back-to-top svg { width: 18px; height: 18px; }
+    .video-fullscreen-close { top: 8px; right: 8px; width: 32px; height: 32px; font-size: 0.9rem; }
+    .video-tap-hint { font-size: 0.75rem; padding: 6px 12px; }
+    .video-fullscreen-container.portrait { padding-top: 20%; }
 }
 
-/* ==================== 16. ACESSIBILIDADE ==================== */
+/* ==================== 17. ACESSIBILIDADE ==================== */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
