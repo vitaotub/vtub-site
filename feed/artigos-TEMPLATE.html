@@ -1,0 +1,236 @@
+<!--
+============================================================
+VITÃOTUB - TEMPLATE DE ARTIGOS
+============================================================
+Como usar:
+1. Copie o bloco <!-- ARTIGO --> para cada novo artigo
+2. Preencha os atributos data-* com as informações
+3. O conteúdo do artigo vai dentro de .artigo-corpo
+4. Máximo: 50 artigos por arquivo
+5. Quando chegar a 50, crie artigos2.html, artigos3.html...
+
+Estrutura de cada artigo:
+┌─────────────────────────────┐
+│      Banner (16:9)          │
+├─────────────────────────────┤
+│ Título                      │
+│ Resumo/chamada              │
+│ Data │ Autor                │
+├─────────────────────────────┤
+│ Conteúdo do artigo          │
+│ (imagens, vídeos, etc.)     │
+├─────────────────────────────┤
+│ Redes Sociais │ Compart./Inscrever │
+└─────────────────────────────┘
+============================================================
+-->
+
+<!-- ============================================================ -->
+<!-- ARTIGO 1 -->
+<!-- ============================================================ -->
+<article 
+    id="artigo-windows-server" 
+    class="artigo-card" 
+    data-titulo="GUIA COMPLETO WINDOWS SERVER 2022: Instalação e configuração AD, DNS e DHCP" 
+    data-data="26/07/2026" 
+    data-autor="Victor" 
+    data-resumo="Aprenda a instalar e configurar o Windows Server 2022 do zero, incluindo Active Directory, DNS e DHCP."
+    data-tags="windows, servidor, tutorial"
+    data-banner="https://img.youtube.com/vi/BbQccfi-1D8/maxresdefault.jpg"
+>
+    <!-- 1. BANNER (16:9) -->
+    <div class="artigo-banner">
+        <img src="https://img.youtube.com/vi/BbQccfi-1D8/maxresdefault.jpg" alt="Windows Server 2022" loading="lazy">
+    </div>
+    
+    <!-- 2. TÍTULO -->
+    <h2 class="artigo-titulo">GUIA COMPLETO WINDOWS SERVER 2022: Instalação e configuração AD, DNS e DHCP</h2>
+    
+    <!-- 3. RESUMO / CHAMADA -->
+    <p class="artigo-resumo">Aprenda a instalar e configurar o Windows Server 2022 do zero, incluindo Active Directory, DNS e DHCP. Um guia passo a passo para iniciantes e profissionais.</p>
+    
+    <!-- 4. DATA E AUTOR -->
+    <div class="artigo-meta">
+        <span class="artigo-data">📅 26 de Julho de 2026</span>
+        <span class="artigo-autor">✍️ Autor: Victor</span>
+    </div>
+    
+    <!-- 5. CONTEÚDO DO ARTIGO -->
+    <div class="artigo-corpo">
+        <p>O Windows Server 2022 é a versão mais recente do sistema operacional para servidores da Microsoft, trazendo diversas melhorias em segurança, desempenho e integração com a nuvem Azure.</p>
+        
+        <h3>Pré-requisitos</h3>
+        <ul>
+            <li>Mínimo de 4 GB de RAM (recomendado 8 GB)</li>
+            <li>Processador de 1.4 GHz ou superior</li>
+            <li>32 GB de espaço em disco</li>
+            <li>ISO do Windows Server 2022</li>
+        </ul>
+        
+        <h3>Passo a passo da instalação</h3>
+        <p>O processo de instalação é simples e intuitivo. Basta dar boot pela mídia de instalação, selecionar o idioma, aceitar os termos de licença e escolher o tipo de instalação.</p>
+        <p>Após a instalação base, configuramos o Active Directory Domain Services (AD DS), que é o coração da gestão de identidades em ambientes Windows.</p>
+        
+        <!-- Exemplo de imagem no conteúdo -->
+        <figure class="artigo-figura">
+            <img src="https://img.youtube.com/vi/BbQccfi-1D8/hqdefault.jpg" alt="Tela de instalação do Windows Server" loading="lazy">
+            <figcaption>Tela inicial de instalação do Windows Server 2022</figcaption>
+        </figure>
+        
+        <h3>Configuração do Active Directory</h3>
+        <p>O Active Directory Domain Services (AD DS) é fundamental para gerenciar usuários, grupos e políticas em uma rede corporativa.</p>
+        
+        <!-- Exemplo de vídeo incorporado -->
+        <div class="artigo-video-embed">
+            <iframe src="https://www.youtube.com/embed/BbQccfi-1D8" title="Windows Server 2022" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+    </div>
+    
+    <!-- 6. REDES SOCIAIS + COMPARTILHAR/INSCREVER -->
+    <div class="artigo-rodape">
+        <div class="artigo-rodape-social">
+            <a href="https://instagram.com/vitaotub" target="_blank" class="social-btn instagram" title="Instagram" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://youtube.com/@VitaoTub" target="_blank" class="social-btn youtube" title="YouTube" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://tiktok.com/@vitaotub" target="_blank" class="social-btn tiktok" title="TikTok" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://twitch.tv/vitaotub" target="_blank" class="social-btn twitch" title="Twitch" rel="noopener noreferrer" aria-label="Twitch"><i class="fa-brands fa-twitch"></i></a>
+            <a href="https://github.com/vitaotub" target="_blank" class="social-btn github" title="GitHub" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://t.me/+6dT_v5m0lnQzNDAx" target="_blank" class="social-btn telegram" title="Telegram" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        </div>
+        <div class="artigo-rodape-acoes">
+            <button class="btn-action-icon btn-share-icon" onclick="compartilharArtigo('artigo-windows-server', 'GUIA COMPLETO WINDOWS SERVER 2022: Instalação e configuração AD, DNS e DHCP')" title="Compartilhar" aria-label="Compartilhar artigo">
+                <i class="fa-solid fa-share-nodes"></i>
+            </button>
+            <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action-icon btn-subscribe-icon" title="Inscrever-se" rel="noopener noreferrer" aria-label="Inscrever-se no canal">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+        </div>
+    </div>
+</article>
+
+<!-- ============================================================ -->
+<!-- ARTIGO 2 -->
+<!-- ============================================================ -->
+<article 
+    id="artigo-virtualbox" 
+    class="artigo-card" 
+    data-titulo="Guia Completo: VirtualBox - Criação e Configuração de Máquinas Virtuais" 
+    data-data="20/07/2026" 
+    data-autor="Victor" 
+    data-resumo="Aprenda a criar e configurar máquinas virtuais com o VirtualBox, o software de virtualização gratuito mais popular do mundo."
+    data-tags="virtualbox, virtualização, tutorial"
+    data-banner="https://img.youtube.com/vi/Qg4Y24zR-M0/maxresdefault.jpg"
+>
+    <div class="artigo-banner">
+        <img src="https://img.youtube.com/vi/Qg4Y24zR-M0/maxresdefault.jpg" alt="VirtualBox" loading="lazy">
+    </div>
+    
+    <h2 class="artigo-titulo">Guia Completo: VirtualBox - Criação e Configuração de Máquinas Virtuais</h2>
+    
+    <p class="artigo-resumo">Aprenda a criar e configurar máquinas virtuais com o VirtualBox, o software de virtualização gratuito mais popular do mundo.</p>
+    
+    <div class="artigo-meta">
+        <span class="artigo-data">📅 20 de Julho de 2026</span>
+        <span class="artigo-autor">✍️ Autor: Victor</span>
+    </div>
+    
+    <div class="artigo-corpo">
+        <p>O VirtualBox é um software de virtualização gratuito e de código aberto desenvolvido pela Oracle que permite executar múltiplos sistemas operacionais simultaneamente no mesmo computador.</p>
+        
+        <h3>O que é virtualização?</h3>
+        <p>Virtualização é a tecnologia que permite criar versões virtuais de recursos físicos, como servidores, sistemas operacionais e dispositivos de armazenamento.</p>
+        
+        <h3>Instalação do VirtualBox</h3>
+        <p>Basta acessar o site oficial, baixar o instalador compatível com seu sistema e seguir o assistente de instalação.</p>
+        
+        <div class="artigo-video-embed">
+            <iframe src="https://www.youtube.com/embed/Qg4Y24zR-M0" title="VirtualBox" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+    </div>
+    
+    <div class="artigo-rodape">
+        <div class="artigo-rodape-social">
+            <a href="https://instagram.com/vitaotub" target="_blank" class="social-btn instagram" title="Instagram" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://youtube.com/@VitaoTub" target="_blank" class="social-btn youtube" title="YouTube" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://tiktok.com/@vitaotub" target="_blank" class="social-btn tiktok" title="TikTok" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://twitch.tv/vitaotub" target="_blank" class="social-btn twitch" title="Twitch" rel="noopener noreferrer" aria-label="Twitch"><i class="fa-brands fa-twitch"></i></a>
+            <a href="https://github.com/vitaotub" target="_blank" class="social-btn github" title="GitHub" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://t.me/+6dT_v5m0lnQzNDAx" target="_blank" class="social-btn telegram" title="Telegram" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        </div>
+        <div class="artigo-rodape-acoes">
+            <button class="btn-action-icon btn-share-icon" onclick="compartilharArtigo('artigo-virtualbox', 'Guia Completo: VirtualBox')" title="Compartilhar" aria-label="Compartilhar artigo">
+                <i class="fa-solid fa-share-nodes"></i>
+            </button>
+            <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action-icon btn-subscribe-icon" title="Inscrever-se" rel="noopener noreferrer" aria-label="Inscrever-se no canal">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+        </div>
+    </div>
+</article>
+
+<!-- ============================================================ -->
+<!-- ARTIGO 3 -->
+<!-- ============================================================ -->
+<article 
+    id="artigo-windows-pro" 
+    class="artigo-card" 
+    data-titulo="Converta Windows 11/10 Home em PRO Sem Formatar" 
+    data-data="15/07/2026" 
+    data-autor="Victor" 
+    data-resumo="Veja como fazer upgrade do Windows Home para Professional sem perder seus arquivos e programas instalados."
+    data-tags="windows, upgrade, tutorial"
+    data-banner="https://img.youtube.com/vi/Q586fhYvQ60/maxresdefault.jpg"
+>
+    <div class="artigo-banner">
+        <img src="https://img.youtube.com/vi/Q586fhYvQ60/maxresdefault.jpg" alt="Windows Pro" loading="lazy">
+    </div>
+    
+    <h2 class="artigo-titulo">Converta Windows 11/10 Home em PRO Sem Formatar</h2>
+    
+    <p class="artigo-resumo">Veja como fazer upgrade do Windows Home para Professional sem perder seus arquivos e programas instalados.</p>
+    
+    <div class="artigo-meta">
+        <span class="artigo-data">📅 15 de Julho de 2026</span>
+        <span class="artigo-autor">✍️ Autor: Victor</span>
+    </div>
+    
+    <div class="artigo-corpo">
+        <p>Muitos usuários descobrem que precisam de recursos do Windows Pro, como BitLocker, Remote Desktop ou Hyper-V, mas não querem formatar o computador.</p>
+        
+        <h3>Método 1: Usando chave de produto</h3>
+        <p>Se você possui uma chave válida do Windows Pro, pode simplesmente alterá-la nas configurações do sistema.</p>
+        
+        <h3>Método 2: Upgrade via Microsoft Store</h3>
+        <p>A Microsoft oferece upgrade direto pela loja oficial.</p>
+    </div>
+    
+    <div class="artigo-rodape">
+        <div class="artigo-rodape-social">
+            <a href="https://instagram.com/vitaotub" target="_blank" class="social-btn instagram" title="Instagram" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://youtube.com/@VitaoTub" target="_blank" class="social-btn youtube" title="YouTube" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://tiktok.com/@vitaotub" target="_blank" class="social-btn tiktok" title="TikTok" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://twitch.tv/vitaotub" target="_blank" class="social-btn twitch" title="Twitch" rel="noopener noreferrer" aria-label="Twitch"><i class="fa-brands fa-twitch"></i></a>
+            <a href="https://github.com/vitaotub" target="_blank" class="social-btn github" title="GitHub" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="https://t.me/+6dT_v5m0lnQzNDAx" target="_blank" class="social-btn telegram" title="Telegram" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        </div>
+        <div class="artigo-rodape-acoes">
+            <button class="btn-action-icon btn-share-icon" onclick="compartilharArtigo('artigo-windows-pro', 'Converta Windows Home em PRO')" title="Compartilhar" aria-label="Compartilhar artigo">
+                <i class="fa-solid fa-share-nodes"></i>
+            </button>
+            <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action-icon btn-subscribe-icon" title="Inscrever-se" rel="noopener noreferrer" aria-label="Inscrever-se no canal">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+        </div>
+    </div>
+</article>
+
+<!-- 
+============================================================
+Para adicionar mais artigos:
+1. Copie todo o bloco <!-- ARTIGO X -->
+2. Cole abaixo do último artigo
+3. Altere o id, data-titulo, data-data, data-autor, data-resumo, data-tags, data-banner
+4. Altere o conteúdo dentro de .artigo-corpo
+5. Atualize o onclick do botão compartilhar com o novo id
+6. Máximo: 50 artigos por arquivo
+============================================================
+-->
