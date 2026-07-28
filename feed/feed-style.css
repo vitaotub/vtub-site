@@ -2,7 +2,8 @@
    VITÃOTUB - ESTILOS DO FEED
    Descrição: Tema escuro para feed de vídeos, artigos,
    abas de navegação, modal de vídeo em tela cheia,
-   sistema completo de artigos e botões flutuantes
+   sistema completo de artigos com textos justificados
+   e botões flutuantes
    Otimizado para mobile (PWA)
    Organizado por seções para facilitar manutenção
    ============================================================ */
@@ -108,25 +109,48 @@ body {
 .artigo-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .artigo-card:hover .artigo-banner img { transform: scale(1.03); }
 
-.artigo-titulo { font-size: 1.3rem; font-weight: 700; color: #ffffff; padding: 15px 15px 0 15px; margin: 0; font-family: 'Satoshi', sans-serif; line-height: 1.3; }
-.artigo-resumo { font-size: 0.95rem; color: var(--text-dim); padding: 8px 15px; margin: 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.artigo-meta { display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; font-size: 0.8rem; color: #aaa; border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 0; }
+.artigo-titulo {
+    font-size: 1.3rem; font-weight: 700; color: #ffffff;
+    padding: 20px 20px 0 20px; margin: 0;
+    font-family: 'Satoshi', sans-serif; line-height: 1.4;
+    text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+}
+
+.artigo-resumo {
+    font-size: 0.95rem; color: var(--text-dim);
+    padding: 10px 20px; margin: 0; line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+}
+
+.artigo-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 20px; font-size: 0.8rem; color: #aaa;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 0;
+}
 .artigo-data { color: var(--primary-purple); font-weight: 600; }
 .artigo-autor { color: var(--primary-blue); font-weight: 600; }
 
-.artigo-corpo { padding: 15px; font-size: 0.9rem; color: #cccccc; line-height: 1.6; max-height: 120px; overflow: hidden; position: relative; }
+.artigo-corpo {
+    padding: 20px; font-size: 0.9rem; color: #cccccc; line-height: 1.7;
+    max-height: 120px; overflow: hidden; position: relative;
+    text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+}
 .artigo-corpo::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: linear-gradient(transparent, #1a1a1a); }
-.artigo-corpo p { margin-bottom: 10px; }
-.artigo-corpo h3 { color: #ffffff; font-size: 1rem; margin: 15px 0 8px 0; font-family: 'Satoshi', sans-serif; }
-.artigo-corpo ul, .artigo-corpo ol { padding-left: 20px; margin-bottom: 10px; }
-.artigo-corpo li { margin-bottom: 5px; }
-.artigo-corpo img { max-width: 100%; border-radius: 8px; margin: 10px 0; }
-.artigo-corpo figure { margin: 15px 0; }
-.artigo-corpo figcaption { font-size: 0.8rem; color: #888; text-align: center; margin-top: 5px; font-style: italic; }
-.artigo-corpo .artigo-video-embed { position: relative; padding-bottom: 56.25%; height: 0; margin: 15px 0; border-radius: 8px; overflow: hidden; }
+.artigo-corpo p { margin-bottom: 12px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+.artigo-corpo h3 { color: #ffffff; font-size: 1rem; margin: 18px 0 10px 0; font-family: 'Satoshi', sans-serif; text-align: left; -webkit-hyphens: none; -moz-hyphens: none; -ms-hyphens: none; hyphens: none; }
+.artigo-corpo ul, .artigo-corpo ol { padding-left: 24px; margin-bottom: 12px; }
+.artigo-corpo li { margin-bottom: 6px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; }
+.artigo-corpo img { max-width: 100%; border-radius: 8px; margin: 12px 0; display: block; }
+.artigo-corpo figure { margin: 20px 0; }
+.artigo-corpo figcaption { font-size: 0.8rem; color: #888; text-align: center; margin-top: 8px; font-style: italic; padding: 0 10px; }
+.artigo-corpo .artigo-video-embed { position: relative; padding-bottom: 56.25%; height: 0; margin: 20px 0; border-radius: 8px; overflow: hidden; }
 .artigo-corpo .artigo-video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-.artigo-rodape { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); flex-wrap: wrap; gap: 10px; }
+.artigo-rodape { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); flex-wrap: wrap; gap: 10px; }
 .artigo-rodape-social { display: flex; gap: 6px; flex-wrap: wrap; }
 .artigo-rodape-acoes { display: flex; gap: 8px; align-items: center; }
 
@@ -140,13 +164,13 @@ body {
 
 .artigo-fullscreen-body { clear: both; padding-top: 10px; }
 .artigo-fullscreen-body .artigo-banner { margin: -20px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
-.artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 0 10px 0; }
-.artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 0 10px 0; -webkit-line-clamp: unset; overflow: visible; }
-.artigo-fullscreen-body .artigo-meta { padding: 10px 0; margin-bottom: 15px; }
-.artigo-fullscreen-body .artigo-corpo { max-height: none; padding: 0; }
+.artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 5px 10px 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+.artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 5px 10px 5px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+.artigo-fullscreen-body .artigo-meta { padding: 10px 5px; margin-bottom: 15px; }
+.artigo-fullscreen-body .artigo-corpo { max-height: none; padding: 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-corpo::after { display: none; }
+.artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
-.artigo-fullscreen-body .artigo-corpo p { font-size: 0.95rem; }
 
 .artigo-fullscreen-footer { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100000; flex-wrap: wrap; gap: 10px; }
 .artigo-footer-socials { display: flex; gap: 6px; flex-wrap: wrap; }
