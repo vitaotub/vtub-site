@@ -1,7 +1,7 @@
 // service-worker.js para PWA com OneSignal integrado
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
-const CACHE_NAME = 'vitaotub-cache-v1';
+const CACHE_NAME = 'vitaotub-cache-v1.6';
 const urlsToCache = [
   '/',
   '/index.html',
