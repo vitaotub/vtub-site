@@ -798,15 +798,9 @@ h2::after {
     margin: auto;
 }
 
-/* Força justificação, quebra de linha correta e hifenização em todo o texto interno */
+/* Força hifenização e quebra de palavra em absolutamente QUALQUER elemento interno */
 #privacy-content-target,
-#privacy-content-target p,
-#privacy-content-target li {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    margin-bottom: 1.2em;
-    text-align: justify !important;
-    text-justify: inter-word !important;
+#privacy-content-target * {
     -webkit-hyphens: auto !important;
     -moz-hyphens: auto !important;
     -ms-hyphens: auto !important;
@@ -815,6 +809,23 @@ h2::after {
     word-wrap: break-word !important;
 }
 
+/* Força a justificação em blocos de texto e tags comuns de conteúdo */
+#privacy-content-target p,
+#privacy-content-target li,
+#privacy-content-target span,
+#privacy-content-target div {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+#privacy-content-target p,
+#privacy-content-target li {
+    margin-bottom: 1.2em;
+}
+
+/* Garante que os títulos mantenham o alinhamento correto e não sofram hifenização */
 #privacy-content-target h1,
 #privacy-content-target h2,
 #privacy-content-target h3 {
@@ -822,7 +833,10 @@ h2::after {
     font-family: 'Satoshi', sans-serif;
     margin-top: 1.5em;
     margin-bottom: 0.8em;
-    text-align: left !important; /* Títulos sempre alinhados à esquerda */
+    text-align: left !important;
+    text-align-last: left !important;
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
 }
 
 #privacy-content-target h1 {
