@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- ==================== ÍCONES E PWA ==================== -->
-    <link rel="icon" type="image/png" sizes="512x512" href="../logo-app.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../logo-app.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../logo-app.png">
-    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" sizes="512x512" href="logo-app.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo-app.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="logo-app.png">
 
     <!-- Manifest do PWA -->
     <link rel="manifest" href="manifest.json">
@@ -58,7 +57,9 @@
             <a href="#home" class="logo-link">
                 <h1>Vitãotub<span>.</span></h1>
             </a>
-            <nav aria-label="Navegação principal">
+            
+            <!-- Navegação desktop (visível em telas grandes) -->
+            <nav class="main-nav" aria-label="Navegação principal">
                 <ul>
                     <li><a href="#about">Sobre</a></li>
                     <li><a href="#stats">Estatísticas</a></li>
@@ -68,7 +69,26 @@
                     <li><a href="#contact">Contato</a></li>
                 </ul>
             </nav>
+            
+            <!-- Botão hamburguer (visível apenas em mobile) -->
+            <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+            </button>
         </div>
+        
+        <!-- Menu mobile (oculto por padrão) -->
+        <nav id="mobile-menu" class="mobile-menu" aria-label="Menu mobile">
+            <ul>
+                <li><a href="#about" onclick="closeMobileMenu()">Sobre</a></li>
+                <li><a href="#stats" onclick="closeMobileMenu()">Estatísticas</a></li>
+                <li><a href="#featured-videos" onclick="closeMobileMenu()">Principais Vídeos</a></li>
+                <li><a href="#social-media" onclick="closeMobileMenu()">Redes Sociais</a></li>
+                <li><a href="bio.html" onclick="closeMobileMenu()">Bio</a></li>
+                <li><a href="#contact" onclick="closeMobileMenu()">Contato</a></li>
+            </ul>
+        </nav>
     </header>
 
     <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
@@ -132,7 +152,6 @@
                 <h2>Vitãotub em números</h2>
                 <p class="stats-subtitle">Dados atualizados em <span>18/03/2026</span></p>
                 <div class="stats-grid">
-                    <!-- Card: Inscritos -->
                     <div class="stat-card">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                         <div class="stat-content">
@@ -140,7 +159,6 @@
                             <span class="stat-label">Inscritos <small>(Total)</small></span>
                         </div>
                     </div>
-                    <!-- Card: Visualizações -->
                     <div class="stat-card">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
                         <div class="stat-content">
@@ -148,7 +166,6 @@
                             <span class="stat-label">Visualizações</span>
                         </div>
                     </div>
-                    <!-- Card: Tempo de exibição -->
                     <div class="stat-card">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
                         <div class="stat-content">
@@ -156,7 +173,6 @@
                             <span class="stat-label">Tempo de exibição</span>
                         </div>
                     </div>
-                    <!-- Card: Espectadores únicos -->
                     <div class="stat-card">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
                         <div class="stat-content">
@@ -164,7 +180,6 @@
                             <span class="stat-label">Espectadores únicos</span>
                         </div>
                     </div>
-                    <!-- Card: Tempo (horas) -->
                     <div class="stat-card">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
                         <div class="stat-content">
@@ -172,7 +187,6 @@
                             <span class="stat-label">Tempo (horas)</span>
                         </div>
                     </div>
-                    <!-- Card: Recorrentes -->
                     <div class="stat-card graph-card">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2.1l4 4-4 4"/><path d="M3 12.2v-2a4 4 0 0 1 4-4h14"/><path d="M7 21.9l-4-4 4-4"/><path d="M21 11.8v2a4 4 0 0 1-4 4H3"/></svg></div>
                         <div class="stat-content">
@@ -182,9 +196,7 @@
                     </div>
                 </div>
 
-                <!-- Demografia -->
                 <div class="demographics-wrapper">
-                    <!-- Gênero -->
                     <div class="demo-box gender-box">
                         <h3>Gênero</h3>
                         <div class="demo-bar-group">
@@ -201,7 +213,6 @@
                         </div>
                     </div>
 
-                    <!-- Faixa Etária -->
                     <div class="demo-box age-box">
                         <h3>Faixa Etária</h3>
                         <div class="demo-bar-group">
@@ -265,7 +276,6 @@
                     </div>
                 </div>
 
-                <!-- Geografia -->
                 <div class="geography-wrapper">
                     <div class="demo-box">
                         <h3>Geografia</h3>
@@ -338,7 +348,6 @@
             <div class="container">
                 <h2>Minhas Redes Sociais</h2>
                 <div class="stats-grid social-grid-center">
-                    <!-- YouTube -->
                     <a href="https://www.youtube.com/@vitaotub" class="stat-card social-card youtube" target="_blank" rel="noopener">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.11 1 12 1 12s0 3.89.46 5.58a2.78 2.78 0 0 0 1.94 2c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.89 23 12 23 12s0-3.89-.46-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg></div>
                         <div class="stat-content">
@@ -346,7 +355,6 @@
                             <span class="stat-label">Canal Principal</span>
                         </div>
                     </a>
-                    <!-- Instagram -->
                     <a href="https://www.instagram.com/vitaotub" class="stat-card social-card instagram" target="_blank" rel="noopener">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
                         <div class="stat-content">
@@ -354,7 +362,6 @@
                             <span class="stat-label">Bastidores</span>
                         </div>
                     </a>
-                    <!-- TikTok -->
                     <a href="https://www.tiktok.com/@vitaotub" class="stat-card social-card tiktok" target="_blank" rel="noopener">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></div>
                         <div class="stat-content">
@@ -362,7 +369,6 @@
                             <span class="stat-label">Vídeos Curtos</span>
                         </div>
                     </a>
-                    <!-- Twitch -->
                     <a href="https://www.twitch.tv/vitaotub" class="stat-card social-card twitch" target="_blank" rel="noopener">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zm-10 9V7m5 4V7"/></svg></div>
                         <div class="stat-content">
@@ -370,7 +376,6 @@
                             <span class="stat-label">Live Streams</span>
                         </div>
                     </a>
-                    <!-- Telegram -->
                     <a href="https://t.me/+6dT_v5m0lnQzNDAx" class="stat-card social-card telegram" target="_blank" rel="noopener">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
                         <div class="stat-content">
@@ -378,7 +383,6 @@
                             <span class="stat-label">Grupo do Canal</span>
                         </div>
                     </a>
-                    <!-- GitHub -->
                     <a href="https://github.com/vitaotub" class="stat-card social-card github" target="_blank" rel="noopener">
                         <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></div>
                         <div class="stat-content">
@@ -388,7 +392,6 @@
                     </a>
                 </div>
 
-                <!-- Botão Bio Completa -->
                 <div class="bio-cta-wrapper">
                     <a href="bio.html" class="btn-home">
                         <i class="fas fa-link"></i>
@@ -484,8 +487,25 @@
         </div>
     </div>
 
-    <!-- ==================== GOOGLE TRANSLATE ==================== -->
-    <div id="google_translate_element"></div>
+    <!-- ==================== BOTÃO DE TRADUÇÃO FLUTUANTE ==================== -->
+    <div id="translate-widget" class="translate-widget">
+        <button id="translate-toggle" class="translate-toggle" aria-label="Traduzir site" title="Traduzir site">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+        </button>
+        <div id="translate-dropdown" class="translate-dropdown">
+            <span class="translate-dropdown-title">Traduzir para:</span>
+            <button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button>
+            <button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button>
+            <button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button>
+        </div>
+    </div>
+
+    <!-- Container oculto do Google Tradutor -->
+    <div id="google_translate_element" style="display: none;"></div>
 
     <!-- ==================== FOOTER ==================== -->
     <footer>
@@ -514,8 +534,10 @@
             new google.translate.TranslateElement({
                 pageLanguage: 'pt', 
                 includedLanguages: 'en,es,pt', 
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: true
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+                autoDisplay: false,
+                multilanguagePage: true,
+                gaTrack: false
             }, 'google_translate_element');
         }
     </script>
