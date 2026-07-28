@@ -784,6 +784,28 @@ h2::after {
    ESTILIZAÇÃO INTERNA DE TEXTOS DO MODAL
    ========================================== */
 
+/* Força justificação e quebra correta em toda a estrutura da política de privacidade */
+.privacy-body,
+.privacy-body p,
+.privacy-body li,
+.privacy-body div.privacy-notice {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    -webkit-hyphens: auto !important;
+    -ms-hyphens: auto !important;
+    hyphens: auto !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+}
+
+/* Mantém os títulos alinhados à esquerda e sem hifenização */
+.privacy-body h2,
+.privacy-body h3 {
+    text-align: left !important;
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+}
+
 #privacy-modal .modal-content {
     background: #111;
     border: 1px solid #333;
