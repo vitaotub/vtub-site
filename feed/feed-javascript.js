@@ -31,55 +31,6 @@ if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
     });
 }
 
-// --- LÓGICA DO POPUP DE INSTALAÇÃO PWA ---
-document.addEventListener("DOMContentLoaded", () => {
-    const pwaPopup = document.getElementById('pwa-install-popup');
-    const installBtn = document.getElementById('pwa-install-btn');
-    const closeBtn = document.getElementById('pwa-close-btn');
-
-    if (!pwaPopup) return;
-
-    let deferredPrompt = null;
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        pwaPopup.style.display = 'flex';
-    });
-
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-    if (!isStandalone) {
-        setTimeout(() => {
-            if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('pwa_closed')) {
-                pwaPopup.style.display = 'flex';
-                pwaPopup.classList.add('show');
-            }
-        }, 3000);
-    }
-
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                pwaPopup.style.display = 'none';
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') console.log('App instalado!');
-                deferredPrompt = null;
-            } else {
-                alert('Para instalar: Clique no menu do seu navegador e escolha "Adicionar à Tela Inicial" ou "Instalar aplicativo".');
-            }
-        });
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            pwaPopup.style.display = 'none';
-            pwaPopup.classList.remove('show');
-            localStorage.setItem('pwa_closed', 'true');
-        });
-    }
-});
 
 // --- SISTEMA DE MODAL DE VÍDEO ---
 function openVideo(videoId) {
@@ -204,6 +155,7 @@ if (ytContainer) {
     carregarYouTubeAutomatico();
 }
 
+
 // --- FUNÇÕES DE ARTIGOS E COMPARTILHAMENTO ---
 function abrirArtigoHtml(botaoElemento) {
     const card = botaoElemento.closest('.article-card, .feed-card');
@@ -249,7 +201,7 @@ function abrirArtigoHtml(botaoElemento) {
     }
 }
 
-// --- FUNÇÃO DE COMPARTILHAMENTO INTELIGENTE (PC E CELULAR) ---
+
 // --- FUNÇÃO DE COMPARTILHAMENTO INTELIGENTE (PC E CELULAR) ---
 function compartilharArtigoModal(tituloArtigo, elementoBotao) {
     let linkParaCompartilhar = window.location.href.split('#')[0]; // Pega a URL limpa sem hashes antigos
