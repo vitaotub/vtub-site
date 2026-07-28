@@ -815,7 +815,6 @@ h2::after {
 #privacy-content-target div.privacy-notice {
     text-align: justify !important;
     text-justify: inter-word !important;
-    text-align-last: left; /* Evita que a última linha do parágrafo estique de forma estranha */
     font-size: 1.05rem;
     line-height: 1.8;
 }
@@ -1117,17 +1116,6 @@ button[type="submit"]:hover {
         flex-direction: column;
         align-items: stretch;
         gap: 15px;
-    }
-
-    /* Adicionado para justificar e hifenizar o texto do banner em celulares */
-    .lgpd-content p {
-        text-align: justify !important;
-        text-justify: inter-word !important;
-        -webkit-hyphens: auto !important;
-        -moz-hyphens: auto !important;
-        -ms-hyphens: auto !important;
-        hyphens: auto !important;
-        overflow-wrap: break-word !important;
     }
     
     .lgpd-actions {
