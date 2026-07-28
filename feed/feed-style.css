@@ -72,12 +72,18 @@ body {
     font-weight: 600;
 }
 
-.article-modal-text {
+.article-modal-text,
+.article-modal-content p,
+#modal-body-content p {
     color: #ccc;
     line-height: 1.6;
     font-size: 1rem;
     margin-bottom: 25px;
     text-align: justify;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
 }
 
 .article-modal-footer {
@@ -272,7 +278,18 @@ body {
 .feed-meta-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #aaa; margin-bottom: 12px; }
 .feed-date { color: #8b5cf6; font-weight: bold; }
 .feed-author { color: #3b82f6; font-weight: 600; }
-.feed-content p { font-size: 1rem; line-height: 1.5; color: #cccccc; margin: 0; text-align: justify; }
+.feed-content p,
+.feed-card.article-card .feed-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #cccccc;
+    margin: 0;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+}
 
 .feed-tabs { display: flex; justify-content: center; gap: 12px; margin-top: 5px; }
 .tab-btn {
