@@ -69,15 +69,20 @@ if (ytContainer) { carregarYouTubeAutomatico(); }
 
 async function carregarYouTubeAutomatico() {
     try {
-        const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2Ffeeds%2Fvideos.xml%3Fchannel_id%3D${CONFIG.channelID}`;
+        // API Key do rss2json (conta gratuita = até 15 vídeos)
+        const API_KEY = 'a2ffjzqucytgmqa6xn9wbm16slffblnydpk3hcn7';
+        
+        // URL com api_key e count=15
+        const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2Ffeeds%2Fvideos.xml%3Fchannel_id%3D${CONFIG.channelID}&api_key=${API_KEY}&count=15`;
+        
         const response = await fetch(RSS_URL);
         const data = await response.json();
         
-        if (data.status === 'ok' && data.items.length > 0) {
+        if (data.status === 'ok' && data.items && data.items.length > 0) {
             ytContainer.innerHTML = '';
-            const ultimosVideos = data.items.slice(0, 15);
             
-            ultimosVideos.forEach(video => {
+            // Exibe todos os vídeos retornados (até 15)
+            data.items.forEach(video => {
                 const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
                 const videoId = videoIdMatch ? videoIdMatch[1] : '';
                 
