@@ -10,21 +10,6 @@
 
 ---
 
-## 🧭 Índice
-
-- [Visão Geral](#visão-geral)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Site Principal](#site-principal)
-- [WebApp (Feed)](#webapp-feed)
-- [PWA — Instalar no Celular](#pwa--instalar-no-celular)
-- [Como Rodar Localmente](#como-rodar-localmente)
-- [Deploy](#deploy)
-- [Contribuindo](#contribuindo)
-- [Licença](#licença)
-- [Contato](#contato)
-
----
-
 ## 👀 Visão Geral
 
 Este repositório contém o código-fonte completo do site **vitaotub.com**, dividido em duas partes:
