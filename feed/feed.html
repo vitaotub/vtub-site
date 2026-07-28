@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ==================== SEO META TAGS ==================== -->
+    <title>Feed | VitãoTub</title>
+    <meta name="description" content="Feed oficial do VitãoTub - Vídeos recentes, artigos e dicas de tecnologia.">
+    <meta name="author" content="Victor Lopes">
+    <meta name="theme-color" content="#121212">
+    
+    <!-- ==================== ÍCONES E PWA ==================== -->
+    <link rel="icon" type="image/png" sizes="512x512" href="logo-app.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo-app.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="logo-app.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- ==================== FONTES E ESTILOS ==================== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="feed-style.css">
+</head>
+<body class="feed-body">
+    
+    <!-- ==================== HEADER ==================== -->
+    <header class="feed-header">
+        <div class="logo-container">
+            <img src="../eu-frente-feed.png" alt="Logo VitãoTub" class="feed-logo">
+            <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="logo-subscribe-btn" rel="noopener noreferrer">
+                <i class="fa-brands fa-youtube"></i> Inscreva-se
+            </a>
+        </div>
+        
+        <h1 class="feed-title">VitãoTub</h1>
+        
+        <!-- Abas de navegação -->
+        <nav class="feed-tabs" aria-label="Navegação do feed">
+            <button id="btn-tab-videos" class="tab-btn active" onclick="mudarAba('videos')" aria-pressed="true">Vídeos & Lives</button>
+            <button id="btn-tab-artigos" class="tab-btn" onclick="mudarAba('artigos')" aria-pressed="false">Artigos & Dicas</button>
+            <button id="btn-tab-sobre" class="tab-btn" onclick="mudarAba('sobre')" aria-pressed="false">Sobre</button>
+        </nav>
+    </header>
+
+    <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+    <main class="feed-container">
+        
+        <!-- Seção 1: Vídeos do YouTube (carregados via RSS) -->
+        <section id="secao-videos" class="feed-section active" aria-label="Vídeos recentes">
+            <div id="youtube-feed-container">
+                <p style="text-align: center; color: #aaa;">Buscando vídeos recentes do canal...</p>
+            </div>
+        </section>
+
+        <!-- Seção 2: Artigos & Dicas -->
+        <section id="secao-artigos" class="feed-section" style="display: none;" aria-label="Artigos e dicas">
+            <div id="artigos-feed-container">
+                
+                <article class="feed-card article-card" 
+                         id="artigo-windows-server" 
+                         data-titulo="GUIA COMPLETO WINDOWS SERVER 2022: Instalação e configuração AD, DNS e DHCP" 
+                         data-data="26/07/2026" 
+                         data-autor="Vitão" 
+                         data-conteudo="<p>Neste vídeo ensino como instalar e configurar o Windows Server 2022 com Active Directory, serviço DNS e serviço DHCP.</p><p>🚀 Se inscreva no @vitaotub para mais dicas de tecnologia e segurança!</p>">
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/BbQccfi-1D8" 
+                                title="GUIA COMPLETO WINDOWS SERVER 2022: Instalação e configuração AD, DNS e DHCP" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen 
+                                loading="lazy">
+                        </iframe>
+                    </div>
+                    
+                    <div class="feed-content">
+                        <div class="feed-meta-header">
+                            <span class="feed-date">26 de Julho de 2026</span>
+                            <span class="feed-author">Por: Vitão</span>
+                        </div>
+                        
+                        <h2>GUIA COMPLETO WINDOWS SERVER 2022: Instalação e configuração AD, DNS e DHCP</h2>
+                        <p>Neste vídeo ensino como instalar e configurar o Windows Server 2022 com Active Directory, serviço DNS e serviço DHCP. 🚀 Se inscreva no @vitaotub para mais dicas...</p>
+                        
+                        <div class="article-actions">
+                            <button class="btn-action btn-read" onclick="abrirArtigoHtml(this)">Ler Artigo</button>
+                            
+                            <div class="article-actions-right">
+                                <button class="btn-action-icon btn-share-icon" 
+                                        onclick="compartilharArtigoModal('GUIA COMPLETO WINDOWS SERVER 2022: Instalação e configuração AD, DNS e DHCP', this)" 
+                                        title="Compartilhar" 
+                                        aria-label="Compartilhar artigo">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                </button>
+                                <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" 
+                                   target="_blank" 
+                                   class="btn-action-icon btn-subscribe-icon" 
+                                   title="Inscrever-se" 
+                                   rel="noopener noreferrer" 
+                                   aria-label="Inscrever-se no canal">
+                                    <i class="fa-brands fa-youtube"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+            </div>
+        </section>
+
+        <!-- Seção 3: Sobre o Canal -->
+        <section id="secao-sobre" class="feed-section" style="display: none;" aria-label="Sobre o canal">
+            <div class="about-container">
+                <div class="about-profile">
+                    <h2>VitãoTub</h2>
+                    <p class="about-subtitle">Criador de Conteúdo</p>
+                </div>
+                
+                <div class="about-bio">
+                    <p>Olá! Bem-vindo ao feed oficial do canal VitãoTub. Aqui centralizo meus vídeos mais recentes, artigos técnicos, dicas e tutoriais de tecnologia.</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- ==================== MODAL DE ARTIGO ==================== -->
+    <div id="article-modal" class="article-modal-overlay">
+        <div class="article-modal-content">
+            <div class="article-modal-header">
+                <span class="article-close-hint">Clique no botão para fechar e retornar aos artigos</span>
+                <button class="article-close-x-btn" onclick="fecharArtigoCompleto()" aria-label="Fechar artigo">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="modal-body-content"></div>
+        </div>
+    </div>
+
+    <!-- ==================== POPUP DE INSTALAÇÃO PWA ==================== -->
+    <div id="pwa-install-popup" class="pwa-popup-overlay" style="display: none;">
+        <div class="pwa-popup-content">
+            <h2>Instalar Aplicativo</h2>
+            <p>Instale o app do VitãoTub no seu dispositivo para acesso rápido e notificações!</p>
+            <button id="pwa-install-btn" class="pwa-btn-install">Instalar Agora</button>
+            <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="feed-javascript.js"></script>
+</body>
+</html>
