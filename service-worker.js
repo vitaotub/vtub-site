@@ -4,7 +4,8 @@
  * Descrição: Cache de arquivos estáticos para funcionamento
  * offline do site principal e do feed (PWA)
  * Integração com OneSignal para push notifications
- * Versão: 1.7
+ * Auto-update: detecta novas versões e notifica o app
+ * Versão: 1.8
  * ============================================================
  */
 
@@ -12,7 +13,7 @@
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v1.7';
+const CACHE_NAME = 'vitaotub-cache-v1.8';
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
@@ -50,8 +51,11 @@ self.addEventListener('install', event => {
           console.warn('Service Worker: Alguns arquivos não puderam ser cacheados:', error);
         });
       })
+      .then(() => {
+        console.log('Service Worker: Instalação concluída. Forçando ativação...');
+        return self.skipWaiting();
+      })
   );
-  self.skipWaiting();
 });
 
 // ==================== ATIVAÇÃO (LIMPEZA DE CACHES ANTIGOS) ====================
@@ -67,17 +71,35 @@ self.addEventListener('activate', event => {
         })
       );
     })
+    .then(() => {
+      console.log('Service Worker: Ativação concluída. Assumindo controle...');
+      return self.clients.claim();
+    })
   );
-  return self.clients.claim();
+});
+
+// ==================== MENSAGENS DO APP (SKIP WAITING) ====================
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.action === 'skipWaiting') {
+    console.log('Service Worker: Recebido comando skipWaiting. Assumindo controle imediatamente...');
+    self.skipWaiting();
+  }
 });
 
 // ==================== INTERCEPTAÇÃO DE REQUISIÇÕES ====================
 self.addEventListener('fetch', event => {
-  // Ignora requisições para a API do YouTube e Google Analytics
+  // Ignora requisições para APIs externas (deixa passar direto para a rede)
   if (event.request.url.includes('youtube.com') || 
       event.request.url.includes('google-analytics.com') ||
-      event.request.url.includes('rss2json.com')) {
-    return; // Deixa passar direto para a rede
+      event.request.url.includes('rss2json.com') ||
+      event.request.url.includes('googleapis.com') ||
+      event.request.url.includes('gstatic.com') ||
+      event.request.url.includes('google.com') ||
+      event.request.url.includes('fontshare.com') ||
+      event.request.url.includes('cloudflare.com') ||
+      event.request.url.includes('onesignal.com') ||
+      event.request.url.includes('cdn.onesignal.com')) {
+    return; // Não intercepta - deixa o navegador buscar direto
   }
   
   event.respondWith(
@@ -87,13 +109,32 @@ self.addEventListener('fetch', event => {
         if (response) {
           return response;
         }
-        // Se não, busca na rede
-        return fetch(event.request).catch(() => {
-          // Se offline e não está em cache, retorna página inicial
-          if (event.request.mode === 'navigate') {
-            return caches.match('/feed/feed.html');
-          }
-        });
+        
+        // Se não está em cache, busca na rede
+        return fetch(event.request)
+          .then(networkResponse => {
+            // Atualiza o cache com a nova versão (cache em segundo plano)
+            if (networkResponse && networkResponse.status === 200) {
+              const responseClone = networkResponse.clone();
+              caches.open(CACHE_NAME).then(cache => {
+                cache.put(event.request, responseClone);
+              });
+            }
+            return networkResponse;
+          })
+          .catch(() => {
+            // Se offline e não está em cache
+            if (event.request.mode === 'navigate') {
+              return caches.match('/feed/feed.html');
+            }
+            // Para outros recursos, retorna erro silencioso
+            return new Response('Recurso não disponível offline', { status: 503 });
+          });
       })
   );
+});
+
+// ==================== NOTIFICAÇÃO DE ATUALIZAÇÃO ====================
+self.addEventListener('controllerchange', () => {
+  console.log('Service Worker: Controller alterado - nova versão assumiu o controle.');
 });
