@@ -3,7 +3,7 @@
  * VITÃOTUB - JAVASCRIPT DO FEED
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
  * modal de artigo, modal de vídeo em tela cheia com controles,
- * compartilhamento e botões flutuantes
+ * compartilhamento, PWA com auto-update e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
@@ -25,12 +25,55 @@ function escapeHtml(text) {
         .replace(/'/g, "&#039;");
 }
 
-// ==================== 3. SERVICE WORKER ====================
+// ==================== 3. SERVICE WORKER COM AUTO-UPDATE ====================
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js')
-            .then(() => console.log('Service Worker registrado com sucesso!'))
+            .then(registration => {
+                console.log('Service Worker registrado com sucesso!');
+                
+                // Detecta quando uma nova versão do Service Worker é encontrada
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    
+                    newWorker.addEventListener('statechange', () => {
+                        // Quando o novo SW estiver instalado e houver um SW antigo controlando a página
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('🔄 Nova versão do app disponível!');
+                            
+                            // Pergunta ao usuário se deseja atualizar
+                            if (confirm('🚀 Uma nova versão do app está disponível! Deseja atualizar agora?')) {
+                                // Notifica o SW para assumir o controle
+                                newWorker.postMessage({ action: 'skipWaiting' });
+                                
+                                // Recarrega a página para aplicar a nova versão
+                                window.location.reload();
+                            }
+                        }
+                    });
+                });
+                
+                // Verifica atualizações a cada 30 minutos
+                setInterval(() => {
+                    registration.update();
+                    console.log('🔍 Verificando atualizações...');
+                }, 30 * 60 * 1000);
+                
+                // Também verifica ao retornar para a aba (usuário voltou ao app)
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible') {
+                        registration.update();
+                    }
+                });
+            })
             .catch(error => console.log('Erro ao registrar o Service Worker:', error));
+    });
+    
+    // Permite que o Service Worker assuma o controle imediatamente
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data && event.data.action === 'skipWaiting') {
+            navigator.serviceWorker.controller.postMessage({ action: 'skipWaiting' });
+        }
     });
 }
 
@@ -141,12 +184,10 @@ function abrirVideoModal(videoId) {
         `;
         document.body.appendChild(modal);
         
-        // Fecha ao clicar fora do player
         modal.addEventListener('click', function(e) {
             if (e.target === modal) fecharVideoModal();
         });
         
-        // Controle de visibilidade dos botões
         let hideTimeout;
         
         function mostrarControles() {
@@ -168,7 +209,6 @@ function abrirVideoModal(videoId) {
         modal.addEventListener('click', mostrarControles);
         modal.addEventListener('mousemove', mostrarControles);
         
-        // Configura o botão de compartilhar
         document.getElementById('video-share-btn').addEventListener('click', function(e) {
             e.stopPropagation();
             const iframe = document.getElementById('video-fullscreen-iframe');
@@ -180,13 +220,11 @@ function abrirVideoModal(videoId) {
         });
     }
     
-    // Atualiza o src do iframe
     const iframe = document.getElementById('video-fullscreen-iframe');
     iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     
-    // Mostra controles ao abrir
     const closeBtn = document.getElementById('video-close-btn');
     const tapHint = document.getElementById('video-tap-hint');
     const actionsBar = document.getElementById('video-actions-bar');
