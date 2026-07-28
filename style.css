@@ -35,8 +35,6 @@ body {
     font-family: 'Satoshi', 'Inter', system-ui, -apple-system, sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
-    /* top: 0 !important; REMOVIDO: Evita quebra de modais fixos em dispositivos mobile (Safari) */
-    /* position: static !important; REMOVIDO: Evita quebra de modais fixos em dispositivos mobile (Safari) */
 }
 
 h1, h2, h3, nav a, button { 
@@ -781,30 +779,8 @@ h2::after {
 
 
 /* ==========================================
-   ESTILIZAÇÃO INTERNA DE TEXTOS DO MODAL
+   ESTILIZAÇÃO UNIFICADA DA MODAL DE PRIVACIDADE
    ========================================== */
-
-/* Força justificação e quebra correta em toda a estrutura da política de privacidade */
-.privacy-body,
-.privacy-body p,
-.privacy-body li,
-.privacy-body div.privacy-notice {
-    text-align: justify !important;
-    text-justify: inter-word !important;
-    -webkit-hyphens: auto !important;
-    -ms-hyphens: auto !important;
-    hyphens: auto !important;
-    overflow-wrap: break-word !important;
-    word-wrap: break-word !important;
-}
-
-/* Mantém os títulos alinhados à esquerda e sem hifenização */
-.privacy-body h2,
-.privacy-body h3 {
-    text-align: left !important;
-    hyphens: none !important;
-    -webkit-hyphens: none !important;
-}
 
 #privacy-modal .modal-content {
     background: #111;
@@ -820,7 +796,7 @@ h2::after {
     margin: auto;
 }
 
-/* Força hifenização e quebra de palavra em absolutamente QUALQUER elemento interno */
+/* Força hifenização e quebra de palavras em toda a árvore de conteúdo da política */
 #privacy-content-target,
 #privacy-content-target * {
     -webkit-hyphens: auto !important;
@@ -831,11 +807,12 @@ h2::after {
     word-wrap: break-word !important;
 }
 
-/* Força a justificação em blocos de texto e tags comuns de conteúdo */
+/* Garante justificação uniforme para os blocos de texto comuns e tags de corpo */
 #privacy-content-target p,
 #privacy-content-target li,
 #privacy-content-target span,
-#privacy-content-target div {
+#privacy-content-target div.privacy-body,
+#privacy-content-target div.privacy-notice {
     text-align: justify !important;
     text-justify: inter-word !important;
     font-size: 1.05rem;
@@ -847,7 +824,7 @@ h2::after {
     margin-bottom: 1.2em;
 }
 
-/* Garante que os títulos mantenham o alinhamento correto e não sofram hifenização */
+/* Alinhamento à esquerda e ausência de hifenização para todos os títulos */
 #privacy-content-target h1,
 #privacy-content-target h2,
 #privacy-content-target h3 {
@@ -1128,7 +1105,6 @@ button[type="submit"]:hover {
     white-space: nowrap;
 }
 
-/* --- REGRAS MOBILE MOVIDAS PARA CÁ PARA RESPEITAR A CASCATA DO CSS --- */
 @media (max-width: 768px) {
     .lgpd-overlay {
         padding: 20px;
