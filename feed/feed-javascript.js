@@ -2,7 +2,7 @@
  * ============================================================
  * VITÃOTUB - JAVASCRIPT DO FEED
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
- * modal de artigo, modal de vídeo em tela cheia,
+ * modal de artigo, modal de vídeo em tela cheia com controles,
  * compartilhamento e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
@@ -129,46 +129,76 @@ function abrirVideoModal(videoId) {
             <div class="video-fullscreen-container" id="video-container">
                 <iframe id="video-fullscreen-iframe" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
             </div>
-            <div class="video-tap-hint" id="video-tap-hint">Toque na tela para ver o botão fechar</div>
+            <div class="video-tap-hint" id="video-tap-hint">Toque na tela para ver os controles</div>
+            <div class="video-actions-bar" id="video-actions-bar">
+                <button class="btn-action-icon btn-share-icon" id="video-share-btn" title="Compartilhar" aria-label="Compartilhar vídeo">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+                <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="btn-action-icon btn-subscribe-icon" id="video-subscribe-btn" title="Inscrever-se" rel="noopener noreferrer" aria-label="Inscrever-se no canal">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </div>
         `;
         document.body.appendChild(modal);
         
+        // Fecha ao clicar fora do player
         modal.addEventListener('click', function(e) {
             if (e.target === modal) fecharVideoModal();
         });
         
+        // Controle de visibilidade dos botões
         let hideTimeout;
         
-        modal.addEventListener('click', function() {
+        function mostrarControles() {
             const closeBtn = document.getElementById('video-close-btn');
             const tapHint = document.getElementById('video-tap-hint');
+            const actionsBar = document.getElementById('video-actions-bar');
+            
             if (closeBtn) closeBtn.classList.add('visible');
             if (tapHint) tapHint.classList.remove('visible');
+            if (actionsBar) actionsBar.classList.add('visible');
+            
             clearTimeout(hideTimeout);
-            hideTimeout = setTimeout(() => { if (closeBtn) closeBtn.classList.remove('visible'); }, 3000);
-        });
+            hideTimeout = setTimeout(() => {
+                if (closeBtn) closeBtn.classList.remove('visible');
+                if (actionsBar) actionsBar.classList.remove('visible');
+            }, 3000);
+        }
         
-        modal.addEventListener('mousemove', function() {
-            const closeBtn = document.getElementById('video-close-btn');
-            if (closeBtn) closeBtn.classList.add('visible');
-            clearTimeout(hideTimeout);
-            hideTimeout = setTimeout(() => { if (closeBtn) closeBtn.classList.remove('visible'); }, 3000);
+        modal.addEventListener('click', mostrarControles);
+        modal.addEventListener('mousemove', mostrarControles);
+        
+        // Configura o botão de compartilhar
+        document.getElementById('video-share-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const iframe = document.getElementById('video-fullscreen-iframe');
+            const currentSrc = iframe.src;
+            const videoIdMatch = currentSrc.match(/embed\/([^?]+)/);
+            if (videoIdMatch) {
+                compartilharVideo(videoIdMatch[1]);
+            }
         });
     }
     
+    // Atualiza o src do iframe
     const iframe = document.getElementById('video-fullscreen-iframe');
     iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     
+    // Mostra controles ao abrir
     const closeBtn = document.getElementById('video-close-btn');
     const tapHint = document.getElementById('video-tap-hint');
+    const actionsBar = document.getElementById('video-actions-bar');
+    
     if (closeBtn) closeBtn.classList.add('visible');
     if (tapHint) tapHint.classList.add('visible');
+    if (actionsBar) actionsBar.classList.add('visible');
     
     setTimeout(() => {
         if (closeBtn) closeBtn.classList.remove('visible');
         if (tapHint) tapHint.classList.remove('visible');
+        if (actionsBar) actionsBar.classList.remove('visible');
     }, 4000);
     
     verificarOrientacao();
@@ -196,6 +226,31 @@ function verificarOrientacao() {
     } else {
         container.classList.add('portrait');
         container.classList.remove('landscape');
+    }
+}
+
+function compartilharVideo(videoId) {
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    
+    if (isMobile && navigator.share) {
+        navigator.share({
+            title: 'Confira este vídeo do VitãoTub!',
+            text: 'Assista este vídeo no YouTube',
+            url: videoUrl
+        }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(videoUrl)
+            .then(() => { alert('Link do vídeo copiado!'); })
+            .catch(() => {
+                const tempInput = document.createElement('input');
+                tempInput.value = videoUrl;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('Link do vídeo copiado!');
+            });
     }
 }
 
