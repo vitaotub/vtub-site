@@ -2,7 +2,7 @@
  * ============================================================
  * VITÃOTUB - JAVASCRIPT DO FEED
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
- * modal de artigo, compartilhamento, PWA e botões flutuantes
+ * modal de artigo, compartilhamento e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
@@ -69,10 +69,7 @@ if (ytContainer) { carregarYouTubeAutomatico(); }
 
 async function carregarYouTubeAutomatico() {
     try {
-        // API Key do rss2json (conta gratuita = até 15 vídeos)
         const API_KEY = 'a2ffjzqucytgmqa6xn9wbm16slffblnydpk3hcn7';
-        
-        // URL com api_key e count=15
         const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2Ffeeds%2Fvideos.xml%3Fchannel_id%3D${CONFIG.channelID}&api_key=${API_KEY}&count=15`;
         
         const response = await fetch(RSS_URL);
@@ -81,7 +78,6 @@ async function carregarYouTubeAutomatico() {
         if (data.status === 'ok' && data.items && data.items.length > 0) {
             ytContainer.innerHTML = '';
             
-            // Exibe todos os vídeos retornados (até 15)
             data.items.forEach(video => {
                 const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
                 const videoId = videoIdMatch ? videoIdMatch[1] : '';
@@ -200,46 +196,7 @@ function compartilharArtigoModal(tituloArtigo, elementoBotao) {
     }
 }
 
-// ==================== 8. POPUP DE INSTALAÇÃO PWA ====================
-document.addEventListener("DOMContentLoaded", () => {
-    const pwaPopup = document.getElementById('pwa-install-popup');
-    const installBtn = document.getElementById('pwa-install-btn');
-    const closeBtn = document.getElementById('pwa-close-btn');
-    if (!pwaPopup) return;
-
-    let deferredPrompt = null;
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        pwaPopup.classList.add('show');
-    });
-
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    if (!isStandalone) {
-        setTimeout(() => { if (!pwaPopup.classList.contains('show')) pwaPopup.classList.add('show'); }, 2000);
-    }
-
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                pwaPopup.classList.remove('show');
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') console.log('App instalado!');
-                deferredPrompt = null;
-            } else {
-                alert('Para instalar, acesse as opções do seu navegador.');
-            }
-        });
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => { pwaPopup.classList.remove('show'); });
-    }
-});
-
-// ==================== 9. EVENTOS GLOBAIS ====================
+// ==================== 8. EVENTOS GLOBAIS ====================
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         fecharArtigoCompleto();
@@ -261,7 +218,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ==================== 10. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
+// ==================== 9. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
 function toggleTranslateDropdown() {
     const dropdown = document.getElementById('translate-dropdown');
     if (dropdown) dropdown.classList.toggle('active');
@@ -314,7 +271,7 @@ function initTranslateWidget() {
     }, 1500);
 }
 
-// ==================== 11. BOTÃO VOLTAR AO TOPO ====================
+// ==================== 10. BOTÃO VOLTAR AO TOPO ====================
 const backToTopButton = document.getElementById('back-to-top');
 if (backToTopButton) {
     backToTopButton.addEventListener('click', function(e) {
@@ -323,7 +280,7 @@ if (backToTopButton) {
     });
 }
 
-// ==================== 12. INICIALIZAÇÃO ====================
+// ==================== 11. INICIALIZAÇÃO ====================
 document.addEventListener("DOMContentLoaded", () => {
     initTranslateWidget();
 });
