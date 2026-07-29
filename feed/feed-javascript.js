@@ -3,7 +3,8 @@
  * VITÃOTUB - JAVASCRIPT DO FEED
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
  * sistema de artigos com scroll infinito e destaque,
- * modal de artigo em tela cheia com gesto de arraste,
+ * modal de artigo em tela cheia com gesto de arraste e
+ * formatação forçada (justificado, hifenizado, margens),
  * modal de vídeo com gesto de arraste (lados e baixo),
  * compartilhamento com link absoluto, PWA e botões flutuantes
  * Organizado por seções para facilitar manutenção
@@ -120,71 +121,12 @@ function fecharVideoModal() { const modal = document.getElementById('video-fulls
 function verificarOrientacao() { const container = document.getElementById('video-container'); if (!container) return; if (window.innerWidth > window.innerHeight) { container.classList.add('landscape'); container.classList.remove('portrait'); } else { container.classList.add('portrait'); container.classList.remove('landscape'); } }
 function compartilharVideo(videoId) { const videoUrl = `https://www.youtube.com/watch?v=${videoId}`; const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent); if (isMobile && navigator.share) { navigator.share({ title: 'Confira este vídeo do VitãoTub!', text: 'Assista este vídeo no YouTube', url: videoUrl }).catch(() => {}); } else { navigator.clipboard.writeText(videoUrl).then(() => { alert('Link do vídeo copiado!'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = videoUrl; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do vídeo copiado!'); }); } }
 
-/**
- * Gesto de arrastar para fechar o player de vídeo
- * Suporta arrastar para os lados (← →) e para baixo (↓)
- */
 function initVideoSwipeToClose() {
-    const modal = document.getElementById('video-fullscreen-modal');
-    if (!modal) return;
-    
+    const modal = document.getElementById('video-fullscreen-modal'); if (!modal) return;
     let startX = 0, startY = 0, currentX = 0, currentY = 0, isDragging = false;
-    
-    modal.addEventListener('touchstart', (e) => {
-        if (e.target === modal) {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            isDragging = true;
-            modal.style.transition = 'none';
-        }
-    }, { passive: true });
-    
-    modal.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        currentX = e.touches[0].clientX;
-        currentY = e.touches[0].clientY;
-        const diffX = currentX - startX;
-        const diffY = currentY - startY;
-        
-        // Prioriza o movimento horizontal se for maior que o vertical
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            if (Math.abs(diffX) > 20) {
-                modal.style.transform = `translateX(${diffX}px)`;
-                modal.style.opacity = 1 - Math.abs(diffX) / 400;
-            }
-        } else if (diffY > 20) {
-            modal.style.transform = `translateY(${diffY}px)`;
-            modal.style.opacity = 1 - Math.abs(diffY) / 500;
-        }
-    }, { passive: true });
-    
-    modal.addEventListener('touchend', () => {
-        if (!isDragging) return;
-        isDragging = false;
-        const diffX = currentX - startX;
-        const diffY = currentY - startY;
-        modal.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-        
-        // Fecha se arrastou mais de 100px horizontal ou 150px vertical
-        if (Math.abs(diffX) > 100 || diffY > 150) {
-            if (Math.abs(diffX) > Math.abs(diffY)) {
-                modal.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)';
-            } else {
-                modal.style.transform = 'translateY(100%)';
-            }
-            modal.style.opacity = '0';
-            setTimeout(() => {
-                fecharVideoModal();
-                modal.style.transform = '';
-                modal.style.opacity = '';
-            }, 300);
-        } else {
-            modal.style.transform = '';
-            modal.style.opacity = '';
-        }
-        currentX = 0;
-        currentY = 0;
-    });
+    modal.addEventListener('touchstart', (e) => { if (e.target === modal) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; isDragging = true; modal.style.transition = 'none'; } }, { passive: true });
+    modal.addEventListener('touchmove', (e) => { if (!isDragging) return; currentX = e.touches[0].clientX; currentY = e.touches[0].clientY; const diffX = currentX - startX; const diffY = currentY - startY; if (Math.abs(diffX) > Math.abs(diffY)) { if (Math.abs(diffX) > 20) { modal.style.transform = `translateX(${diffX}px)`; modal.style.opacity = 1 - Math.abs(diffX) / 400; } } else if (diffY > 20) { modal.style.transform = `translateY(${diffY}px)`; modal.style.opacity = 1 - Math.abs(diffY) / 500; } }, { passive: true });
+    modal.addEventListener('touchend', () => { if (!isDragging) return; isDragging = false; const diffX = currentX - startX; const diffY = currentY - startY; modal.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; if (Math.abs(diffX) > 100 || diffY > 150) { if (Math.abs(diffX) > Math.abs(diffY)) { modal.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; } else { modal.style.transform = 'translateY(100%)'; } modal.style.opacity = '0'; setTimeout(() => { fecharVideoModal(); modal.style.transform = ''; modal.style.opacity = ''; }, 300); } else { modal.style.transform = ''; modal.style.opacity = ''; } currentX = 0; currentY = 0; });
 }
 
 // ==================== 6. SISTEMA DE ARTIGOS ====================
@@ -225,8 +167,7 @@ function carregarMaisArtigos() {
         card.addEventListener('click', function(e) { if (e.target.closest('button') || e.target.closest('a') || e.target.closest('iframe')) return; abrirArtigoFullscreen(artigo.id); });
         const btnLerMais = document.createElement('button'); btnLerMais.className = 'btn-ler-mais'; btnLerMais.innerHTML = '📖 Ler Artigo Completo';
         btnLerMais.addEventListener('click', function(e) { e.stopPropagation(); abrirArtigoFullscreen(artigo.id); });
-        const meta = card.querySelector('.artigo-meta');
-        if (meta) { meta.after(btnLerMais); } else { card.appendChild(btnLerMais); }
+        const meta = card.querySelector('.artigo-meta'); if (meta) { meta.after(btnLerMais); } else { card.appendChild(btnLerMais); }
         container.appendChild(card);
     });
     artigosExibidos += proximos.length;
@@ -262,12 +203,37 @@ function abrirArtigoFullscreen(artigoId) {
     const btnLerMais = conteudo.querySelector('.btn-ler-mais');
     if (btnLerMais) btnLerMais.remove();
     
-    // 🔧 Força o corpo do artigo a ficar visível (ignora CSS)
+    // Força o corpo do artigo a ficar visível e formatado
     const corpo = conteudo.querySelector('.artigo-corpo');
     if (corpo) {
         corpo.style.setProperty('display', 'block', 'important');
         corpo.style.setProperty('max-height', 'none', 'important');
         corpo.style.setProperty('overflow', 'visible', 'important');
+        corpo.style.setProperty('padding', '15px 20px', 'important');
+        corpo.style.setProperty('text-align', 'justify', 'important');
+        corpo.style.setProperty('text-justify', 'inter-word', 'important');
+        corpo.style.setProperty('word-break', 'break-word', 'important');
+        corpo.style.setProperty('overflow-wrap', 'break-word', 'important');
+        corpo.style.setProperty('word-wrap', 'break-word', 'important');
+        corpo.style.setProperty('-webkit-hyphens', 'auto', 'important');
+        corpo.style.setProperty('-moz-hyphens', 'auto', 'important');
+        corpo.style.setProperty('-ms-hyphens', 'auto', 'important');
+        corpo.style.setProperty('hyphens', 'auto', 'important');
+        
+        // Aplica também em todos os parágrafos dentro do corpo
+        const paragrafos = corpo.querySelectorAll('p');
+        paragrafos.forEach(p => {
+            p.style.setProperty('text-align', 'justify', 'important');
+            p.style.setProperty('text-justify', 'inter-word', 'important');
+            p.style.setProperty('word-break', 'break-word', 'important');
+            p.style.setProperty('overflow-wrap', 'break-word', 'important');
+            p.style.setProperty('word-wrap', 'break-word', 'important');
+            p.style.setProperty('-webkit-hyphens', 'auto', 'important');
+            p.style.setProperty('-moz-hyphens', 'auto', 'important');
+            p.style.setProperty('-ms-hyphens', 'auto', 'important');
+            p.style.setProperty('hyphens', 'auto', 'important');
+            p.style.setProperty('margin-bottom', '14px', 'important');
+        });
     }
     
     body.innerHTML = '';
