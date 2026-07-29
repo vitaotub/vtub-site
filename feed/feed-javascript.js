@@ -4,7 +4,7 @@
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
  * sistema de artigos com scroll infinito e destaque,
  * modal de artigo em tela cheia, modal de vídeo,
- * compartilhamento com link correto, PWA e botões flutuantes
+ * compartilhamento com link absoluto, PWA e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
@@ -197,28 +197,38 @@ function fecharArtigoFullscreen() { const modal = document.getElementById('artig
 
 /**
  * Compartilha o link direto do artigo
- * O link gerado aponta para feed.html#artigo-id
+ * Usa link absoluto para garantir que funcione em qualquer lugar
  */
 function compartilharArtigo(artigoId, titulo) {
-    const baseUrl = window.location.origin + window.location.pathname;
-    const link = `${baseUrl}#${artigoId}`;
+    const link = `https://www.vitaotub.com/feed/feed.html#${artigoId}`;
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    console.log('Compartilhando:', link);
     if (isMobile && navigator.share) {
         navigator.share({ title: titulo || 'Artigo do VitãoTub', text: 'Confira este artigo!', url: link }).catch(() => {});
     } else {
-        navigator.clipboard.writeText(link).then(() => { alert('Link do artigo copiado!'); }).catch(() => {
+        navigator.clipboard.writeText(link).then(() => { alert('Link do artigo copiado! Compartilhe com seus amigos.'); }).catch(() => {
             const tempInput = document.createElement('input'); tempInput.value = link; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do artigo copiado!');
         });
     }
 }
 
+/**
+ * Verifica se a URL contém #artigo-id e abre o artigo
+ */
 function verificarArtigoNaUrl() {
     const hash = window.location.hash;
     if (hash && hash.startsWith('#artigo-')) {
         const artigoId = hash.substring(1);
-        mudarAba('artigos');
-        const checkExist = setInterval(() => { const artigo = document.getElementById(artigoId); if (artigo) { clearInterval(checkExist); setTimeout(() => { abrirArtigoFullscreen(artigoId); }, 500); } }, 200);
-        setTimeout(() => { clearInterval(checkExist); }, 5000);
+        console.log('Artigo detectado na URL:', artigoId);
+        if (!artigosCarregados) {
+            carregarTodosArtigos().then(() => {
+                mudarAba('artigos');
+                setTimeout(() => { const artigo = document.getElementById(artigoId); if (artigo) { console.log('Abrindo artigo:', artigoId); abrirArtigoFullscreen(artigoId); } }, 800);
+            });
+        } else {
+            mudarAba('artigos');
+            setTimeout(() => { const artigo = document.getElementById(artigoId); if (artigo) { console.log('Abrindo artigo:', artigoId); abrirArtigoFullscreen(artigoId); } }, 800);
+        }
     }
 }
 

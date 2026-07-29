@@ -167,17 +167,8 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     gap: 8px;
 }
-.artigo-rodape-social {
-    display: flex;
-    gap: 4px;
-    flex-shrink: 0;
-}
-.artigo-rodape-acoes {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    flex-shrink: 0;
-}
+.artigo-rodape-social { display: flex; gap: 4px; flex-shrink: 0; }
+.artigo-rodape-acoes { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
 
 /* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA ==================== */
 .artigo-fullscreen-modal {
@@ -218,16 +209,9 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 .artigo-fullscreen-close:hover,
-.artigo-fullscreen-close:active {
-    background: rgba(255, 0, 0, 0.8);
-    border-color: #ff0000;
-    transform: scale(1.1);
-}
+.artigo-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
 
-.artigo-fullscreen-body {
-    clear: both; padding-top: 10px;
-    background: #0a0a0a; width: 100%;
-}
+.artigo-fullscreen-body { clear: both; padding-top: 10px; background: #0a0a0a; width: 100%; }
 .artigo-fullscreen-body .artigo-banner { margin: -20px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
 .artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 5px 10px 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 5px 10px 5px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
@@ -341,27 +325,14 @@ body {
     .artigo-titulo { font-size: 1.1rem; }
     .artigo-resumo { font-size: 0.85rem; }
     .artigo-meta { font-size: 0.75rem; }
-    /* Rodapé mobile - botões menores na mesma linha */
-    .artigo-rodape {
-        padding: 10px 12px;
-        gap: 4px;
-    }
-    .artigo-rodape-social {
-        gap: 3px;
-    }
-    .artigo-rodape-acoes {
-        gap: 4px;
-    }
-    .artigo-rodape .social-btn {
-        width: 28px;
-        height: 28px;
-        font-size: 0.75rem;
-    }
-    .artigo-rodape .btn-action-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 0.9rem;
-    }
+    /* Rodapé mobile - reduz ícones */
+    .artigo-rodape { padding: 8px 10px; gap: 4px; }
+    .artigo-rodape-social { gap: 2px; }
+    .artigo-rodape-acoes { gap: 4px; }
+    .artigo-rodape .social-btn { width: 26px; height: 26px; font-size: 0.7rem; }
+    .artigo-rodape .btn-action-icon { width: 30px; height: 30px; font-size: 0.85rem; }
+    .artigo-rodape .social-btn.telegram,
+    .artigo-rodape .social-btn.github { display: none; }
     .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
 }
