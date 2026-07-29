@@ -194,7 +194,8 @@ function abrirArtigoFullscreen(artigoId) {
     const corpo = conteudo.querySelector('.artigo-corpo'); if (corpo) { corpo.style.maxHeight = 'none'; corpo.style.overflow = 'visible'; }
     body.innerHTML = ''; body.appendChild(conteudo);
     if (shareBtn) { shareBtn.onclick = function() { const titulo = artigo.getAttribute('data-titulo') || ''; compartilharArtigo(artigoId, titulo); }; }
-    modal.classList.add('active'); document.body.style.overflow = 'hidden'; modal.scrollTop = 0;
+    modal.classList.add('active'); document.body.style.overflow = 'hidden';
+    modal.scrollTop = 0; window.scrollTo(0, 0);
 }
 function fecharArtigoFullscreen() { const modal = document.getElementById('artigo-fullscreen-modal'); if (modal) { modal.classList.remove('active'); document.body.style.overflow = ''; } }
 function compartilharArtigo(artigoId, titulo) { const baseUrl = window.location.href.split('#')[0]; const link = `${baseUrl}#${artigoId}`; const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent); if (isMobile && navigator.share) { navigator.share({ title: titulo || 'Artigo do VitãoTub', text: 'Confira este artigo!', url: link }).catch(() => {}); } else { navigator.clipboard.writeText(link).then(() => { alert('Link do artigo copiado!'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = link; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do artigo copiado!'); }); } }
