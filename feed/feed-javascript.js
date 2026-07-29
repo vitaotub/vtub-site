@@ -8,8 +8,8 @@
  * modal de vídeo com gesto de arraste (lados e baixo),
  * compartilhamento com link absoluto,
  * PWA (apenas mobile) com memória de instalação,
- * Botão de tradução arrastável e "fechável",
- * Botão de tema (claro/escuro),
+ * Botão de tradução arrastável e fechável,
+ * Botão de tema arrastável e fechável,
  * Botão voltar ao topo
  * Organizado por seções para facilitar manutenção
  * ============================================================
@@ -294,11 +294,7 @@ function initDraggableTranslate() {
     toggleBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
     widget.addEventListener('mouseleave', () => { if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; });
     let clickTimeout;
-    toggleBtn.addEventListener('click', (e) => {
-        if (isDragging) return;
-        if (clickTimeout) { clearTimeout(clickTimeout); clickTimeout = null; closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true'; setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000); }
-        else { clickTimeout = setTimeout(() => { clickTimeout = null; toggleTranslateDropdown(); }, 300); }
-    });
+    toggleBtn.addEventListener('click', (e) => { if (isDragging) return; if (clickTimeout) { clearTimeout(clickTimeout); clickTimeout = null; closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true'; setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000); } else { clickTimeout = setTimeout(() => { clickTimeout = null; toggleTranslateDropdown(); }, 300); } });
     closeBtn.addEventListener('click', (e) => { e.stopPropagation(); widget.style.display = 'none'; localStorage.setItem('vitaotub_translate_hidden', 'true'); });
     toggleBtn.addEventListener('mousedown', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.clientX; startY = e.clientY; const rect = widget.getBoundingClientRect(); startLeft = rect.left; startBottom = window.innerHeight - rect.bottom; widget.style.transition = 'none'; e.preventDefault(); });
     toggleBtn.addEventListener('touchstart', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; const rect = widget.getBoundingClientRect(); startLeft = rect.left; startBottom = window.innerHeight - rect.bottom; widget.style.transition = 'none'; }, { passive: true });
@@ -331,17 +327,47 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==================== 11. BOTÃO DE TEMA (CLARO/ESCURO) ====================
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (document.body.classList.contains('light-mode')) {
+        localStorage.setItem('vitaotub_theme', 'light');
+        if (themeBtn) { themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
+    } else {
+        localStorage.setItem('vitaotub_theme', 'dark');
+        if (themeBtn) { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
+    }
+}
+
 function initThemeToggle() {
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (!themeBtn) return;
     const savedTheme = localStorage.getItem('vitaotub_theme');
     if (savedTheme === 'light') { document.body.classList.add('light-mode'); themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
     else { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
-    themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        if (document.body.classList.contains('light-mode')) { localStorage.setItem('vitaotub_theme', 'light'); themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
-        else { localStorage.setItem('vitaotub_theme', 'dark'); themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
-    });
+}
+
+// ==================== 11.5 BOTÃO DE TEMA ARRASTÁVEL E FECHÁVEL ====================
+function initDraggableTheme() {
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (!themeBtn) return;
+    if (localStorage.getItem('vitaotub_theme_hidden')) { themeBtn.style.display = 'none'; return; }
+    let isDragging = false; let startX, startY, startTop, startRight;
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'theme-close-btn'; closeBtn.innerHTML = '✕'; closeBtn.title = 'Esconder botão de tema';
+    closeBtn.style.cssText = 'display:none;position:absolute;top:-8px;right:-8px;width:22px;height:22px;background:#ff0000;color:#fff;border:none;border-radius:50%;font-size:12px;cursor:pointer;z-index:1000;line-height:1;';
+    themeBtn.appendChild(closeBtn);
+    themeBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
+    themeBtn.addEventListener('mouseleave', () => { if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; });
+    let clickTimeout;
+    themeBtn.addEventListener('click', (e) => { if (isDragging) return; if (clickTimeout) { clearTimeout(clickTimeout); clickTimeout = null; closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true'; setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000); } else { clickTimeout = setTimeout(() => { clickTimeout = null; toggleTheme(); }, 300); } });
+    closeBtn.addEventListener('click', (e) => { e.stopPropagation(); themeBtn.style.display = 'none'; localStorage.setItem('vitaotub_theme_hidden', 'true'); });
+    themeBtn.addEventListener('mousedown', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.clientX; startY = e.clientY; const rect = themeBtn.getBoundingClientRect(); startTop = rect.top; startRight = window.innerWidth - rect.right; themeBtn.style.transition = 'none'; e.preventDefault(); });
+    themeBtn.addEventListener('touchstart', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; const rect = themeBtn.getBoundingClientRect(); startTop = rect.top; startRight = window.innerWidth - rect.right; themeBtn.style.transition = 'none'; }, { passive: true });
+    document.addEventListener('mousemove', (e) => { if (!isDragging) return; themeBtn.style.top = `${startTop + e.clientY - startY}px`; themeBtn.style.right = `${startRight - (e.clientX - startX)}px`; themeBtn.style.left = 'auto'; themeBtn.style.bottom = 'auto'; });
+    document.addEventListener('touchmove', (e) => { if (!isDragging) return; themeBtn.style.top = `${startTop + e.touches[0].clientY - startY}px`; themeBtn.style.right = `${startRight - (e.touches[0].clientX - startX)}px`; themeBtn.style.left = 'auto'; themeBtn.style.bottom = 'auto'; }, { passive: true });
+    document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; themeBtn.style.transition = ''; } });
+    document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; themeBtn.style.transition = ''; } });
 }
 
 // ==================== 12. BOTÃO VOLTAR AO TOPO ====================
@@ -349,4 +375,4 @@ const backToTopButton = document.getElementById('back-to-top');
 if (backToTopButton) { backToTopButton.addEventListener('click', function(e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
 
 // ==================== 13. INICIALIZAÇÃO ====================
-document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); initDraggableTranslate(); initThemeToggle(); verificarArtigoNaUrl(); });
+document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); initDraggableTranslate(); initThemeToggle(); initDraggableTheme(); verificarArtigoNaUrl(); });
