@@ -158,26 +158,39 @@ body {
 .artigo-corpo .artigo-video-embed { position: relative; padding-bottom: 56.25%; height: 0; margin: 20px 0; border-radius: 8px; overflow: hidden; }
 .artigo-corpo .artigo-video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-.artigo-rodape { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); flex-wrap: wrap; gap: 10px; }
-.artigo-rodape-social { display: flex; gap: 6px; flex-wrap: wrap; }
-.artigo-rodape-acoes { display: flex; gap: 8px; align-items: center; }
+/* Rodapé do artigo - botões sempre na mesma linha */
+.artigo-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 8px;
+}
+.artigo-rodape-social {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+.artigo-rodape-acoes {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-shrink: 0;
+}
 
 /* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA ==================== */
 .artigo-fullscreen-modal {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     z-index: 99999;
     background: #0a0a0a;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
-.artigo-fullscreen-modal.active {
-    display: block;
-}
+.artigo-fullscreen-modal.active { display: block; }
 
 .artigo-fullscreen-content {
     width: 100%;
@@ -190,23 +203,17 @@ body {
     background: #0a0a0a;
 }
 
-/* Botão fechar - fixo no canto superior direito */
 .artigo-fullscreen-close {
     position: fixed;
-    top: 15px;
-    right: 15px;
+    top: 15px; right: 15px;
     z-index: 100001;
-    width: 40px;
-    height: 40px;
+    width: 40px; height: 40px;
     background: rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    color: #ffffff;
-    font-size: 1.2rem;
+    color: #ffffff; font-size: 1.2rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     transition: all 0.3s;
     -webkit-tap-highlight-color: transparent;
 }
@@ -218,56 +225,17 @@ body {
 }
 
 .artigo-fullscreen-body {
-    clear: both;
-    padding-top: 10px;
-    background: #0a0a0a;
-    width: 100%;
+    clear: both; padding-top: 10px;
+    background: #0a0a0a; width: 100%;
 }
-.artigo-fullscreen-body .artigo-banner {
-    margin: -20px -20px 20px -20px;
-    width: calc(100% + 40px);
-    border-radius: 0;
-}
-.artigo-fullscreen-body .artigo-titulo {
-    font-size: 1.6rem;
-    padding: 0 5px 10px 5px;
-    text-align: justify;
-    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
-}
-.artigo-fullscreen-body .artigo-resumo {
-    font-size: 1rem;
-    padding: 0 5px 10px 5px;
-    -webkit-line-clamp: unset;
-    overflow: visible;
-    text-align: justify;
-    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
-}
-.artigo-fullscreen-body .artigo-meta {
-    padding: 10px 5px;
-    margin-bottom: 15px;
-}
-.artigo-fullscreen-body .artigo-corpo {
-    max-height: none;
-    padding: 5px;
-    text-align: justify;
-    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
-}
-.artigo-fullscreen-body .artigo-corpo::after {
-    display: none;
-}
-.artigo-fullscreen-body .artigo-corpo p {
-    margin-bottom: 14px;
-    text-align: justify;
-    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
-}
-.artigo-fullscreen-body .artigo-corpo h3 {
-    font-size: 1.1rem;
-}
-/* Os botões do artigo clonado (artigo-rodape) aparecem naturalmente ao final do conteúdo */
+.artigo-fullscreen-body .artigo-banner { margin: -20px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
+.artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 5px 10px 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+.artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 5px 10px 5px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+.artigo-fullscreen-body .artigo-meta { padding: 10px 5px; margin-bottom: 15px; }
+.artigo-fullscreen-body .artigo-corpo { max-height: none; padding: 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+.artigo-fullscreen-body .artigo-corpo::after { display: none; }
+.artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+.artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
 
 /* ==================== 12. BOTÕES DE REDES SOCIAIS ==================== */
 .social-btn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #1a1a1a; color: #ffffff; border: 1px solid #333333; border-radius: 50%; font-size: 1rem; text-decoration: none; cursor: pointer; transition: all 0.3s ease; }
@@ -373,7 +341,27 @@ body {
     .artigo-titulo { font-size: 1.1rem; }
     .artigo-resumo { font-size: 0.85rem; }
     .artigo-meta { font-size: 0.75rem; }
-    .artigo-rodape { padding: 10px; }
+    /* Rodapé mobile - botões menores na mesma linha */
+    .artigo-rodape {
+        padding: 10px 12px;
+        gap: 4px;
+    }
+    .artigo-rodape-social {
+        gap: 3px;
+    }
+    .artigo-rodape-acoes {
+        gap: 4px;
+    }
+    .artigo-rodape .social-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+    .artigo-rodape .btn-action-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
     .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
 }
