@@ -6,7 +6,10 @@
  * modal de artigo em tela cheia com gesto de arraste e
  * formatação forçada (justificado, hifenizado, margens),
  * modal de vídeo com gesto de arraste (lados e baixo),
- * compartilhamento com link absoluto, PWA e botões flutuantes
+ * compartilhamento com link absoluto,
+ * PWA (apenas mobile) com memória de instalação,
+ * Botão de tradução arrastável e "fechável",
+ * Botão voltar ao topo
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
@@ -220,7 +223,6 @@ function abrirArtigoFullscreen(artigoId) {
         corpo.style.setProperty('-ms-hyphens', 'auto', 'important');
         corpo.style.setProperty('hyphens', 'auto', 'important');
         
-        // Aplica também em todos os parágrafos dentro do corpo
         const paragrafos = corpo.querySelectorAll('p');
         paragrafos.forEach(p => {
             p.style.setProperty('text-align', 'justify', 'important');
@@ -280,9 +282,159 @@ function setGoogleTranslateCookie(lang) { const date = new Date(); date.setTime(
 function updateActiveLanguage(lang) { document.querySelectorAll('.translate-option').forEach(btn => { btn.classList.remove('active-lang'); if (btn.getAttribute('data-lang') === lang) btn.classList.add('active-lang'); }); }
 function initTranslateWidget() { const toggleBtn = document.getElementById('translate-toggle'); const dropdown = document.getElementById('translate-dropdown'); if (!toggleBtn || !dropdown) return; toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTranslateDropdown(); }); setTimeout(() => { const match = document.cookie.match(/googtrans=\/pt\/([^;]+)/); if (match && match[1]) updateActiveLanguage(match[1]); }, 1500); }
 
-// ==================== 9. BOTÃO VOLTAR AO TOPO ====================
+// ==================== 9. BOTÃO DE TRADUÇÃO ARRASTÁVEL E FECHÁVEL ====================
+function initDraggableTranslate() {
+    const widget = document.getElementById('translate-widget');
+    const toggleBtn = document.getElementById('translate-toggle');
+    if (!widget || !toggleBtn) return;
+    
+    // Verifica se o botão foi fechado antes
+    if (localStorage.getItem('vitaotub_translate_hidden')) {
+        widget.style.display = 'none';
+        return;
+    }
+    
+    let isDragging = false;
+    let startX, startY, startLeft, startBottom;
+    
+    // Criar botão de fechar (X)
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'translate-close-btn';
+    closeBtn.innerHTML = '✕';
+    closeBtn.title = 'Esconder tradutor';
+    closeBtn.style.cssText = 'display:none;position:absolute;top:-8px;right:-8px;width:22px;height:22px;background:#ff0000;color:#fff;border:none;border-radius:50%;font-size:12px;cursor:pointer;z-index:1000;line-height:1;';
+    widget.appendChild(closeBtn);
+    
+    // Mostrar X ao passar o mouse (desktop)
+    toggleBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
+    widget.addEventListener('mouseleave', () => { if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; });
+    
+    // Toque rápido no mobile mostra o X
+    let clickTimeout;
+    toggleBtn.addEventListener('click', (e) => {
+        if (isDragging) return;
+        if (clickTimeout) {
+            clearTimeout(clickTimeout); clickTimeout = null;
+            closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true';
+            setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000);
+        } else {
+            clickTimeout = setTimeout(() => { clickTimeout = null; toggleTranslateDropdown(); }, 300);
+        }
+    });
+    
+    // Fechar permanentemente
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        widget.style.display = 'none';
+        localStorage.setItem('vitaotub_translate_hidden', 'true');
+    });
+    
+    // Arrastar (desktop)
+    toggleBtn.addEventListener('mousedown', (e) => {
+        if (e.target === closeBtn) return;
+        isDragging = true; startX = e.clientX; startY = e.clientY;
+        const rect = widget.getBoundingClientRect();
+        startLeft = rect.left; startBottom = window.innerHeight - rect.bottom;
+        widget.style.transition = 'none'; e.preventDefault();
+    });
+    
+    // Arrastar (mobile)
+    toggleBtn.addEventListener('touchstart', (e) => {
+        if (e.target === closeBtn) return;
+        isDragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+        const rect = widget.getBoundingClientRect();
+        startLeft = rect.left; startBottom = window.innerHeight - rect.bottom;
+        widget.style.transition = 'none';
+    }, { passive: true });
+    
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        widget.style.left = `${startLeft + e.clientX - startX}px`;
+        widget.style.bottom = `${startBottom - (e.clientY - startY)}px`;
+        widget.style.right = 'auto'; widget.style.top = 'auto';
+    });
+    
+    document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        widget.style.left = `${startLeft + e.touches[0].clientX - startX}px`;
+        widget.style.bottom = `${startBottom - (e.touches[0].clientY - startY)}px`;
+        widget.style.right = 'auto'; widget.style.top = 'auto';
+    }, { passive: true });
+    
+    document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; widget.style.transition = ''; } });
+    document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; widget.style.transition = ''; } });
+}
+
+// ==================== 10. BOTÃO DE INSTALAÇÃO PWA (APENAS MOBILE) ====================
+document.addEventListener("DOMContentLoaded", () => {
+    const pwaPopup = document.getElementById('pwa-install-popup');
+    const pwaFloatingBtn = document.getElementById('pwa-floating-btn');
+    if (!pwaPopup && !pwaFloatingBtn) return;
+    
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    
+    // Se for desktop, esconde tudo
+    if (!isMobile) {
+        if (pwaPopup) pwaPopup.style.display = 'none';
+        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
+        return;
+    }
+    
+    // Se já instalou
+    if (localStorage.getItem('vitaotub_pwa_installed')) {
+        if (pwaPopup) pwaPopup.style.display = 'none';
+        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
+        return;
+    }
+    
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone) { localStorage.setItem('vitaotub_pwa_installed', 'true'); return; }
+    
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); deferredPrompt = e;
+        const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
+        if (!jaRejeitou && pwaPopup) { pwaPopup.style.display = 'flex'; }
+        else if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; }
+    });
+    
+    const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
+    if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; }
+    
+    if (!jaRejeitou && pwaPopup) {
+        setTimeout(() => { if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) pwaPopup.style.display = 'flex'; }, 2000);
+    }
+    
+    const installBtn = document.getElementById('pwa-install-btn');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                pwaPopup.style.display = 'none'; deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; }
+                else { localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; }
+                deferredPrompt = null;
+            }
+        });
+    }
+    
+    const closeBtn = document.getElementById('pwa-close-btn');
+    if (closeBtn) { closeBtn.addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; }); }
+    
+    if (pwaFloatingBtn) {
+        pwaFloatingBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); pwaFloatingBtn.style.display = 'none'; }
+                deferredPrompt = null;
+            } else { alert('Para instalar, acesse as opções do seu navegador.'); }
+        });
+    }
+});
+
+// ==================== 11. BOTÃO VOLTAR AO TOPO ====================
 const backToTopButton = document.getElementById('back-to-top');
 if (backToTopButton) { backToTopButton.addEventListener('click', function(e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
 
-// ==================== 10. INICIALIZAÇÃO ====================
-document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); verificarArtigoNaUrl(); });
+// ==================== 12. INICIALIZAÇÃO ====================
+document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); initDraggableTranslate(); verificarArtigoNaUrl(); });

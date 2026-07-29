@@ -86,6 +86,26 @@
         </div>
     </div>
 
+    <!-- ==================== POPUP DE INSTALAÇÃO PWA (SOMENTE MOBILE) ==================== -->
+    <div id="pwa-install-popup" class="pwa-popup-overlay" style="display: none;">
+        <div class="pwa-popup-content">
+            <h2>Instalar App VitãoTub 🚀</h2>
+            <p>Instale o app no seu celular para acesso rápido, notificações e conteúdo offline!</p>
+            <button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button>
+            <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
+        </div>
+    </div>
+
+    <!-- ==================== BOTÃO FLUTUANTE DE INSTALAÇÃO (SOMENTE MOBILE) ==================== -->
+    <button id="pwa-floating-btn" class="pwa-floating-btn" style="display: none;" aria-label="Instalar aplicativo" title="Instalar aplicativo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span class="pwa-floating-text">Instalar App</span>
+    </button>
+
     <!-- ==================== BOTÃO DE TRADUÇÃO FLUTUANTE ==================== -->
     <div id="translate-widget" class="translate-widget">
         <button id="translate-toggle" class="translate-toggle" aria-label="Traduzir site" title="Traduzir site">

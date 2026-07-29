@@ -10,6 +10,8 @@
    Corpo do artigo visível e formatado no modal
    Textos justificados com hifenização e sem espaços excessivos
    Totalmente responsivo: mobile, tablet, desktop e TV
+   PWA apenas para mobile com popup e botão flutuante
+   Botão de tradução arrastável e fechável
    Otimizado para PWA
    Organizado por seções para facilitar manutenção
    ============================================================ */
@@ -295,6 +297,29 @@ body {
 .translate-option.active-lang { background: rgba(139, 92, 246, 0.2); color: var(--primary-purple); font-weight: 700; }
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
+/* Botão X de fechar tradução */
+.translate-close-btn {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1000;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+.translate-close-btn:hover {
+    background: #cc0000;
+    transform: scale(1.1);
+}
+
 .goog-te-banner-frame.skiptranslate, .goog-te-balloon-frame, .goog-te-gadget-icon { display: none !important; }
 .skiptranslate { display: none !important; height: 0 !important; }
 .goog-te-banner-frame { display: none !important; height: 0 !important; }
@@ -304,7 +329,51 @@ body {
 .back-to-top { position: fixed; bottom: 16px; right: 12px; width: 42px; height: 42px; background-color: var(--primary-purple); color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 1000; cursor: pointer; transition: all 0.3s ease; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .back-to-top:active { background-color: var(--primary-blue); transform: scale(0.95); }
 
-/* ==================== 17. MODAL DE VÍDEO EM TELA CHEIA ==================== */
+/* ==================== 17. POPUP PWA E BOTÃO FLUTUANTE (SOMENTE MOBILE) ==================== */
+.pwa-popup-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+}
+.pwa-popup-content {
+    background-color: #050505; color: #ffffff;
+    width: 80%; max-width: 400px; padding: 30px;
+    border-radius: 16px; text-align: center;
+    border: 2px solid #8b5cf6;
+    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+}
+.pwa-popup-content h2 { font-size: 1.5rem; margin-bottom: 10px; }
+.pwa-popup-content h2::after { display: none !important; }
+.pwa-popup-content p { color: #aaa; margin-bottom: 20px; font-size: 0.95rem; }
+.pwa-btn-install {
+    background-color: #8b5cf6; color: #fff; border: none;
+    padding: 12px 20px; font-size: 1rem; font-weight: bold;
+    border-radius: 8px; cursor: pointer; width: 100%;
+    margin-bottom: 10px; font-family: 'Satoshi', sans-serif;
+}
+.pwa-btn-install:hover { background-color: #7c4dff; }
+.pwa-btn-close {
+    background: transparent; color: #aaa; border: none;
+    padding: 10px; font-size: 0.9rem; cursor: pointer;
+    text-decoration: underline; font-family: 'Satoshi', sans-serif;
+}
+.pwa-btn-close:hover { color: #fff; }
+
+.pwa-floating-btn {
+    position: fixed; bottom: 140px; left: 12px; z-index: 998;
+    display: flex; align-items: center; gap: 6px;
+    background-color: var(--primary-purple); color: #ffffff;
+    border: none; padding: 8px 14px; border-radius: 25px;
+    cursor: pointer; font-family: 'Satoshi', sans-serif;
+    font-size: 0.8rem; font-weight: 600;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    transition: all 0.3s ease; white-space: nowrap;
+}
+.pwa-floating-btn:hover { background-color: var(--primary-blue); transform: translateY(-3px); }
+.pwa-floating-text { font-size: 0.8rem; }
+
+/* ==================== 18. MODAL DE VÍDEO EM TELA CHEIA ==================== */
 .video-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #000000; justify-content: center; align-items: center; flex-direction: column; }
 .video-fullscreen-modal.active { display: flex; }
 .video-fullscreen-close { position: fixed; top: 15px; right: 15px; z-index: 100001; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: #ffffff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; opacity: 1; pointer-events: all; -webkit-tap-highlight-color: transparent; }
@@ -323,63 +392,28 @@ body {
 .video-fullscreen-container.landscape { align-items: center; padding-top: 0; }
 .video-fullscreen-container.landscape iframe { width: 100%; height: 100%; }
 
-/* ==================== 18. RESPONSIVIDADE ==================== */
+/* ==================== 19. RESPONSIVIDADE ==================== */
 
 /* Tablet e Desktop: containers mais largos e grids */
 @media (min-width: 768px) {
-    .feed-header {
-        padding: 15px 30px;
-    }
-    .feed-logo {
-        width: 100px;
-        height: 100px;
-    }
-    .feed-title {
-        font-size: 1.8rem;
-    }
-    .feed-container {
-        max-width: 800px;
-    }
-    
-    /* Cards de vídeo em 2 colunas */
-    #youtube-feed-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-    #youtube-feed-container .feed-card {
-        margin-bottom: 0;
-    }
-    
-    /* Cards de artigo em 2 colunas */
-    #artigos-feed-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-    #artigos-feed-container .artigo-card {
-        margin-bottom: 0;
-    }
+    .feed-header { padding: 15px 30px; }
+    .feed-logo { width: 100px; height: 100px; }
+    .feed-title { font-size: 1.8rem; }
+    .feed-container { max-width: 800px; }
+    #youtube-feed-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    #youtube-feed-container .feed-card { margin-bottom: 0; }
+    #artigos-feed-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    #artigos-feed-container .artigo-card { margin-bottom: 0; }
 }
 
 /* Desktop grande: 3 colunas para vídeos */
 @media (min-width: 1024px) {
-    .feed-container {
-        max-width: 1000px;
-    }
-    
-    /* Cards de vídeo em 3 colunas */
-    #youtube-feed-container {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-    
-    /* Modal de artigo mais largo para leitura confortável */
-    .artigo-fullscreen-content {
-        max-width: 800px;
-    }
+    .feed-container { max-width: 1000px; }
+    #youtube-feed-container { grid-template-columns: 1fr 1fr 1fr; }
+    .artigo-fullscreen-content { max-width: 800px; }
 }
 
-/* Mobile: ajustes para telas pequenas */
+/* Mobile */
 @media (max-width: 767px) {
     .feed-header { padding: 15px 10px; }
     .feed-logo { width: 120px; height: 120px; }
@@ -389,7 +423,6 @@ body {
     .artigo-fullscreen-content { padding: 15px 15px 50px 15px; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
 }
-
 @media (max-width: 480px) {
     .feed-logo { width: 100px; height: 100px; }
     .feed-title { font-size: 1.2rem; }
@@ -415,12 +448,11 @@ body {
     .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
 }
-
 @media (orientation: landscape) {
     .video-actions-bar { bottom: 30px; }
     .video-actions-bar .btn-action-icon { width: 36px; height: 36px; font-size: 1rem; }
 }
 
-/* ==================== 19. ACESSIBILIDADE ==================== */
+/* ==================== 20. ACESSIBILIDADE ==================== */
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--primary-purple); outline-offset: 3px; border-radius: 4px; }
