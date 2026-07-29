@@ -294,8 +294,42 @@ document.addEventListener('click', function(e) { const translateDropdown = docum
 
 // ==================== 8. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
 function toggleTranslateDropdown() { const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.toggle('active'); }
-function translatePage(lang) { if (lang === 'pt') { setGoogleTranslateCookie('pt'); window.location.reload(); return; } setGoogleTranslateCookie(lang); const checkExist = setInterval(() => { const select = document.querySelector('.goog-te-combo'); if (select) { clearInterval(checkExist); select.value = lang; select.dispatchEvent(new Event('change')); const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.remove('active'); updateActiveLanguage(lang); } }, 100); setTimeout(() => { if (!document.querySelector('.goog-te-combo')) window.location.reload(); }, 3000); }
-function setGoogleTranslateCookie(lang) { const date = new Date(); date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000)); const expires = date.toUTCString(); document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = lang === 'pt' ? `googtrans=/pt/pt; expires=${expires}; path=/` : `googtrans=/pt/${lang}; expires=${expires}; path=/`; }
+
+function translatePage(lang) {
+    if (lang === 'pt') {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+            select.value = 'pt';
+            select.dispatchEvent(new Event('change'));
+            setTimeout(() => {
+                document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;';
+                document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;';
+                window.location.reload();
+            }, 300);
+        } else {
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;';
+            window.location.reload();
+        }
+        const dropdown = document.getElementById('translate-dropdown');
+        if (dropdown) dropdown.classList.remove('active');
+        return;
+    }
+    setGoogleTranslateCookie(lang);
+    const checkExist = setInterval(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) { clearInterval(checkExist); select.value = lang; select.dispatchEvent(new Event('change')); const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.remove('active'); updateActiveLanguage(lang); }
+    }, 100);
+    setTimeout(() => { if (!document.querySelector('.goog-te-combo')) window.location.reload(); }, 3000);
+}
+
+function setGoogleTranslateCookie(lang) {
+    const date = new Date(); date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000)); const expires = date.toUTCString();
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = lang === 'pt' ? `googtrans=/pt/pt; expires=${expires}; path=/` : `googtrans=/pt/${lang}; expires=${expires}; path=/`;
+}
 function updateActiveLanguage(lang) { document.querySelectorAll('.translate-option').forEach(btn => { btn.classList.remove('active-lang'); if (btn.getAttribute('data-lang') === lang) btn.classList.add('active-lang'); }); }
 function initTranslateWidget() { const toggleBtn = document.getElementById('translate-toggle'); const dropdown = document.getElementById('translate-dropdown'); if (!toggleBtn || !dropdown) return; toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTranslateDropdown(); }); setTimeout(() => { const match = document.cookie.match(/googtrans=\/pt\/([^;]+)/); if (match && match[1]) updateActiveLanguage(match[1]); }, 1500); }
 
