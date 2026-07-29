@@ -7,6 +7,7 @@
    Ícones com tamanhos responsivos (clamp)
    7 redes sociais com efeitos hover
    Cards sem corpo do artigo, resumo expandido, botão centralizado
+   Corpo do artigo visível no modal
    Otimizado para mobile (PWA)
    Organizado por seções para facilitar manutenção
    ============================================================ */
@@ -228,9 +229,10 @@ body {
 .artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 5px 10px 5px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-meta { padding: 10px 5px; margin-bottom: 15px; }
 
-/* No modal, o corpo do artigo é visível */
+/* No modal, o corpo do artigo é SEMPRE visível */
+.artigo-fullscreen-body .artigo-card .artigo-corpo,
 .artigo-fullscreen-body .artigo-corpo {
-    display: block;
+    display: block !important;
     max-height: none;
     padding: 5px;
     text-align: justify;

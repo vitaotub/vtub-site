@@ -4,7 +4,7 @@
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
  * sistema de artigos com scroll infinito e destaque,
  * modal de artigo em tela cheia com gesto de arraste,
- * modal de vídeo com gesto de arraste para baixo,
+ * modal de vídeo com gesto de arraste (lados e baixo),
  * compartilhamento com link absoluto, PWA e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
@@ -119,12 +119,72 @@ function abrirVideoModal(videoId) {
 function fecharVideoModal() { const modal = document.getElementById('video-fullscreen-modal'); const iframe = document.getElementById('video-fullscreen-iframe'); if (modal) { modal.classList.remove('active'); if (iframe) iframe.src = ''; document.body.style.overflow = ''; } window.removeEventListener('orientationchange', verificarOrientacao); }
 function verificarOrientacao() { const container = document.getElementById('video-container'); if (!container) return; if (window.innerWidth > window.innerHeight) { container.classList.add('landscape'); container.classList.remove('portrait'); } else { container.classList.add('portrait'); container.classList.remove('landscape'); } }
 function compartilharVideo(videoId) { const videoUrl = `https://www.youtube.com/watch?v=${videoId}`; const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent); if (isMobile && navigator.share) { navigator.share({ title: 'Confira este vídeo do VitãoTub!', text: 'Assista este vídeo no YouTube', url: videoUrl }).catch(() => {}); } else { navigator.clipboard.writeText(videoUrl).then(() => { alert('Link do vídeo copiado!'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = videoUrl; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do vídeo copiado!'); }); } }
+
+/**
+ * Gesto de arrastar para fechar o player de vídeo
+ * Suporta arrastar para os lados (← →) e para baixo (↓)
+ */
 function initVideoSwipeToClose() {
-    const modal = document.getElementById('video-fullscreen-modal'); if (!modal) return;
-    let startY = 0, currentY = 0, isDragging = false;
-    modal.addEventListener('touchstart', (e) => { if (e.target === modal) { startY = e.touches[0].clientY; isDragging = true; modal.style.transition = 'none'; } }, { passive: true });
-    modal.addEventListener('touchmove', (e) => { if (!isDragging) return; currentY = e.touches[0].clientY; const diffY = currentY - startY; if (diffY > 20) { modal.style.transform = `translateY(${diffY}px)`; modal.style.opacity = 1 - Math.abs(diffY) / 500; } }, { passive: true });
-    modal.addEventListener('touchend', () => { if (!isDragging) return; isDragging = false; const diffY = currentY - startY; modal.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; if (diffY > 150) { modal.style.transform = 'translateY(100%)'; modal.style.opacity = '0'; setTimeout(() => { fecharVideoModal(); modal.style.transform = ''; modal.style.opacity = ''; }, 300); } else { modal.style.transform = ''; modal.style.opacity = ''; } currentY = 0; });
+    const modal = document.getElementById('video-fullscreen-modal');
+    if (!modal) return;
+    
+    let startX = 0, startY = 0, currentX = 0, currentY = 0, isDragging = false;
+    
+    modal.addEventListener('touchstart', (e) => {
+        if (e.target === modal) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isDragging = true;
+            modal.style.transition = 'none';
+        }
+    }, { passive: true });
+    
+    modal.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
+        
+        // Prioriza o movimento horizontal se for maior que o vertical
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (Math.abs(diffX) > 20) {
+                modal.style.transform = `translateX(${diffX}px)`;
+                modal.style.opacity = 1 - Math.abs(diffX) / 400;
+            }
+        } else if (diffY > 20) {
+            modal.style.transform = `translateY(${diffY}px)`;
+            modal.style.opacity = 1 - Math.abs(diffY) / 500;
+        }
+    }, { passive: true });
+    
+    modal.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
+        modal.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        
+        // Fecha se arrastou mais de 100px horizontal ou 150px vertical
+        if (Math.abs(diffX) > 100 || diffY > 150) {
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                modal.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)';
+            } else {
+                modal.style.transform = 'translateY(100%)';
+            }
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                fecharVideoModal();
+                modal.style.transform = '';
+                modal.style.opacity = '';
+            }, 300);
+        } else {
+            modal.style.transform = '';
+            modal.style.opacity = '';
+        }
+        currentX = 0;
+        currentY = 0;
+    });
 }
 
 // ==================== 6. SISTEMA DE ARTIGOS ====================
@@ -165,7 +225,6 @@ function carregarMaisArtigos() {
         card.addEventListener('click', function(e) { if (e.target.closest('button') || e.target.closest('a') || e.target.closest('iframe')) return; abrirArtigoFullscreen(artigo.id); });
         const btnLerMais = document.createElement('button'); btnLerMais.className = 'btn-ler-mais'; btnLerMais.innerHTML = '📖 Ler Artigo Completo';
         btnLerMais.addEventListener('click', function(e) { e.stopPropagation(); abrirArtigoFullscreen(artigo.id); });
-        // Insere o botão após a meta (data/autor)
         const meta = card.querySelector('.artigo-meta');
         if (meta) { meta.after(btnLerMais); } else { card.appendChild(btnLerMais); }
         container.appendChild(card);
