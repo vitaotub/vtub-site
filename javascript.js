@@ -5,7 +5,7 @@
  * sistema completo de artigos com scroll infinito,
  * modal de artigo em tela cheia, modal de vídeo com botão X,
  * compartilhamento, PWA com auto-update e botões flutuantes
- * Organizado por seções para facilitar manutenção
+ * Organizado por seções para facilitar manutenção!
  * ============================================================
  */
 
