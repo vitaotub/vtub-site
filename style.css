@@ -1,8 +1,9 @@
 /* ============================================================
    VITÃOTUB - ESTILOS PRINCIPAIS
    Descrição: Tema escuro, responsivo, com cards, gráficos,
-   modais com botão X e gesto de arraste, formulário de contato,
-   botões flutuantes e menu mobile
+   modais com botão X (símbolo ✕) e gesto de arraste,
+   formulário de contato, botões flutuantes e menu mobile
+   Layout não se move ao abrir modais (compensação de scrollbar)
    Organizado por seções para facilitar manutenção
    ============================================================ */
 
@@ -37,22 +38,18 @@ h1, h2, h3, nav a, button { font-family: 'Satoshi', sans-serif; }
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; height: auto; display: block; }
 
+/* Impede que o body se mova quando a scrollbar desaparece */
+body.modal-open {
+    overflow: hidden;
+}
+
 /* ==================== 3. BACKGROUND VISUAL ==================== */
 .bg-wrapper { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-.bg-gradient-1 {
-    position: absolute; width: 600px; height: 600px; top: -100px; left: -100px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
-    filter: blur(80px);
-}
+.bg-gradient-1 { position: absolute; width: 600px; height: 600px; top: -100px; left: -100px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%); filter: blur(80px); }
 .bg-noise { position: absolute; inset: 0; opacity: 0.03; }
 
 /* ==================== 4. HEADER E NAVEGAÇÃO ==================== */
-header {
-    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-    padding: 20px 0; background: rgba(5, 5, 5, 0.85);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 20px 0; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 .header-content { max-width: var(--container-max); margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
 header h1 span { color: var(--primary-purple); }
 nav ul { display: flex; gap: 30px; list-style: none; }
@@ -197,12 +194,17 @@ h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: tr
 #privacy-modal.active { display: flex !important; }
 #privacy-modal .modal-content { background: #111; border: 1px solid #333; border-radius: 12px; width: 92% !important; max-width: 800px; max-height: 80vh !important; padding: 25px !important; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); margin: auto; transition: transform 0.3s ease, opacity 0.3s ease; }
 
-.modal-close-btn { position: sticky; top: 0; float: right; z-index: 10; width: 38px; height: 38px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 50%; color: #ffffff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
+/* Botão X (usa símbolo ✕ - não depende de fontes) */
+.modal-close-btn { position: sticky; top: 0; float: right; z-index: 10; width: 38px; height: 38px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
 .modal-close-btn:hover, .modal-close-btn:active { background: rgba(255, 0, 0, 0.7); border-color: #ff0000; transform: scale(1.05); }
+.modal-close-icon { font-size: 1.2rem; line-height: 1; display: block; font-weight: 300; color: #ffffff; }
+.modal-close-btn:hover .modal-close-icon, .modal-close-btn:active .modal-close-icon { color: #ffffff; }
 
+/* Indicador de arraste */
 .modal-swipe-indicator { display: flex; justify-content: center; padding: 0 0 12px 0; position: sticky; top: 0; z-index: 5; }
 .modal-swipe-indicator span { display: block; width: 40px; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
 
+/* Conteúdo do modal */
 #privacy-content-target, #privacy-content-target * { -webkit-hyphens: auto !important; -moz-hyphens: auto !important; -ms-hyphens: auto !important; hyphens: auto !important; overflow-wrap: break-word !important; word-wrap: break-word !important; }
 #privacy-content-target p, #privacy-content-target li, #privacy-content-target span, #privacy-content-target div.privacy-body, #privacy-content-target div.privacy-notice { text-align: justify !important; text-justify: inter-word !important; text-align-last: left; font-size: 1.05rem; line-height: 1.8; }
 #privacy-content-target p, #privacy-content-target li { margin-bottom: 1.2em; }
@@ -213,7 +215,7 @@ h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: tr
 #privacy-content-target ul, #privacy-content-target ol { padding-left: 20px; margin-bottom: 1.5em; }
 #privacy-content-target a { color: var(--primary-blue); text-decoration: none; font-weight: 500; transition: var(--transition-smooth); }
 #privacy-content-target a:hover { color: var(--primary-purple); text-decoration: underline; }
-@media (max-width: 600px) { #privacy-modal .modal-content { padding: 20px 15px !important; max-height: 85vh !important; } .modal-close-btn { width: 34px; height: 34px; font-size: 1rem; } #privacy-content-target h1 { font-size: 1.5rem; } }
+@media (max-width: 600px) { #privacy-modal .modal-content { padding: 20px 15px !important; max-height: 85vh !important; } .modal-close-btn { width: 34px; height: 34px; } .modal-close-icon { font-size: 1rem; } #privacy-content-target h1 { font-size: 1.5rem; } }
 
 /* ==================== 15. FORMULÁRIO DE CONTATO ==================== */
 #contact-form { display: flex; flex-direction: column; gap: 20px; }

@@ -1,10 +1,9 @@
 /**
  * ============================================================
  * VITÃOTUB - JAVASCRIPT PRINCIPAL
- * Descrição: Lógica de interações, modais com botão X e
- * gesto de arraste, PWA com memória de instalação, formulário,
- * OneSignal, Service Worker, banner LGPD, botão de tradução
- * e menu mobile
+ * Descrição: Lógica de interações, modais com botão X (✕) e
+ * gesto de arraste, PWA com memória, formulário, OneSignal,
+ * Service Worker, banner LGPD, botão de tradução e menu mobile
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
@@ -21,33 +20,12 @@ const CONFIG = {
 
 // ==================== 2. INTEGRAÇÃO ONESIGNAL PUSH ====================
 window.OneSignalDeferred = window.OneSignalDeferred || [];
-OneSignalDeferred.push(function(OneSignal) {
-    OneSignal.init({
-        appId: "24dbec09-7c58-4193-9d90-8417abc8564e",
-        safari_web_id: "SEU_ID_SAFARI_AQUI_SE_HOUVER",
-        notifyButton: { enable: true },
-    });
-});
+OneSignalDeferred.push(function(OneSignal) { OneSignal.init({ appId: "24dbec09-7c58-4193-9d90-8417abc8564e", safari_web_id: "SEU_ID_SAFARI_AQUI_SE_HOUVER", notifyButton: { enable: true } }); });
 
 // ==================== 3. SERVICE WORKER E PWA ====================
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(registration => { console.log('Service Worker registrado com sucesso!'); })
-            .catch(error => { console.log('Erro ao registrar o Service Worker:', error); });
-    });
-    navigator.serviceWorker.ready.then(registration => {
-        registration.update();
-        registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    console.log('Nova versão do app disponível. Atualizando...');
-                    window.location.reload();
-                }
-            });
-        });
-    });
+    window.addEventListener('load', () => { navigator.serviceWorker.register('/service-worker.js').then(registration => { console.log('Service Worker registrado com sucesso!'); }).catch(error => { console.log('Erro ao registrar o Service Worker:', error); }); });
+    navigator.serviceWorker.ready.then(registration => { registration.update(); registration.addEventListener('updatefound', () => { const newWorker = registration.installing; newWorker.addEventListener('statechange', () => { if (newWorker.state === 'installed' && navigator.serviceWorker.controller) { console.log('Nova versão do app disponível. Atualizando...'); window.location.reload(); } }); }); });
 }
 
 // ==================== 4. POPUP DE INSTALAÇÃO DO APP (PWA) COM MEMÓRIA ====================
@@ -58,13 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const pwaFloatingBtn = document.getElementById('pwa-floating-btn');
     if (!pwaPopup) return;
     let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); deferredPrompt = e;
-        const jaInstalou = localStorage.getItem('vitaotub_pwa_installed');
-        const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
-        if (!jaInstalou && !jaRejeitou) { pwaPopup.style.display = 'flex'; }
-        else if (jaRejeitou) { if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; }
-    });
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const jaInstalou = localStorage.getItem('vitaotub_pwa_installed'); const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected'); if (!jaInstalou && !jaRejeitou) { pwaPopup.style.display = 'flex'; } else if (jaRejeitou) { if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; } });
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     if (isStandalone) { localStorage.setItem('vitaotub_pwa_installed', 'true'); return; }
     const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
@@ -77,8 +49,25 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==================== 5. CONTROLE DE SCROLL (MODAIS) ====================
-function lockScroll() { const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth; document.body.style.overflow = 'hidden'; document.body.style.paddingRight = `${scrollbarWidth}px`; const header = document.querySelector('header'); if (header) header.style.paddingRight = `${scrollbarWidth}px`; }
-function unlockScroll() { document.body.style.overflow = ''; document.body.style.paddingRight = ''; const header = document.querySelector('header'); if (header) header.style.paddingRight = ''; }
+function lockScroll() {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+    document.body.classList.add('modal-open');
+    const header = document.querySelector('header');
+    if (header) header.style.paddingRight = `${scrollbarWidth}px`;
+    const fixedElements = document.querySelectorAll('.back-to-top, .translate-widget, .pwa-floating-btn');
+    fixedElements.forEach(el => { el.style.marginRight = `${scrollbarWidth}px`; });
+}
+function unlockScroll() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    document.body.classList.remove('modal-open');
+    const header = document.querySelector('header');
+    if (header) header.style.paddingRight = '';
+    const fixedElements = document.querySelectorAll('.back-to-top, .translate-widget, .pwa-floating-btn');
+    fixedElements.forEach(el => { el.style.marginRight = ''; });
+}
 
 // ==================== 6. ANIMAÇÃO DE ESTATÍSTICAS ====================
 const statsObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { const fills = entry.target.querySelectorAll('.demo-bar-fill, .bar-fill'); fills.forEach(fill => { const targetWidth = fill.getAttribute('data-width') || fill.parentElement.getAttribute('data-width') || "100%"; fill.style.width = targetWidth; }); } }); }, { threshold: 0.1 });
@@ -91,32 +80,17 @@ function closeVideo() { const modal = document.getElementById(CONFIG.modalId); c
 // ==================== 8. MODAL DE PRIVACIDADE E TERMOS ====================
 async function openPrivacyModal() { await loadModalContent('./politica-de-privacidade.html'); }
 async function openTermsModal() { await loadModalContent('./termos-de-uso.html'); }
-
 async function loadModalContent(filePath) {
     const modal = document.getElementById(CONFIG.privacyModalId);
     const target = document.getElementById(CONFIG.privacyTargetId);
-    if (modal && target) {
-        modal.style.display = 'flex'; modal.classList.add('active'); lockScroll();
-        target.innerHTML = '<p>Carregando conteúdo...</p>';
-        try {
-            const response = await fetch(filePath);
-            if (!response.ok) throw new Error('Arquivo não encontrado');
-            target.innerHTML = await response.text();
-            initSwipeToClose();
-        } catch (error) {
-            target.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar o conteúdo.</p><p><a href="${filePath}" target="_blank" style="color: var(--primary-purple);">Clique aqui para abrir em uma nova aba.</a></p>`;
-        }
-    }
+    if (modal && target) { modal.style.display = 'flex'; modal.classList.add('active'); lockScroll(); target.innerHTML = '<p>Carregando conteúdo...</p>'; try { const response = await fetch(filePath); if (!response.ok) throw new Error('Arquivo não encontrado'); target.innerHTML = await response.text(); initSwipeToClose(); } catch (error) { target.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar o conteúdo.</p><p><a href="${filePath}" target="_blank" style="color: var(--primary-purple);">Clique aqui para abrir em uma nova aba.</a></p>`; } }
 }
-
 function closePrivacyModal() {
     const modal = document.getElementById(CONFIG.privacyModalId);
     if (modal) { modal.classList.remove('active'); setTimeout(() => { if (!modal.classList.contains('active')) modal.style.display = 'none'; }, 300); unlockScroll(); }
-    // Reseta o estilo do conteúdo
     const content = document.getElementById('privacy-modal-content');
     if (content) { content.style.transform = ''; content.style.opacity = ''; }
 }
-
 function initSwipeToClose() {
     const modal = document.getElementById(CONFIG.privacyModalId);
     const content = document.getElementById('privacy-modal-content');
@@ -146,10 +120,7 @@ document.addEventListener("DOMContentLoaded", initCookieBanner);
 
 // ==================== 13. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
 function toggleTranslateDropdown() { const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.toggle('active'); }
-function translatePage(lang) {
-    if (lang === 'pt') { const select = document.querySelector('.goog-te-combo'); if (select) { select.value = 'pt'; select.dispatchEvent(new Event('change')); setTimeout(() => { document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;'; window.location.reload(); }, 300); } else { document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;'; window.location.reload(); } const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.remove('active'); return; }
-    setGoogleTranslateCookie(lang); const checkExist = setInterval(() => { const select = document.querySelector('.goog-te-combo'); if (select) { clearInterval(checkExist); select.value = lang; select.dispatchEvent(new Event('change')); const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.remove('active'); updateActiveLanguage(lang); } }, 100); setTimeout(() => { if (!document.querySelector('.goog-te-combo')) window.location.reload(); }, 3000);
-}
+function translatePage(lang) { if (lang === 'pt') { const select = document.querySelector('.goog-te-combo'); if (select) { select.value = 'pt'; select.dispatchEvent(new Event('change')); setTimeout(() => { document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;'; window.location.reload(); }, 300); } else { document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;'; window.location.reload(); } const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.remove('active'); return; } setGoogleTranslateCookie(lang); const checkExist = setInterval(() => { const select = document.querySelector('.goog-te-combo'); if (select) { clearInterval(checkExist); select.value = lang; select.dispatchEvent(new Event('change')); const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.remove('active'); updateActiveLanguage(lang); } }, 100); setTimeout(() => { if (!document.querySelector('.goog-te-combo')) window.location.reload(); }, 3000); }
 function setGoogleTranslateCookie(lang) { const date = new Date(); date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000)); const expires = date.toUTCString(); document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = lang === 'pt' ? `googtrans=/pt/pt; expires=${expires}; path=/` : `googtrans=/pt/${lang}; expires=${expires}; path=/`; }
 function updateActiveLanguage(lang) { document.querySelectorAll('.translate-option').forEach(btn => { btn.classList.remove('active-lang'); if (btn.getAttribute('data-lang') === lang) btn.classList.add('active-lang'); }); }
 function initTranslateWidget() { const toggleBtn = document.getElementById('translate-toggle'); const dropdown = document.getElementById('translate-dropdown'); if (!toggleBtn || !dropdown) return; toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTranslateDropdown(); }); setTimeout(() => { const match = document.cookie.match(/googtrans=\/pt\/([^;]+)/); if (match && match[1]) updateActiveLanguage(match[1]); }, 1500); }
