@@ -7,7 +7,8 @@
    Ícones com tamanhos responsivos (clamp)
    7 redes sociais com efeitos hover
    Cards sem corpo do artigo, resumo expandido, botão centralizado
-   Corpo do artigo visível no modal
+   Corpo do artigo visível e formatado no modal
+   Textos justificados com hifenização e sem espaços excessivos
    Otimizado para mobile (PWA)
    Organizado por seções para facilitar manutenção
    ============================================================ */
@@ -95,27 +96,25 @@ body {
 
 /* ==================== 9. CONTEÚDO DOS CARDS DE VÍDEO ==================== */
 .feed-content { padding: 15px; }
-.feed-content h2 { margin: 0 0 8px 0; font-size: 1.3rem; color: #ffffff; text-align: justify; font-family: 'Satoshi', sans-serif; }
+.feed-content h2 {
+    margin: 0 0 8px 0; font-size: 1.3rem; color: #ffffff;
+    text-align: justify; font-family: 'Satoshi', sans-serif;
+    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word;
+    text-justify: inter-word; word-break: break-word;
+}
 .feed-meta-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-    color: #aaa;
-    margin-bottom: 12px;
-    flex-wrap: nowrap;
-    gap: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85rem; color: #aaa; margin-bottom: 12px;
+    flex-wrap: nowrap; gap: 10px;
 }
 .feed-date { color: #8b5cf6; font-weight: bold; white-space: nowrap; }
 .feed-author { color: #3b82f6; font-weight: 600; white-space: nowrap; }
 
 /* ==================== 10. ARTIGOS (SISTEMA COMPLETO) ==================== */
 .artigo-card {
-    background-color: #1a1a1a;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 25px;
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    background-color: #1a1a1a; border-radius: 12px; overflow: hidden;
+    margin-bottom: 25px; border: 1px solid rgba(139, 92, 246, 0.2);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
     cursor: pointer;
@@ -137,7 +136,8 @@ body {
     padding: 20px 20px 0 20px; margin: 0;
     font-family: 'Satoshi', sans-serif; line-height: 1.4;
     text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+    overflow-wrap: break-word; word-wrap: break-word;
+    text-justify: inter-word; word-break: break-word;
 }
 
 /* Resumo expandido (sem limite de linhas) */
@@ -145,13 +145,12 @@ body {
     font-size: 0.95rem; color: var(--text-dim);
     padding: 10px 20px; margin: 0; line-height: 1.6;
     text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+    overflow-wrap: break-word; word-wrap: break-word;
+    text-justify: inter-word; word-break: break-word;
 }
 
 /* Esconde o corpo do artigo nos cards (só aparece no modal) */
-.artigo-card .artigo-corpo {
-    display: none;
-}
+.artigo-card .artigo-corpo { display: none; }
 
 .artigo-meta {
     display: flex; justify-content: space-between; align-items: center;
@@ -161,103 +160,77 @@ body {
 .artigo-data { color: var(--primary-purple); font-weight: 600; }
 .artigo-autor { color: var(--primary-blue); font-weight: 600; }
 
-/* Rodapé do artigo - botões responsivos com clamp() */
+/* Rodapé do artigo */
 .artigo-rodape {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; justify-content: space-between; align-items: center;
     padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     gap: clamp(4px, 1vw, 8px);
 }
-.artigo-rodape-social {
-    display: flex;
-    gap: clamp(2px, 0.5vw, 4px);
-    flex-shrink: 0;
-}
-.artigo-rodape-acoes {
-    display: flex;
-    gap: clamp(3px, 0.8vw, 6px);
-    align-items: center;
-    flex-shrink: 0;
-}
+.artigo-rodape-social { display: flex; gap: clamp(2px, 0.5vw, 4px); flex-shrink: 0; }
+.artigo-rodape-acoes { display: flex; gap: clamp(3px, 0.8vw, 6px); align-items: center; flex-shrink: 0; }
 
 /* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA ==================== */
 .artigo-fullscreen-modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 99999;
-    background: #0a0a0a;
-    overflow-y: auto;
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; z-index: 99999;
+    background: #0a0a0a; overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
 .artigo-fullscreen-modal.active { display: block; }
 
 .artigo-fullscreen-content {
-    width: 100%;
-    max-width: 800px;
-    min-height: 100vh;
-    min-height: 100dvh;
-    margin: 0 auto;
-    padding: 20px 20px 60px 20px;
-    position: relative;
-    background: #0a0a0a;
+    width: 100%; max-width: 800px;
+    min-height: 100vh; min-height: 100dvh;
+    margin: 0 auto; padding: 20px 20px 60px 20px;
+    position: relative; background: #0a0a0a;
 }
 
 .artigo-fullscreen-close {
-    position: fixed;
-    top: 15px; right: 15px;
-    z-index: 100001;
-    width: 40px; height: 40px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    color: #ffffff; font-size: 1.2rem;
-    cursor: pointer;
+    position: fixed; top: 15px; right: 15px; z-index: 100001;
+    width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
+    color: #ffffff; font-size: 1.2rem; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: all 0.3s;
-    -webkit-tap-highlight-color: transparent;
+    transition: all 0.3s; -webkit-tap-highlight-color: transparent;
 }
 .artigo-fullscreen-close:hover,
 .artigo-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
 
 .artigo-fullscreen-body { clear: both; padding-top: 10px; background: #0a0a0a; width: 100%; }
 .artigo-fullscreen-body .artigo-banner { margin: -20px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
-.artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 5px 10px 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
-.artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 5px 10px 5px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
-.artigo-fullscreen-body .artigo-meta { padding: 10px 5px; margin-bottom: 15px; }
+.artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 20px 10px 20px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
+.artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 20px 10px 20px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
+.artigo-fullscreen-body .artigo-meta { padding: 10px 20px; margin-bottom: 15px; }
 
-/* No modal, o corpo do artigo é SEMPRE visível */
+/* No modal, o corpo do artigo é visível e formatado */
 .artigo-fullscreen-body .artigo-card .artigo-corpo,
 .artigo-fullscreen-body .artigo-corpo {
     display: block !important;
     max-height: none;
-    padding: 5px;
+    padding: 15px 20px;
     text-align: justify;
     -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+    overflow-wrap: break-word; word-wrap: break-word;
+    text-justify: inter-word; word-break: break-word;
 }
 .artigo-fullscreen-body .artigo-corpo::after { display: none; }
-.artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+.artigo-fullscreen-body .artigo-corpo p {
+    margin-bottom: 14px; text-align: justify;
+    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word;
+    text-justify: inter-word; word-break: break-word;
+}
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
 
 /* ==================== 12. BOTÕES DE REDES SOCIAIS (RESPONSIVOS - 7 REDES) ==================== */
 .social-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: clamp(28px, 5vw, 36px);
-    height: clamp(28px, 5vw, 36px);
-    background-color: #1a1a1a;
-    color: #ffffff;
-    border: 1px solid #333333;
-    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: clamp(28px, 5vw, 36px); height: clamp(28px, 5vw, 36px);
+    background-color: #1a1a1a; color: #ffffff;
+    border: 1px solid #333333; border-radius: 50%;
     font-size: clamp(0.7rem, 1.5vw, 1rem);
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    text-decoration: none; cursor: pointer; transition: all 0.3s ease;
 }
 .social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; box-shadow: 0 0 12px rgba(225, 48, 108, 0.5); transform: translateY(-2px); }
 .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 12px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
@@ -269,19 +242,12 @@ body {
 
 /* ==================== 13. BOTÕES DE AÇÃO (RESPONSIVOS) ==================== */
 .btn-action-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: clamp(32px, 6vw, 42px);
-    height: clamp(32px, 6vw, 42px);
-    background-color: #1a1a1a;
-    color: #ffffff;
-    border: 1px solid #333333;
-    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: clamp(32px, 6vw, 42px); height: clamp(32px, 6vw, 42px);
+    background-color: #1a1a1a; color: #ffffff;
+    border: 1px solid #333333; border-radius: 50%;
     font-size: clamp(0.9rem, 1.8vw, 1.2rem);
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    text-decoration: none; cursor: pointer; transition: all 0.3s ease;
     -webkit-tap-highlight-color: transparent;
 }
 .btn-share-icon:hover { color: #8b5cf6; border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
@@ -289,22 +255,15 @@ body {
 
 /* Botão "Ler Artigo Completo" - centralizado */
 .btn-ler-mais {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 36px;
-    padding: 0 16px;
-    background: var(--gradient-brand);
-    color: #ffffff;
-    border: none;
-    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    height: 36px; padding: 0 16px;
+    background: var(--gradient-brand); color: #ffffff;
+    border: none; border-radius: 20px;
     font-size: clamp(0.8rem, 1.5vw, 0.85rem);
-    font-weight: 600;
-    cursor: pointer;
+    font-weight: 600; cursor: pointer;
     transition: var(--transition-smooth);
     font-family: 'Satoshi', sans-serif;
-    margin: 10px auto 15px auto;
-    width: fit-content;
+    margin: 10px auto 15px auto; width: fit-content;
 }
 .btn-ler-mais:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
@@ -314,7 +273,13 @@ body {
 .about-container { background: #1e1e1e; border-radius: 8px; padding: 30px 20px; text-align: center; border: 1px solid #333; }
 .about-profile h2 { color: #fff; margin-bottom: 5px; font-family: 'Satoshi', sans-serif; }
 .about-subtitle { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; }
-.about-bio p { color: #ccc; line-height: 1.6; margin-bottom: 15px; text-align: justify; }
+.about-bio p {
+    color: #ccc; line-height: 1.6; margin-bottom: 15px;
+    text-align: justify;
+    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word;
+    text-justify: inter-word; word-break: break-word;
+}
 
 /* ==================== 15. BOTÃO DE TRADUÇÃO FLUTUANTE ==================== */
 .translate-widget { position: fixed; bottom: 80px; left: 12px; z-index: 999; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
@@ -340,19 +305,15 @@ body {
 /* ==================== 17. MODAL DE VÍDEO EM TELA CHEIA ==================== */
 .video-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #000000; justify-content: center; align-items: center; flex-direction: column; }
 .video-fullscreen-modal.active { display: flex; }
-
 .video-fullscreen-close { position: fixed; top: 15px; right: 15px; z-index: 100001; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: #ffffff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; opacity: 1; pointer-events: all; -webkit-tap-highlight-color: transparent; }
 .video-fullscreen-close:hover, .video-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
-
 .video-tap-hint { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; font-family: 'Satoshi', sans-serif; background: rgba(0, 0, 0, 0.7); padding: 8px 16px; border-radius: 20px; z-index: 99999; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
 .video-tap-hint.visible { opacity: 1; }
-
 .video-actions-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 100001; opacity: 1; transition: opacity 0.3s; pointer-events: all; }
 .video-actions-bar.hidden { opacity: 0; pointer-events: none; }
 .video-actions-bar .btn-action-icon { width: 44px; height: 44px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: #ffffff; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .video-actions-bar .btn-share-icon:active { background: rgba(139, 92, 246, 0.8); border-color: #8b5cf6; transform: scale(1.1); }
 .video-actions-bar .btn-subscribe-icon:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
-
 .video-fullscreen-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
 .video-fullscreen-container iframe { width: 100%; height: 100%; border: none; }
 .video-fullscreen-container.portrait { align-items: flex-start; padding-top: 15%; }
@@ -372,7 +333,6 @@ body {
     .artigo-fullscreen-content { padding: 15px 15px 50px 15px; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
 }
-
 @media (max-width: 480px) {
     .feed-logo { width: 100px; height: 100px; }
     .feed-title { font-size: 1.2rem; }
@@ -398,7 +358,6 @@ body {
     .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
 }
-
 @media (orientation: landscape) {
     .video-actions-bar { bottom: 30px; }
     .video-actions-bar .btn-action-icon { width: 36px; height: 36px; font-size: 1rem; }
