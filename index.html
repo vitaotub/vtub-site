@@ -233,10 +233,17 @@
     <div id="lgpd-banner" class="lgpd-overlay"><div class="lgpd-container"><div class="lgpd-content"><p>Respeitamos sua privacidade. Utilizamos cookies para melhorar sua experiência técnica e analisar o tráfego. Consulte nossa <a href="javascript:void(0)" onclick="openPrivacyModal()">Política de Privacidade</a>.</p></div><div class="lgpd-actions"><button id="lgpd-reject" class="lgpd-btn-secondary">Recusar</button><button id="lgpd-accept" class="lgpd-btn-main">Aceitar</button></div></div></div>
 
     <!-- ==================== POPUP DE INSTALAÇÃO PWA ==================== -->
-    <div id="pwa-install-popup" class="pwa-popup-overlay" style="display: none;"><div class="pwa-popup-content"><h2>Bem-vindo ao VitãoTub! 🚀</h2><img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img"><p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p><button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button><button id="pwa-close-btn" class="pwa-btn-close">Agora não</button></div></div>
+    <div id="pwa-install-popup" class="pwa-popup-overlay" style="display: none;">
+     <div class="pwa-popup-content" id="pwa-popup-content">
+       <!-- Conteúdo dinâmico (alterado via JavaScript) -->
+     </div>
+    </div>
 
     <!-- ==================== BOTÃO FLUTUANTE DE INSTALAÇÃO PWA ==================== -->
     <button id="pwa-floating-btn" class="pwa-floating-btn" style="display: none;" aria-label="Instalar aplicativo" title="Instalar aplicativo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span class="pwa-floating-text">Instalar App</span></button>
+
+    <!-- ==================== BOTÃO DE TEMA (CLARO/ESCURO) ==================== -->
+    <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Alternar tema" title="Mudar para modo claro">☀️</button>
 
     <!-- ==================== BOTÃO DE TRADUÇÃO FLUTUANTE ==================== -->
     <div id="translate-widget" class="translate-widget"><button id="translate-toggle" class="translate-toggle" aria-label="Traduzir site" title="Traduzir site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button><div id="translate-dropdown" class="translate-dropdown"><span class="translate-dropdown-title">Traduzir para:</span><button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button><button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button><button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button></div></div>
