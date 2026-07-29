@@ -9,7 +9,8 @@
    Cards sem corpo do artigo, resumo expandido, botão centralizado
    Corpo do artigo visível e formatado no modal
    Textos justificados com hifenização e sem espaços excessivos
-   Otimizado para mobile (PWA)
+   Totalmente responsivo: mobile, tablet, desktop e TV
+   Otimizado para PWA
    Organizado por seções para facilitar manutenção
    ============================================================ */
 
@@ -60,7 +61,7 @@ body {
 .logo-subscribe-btn i { font-size: 1.4rem; }
 
 /* ==================== 5. ABAS DE NAVEGAÇÃO ==================== */
-.feed-tabs { display: flex; justify-content: center; gap: 12px; margin-top: 5px; }
+.feed-tabs { display: flex; justify-content: center; gap: 12px; margin-top: 5px; flex-wrap: wrap; }
 .tab-btn {
     background-color: #1a1a1a; color: #b0b0b0; border: 1px solid #333333; padding: 10px 20px;
     border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
@@ -69,8 +70,12 @@ body {
 .tab-btn:hover { border-color: #8b5cf6; color: #ffffff; }
 .tab-btn.active { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border-color: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); }
 
-/* ==================== 6. CONTAINER DO FEED ==================== */
-.feed-container { max-width: 600px; margin: 20px auto; padding: 0 15px 50px; }
+/* ==================== 6. CONTAINER DO FEED (RESPONSIVO) ==================== */
+.feed-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 15px 50px;
+}
 
 /* ==================== 7. CARDS DO FEED ==================== */
 .feed-card { background-color: #1a1a1a; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
@@ -140,7 +145,6 @@ body {
     text-justify: inter-word; word-break: break-word;
 }
 
-/* Resumo expandido (sem limite de linhas) */
 .artigo-resumo {
     font-size: 0.95rem; color: var(--text-dim);
     padding: 10px 20px; margin: 0; line-height: 1.6;
@@ -149,7 +153,6 @@ body {
     text-justify: inter-word; word-break: break-word;
 }
 
-/* Esconde o corpo do artigo nos cards (só aparece no modal) */
 .artigo-card .artigo-corpo { display: none; }
 
 .artigo-meta {
@@ -160,7 +163,6 @@ body {
 .artigo-data { color: var(--primary-purple); font-weight: 600; }
 .artigo-autor { color: var(--primary-blue); font-weight: 600; }
 
-/* Rodapé do artigo */
 .artigo-rodape {
     display: flex; justify-content: space-between; align-items: center;
     padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px);
@@ -180,9 +182,11 @@ body {
 .artigo-fullscreen-modal.active { display: block; }
 
 .artigo-fullscreen-content {
-    width: 100%; max-width: 800px;
+    width: 100%;
+    max-width: 800px;
     min-height: 100vh; min-height: 100dvh;
-    margin: 0 auto; padding: 20px 20px 60px 20px;
+    margin: 0 auto;
+    padding: 20px 20px 60px 20px;
     position: relative; background: #0a0a0a;
 }
 
@@ -203,7 +207,6 @@ body {
 .artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 20px 10px 20px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-meta { padding: 10px 20px; margin-bottom: 15px; }
 
-/* No modal, o corpo do artigo é visível e formatado */
 .artigo-fullscreen-body .artigo-card .artigo-corpo,
 .artigo-fullscreen-body .artigo-corpo {
     display: block !important;
@@ -253,7 +256,6 @@ body {
 .btn-share-icon:hover { color: #8b5cf6; border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
 .btn-subscribe-icon:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); transform: translateY(-2px); }
 
-/* Botão "Ler Artigo Completo" - centralizado */
 .btn-ler-mais {
     display: flex; align-items: center; justify-content: center;
     height: 36px; padding: 0 16px;
@@ -322,17 +324,72 @@ body {
 .video-fullscreen-container.landscape iframe { width: 100%; height: 100%; }
 
 /* ==================== 18. RESPONSIVIDADE ==================== */
-@media (max-width: 768px) {
+
+/* Tablet e Desktop: containers mais largos e grids */
+@media (min-width: 768px) {
+    .feed-header {
+        padding: 15px 30px;
+    }
+    .feed-logo {
+        width: 100px;
+        height: 100px;
+    }
+    .feed-title {
+        font-size: 1.8rem;
+    }
+    .feed-container {
+        max-width: 800px;
+    }
+    
+    /* Cards de vídeo em 2 colunas */
+    #youtube-feed-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    #youtube-feed-container .feed-card {
+        margin-bottom: 0;
+    }
+    
+    /* Cards de artigo em 2 colunas */
+    #artigos-feed-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    #artigos-feed-container .artigo-card {
+        margin-bottom: 0;
+    }
+}
+
+/* Desktop grande: 3 colunas para vídeos */
+@media (min-width: 1024px) {
+    .feed-container {
+        max-width: 1000px;
+    }
+    
+    /* Cards de vídeo em 3 colunas */
+    #youtube-feed-container {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    /* Modal de artigo mais largo para leitura confortável */
+    .artigo-fullscreen-content {
+        max-width: 800px;
+    }
+}
+
+/* Mobile: ajustes para telas pequenas */
+@media (max-width: 767px) {
     .feed-header { padding: 15px 10px; }
     .feed-logo { width: 120px; height: 120px; }
-    .feed-tabs { gap: 8px; }
-    .tab-btn { padding: 8px 14px; font-size: 0.85rem; }
     .feed-container { padding: 0 10px 40px; }
     .translate-widget { bottom: 70px; }
     .back-to-top { bottom: 12px; }
     .artigo-fullscreen-content { padding: 15px 15px 50px 15px; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
 }
+
 @media (max-width: 480px) {
     .feed-logo { width: 100px; height: 100px; }
     .feed-title { font-size: 1.2rem; }
@@ -358,6 +415,7 @@ body {
     .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
 }
+
 @media (orientation: landscape) {
     .video-actions-bar { bottom: 30px; }
     .video-actions-bar .btn-action-icon { width: 36px; height: 36px; font-size: 1rem; }
