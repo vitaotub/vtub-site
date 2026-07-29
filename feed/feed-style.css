@@ -138,6 +138,11 @@ body {
     overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
 }
 
+/* Esconde o corpo do artigo nos cards (só aparece no modal) */
+.artigo-card .artigo-corpo {
+    display: none;
+}
+
 .artigo-meta {
     display: flex; justify-content: space-between; align-items: center;
     padding: 10px 20px; font-size: 0.8rem; color: #aaa;
@@ -213,7 +218,16 @@ body {
 .artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 5px 10px 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 5px 10px 5px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-meta { padding: 10px 5px; margin-bottom: 15px; }
-.artigo-fullscreen-body .artigo-corpo { max-height: none; padding: 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
+
+/* No modal, o corpo do artigo é visível */
+.artigo-fullscreen-body .artigo-corpo {
+    display: block;
+    max-height: none;
+    padding: 5px;
+    text-align: justify;
+    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+}
 .artigo-fullscreen-body .artigo-corpo::after { display: none; }
 .artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
