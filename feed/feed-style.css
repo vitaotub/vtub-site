@@ -95,9 +95,18 @@ body {
 /* ==================== 9. CONTEÚDO DOS CARDS DE VÍDEO ==================== */
 .feed-content { padding: 15px; }
 .feed-content h2 { margin: 0 0 8px 0; font-size: 1.3rem; color: #ffffff; text-align: justify; font-family: 'Satoshi', sans-serif; }
-.feed-meta-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #aaa; margin-bottom: 12px; }
-.feed-date { color: #8b5cf6; font-weight: bold; }
-.feed-author { color: #3b82f6; font-weight: 600; }
+.feed-meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 12px;
+    flex-wrap: nowrap;
+    gap: 10px;
+}
+.feed-date { color: #8b5cf6; font-weight: bold; white-space: nowrap; }
+.feed-author { color: #3b82f6; font-weight: 600; white-space: nowrap; }
 
 /* ==================== 10. ARTIGOS (SISTEMA COMPLETO) ==================== */
 .artigo-card {
