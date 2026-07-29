@@ -5,7 +5,7 @@
  * offline do site principal e do feed (PWA)
  * Integração com OneSignal para push notifications
  * Auto-update: detecta novas versões e notifica o app
- * Versão: 1.8
+ * Versão: 1.0
  * ============================================================
  */
 
@@ -13,7 +13,7 @@
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v1.7';
+const CACHE_NAME = 'vitaotub-cache-v1.8';
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
