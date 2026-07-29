@@ -2,8 +2,8 @@
    VITÃOTUB - ESTILOS DO FEED
    Descrição: Tema escuro para feed de vídeos, artigos com
    efeito de destaque ao rolar, abas de navegação, modal de
-   artigo em tela cheia (sem footer fixo), modal de vídeo
-   e botões flutuantes
+   artigo em tela cheia (100% largura, botão X fixo no canto),
+   modal de vídeo e botões flutuantes
    Otimizado para mobile (PWA)
    Organizado por seções para facilitar manutenção
    ============================================================ */
@@ -166,47 +166,107 @@ body {
 .artigo-fullscreen-modal {
     display: none;
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 99999;
     background: #0a0a0a;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
-.artigo-fullscreen-modal.active { display: block; }
+.artigo-fullscreen-modal.active {
+    display: block;
+}
 
 .artigo-fullscreen-content {
+    width: 100%;
     max-width: 800px;
     min-height: 100vh;
     min-height: 100dvh;
     margin: 0 auto;
-    padding: 20px;
-    padding-bottom: 60px;
+    padding: 20px 20px 60px 20px;
     position: relative;
     background: #0a0a0a;
 }
 
+/* Botão fechar - fixo no canto superior direito */
 .artigo-fullscreen-close {
-    position: sticky; top: 15px; float: right; z-index: 100001;
-    width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%;
-    color: #ffffff; font-size: 1.2rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.3s; -webkit-tap-highlight-color: transparent;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 100001;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    -webkit-tap-highlight-color: transparent;
 }
-.artigo-fullscreen-close:hover { background: rgba(255, 0, 0, 0.7); border-color: #ff0000; }
+.artigo-fullscreen-close:hover,
+.artigo-fullscreen-close:active {
+    background: rgba(255, 0, 0, 0.8);
+    border-color: #ff0000;
+    transform: scale(1.1);
+}
 
-.artigo-fullscreen-body { clear: both; padding-top: 10px; background: #0a0a0a; }
-.artigo-fullscreen-body .artigo-banner { margin: -20px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
-.artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 5px 10px 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
-.artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 5px 10px 5px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
-.artigo-fullscreen-body .artigo-meta { padding: 10px 5px; margin-bottom: 15px; }
-.artigo-fullscreen-body .artigo-corpo { max-height: none; padding: 5px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
-.artigo-fullscreen-body .artigo-corpo::after { display: none; }
-.artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
-.artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
+.artigo-fullscreen-body {
+    clear: both;
+    padding-top: 10px;
+    background: #0a0a0a;
+    width: 100%;
+}
+.artigo-fullscreen-body .artigo-banner {
+    margin: -20px -20px 20px -20px;
+    width: calc(100% + 40px);
+    border-radius: 0;
+}
+.artigo-fullscreen-body .artigo-titulo {
+    font-size: 1.6rem;
+    padding: 0 5px 10px 5px;
+    text-align: justify;
+    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+}
+.artigo-fullscreen-body .artigo-resumo {
+    font-size: 1rem;
+    padding: 0 5px 10px 5px;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    text-align: justify;
+    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+}
+.artigo-fullscreen-body .artigo-meta {
+    padding: 10px 5px;
+    margin-bottom: 15px;
+}
+.artigo-fullscreen-body .artigo-corpo {
+    max-height: none;
+    padding: 5px;
+    text-align: justify;
+    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+}
+.artigo-fullscreen-body .artigo-corpo::after {
+    display: none;
+}
+.artigo-fullscreen-body .artigo-corpo p {
+    margin-bottom: 14px;
+    text-align: justify;
+    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
+    overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word;
+}
+.artigo-fullscreen-body .artigo-corpo h3 {
+    font-size: 1.1rem;
+}
 /* Os botões do artigo clonado (artigo-rodape) aparecem naturalmente ao final do conteúdo */
 
 /* ==================== 12. BOTÕES DE REDES SOCIAIS ==================== */
@@ -287,7 +347,7 @@ body {
     .feed-container { padding: 0 10px 40px; }
     .translate-widget { bottom: 70px; }
     .back-to-top { bottom: 12px; }
-    .artigo-fullscreen-content { padding: 15px; padding-bottom: 50px; }
+    .artigo-fullscreen-content { padding: 15px 15px 50px 15px; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
 }
 
@@ -314,8 +374,7 @@ body {
     .artigo-resumo { font-size: 0.85rem; }
     .artigo-meta { font-size: 0.75rem; }
     .artigo-rodape { padding: 10px; }
-    .artigo-fullscreen-content { padding: 10px; padding-bottom: 40px; }
-    .artigo-fullscreen-close { top: 8px; width: 34px; height: 34px; font-size: 1rem; }
+    .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
 }
 
