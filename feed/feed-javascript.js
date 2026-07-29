@@ -256,11 +256,26 @@ function abrirArtigoFullscreen(artigoId) {
     const modal = document.getElementById('artigo-fullscreen-modal');
     const body = document.getElementById('artigo-fullscreen-body');
     if (!modal || !body) return;
-    const conteudo = artigo.cloneNode(true); conteudo.style.cursor = 'default'; conteudo.classList.add('artigo-fullscreen-active');
-    const btnLerMais = conteudo.querySelector('.btn-ler-mais'); if (btnLerMais) btnLerMais.remove();
-    body.innerHTML = ''; body.appendChild(conteudo);
-    modal.classList.add('active'); document.body.style.overflow = 'hidden';
-    modal.scrollTop = 0; window.scrollTo(0, 0);
+    const conteudo = artigo.cloneNode(true);
+    conteudo.style.cursor = 'default';
+    conteudo.classList.add('artigo-fullscreen-active');
+    const btnLerMais = conteudo.querySelector('.btn-ler-mais');
+    if (btnLerMais) btnLerMais.remove();
+    
+    // 🔧 Força o corpo do artigo a ficar visível (ignora CSS)
+    const corpo = conteudo.querySelector('.artigo-corpo');
+    if (corpo) {
+        corpo.style.setProperty('display', 'block', 'important');
+        corpo.style.setProperty('max-height', 'none', 'important');
+        corpo.style.setProperty('overflow', 'visible', 'important');
+    }
+    
+    body.innerHTML = '';
+    body.appendChild(conteudo);
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    modal.scrollTop = 0;
+    window.scrollTo(0, 0);
     initArtigoSwipeToClose();
 }
 function fecharArtigoFullscreen() { const modal = document.getElementById('artigo-fullscreen-modal'); if (modal) { modal.classList.remove('active'); document.body.style.overflow = ''; } }
