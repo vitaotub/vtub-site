@@ -251,7 +251,7 @@ body {
 .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 12px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
 .social-btn.tiktok:hover { color: #ff0050; border-color: #ff0050; box-shadow: 0 0 12px rgba(255, 0, 80, 0.5); transform: translateY(-2px); }
 .social-btn.twitch:hover { color: #9146FF; border-color: #9146FF; box-shadow: 0 0 12px rgba(145, 70, 255, 0.5); transform: translateY(-2px); }
-.social-btn.x-twitter:hover { color: #1DA1F2; border-color: #1DA1F2; box-shadow: 0 0 12px rgba(29, 161, 242, 0.5); transform: translateY(-2px); }
+.social-btn.x-twitter:hover { color: #cccccc; border-color: #888888; box-shadow: 0 0 12px rgba(200, 200, 200, 0.4); transform: translateY(-2px); }
 .social-btn.github:hover { color: #ffffff; border-color: #ffffff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
 .social-btn.telegram:hover { color: #0088cc; border-color: #0088cc; box-shadow: 0 0 12px rgba(0, 136, 204, 0.5); transform: translateY(-2px); }
 
