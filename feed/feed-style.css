@@ -1,9 +1,8 @@
 /* ============================================================
    VITÃOTUB - ESTILOS DO FEED
-   Descrição: Tema escuro para feed de vídeos, artigos,
-   abas de navegação, modal de vídeo em tela cheia,
-   sistema completo de artigos com textos justificados
-   e botões flutuantes
+   Descrição: Tema escuro para feed de vídeos, artigos com
+   efeito de destaque ao rolar, abas de navegação, modal de
+   artigo em tela cheia real, modal de vídeo e botões flutuantes
    Otimizado para mobile (PWA)
    Organizado por seções para facilitar manutenção
    ============================================================ */
@@ -98,12 +97,32 @@ body {
 
 /* ==================== 10. ARTIGOS (SISTEMA COMPLETO) ==================== */
 .artigo-card {
-    background-color: #1a1a1a; border-radius: 12px; overflow: hidden;
-    margin-bottom: 25px; border: 1px solid #333;
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    border: 1px solid rgba(139, 92, 246, 0.2);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    transition: var(--transition-smooth); cursor: pointer;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+    cursor: pointer;
 }
-.artigo-card:hover { border-color: var(--primary-purple); transform: translateY(-2px); }
+
+/* Efeito de destaque quando o artigo está no centro da tela */
+.artigo-card.artigo-destaque {
+    border-color: rgba(59, 130, 246, 0.8);
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.25), 0 4px 15px rgba(0, 0, 0, 0.5);
+    transform: scale(1.01);
+}
+
+.artigo-card:hover {
+    border-color: var(--primary-purple);
+    transform: translateY(-2px);
+}
+
+.artigo-card.artigo-destaque:hover {
+    border-color: rgba(59, 130, 246, 0.9);
+    transform: scale(1.01) translateY(-2px);
+}
 
 .artigo-banner { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; overflow: hidden; }
 .artigo-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
@@ -150,16 +169,43 @@ body {
 .artigo-corpo .artigo-video-embed { position: relative; padding-bottom: 56.25%; height: 0; margin: 20px 0; border-radius: 8px; overflow: hidden; }
 .artigo-corpo .artigo-video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-.artigo-rodape { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); flex-wrap: wrap; gap: 10px; }
+.artigo-rodape {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 20px; border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-wrap: wrap; gap: 10px;
+}
 .artigo-rodape-social { display: flex; gap: 6px; flex-wrap: wrap; }
 .artigo-rodape-acoes { display: flex; gap: 8px; align-items: center; }
 
 /* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA ==================== */
-.artigo-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #0a0a0a; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.artigo-fullscreen-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #0a0a0a;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
 .artigo-fullscreen-modal.active { display: block; }
-.artigo-fullscreen-content { max-width: 800px; margin: 0 auto; padding: 20px; padding-bottom: 100px; position: relative; min-height: 100vh; }
 
-.artigo-fullscreen-close { position: sticky; top: 15px; float: right; z-index: 100001; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; color: #ffffff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; -webkit-tap-highlight-color: transparent; }
+.artigo-fullscreen-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 100px;
+    position: relative;
+    min-height: 100vh;
+}
+
+.artigo-fullscreen-close {
+    position: sticky; top: 15px; float: right; z-index: 100001;
+    width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%;
+    color: #ffffff; font-size: 1.2rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s; -webkit-tap-highlight-color: transparent;
+}
 .artigo-fullscreen-close:hover { background: rgba(255, 0, 0, 0.7); border-color: #ff0000; }
 
 .artigo-fullscreen-body { clear: both; padding-top: 10px; }
@@ -172,7 +218,14 @@ body {
 .artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
 
-.artigo-fullscreen-footer { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100000; flex-wrap: wrap; gap: 10px; }
+.artigo-fullscreen-footer {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(10, 10, 10, 0.97);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px; display: flex; justify-content: space-between;
+    align-items: center; z-index: 100000; flex-wrap: wrap; gap: 10px;
+}
 .artigo-footer-socials { display: flex; gap: 6px; flex-wrap: wrap; }
 .artigo-footer-actions { display: flex; gap: 8px; align-items: center; }
 
@@ -295,7 +348,5 @@ body {
 }
 
 /* ==================== 19. ACESSIBILIDADE ==================== */
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--primary-purple); outline-offset: 3px; border-radius: 4px; }
