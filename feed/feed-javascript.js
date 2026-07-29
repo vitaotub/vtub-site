@@ -3,7 +3,8 @@
  * VITÃOTUB - JAVASCRIPT DO FEED
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
  * sistema de artigos com scroll infinito e destaque,
- * modal de artigo em tela cheia, modal de vídeo,
+ * modal de artigo em tela cheia com gesto de arraste,
+ * modal de vídeo com gesto de arraste para baixo,
  * compartilhamento com link absoluto, PWA e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
@@ -113,10 +114,60 @@ function abrirVideoModal(videoId) {
     const tapHint = document.getElementById('video-tap-hint');
     if (tapHint) { tapHint.classList.add('visible'); setTimeout(() => { if (tapHint) tapHint.classList.remove('visible'); }, 4000); }
     verificarOrientacao(); window.addEventListener('orientationchange', verificarOrientacao);
+    initVideoSwipeToClose();
 }
-function fecharVideoModal() { const modal = document.getElementById('video-fullscreen-modal'); const iframe = document.getElementById('video-fullscreen-iframe'); if (modal) { modal.classList.remove('active'); if (iframe) iframe.src = ''; document.body.style.overflow = ''; } window.removeEventListener('orientationchange', verificarOrientacao); }
-function verificarOrientacao() { const container = document.getElementById('video-container'); if (!container) return; if (window.innerWidth > window.innerHeight) { container.classList.add('landscape'); container.classList.remove('portrait'); } else { container.classList.add('portrait'); container.classList.remove('landscape'); } }
-function compartilharVideo(videoId) { const videoUrl = `https://www.youtube.com/watch?v=${videoId}`; const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent); if (isMobile && navigator.share) { navigator.share({ title: 'Confira este vídeo do VitãoTub!', text: 'Assista este vídeo no YouTube', url: videoUrl }).catch(() => {}); } else { navigator.clipboard.writeText(videoUrl).then(() => { alert('Link do vídeo copiado!'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = videoUrl; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do vídeo copiado!'); }); } }
+
+function fecharVideoModal() {
+    const modal = document.getElementById('video-fullscreen-modal');
+    const iframe = document.getElementById('video-fullscreen-iframe');
+    if (modal) { modal.classList.remove('active'); if (iframe) iframe.src = ''; document.body.style.overflow = ''; }
+    window.removeEventListener('orientationchange', verificarOrientacao);
+}
+
+function verificarOrientacao() {
+    const container = document.getElementById('video-container');
+    if (!container) return;
+    if (window.innerWidth > window.innerHeight) { container.classList.add('landscape'); container.classList.remove('portrait'); }
+    else { container.classList.add('portrait'); container.classList.remove('landscape'); }
+}
+
+function compartilharVideo(videoId) {
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    if (isMobile && navigator.share) { navigator.share({ title: 'Confira este vídeo do VitãoTub!', text: 'Assista este vídeo no YouTube', url: videoUrl }).catch(() => {}); }
+    else { navigator.clipboard.writeText(videoUrl).then(() => { alert('Link do vídeo copiado!'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = videoUrl; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do vídeo copiado!'); }); }
+}
+
+/**
+ * Gesto de arrastar para baixo para fechar o player de vídeo
+ */
+function initVideoSwipeToClose() {
+    const modal = document.getElementById('video-fullscreen-modal');
+    if (!modal) return;
+    let startY = 0, currentY = 0, isDragging = false;
+    
+    modal.addEventListener('touchstart', (e) => {
+        if (e.target === modal) { startY = e.touches[0].clientY; isDragging = true; modal.style.transition = 'none'; }
+    }, { passive: true });
+    
+    modal.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY;
+        const diffY = currentY - startY;
+        if (diffY > 20) { modal.style.transform = `translateY(${diffY}px)`; modal.style.opacity = 1 - Math.abs(diffY) / 500; }
+    }, { passive: true });
+    
+    modal.addEventListener('touchend', () => {
+        if (!isDragging) return; isDragging = false;
+        const diffY = currentY - startY;
+        modal.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        if (diffY > 150) {
+            modal.style.transform = 'translateY(100%)'; modal.style.opacity = '0';
+            setTimeout(() => { fecharVideoModal(); modal.style.transform = ''; modal.style.opacity = ''; }, 300);
+        } else { modal.style.transform = ''; modal.style.opacity = ''; }
+        currentY = 0;
+    });
+}
 
 // ==================== 6. SISTEMA DE ARTIGOS ====================
 let todosArtigos = [];
@@ -192,43 +243,54 @@ function abrirArtigoFullscreen(artigoId) {
     body.innerHTML = ''; body.appendChild(conteudo);
     modal.classList.add('active'); document.body.style.overflow = 'hidden';
     modal.scrollTop = 0; window.scrollTo(0, 0);
+    initArtigoSwipeToClose();
 }
-function fecharArtigoFullscreen() { const modal = document.getElementById('artigo-fullscreen-modal'); if (modal) { modal.classList.remove('active'); document.body.style.overflow = ''; } }
+
+function fecharArtigoFullscreen() {
+    const modal = document.getElementById('artigo-fullscreen-modal');
+    if (modal) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+}
+
+/**
+ * Gesto de arrastar horizontal para fechar o modal de artigo
+ */
+function initArtigoSwipeToClose() {
+    const modal = document.getElementById('artigo-fullscreen-modal');
+    const content = document.querySelector('.artigo-fullscreen-content');
+    if (!modal || !content) return;
+    let startX = 0, currentX = 0, isDragging = false;
+    
+    content.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDragging = true; content.style.transition = 'none'; }, { passive: true });
+    content.addEventListener('touchmove', (e) => { if (!isDragging) return; currentX = e.touches[0].clientX; const diffX = currentX - startX; if (Math.abs(diffX) > 20) { content.style.transform = `translateX(${diffX}px)`; content.style.opacity = 1 - Math.abs(diffX) / 400; } }, { passive: true });
+    content.addEventListener('touchend', () => {
+        if (!isDragging) return; isDragging = false;
+        const diffX = currentX - startX;
+        content.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        if (Math.abs(diffX) > 100) {
+            content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)';
+            content.style.opacity = '0';
+            setTimeout(() => { fecharArtigoFullscreen(); content.style.transform = ''; content.style.opacity = ''; }, 300);
+        } else { content.style.transform = ''; content.style.opacity = ''; }
+        currentX = 0;
+    });
+}
 
 /**
  * Compartilha o link direto do artigo
- * Usa link absoluto para garantir que funcione em qualquer lugar
  */
 function compartilharArtigo(artigoId, titulo) {
     const link = `https://www.vitaotub.com/feed/feed.html#${artigoId}`;
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-    console.log('Compartilhando:', link);
-    if (isMobile && navigator.share) {
-        navigator.share({ title: titulo || 'Artigo do VitãoTub', text: 'Confira este artigo!', url: link }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(link).then(() => { alert('Link do artigo copiado! Compartilhe com seus amigos.'); }).catch(() => {
-            const tempInput = document.createElement('input'); tempInput.value = link; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do artigo copiado!');
-        });
-    }
+    if (isMobile && navigator.share) { navigator.share({ title: titulo || 'Artigo do VitãoTub', text: 'Confira este artigo!', url: link }).catch(() => {}); }
+    else { navigator.clipboard.writeText(link).then(() => { alert('Link do artigo copiado! Compartilhe com seus amigos.'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = link; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do artigo copiado!'); }); }
 }
 
-/**
- * Verifica se a URL contém #artigo-id e abre o artigo
- */
 function verificarArtigoNaUrl() {
     const hash = window.location.hash;
     if (hash && hash.startsWith('#artigo-')) {
         const artigoId = hash.substring(1);
-        console.log('Artigo detectado na URL:', artigoId);
-        if (!artigosCarregados) {
-            carregarTodosArtigos().then(() => {
-                mudarAba('artigos');
-                setTimeout(() => { const artigo = document.getElementById(artigoId); if (artigo) { console.log('Abrindo artigo:', artigoId); abrirArtigoFullscreen(artigoId); } }, 800);
-            });
-        } else {
-            mudarAba('artigos');
-            setTimeout(() => { const artigo = document.getElementById(artigoId); if (artigo) { console.log('Abrindo artigo:', artigoId); abrirArtigoFullscreen(artigoId); } }, 800);
-        }
+        if (!artigosCarregados) { carregarTodosArtigos().then(() => { mudarAba('artigos'); setTimeout(() => { const artigo = document.getElementById(artigoId); if (artigo) abrirArtigoFullscreen(artigoId); }, 800); }); }
+        else { mudarAba('artigos'); setTimeout(() => { const artigo = document.getElementById(artigoId); if (artigo) abrirArtigoFullscreen(artigoId); }, 800); }
     }
 }
 
