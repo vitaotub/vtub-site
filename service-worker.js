@@ -13,7 +13,7 @@
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v0.1';
+const CACHE_NAME = 'vitaotub-cache-v0.2';
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
