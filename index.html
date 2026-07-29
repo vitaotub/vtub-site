@@ -438,7 +438,15 @@
 
     <!-- ==================== MODAL DE PRIVACIDADE ==================== -->
     <div id="privacy-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" id="privacy-modal-content">
+            <!-- Botão X de fechar -->
+            <button class="modal-close-btn" onclick="closePrivacyModal()" aria-label="Fechar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <!-- Indicador de arraste -->
+            <div class="modal-swipe-indicator">
+                <span></span>
+            </div>
             <div id="privacy-content-target" lang="pt-BR">
                 <!-- Conteúdo carregado dinamicamente via JavaScript -->
             </div>
@@ -486,6 +494,16 @@
             <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
         </div>
     </div>
+
+    <!-- ==================== BOTÃO FLUTUANTE DE INSTALAÇÃO PWA ==================== -->
+    <button id="pwa-floating-btn" class="pwa-floating-btn" style="display: none;" aria-label="Instalar aplicativo" title="Instalar aplicativo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span class="pwa-floating-text">Instalar App</span>
+    </button>
 
     <!-- ==================== BOTÃO DE TRADUÇÃO FLUTUANTE ==================== -->
     <div id="translate-widget" class="translate-widget">
