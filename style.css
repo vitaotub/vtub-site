@@ -1,9 +1,9 @@
 /* ============================================================
    VITÃOTUB - ESTILOS PRINCIPAIS
    Descrição: Tema escuro, responsivo, com cards, gráficos,
-   modais com botão X (símbolo ✕) e gesto de arraste,
-   formulário de contato, botões flutuantes e menu mobile
-   Layout não se move ao abrir modais (compensação de scrollbar)
+   modais com botão X (✕) e gesto de arraste, formulário de
+   contato, botões flutuantes e menu mobile
+   scroll fixo SEM alterar layout
    Organizado por seções para facilitar manutenção
    ============================================================ */
 
@@ -37,11 +37,6 @@ body {
 h1, h2, h3, nav a, button { font-family: 'Satoshi', sans-serif; }
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; height: auto; display: block; }
-
-/* Impede que o body se mova quando a scrollbar desaparece */
-body.modal-open {
-    overflow: hidden;
-}
 
 /* ==================== 3. BACKGROUND VISUAL ==================== */
 .bg-wrapper { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
@@ -194,17 +189,16 @@ h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: tr
 #privacy-modal.active { display: flex !important; }
 #privacy-modal .modal-content { background: #111; border: 1px solid #333; border-radius: 12px; width: 92% !important; max-width: 800px; max-height: 80vh !important; padding: 25px !important; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); margin: auto; transition: transform 0.3s ease, opacity 0.3s ease; }
 
-/* Botão X (usa símbolo ✕ - não depende de fontes) */
+/* Botão X (símbolo ✕) */
 .modal-close-btn { position: sticky; top: 0; float: right; z-index: 10; width: 38px; height: 38px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; }
 .modal-close-btn:hover, .modal-close-btn:active { background: rgba(255, 0, 0, 0.7); border-color: #ff0000; transform: scale(1.05); }
 .modal-close-icon { font-size: 1.2rem; line-height: 1; display: block; font-weight: 300; color: #ffffff; }
-.modal-close-btn:hover .modal-close-icon, .modal-close-btn:active .modal-close-icon { color: #ffffff; }
 
 /* Indicador de arraste */
 .modal-swipe-indicator { display: flex; justify-content: center; padding: 0 0 12px 0; position: sticky; top: 0; z-index: 5; }
 .modal-swipe-indicator span { display: block; width: 40px; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
 
-/* Conteúdo do modal */
+/* Conteúdo */
 #privacy-content-target, #privacy-content-target * { -webkit-hyphens: auto !important; -moz-hyphens: auto !important; -ms-hyphens: auto !important; hyphens: auto !important; overflow-wrap: break-word !important; word-wrap: break-word !important; }
 #privacy-content-target p, #privacy-content-target li, #privacy-content-target span, #privacy-content-target div.privacy-body, #privacy-content-target div.privacy-notice { text-align: justify !important; text-justify: inter-word !important; text-align-last: left; font-size: 1.05rem; line-height: 1.8; }
 #privacy-content-target p, #privacy-content-target li { margin-bottom: 1.2em; }
