@@ -2,7 +2,7 @@
    VITÃOTUB - ESTILOS DO FEED
    Descrição: Tema escuro para feed de vídeos, artigos com
    efeito de destaque ao rolar, abas de navegação, modal de
-   artigo em tela cheia real (cobre tudo), modal de vídeo
+   artigo em tela cheia (sem footer fixo), modal de vídeo
    e botões flutuantes
    Otimizado para mobile (PWA)
    Organizado por seções para facilitar manutenção
@@ -183,7 +183,7 @@ body {
     min-height: 100dvh;
     margin: 0 auto;
     padding: 20px;
-    padding-bottom: 100px;
+    padding-bottom: 60px;
     position: relative;
     background: #0a0a0a;
 }
@@ -207,17 +207,7 @@ body {
 .artigo-fullscreen-body .artigo-corpo::after { display: none; }
 .artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; }
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
-
-.artigo-fullscreen-footer {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: rgba(10, 10, 10, 0.97);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 12px 20px; display: flex; justify-content: space-between;
-    align-items: center; z-index: 100000; flex-wrap: wrap; gap: 10px;
-}
-.artigo-footer-socials { display: flex; gap: 6px; flex-wrap: wrap; }
-.artigo-footer-actions { display: flex; gap: 8px; align-items: center; }
+/* Os botões do artigo clonado (artigo-rodape) aparecem naturalmente ao final do conteúdo */
 
 /* ==================== 12. BOTÕES DE REDES SOCIAIS ==================== */
 .social-btn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background-color: #1a1a1a; color: #ffffff; border: 1px solid #333333; border-radius: 50%; font-size: 1rem; text-decoration: none; cursor: pointer; transition: all 0.3s ease; }
@@ -297,7 +287,7 @@ body {
     .feed-container { padding: 0 10px 40px; }
     .translate-widget { bottom: 70px; }
     .back-to-top { bottom: 12px; }
-    .artigo-fullscreen-content { padding: 15px; padding-bottom: 90px; }
+    .artigo-fullscreen-content { padding: 15px; padding-bottom: 50px; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
 }
 
@@ -324,12 +314,9 @@ body {
     .artigo-resumo { font-size: 0.85rem; }
     .artigo-meta { font-size: 0.75rem; }
     .artigo-rodape { padding: 10px; }
-    .artigo-fullscreen-content { padding: 10px; padding-bottom: 80px; }
+    .artigo-fullscreen-content { padding: 10px; padding-bottom: 40px; }
     .artigo-fullscreen-close { top: 8px; width: 34px; height: 34px; font-size: 1rem; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
-    .artigo-fullscreen-footer { padding: 10px 15px; }
-    .artigo-footer-socials { gap: 4px; }
-    .social-btn { width: 32px; height: 32px; font-size: 0.9rem; }
 }
 
 @media (orientation: landscape) {

@@ -2,17 +2,15 @@
  * ============================================================
  * VITÃOTUB - JAVASCRIPT DO FEED
  * Descrição: Lógica de abas, carregamento de vídeos via RSS,
- * sistema completo de artigos com scroll infinito e efeito
- * de destaque, modal de artigo em tela cheia real, modal de
- * vídeo, compartilhamento, PWA com auto-update e botões
- * flutuantes
+ * sistema de artigos com scroll infinito e destaque,
+ * modal de artigo em tela cheia (botões do próprio artigo),
+ * modal de vídeo, compartilhamento, PWA e botões flutuantes
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
 
 // ==================== 1. CONFIGURAÇÕES ====================
 const CONFIG = {
-    articleModalId: 'article-modal',
     channelID: 'UCUNyU0HewM1JQVVKMAEAfyQ',
     artigosFiles: ['artigos.html'],
     artigosPorVez: 20,
@@ -120,7 +118,7 @@ function fecharVideoModal() { const modal = document.getElementById('video-fulls
 function verificarOrientacao() { const container = document.getElementById('video-container'); if (!container) return; if (window.innerWidth > window.innerHeight) { container.classList.add('landscape'); container.classList.remove('portrait'); } else { container.classList.add('portrait'); container.classList.remove('landscape'); } }
 function compartilharVideo(videoId) { const videoUrl = `https://www.youtube.com/watch?v=${videoId}`; const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent); if (isMobile && navigator.share) { navigator.share({ title: 'Confira este vídeo do VitãoTub!', text: 'Assista este vídeo no YouTube', url: videoUrl }).catch(() => {}); } else { navigator.clipboard.writeText(videoUrl).then(() => { alert('Link do vídeo copiado!'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = videoUrl; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do vídeo copiado!'); }); } }
 
-// ==================== 6. SISTEMA DE ARTIGOS COM SCROLL INFINITO E DESTAQUE ====================
+// ==================== 6. SISTEMA DE ARTIGOS ====================
 let todosArtigos = [];
 let artigosCarregados = false;
 let artigosExibidos = 0;
@@ -187,13 +185,11 @@ function abrirArtigoFullscreen(artigoId) {
     if (!artigo) return;
     const modal = document.getElementById('artigo-fullscreen-modal');
     const body = document.getElementById('artigo-fullscreen-body');
-    const shareBtn = document.getElementById('artigo-share-btn');
     if (!modal || !body) return;
     const conteudo = artigo.cloneNode(true); conteudo.style.cursor = 'default'; conteudo.classList.add('artigo-fullscreen-active');
     const btnLerMais = conteudo.querySelector('.btn-ler-mais'); if (btnLerMais) btnLerMais.remove();
     const corpo = conteudo.querySelector('.artigo-corpo'); if (corpo) { corpo.style.maxHeight = 'none'; corpo.style.overflow = 'visible'; }
     body.innerHTML = ''; body.appendChild(conteudo);
-    if (shareBtn) { shareBtn.onclick = function() { const titulo = artigo.getAttribute('data-titulo') || ''; compartilharArtigo(artigoId, titulo); }; }
     modal.classList.add('active'); document.body.style.overflow = 'hidden';
     modal.scrollTop = 0; window.scrollTo(0, 0);
 }
