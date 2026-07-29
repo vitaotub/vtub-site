@@ -3,8 +3,8 @@
  * VITÃOTUB - JAVASCRIPT PRINCIPAL
  * Descrição: Lógica de interações, modais com botão X (✕) e
  * gesto de arraste, PWA com memória, formulário, OneSignal,
- * Service Worker, banner LGPD, botão de tradução,
- * botão de tema (claro/escuro) e menu mobile
+ * Service Worker, banner LGPD, botão de tradução arrastável
+ * e fechável, botão de tema arrastável e fechável e menu mobile
  * Organizado por seções para facilitar manutenção
  * ============================================================
  */
@@ -61,165 +61,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     
-    // Se já está instalado como app, não mostra nada
-    if (isStandalone) {
-        localStorage.setItem('vitaotub_pwa_installed', 'true');
-        pwaPopup.style.display = 'none';
-        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
-        return;
-    }
+    if (isStandalone) { localStorage.setItem('vitaotub_pwa_installed', 'true'); pwaPopup.style.display = 'none'; if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; return; }
     
-    // Se já entendeu (desktop) ou já instalou/rejeitou (mobile), não mostra popup
     const jaEntendeu = localStorage.getItem('vitaotub_pwa_entendido');
     const jaInstalou = localStorage.getItem('vitaotub_pwa_installed');
     const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
     
-    // ========== DESKTOP ==========
     if (!isMobile) {
-        // Esconde botão flutuante (nunca aparece no desktop)
         if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
-        
-        // Se já entendeu, não mostra popup
         if (jaEntendeu) return;
-        
-        // Mostra popup com texto para desktop
-        popupContent.innerHTML = `
-            <h2>📱 App para Celular!</h2>
-            <img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img">
-            <p>Este site possui um <strong>App para celular</strong> com notícias, matérias e novidades. Acesse pelo seu próprio celular e o App estará disponível para instalação!</p>
-            <button id="pwa-desktop-ok-btn" class="pwa-btn-install">Entendi! 👍</button>
-        `;
-        
-        setTimeout(() => {
-            if (!localStorage.getItem('vitaotub_pwa_entendido')) {
-                pwaPopup.style.display = 'flex';
-            }
-        }, 2000);
-        
-        document.getElementById('pwa-desktop-ok-btn').addEventListener('click', () => {
-            pwaPopup.style.display = 'none';
-            localStorage.setItem('vitaotub_pwa_entendido', 'true');
-        });
-        
+        popupContent.innerHTML = `<h2>📱 App para Celular!</h2><img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img"><p>Este site possui um <strong>App para celular</strong> com notícias, matérias e novidades. Acesse pelo seu próprio celular e o App estará disponível para instalação!</p><button id="pwa-desktop-ok-btn" class="pwa-btn-install">Entendi! 👍</button>`;
+        setTimeout(() => { if (!localStorage.getItem('vitaotub_pwa_entendido')) pwaPopup.style.display = 'flex'; }, 2000);
+        document.getElementById('pwa-desktop-ok-btn').addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_entendido', 'true'); });
         return;
     }
     
-    // ========== MOBILE ==========
-    // Se já instalou, não mostra nada
-    if (jaInstalou) {
-        pwaPopup.style.display = 'none';
-        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
-        return;
-    }
+    if (jaInstalou) { pwaPopup.style.display = 'none'; if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; return; }
     
     let deferredPrompt = null;
-    
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        
-        if (!jaRejeitou) {
-            // Popup mobile com botão de instalar
-            popupContent.innerHTML = `
-                <h2>Bem-vindo ao VitãoTub! 🚀</h2>
-                <img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img">
-                <p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p>
-                <button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button>
-                <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
-            `;
-            pwaPopup.style.display = 'flex';
-            
-            // Configura botões do mobile
-            document.getElementById('pwa-install-btn').addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    pwaPopup.style.display = 'none';
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    if (outcome === 'accepted') {
-                        console.log('App instalado!');
-                        localStorage.setItem('vitaotub_pwa_installed', 'true');
-                        localStorage.removeItem('vitaotub_pwa_rejected');
-                        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
-                    } else {
-                        localStorage.setItem('vitaotub_pwa_rejected', 'true');
-                        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
-                    }
-                    deferredPrompt = null;
-                }
-            });
-            
-            document.getElementById('pwa-close-btn').addEventListener('click', () => {
-                pwaPopup.style.display = 'none';
-                localStorage.setItem('vitaotub_pwa_rejected', 'true');
-                if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
-            });
-            
-        } else if (jaRejeitou && pwaFloatingBtn) {
-            pwaFloatingBtn.style.display = 'flex';
-        }
-    });
-    
-    // Se já rejeitou, mostra botão flutuante
-    if (jaRejeitou && pwaFloatingBtn) {
-        pwaFloatingBtn.style.display = 'flex';
-    }
-    
-    // Se nunca rejeitou nem instalou, mostra popup após 2s
-    if (!jaRejeitou && !jaInstalou) {
-        setTimeout(() => {
-            if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) {
-                popupContent.innerHTML = `
-                    <h2>Bem-vindo ao VitãoTub! 🚀</h2>
-                    <img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img">
-                    <p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p>
-                    <button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button>
-                    <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
-                `;
-                pwaPopup.style.display = 'flex';
-                
-                document.getElementById('pwa-install-btn').addEventListener('click', async () => {
-                    if (deferredPrompt) {
-                        pwaPopup.style.display = 'none';
-                        deferredPrompt.prompt();
-                        const { outcome } = await deferredPrompt.userChoice;
-                        if (outcome === 'accepted') {
-                            localStorage.setItem('vitaotub_pwa_installed', 'true');
-                            localStorage.removeItem('vitaotub_pwa_rejected');
-                            if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
-                        } else {
-                            localStorage.setItem('vitaotub_pwa_rejected', 'true');
-                            if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
-                        }
-                        deferredPrompt = null;
-                    }
-                });
-                
-                document.getElementById('pwa-close-btn').addEventListener('click', () => {
-                    pwaPopup.style.display = 'none';
-                    localStorage.setItem('vitaotub_pwa_rejected', 'true');
-                    if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
-                });
-            }
-        }, 2000);
-    }
-    
-    // Botão flutuante (mobile)
-    if (pwaFloatingBtn) {
-        pwaFloatingBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    localStorage.setItem('vitaotub_pwa_installed', 'true');
-                    localStorage.removeItem('vitaotub_pwa_rejected');
-                    pwaFloatingBtn.style.display = 'none';
-                }
-                deferredPrompt = null;
-            } else {
-                alert('Para instalar, acesse as opções do seu navegador ou visite a página do feed.');
-            }
-        });
-    }
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if (!jaRejeitou) { popupContent.innerHTML = `<h2>Bem-vindo ao VitãoTub! 🚀</h2><img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img"><p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p><button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button><button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>`; pwaPopup.style.display = 'flex';
+        document.getElementById('pwa-install-btn').addEventListener('click', async () => { if (deferredPrompt) { pwaPopup.style.display = 'none'; deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; } else { localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; } deferredPrompt = null; } });
+        document.getElementById('pwa-close-btn').addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; });
+        } else if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; } });
+    if (jaRejeitou && pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
+    if (!jaRejeitou && !jaInstalou) { setTimeout(() => { if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) { popupContent.innerHTML = `<h2>Bem-vindo ao VitãoTub! 🚀</h2><img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img"><p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p><button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button><button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>`; pwaPopup.style.display = 'flex';
+        document.getElementById('pwa-install-btn').addEventListener('click', async () => { if (deferredPrompt) { pwaPopup.style.display = 'none'; deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; } else { localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; } deferredPrompt = null; } });
+        document.getElementById('pwa-close-btn').addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; }); } }, 2000); }
+    if (pwaFloatingBtn) { pwaFloatingBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); pwaFloatingBtn.style.display = 'none'; } deferredPrompt = null; } else { alert('Para instalar, acesse as opções do seu navegador ou visite a página do feed.'); } }); }
 });
 
 // ==================== 5. CONTROLE DE SCROLL (MODAIS) ====================
@@ -238,19 +106,9 @@ function closeVideo() { const modal = document.getElementById(CONFIG.modalId); c
 // ==================== 8. MODAL DE PRIVACIDADE E TERMOS ====================
 async function openPrivacyModal() { await loadModalContent('./politica-de-privacidade.html'); }
 async function openTermsModal() { await loadModalContent('./termos-de-uso.html'); }
-async function loadModalContent(filePath) {
-    const modal = document.getElementById(CONFIG.privacyModalId);
-    const target = document.getElementById(CONFIG.privacyTargetId);
-    if (modal && target) { modal.style.display = 'flex'; modal.classList.add('active'); lockScroll(); target.innerHTML = '<p>Carregando conteúdo...</p>'; try { const response = await fetch(filePath); if (!response.ok) throw new Error('Arquivo não encontrado'); target.innerHTML = await response.text(); initSwipeToClose(); } catch (error) { target.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar o conteúdo.</p><p><a href="${filePath}" target="_blank" style="color: var(--primary-purple);">Clique aqui para abrir em uma nova aba.</a></p>`; } }
-}
+async function loadModalContent(filePath) { const modal = document.getElementById(CONFIG.privacyModalId); const target = document.getElementById(CONFIG.privacyTargetId); if (modal && target) { modal.style.display = 'flex'; modal.classList.add('active'); lockScroll(); target.innerHTML = '<p>Carregando conteúdo...</p>'; try { const response = await fetch(filePath); if (!response.ok) throw new Error('Arquivo não encontrado'); target.innerHTML = await response.text(); initSwipeToClose(); } catch (error) { target.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar o conteúdo.</p><p><a href="${filePath}" target="_blank" style="color: var(--primary-purple);">Clique aqui para abrir em uma nova aba.</a></p>`; } } }
 function closePrivacyModal() { const modal = document.getElementById(CONFIG.privacyModalId); if (modal) { modal.classList.remove('active'); setTimeout(() => { if (!modal.classList.contains('active')) modal.style.display = 'none'; }, 300); unlockScroll(); } const content = document.getElementById('privacy-modal-content'); if (content) { content.style.transform = ''; content.style.opacity = ''; } }
-function initSwipeToClose() {
-    const modal = document.getElementById(CONFIG.privacyModalId); const content = document.getElementById('privacy-modal-content'); if (!modal || !content) return;
-    let startX = 0, currentX = 0, isDragging = false;
-    content.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDragging = true; content.style.transition = 'none'; }, { passive: true });
-    content.addEventListener('touchmove', (e) => { if (!isDragging) return; currentX = e.touches[0].clientX; const diffX = currentX - startX; if (Math.abs(diffX) > 20) { content.style.transform = `translateX(${diffX}px)`; content.style.opacity = 1 - Math.abs(diffX) / 400; } }, { passive: true });
-    content.addEventListener('touchend', () => { if (!isDragging) return; isDragging = false; const diffX = currentX - startX; content.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; if (Math.abs(diffX) > 100) { content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; content.style.opacity = '0'; setTimeout(() => { closePrivacyModal(); }, 300); } else { content.style.transform = ''; content.style.opacity = ''; } currentX = 0; });
-}
+function initSwipeToClose() { const modal = document.getElementById(CONFIG.privacyModalId); const content = document.getElementById('privacy-modal-content'); if (!modal || !content) return; let startX = 0, currentX = 0, isDragging = false; content.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDragging = true; content.style.transition = 'none'; }, { passive: true }); content.addEventListener('touchmove', (e) => { if (!isDragging) return; currentX = e.touches[0].clientX; const diffX = currentX - startX; if (Math.abs(diffX) > 20) { content.style.transform = `translateX(${diffX}px)`; content.style.opacity = 1 - Math.abs(diffX) / 400; } }, { passive: true }); content.addEventListener('touchend', () => { if (!isDragging) return; isDragging = false; const diffX = currentX - startX; content.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; if (Math.abs(diffX) > 100) { content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; content.style.opacity = '0'; setTimeout(() => { closePrivacyModal(); }, 300); } else { content.style.transform = ''; content.style.opacity = ''; } currentX = 0; }); }
 
 // ==================== 9. PROCESSAMENTO DO FORMULÁRIO DE CONTATO ====================
 const contactForm = document.getElementById('contact-form');
@@ -275,7 +133,30 @@ function translatePage(lang) { if (lang === 'pt') { const select = document.quer
 function setGoogleTranslateCookie(lang) { const date = new Date(); date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000)); const expires = date.toUTCString(); document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = lang === 'pt' ? `googtrans=/pt/pt; expires=${expires}; path=/` : `googtrans=/pt/${lang}; expires=${expires}; path=/`; }
 function updateActiveLanguage(lang) { document.querySelectorAll('.translate-option').forEach(btn => { btn.classList.remove('active-lang'); if (btn.getAttribute('data-lang') === lang) btn.classList.add('active-lang'); }); }
 function initTranslateWidget() { const toggleBtn = document.getElementById('translate-toggle'); const dropdown = document.getElementById('translate-dropdown'); if (!toggleBtn || !dropdown) return; toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTranslateDropdown(); }); setTimeout(() => { const match = document.cookie.match(/googtrans=\/pt\/([^;]+)/); if (match && match[1]) updateActiveLanguage(match[1]); }, 1500); }
-document.addEventListener("DOMContentLoaded", initTranslateWidget);
+
+// ==================== 13.5 BOTÃO DE TRADUÇÃO ARRASTÁVEL E FECHÁVEL ====================
+function initDraggableTranslate() {
+    const widget = document.getElementById('translate-widget');
+    const toggleBtn = document.getElementById('translate-toggle');
+    if (!widget || !toggleBtn) return;
+    if (localStorage.getItem('vitaotub_translate_hidden')) { widget.style.display = 'none'; return; }
+    let isDragging = false; let startX, startY, startLeft, startBottom;
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'translate-close-btn'; closeBtn.innerHTML = '✕'; closeBtn.title = 'Esconder tradutor';
+    closeBtn.style.cssText = 'display:none;position:absolute;top:-8px;right:-8px;width:22px;height:22px;background:#ff0000;color:#fff;border:none;border-radius:50%;font-size:12px;cursor:pointer;z-index:1000;line-height:1;';
+    widget.appendChild(closeBtn);
+    toggleBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
+    widget.addEventListener('mouseleave', () => { if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; });
+    let clickTimeout;
+    toggleBtn.addEventListener('click', (e) => { if (isDragging) return; if (clickTimeout) { clearTimeout(clickTimeout); clickTimeout = null; closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true'; setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000); } else { clickTimeout = setTimeout(() => { clickTimeout = null; toggleTranslateDropdown(); }, 300); } });
+    closeBtn.addEventListener('click', (e) => { e.stopPropagation(); widget.style.display = 'none'; localStorage.setItem('vitaotub_translate_hidden', 'true'); });
+    toggleBtn.addEventListener('mousedown', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.clientX; startY = e.clientY; const rect = widget.getBoundingClientRect(); startLeft = rect.left; startBottom = window.innerHeight - rect.bottom; widget.style.transition = 'none'; e.preventDefault(); });
+    toggleBtn.addEventListener('touchstart', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; const rect = widget.getBoundingClientRect(); startLeft = rect.left; startBottom = window.innerHeight - rect.bottom; widget.style.transition = 'none'; }, { passive: true });
+    document.addEventListener('mousemove', (e) => { if (!isDragging) return; widget.style.left = `${startLeft + e.clientX - startX}px`; widget.style.bottom = `${startBottom - (e.clientY - startY)}px`; widget.style.right = 'auto'; widget.style.top = 'auto'; });
+    document.addEventListener('touchmove', (e) => { if (!isDragging) return; widget.style.left = `${startLeft + e.touches[0].clientX - startX}px`; widget.style.bottom = `${startBottom - (e.touches[0].clientY - startY)}px`; widget.style.right = 'auto'; widget.style.top = 'auto'; }, { passive: true });
+    document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; widget.style.transition = ''; } });
+    document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; widget.style.transition = ''; } });
+}
 
 // ==================== 14. MENU MOBILE (HAMBURGUER) ====================
 function toggleMobileMenu() { const menuToggle = document.getElementById('menu-toggle'); const mobileMenu = document.getElementById('mobile-menu'); if (!menuToggle || !mobileMenu) return; const isActive = mobileMenu.classList.contains('active'); if (isActive) { menuToggle.classList.remove('active'); mobileMenu.classList.remove('active'); menuToggle.setAttribute('aria-expanded', 'false'); menuToggle.setAttribute('aria-label', 'Abrir menu'); document.body.style.overflow = ''; } else { menuToggle.classList.add('active'); mobileMenu.classList.add('active'); menuToggle.setAttribute('aria-expanded', 'true'); menuToggle.setAttribute('aria-label', 'Fechar menu'); } }
@@ -284,31 +165,48 @@ function initMobileMenu() { const menuToggle = document.getElementById('menu-tog
 document.addEventListener("DOMContentLoaded", initMobileMenu);
 
 // ==================== 15. BOTÃO DE TEMA (CLARO/ESCURO) ====================
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (document.body.classList.contains('light-mode')) {
+        localStorage.setItem('vitaotub_theme', 'light');
+        if (themeBtn) { themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
+    } else {
+        localStorage.setItem('vitaotub_theme', 'dark');
+        if (themeBtn) { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
+    }
+}
+
 function initThemeToggle() {
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (!themeBtn) return;
-    
     const savedTheme = localStorage.getItem('vitaotub_theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-mode');
-        themeBtn.innerHTML = '🌙';
-        themeBtn.title = 'Mudar para modo escuro';
-    } else {
-        themeBtn.innerHTML = '☀️';
-        themeBtn.title = 'Mudar para modo claro';
-    }
-    
-    themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        if (document.body.classList.contains('light-mode')) {
-            localStorage.setItem('vitaotub_theme', 'light');
-            themeBtn.innerHTML = '🌙';
-            themeBtn.title = 'Mudar para modo escuro';
-        } else {
-            localStorage.setItem('vitaotub_theme', 'dark');
-            themeBtn.innerHTML = '☀️';
-            themeBtn.title = 'Mudar para modo claro';
-        }
-    });
+    if (savedTheme === 'light') { document.body.classList.add('light-mode'); themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
+    else { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
 }
-document.addEventListener("DOMContentLoaded", initThemeToggle);
+
+// ==================== 15.5 BOTÃO DE TEMA ARRASTÁVEL E FECHÁVEL ====================
+function initDraggableTheme() {
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (!themeBtn) return;
+    if (localStorage.getItem('vitaotub_theme_hidden')) { themeBtn.style.display = 'none'; return; }
+    let isDragging = false; let startX, startY, startTop, startRight;
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'theme-close-btn'; closeBtn.innerHTML = '✕'; closeBtn.title = 'Esconder botão de tema';
+    closeBtn.style.cssText = 'display:none;position:absolute;top:-8px;right:-8px;width:22px;height:22px;background:#ff0000;color:#fff;border:none;border-radius:50%;font-size:12px;cursor:pointer;z-index:1000;line-height:1;';
+    themeBtn.appendChild(closeBtn);
+    themeBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
+    themeBtn.addEventListener('mouseleave', () => { if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; });
+    let clickTimeout;
+    themeBtn.addEventListener('click', (e) => { if (isDragging) return; if (clickTimeout) { clearTimeout(clickTimeout); clickTimeout = null; closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true'; setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000); } else { clickTimeout = setTimeout(() => { clickTimeout = null; toggleTheme(); }, 300); } });
+    closeBtn.addEventListener('click', (e) => { e.stopPropagation(); themeBtn.style.display = 'none'; localStorage.setItem('vitaotub_theme_hidden', 'true'); });
+    themeBtn.addEventListener('mousedown', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.clientX; startY = e.clientY; const rect = themeBtn.getBoundingClientRect(); startTop = rect.top; startRight = window.innerWidth - rect.right; themeBtn.style.transition = 'none'; e.preventDefault(); });
+    themeBtn.addEventListener('touchstart', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; const rect = themeBtn.getBoundingClientRect(); startTop = rect.top; startRight = window.innerWidth - rect.right; themeBtn.style.transition = 'none'; }, { passive: true });
+    document.addEventListener('mousemove', (e) => { if (!isDragging) return; themeBtn.style.top = `${startTop + e.clientY - startY}px`; themeBtn.style.right = `${startRight - (e.clientX - startX)}px`; themeBtn.style.left = 'auto'; themeBtn.style.bottom = 'auto'; });
+    document.addEventListener('touchmove', (e) => { if (!isDragging) return; themeBtn.style.top = `${startTop + e.touches[0].clientY - startY}px`; themeBtn.style.right = `${startRight - (e.touches[0].clientX - startX)}px`; themeBtn.style.left = 'auto'; themeBtn.style.bottom = 'auto'; }, { passive: true });
+    document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; themeBtn.style.transition = ''; } });
+    document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; themeBtn.style.transition = ''; } });
+}
+
+// ==================== 16. INICIALIZAÇÃO ====================
+document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); initDraggableTranslate(); initThemeToggle(); initDraggableTheme(); });

@@ -2,7 +2,8 @@
    VITÃOTUB - ESTILOS PRINCIPAIS
    Descrição: Tema escuro/claro, responsivo, com cards,
    gráficos, modais com botão X (✕) e gesto de arraste,
-   formulário de contato, botões flutuantes e menu mobile
+   formulário de contato, botões flutuantes arrastáveis
+   e fecháveis (tema e tradução) e menu mobile
    scroll fixo SEM alterar layout
    Textos justificados com hifenização e sem espaços excessivos
    Organizado por seções para facilitar manutenção
@@ -132,19 +133,27 @@ body > .skiptranslate { display: none !important; }
     transition: all 0.3s ease;
     -webkit-tap-highlight-color: transparent;
 }
-.theme-toggle-btn:hover {
-    transform: scale(1.1);
-    border-color: var(--primary-purple);
+.theme-toggle-btn:hover { transform: scale(1.1); border-color: var(--primary-purple); }
+
+/* Botão X de fechar tema */
+.theme-close-btn {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1000;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
 }
-@media (max-width: 480px) {
-    .theme-toggle-btn {
-        top: 80px;
-        right: 12px;
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
-    }
-}
+.theme-close-btn:hover { background: #cc0000; transform: scale(1.1); }
 
 /* ==================== 8. ESTRUTURA DE SEÇÕES E HERO ==================== */
 .container { max-width: var(--container-max); margin: 0 auto; padding: 0 20px; width: 100%; }
@@ -338,6 +347,26 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 .translate-option:hover { background: rgba(139, 92, 246, 0.15); color: var(--primary-purple); }
 .translate-option.active-lang { background: rgba(139, 92, 246, 0.2); color: var(--primary-purple); font-weight: 700; }
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Botão X de fechar tradução */
+.translate-close-btn {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1000;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+.translate-close-btn:hover { background: #cc0000; transform: scale(1.1); }
 
 /* ==================== 25. RESPONSIVIDADE ==================== */
 @media (max-width: 1024px) { .geography-wrapper { width: 90%; } }
