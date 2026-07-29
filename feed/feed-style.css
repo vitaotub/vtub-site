@@ -1,9 +1,8 @@
 /* ============================================================
    VITÃOTUB - ESTILOS DO FEED
-   Descrição: Tema escuro para feed de vídeos, artigos com
-   efeito de destaque ao rolar, abas de navegação, modal de
-   artigo em tela cheia (100% largura, botão X fixo no canto),
-   modal de vídeo e botões flutuantes
+   Descrição: Tema escuro/claro, artigos com efeito de
+   destaque ao rolar, abas de navegação, modal de artigo
+   em tela cheia, modal de vídeo e botões flutuantes
    Ícones com tamanhos responsivos (clamp)
    7 redes sociais com efeitos hover
    Cards sem corpo do artigo, resumo expandido, botão centralizado
@@ -12,6 +11,8 @@
    Totalmente responsivo: mobile, tablet, desktop e TV
    PWA apenas para mobile com popup e botão flutuante
    Botão de tradução arrastável e fechável
+   Botão de tema (claro/escuro)
+   Correção de overflow nos cards ao redimensionar
    Otimizado para PWA
    Organizado por seções para facilitar manutenção
    ============================================================ */
@@ -23,13 +24,31 @@
 :root {
     --bg-color: #050505;
     --card-bg: #111111;
+    --card-bg-alt: #1a1a1a;
     --primary-purple: #8b5cf6;
     --primary-blue: #3b82f6;
     --text-main: #ffffff;
     --text-dim: rgba(255, 255, 255, 0.7);
+    --border-color: #333;
     --container-max: 1100px;
     --gradient-brand: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --header-bg: #111111;
+    --modal-bg: #0a0a0a;
+    --about-bg: #1e1e1e;
+}
+
+/* Modo claro */
+body.light-mode {
+    --bg-color: #f5f5f5;
+    --card-bg: #ffffff;
+    --card-bg-alt: #f0f0f0;
+    --text-main: #1a1a1a;
+    --text-dim: rgba(0, 0, 0, 0.6);
+    --border-color: #ddd;
+    --header-bg: #ffffff;
+    --modal-bg: #ffffff;
+    --about-bg: #e8e8e8;
 }
 
 /* ==================== 2. RESET E BASE ==================== */
@@ -42,15 +61,16 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     top: 0 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ==================== 3. BODY DO FEED ==================== */
-.feed-body { background-color: #050505; color: #ffffff; margin: 0; padding: 0; }
+.feed-body { background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; transition: background-color 0.3s ease; }
 
 /* ==================== 4. HEADER DO FEED ==================== */
-.feed-header { background-color: #111111; padding: 20px 15px; text-align: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+.feed-header { background-color: var(--header-bg); padding: 20px 15px; text-align: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); transition: background-color 0.3s ease; }
 .feed-logo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px auto; display: block; border: 2px solid #8b5cf6; }
-.feed-title { margin: 0 0 15px 0; font-size: 1.5rem; font-weight: bold; color: #ffffff; font-family: 'Satoshi', sans-serif; }
+.feed-title { margin: 0 0 15px 0; font-size: 1.5rem; font-weight: bold; color: var(--text-main); font-family: 'Satoshi', sans-serif; }
 
 .logo-container { position: relative; display: inline-block; margin-bottom: 15px; }
 .logo-subscribe-btn {
@@ -65,88 +85,60 @@ body {
 /* ==================== 5. ABAS DE NAVEGAÇÃO ==================== */
 .feed-tabs { display: flex; justify-content: center; gap: 12px; margin-top: 5px; flex-wrap: wrap; }
 .tab-btn {
-    background-color: #1a1a1a; color: #b0b0b0; border: 1px solid #333333; padding: 10px 20px;
+    background-color: var(--card-bg-alt); color: var(--text-dim); border: 1px solid var(--border-color); padding: 10px 20px;
     border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
     font-family: 'Satoshi', sans-serif;
 }
-.tab-btn:hover { border-color: #8b5cf6; color: #ffffff; }
+.tab-btn:hover { border-color: #8b5cf6; color: var(--text-main); }
 .tab-btn.active { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border-color: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); }
 
 /* ==================== 6. CONTAINER DO FEED (RESPONSIVO) ==================== */
-.feed-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 0 15px 50px;
-}
+.feed-container { max-width: 600px; margin: 20px auto; padding: 0 15px 50px; }
 
 /* ==================== 7. CARDS DO FEED ==================== */
-.feed-card { background-color: #1a1a1a; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+.feed-card { background-color: var(--card-bg-alt); border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
 
 /* ==================== 8. CONTAINER DE VÍDEO ==================== */
-.video-container, .video-thumbnail-container {
-    position: relative; width: 100%; padding-bottom: 56.25%;
-    background-color: #000; cursor: pointer; overflow: hidden;
-}
-.video-container iframe, .video-thumbnail {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover; display: block;
-}
+.video-container, .video-thumbnail-container { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; cursor: pointer; overflow: hidden; }
+.video-container iframe, .video-thumbnail { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .video-thumbnail { background-color: #1a1a1a; min-height: 100%; }
-.play-icon-overlay {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    color: rgba(255, 255, 255, 0.9); font-size: 3rem;
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
-    transition: transform 0.3s, color 0.3s; pointer-events: none; z-index: 2;
-}
-.video-thumbnail-container:hover .play-icon-overlay,
-.video-thumbnail-container:active .play-icon-overlay { transform: translate(-50%, -50%) scale(1.15); color: #ff0000; }
+.play-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.9); font-size: 3rem; filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5)); transition: transform 0.3s, color 0.3s; pointer-events: none; z-index: 2; }
+.video-thumbnail-container:hover .play-icon-overlay, .video-thumbnail-container:active .play-icon-overlay { transform: translate(-50%, -50%) scale(1.15); color: #ff0000; }
 
 /* ==================== 9. CONTEÚDO DOS CARDS DE VÍDEO ==================== */
 .feed-content { padding: 15px; }
-.feed-content h2 {
-    margin: 0 0 8px 0; font-size: 1.3rem; color: #ffffff;
-    text-align: justify; font-family: 'Satoshi', sans-serif;
-    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word;
-    text-justify: inter-word; word-break: break-word;
-}
-.feed-meta-header {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 0.85rem; color: #aaa; margin-bottom: 12px;
-    flex-wrap: nowrap; gap: 10px;
-}
+.feed-content h2 { margin: 0 0 8px 0; font-size: 1.3rem; color: var(--text-main); text-align: justify; font-family: 'Satoshi', sans-serif; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
+.feed-meta-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 12px; flex-wrap: nowrap; gap: 10px; }
 .feed-date { color: #8b5cf6; font-weight: bold; white-space: nowrap; }
 .feed-author { color: #3b82f6; font-weight: 600; white-space: nowrap; }
 
 /* ==================== 10. ARTIGOS (SISTEMA COMPLETO) ==================== */
 .artigo-card {
-    background-color: #1a1a1a; border-radius: 12px; overflow: hidden;
-    margin-bottom: 25px; border: 1px solid rgba(139, 92, 246, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    background-color: var(--card-bg-alt);
+    border-radius: 12px;
+    overflow: visible;
+    margin-bottom: 25px;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
     cursor: pointer;
 }
-.artigo-card.artigo-destaque {
-    border-color: rgba(59, 130, 246, 0.8);
-    box-shadow: 0 0 25px rgba(59, 130, 246, 0.25), 0 4px 15px rgba(0, 0, 0, 0.5);
-    transform: scale(1.01);
-}
+.artigo-card.artigo-destaque { border-color: rgba(59, 130, 246, 0.8); box-shadow: 0 0 25px rgba(59, 130, 246, 0.25), 0 4px 15px rgba(0, 0, 0, 0.3); transform: scale(1.01); }
 .artigo-card:hover { border-color: var(--primary-purple); transform: translateY(-2px); }
 .artigo-card.artigo-destaque:hover { border-color: rgba(59, 130, 246, 0.9); transform: scale(1.01) translateY(-2px); }
 
-.artigo-banner { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; overflow: hidden; }
+.artigo-banner { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; overflow: hidden; border-radius: 12px 12px 0 0; }
 .artigo-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .artigo-card:hover .artigo-banner img { transform: scale(1.03); }
 
 .artigo-titulo {
-    font-size: 1.3rem; font-weight: 700; color: #ffffff;
+    font-size: 1.3rem; font-weight: 700; color: var(--text-main);
     padding: 20px 20px 0 20px; margin: 0;
     font-family: 'Satoshi', sans-serif; line-height: 1.4;
     text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
     overflow-wrap: break-word; word-wrap: break-word;
     text-justify: inter-word; word-break: break-word;
 }
-
 .artigo-resumo {
     font-size: 0.95rem; color: var(--text-dim);
     padding: 10px 20px; margin: 0; line-height: 1.6;
@@ -154,89 +146,54 @@ body {
     overflow-wrap: break-word; word-wrap: break-word;
     text-justify: inter-word; word-break: break-word;
 }
-
 .artigo-card .artigo-corpo { display: none; }
-
-.artigo-meta {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 20px; font-size: 0.8rem; color: #aaa;
-    border-top: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 0;
-}
+.artigo-meta { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--border-color); margin-bottom: 0; }
 .artigo-data { color: var(--primary-purple); font-weight: 600; }
 .artigo-autor { color: var(--primary-blue); font-weight: 600; }
 
+/* Rodapé do artigo - com proteção contra overflow */
 .artigo-rodape {
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-color);
     gap: clamp(4px, 1vw, 8px);
+    flex-wrap: wrap;
+    overflow: hidden;
 }
-.artigo-rodape-social { display: flex; gap: clamp(2px, 0.5vw, 4px); flex-shrink: 0; }
-.artigo-rodape-acoes { display: flex; gap: clamp(3px, 0.8vw, 6px); align-items: center; flex-shrink: 0; }
+.artigo-rodape-social {
+    display: flex;
+    gap: clamp(2px, 0.5vw, 4px);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+.artigo-rodape-acoes {
+    display: flex;
+    gap: clamp(3px, 0.8vw, 6px);
+    align-items: center;
+    flex-shrink: 0;
+}
 
 /* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA ==================== */
-.artigo-fullscreen-modal {
-    display: none; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%; z-index: 99999;
-    background: #0a0a0a; overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-}
+.artigo-fullscreen-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: var(--modal-bg); overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .artigo-fullscreen-modal.active { display: block; }
-
-.artigo-fullscreen-content {
-    width: 100%;
-    max-width: 800px;
-    min-height: 100vh; min-height: 100dvh;
-    margin: 0 auto;
-    padding: 20px 20px 60px 20px;
-    position: relative; background: #0a0a0a;
-}
-
-.artigo-fullscreen-close {
-    position: fixed; top: 15px; right: 15px; z-index: 100001;
-    width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
-    color: #ffffff; font-size: 1.2rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.3s; -webkit-tap-highlight-color: transparent;
-}
-.artigo-fullscreen-close:hover,
-.artigo-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
-
-.artigo-fullscreen-body { clear: both; padding-top: 10px; background: #0a0a0a; width: 100%; }
+.artigo-fullscreen-content { width: 100%; max-width: 800px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; padding: 20px 20px 60px 20px; position: relative; background: var(--modal-bg); }
+.artigo-fullscreen-close { position: fixed; top: 15px; right: 15px; z-index: 100001; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: #ffffff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; -webkit-tap-highlight-color: transparent; }
+.artigo-fullscreen-close:hover, .artigo-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
+.artigo-fullscreen-body { clear: both; padding-top: 10px; background: var(--modal-bg); width: 100%; }
 .artigo-fullscreen-body .artigo-banner { margin: -20px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
 .artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 20px 10px 20px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 20px 10px 20px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-meta { padding: 10px 20px; margin-bottom: 15px; }
-
 .artigo-fullscreen-body .artigo-card .artigo-corpo,
-.artigo-fullscreen-body .artigo-corpo {
-    display: block !important;
-    max-height: none;
-    padding: 15px 20px;
-    text-align: justify;
-    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word;
-    text-justify: inter-word; word-break: break-word;
-}
+.artigo-fullscreen-body .artigo-corpo { display: block !important; max-height: none; padding: 15px 20px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-corpo::after { display: none; }
-.artigo-fullscreen-body .artigo-corpo p {
-    margin-bottom: 14px; text-align: justify;
-    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word;
-    text-justify: inter-word; word-break: break-word;
-}
+.artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
 
 /* ==================== 12. BOTÕES DE REDES SOCIAIS (RESPONSIVOS - 7 REDES) ==================== */
-.social-btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: clamp(28px, 5vw, 36px); height: clamp(28px, 5vw, 36px);
-    background-color: #1a1a1a; color: #ffffff;
-    border: 1px solid #333333; border-radius: 50%;
-    font-size: clamp(0.7rem, 1.5vw, 1rem);
-    text-decoration: none; cursor: pointer; transition: all 0.3s ease;
-}
+.social-btn { display: inline-flex; align-items: center; justify-content: center; width: clamp(28px, 5vw, 36px); height: clamp(28px, 5vw, 36px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.7rem, 1.5vw, 1rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; }
 .social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; box-shadow: 0 0 12px rgba(225, 48, 108, 0.5); transform: translateY(-2px); }
 .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 12px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
 .social-btn.tiktok:hover { color: #ff0050; border-color: #ff0050; box-shadow: 0 0 12px rgba(255, 0, 80, 0.5); transform: translateY(-2px); }
@@ -246,80 +203,32 @@ body {
 .social-btn.telegram:hover { color: #0088cc; border-color: #0088cc; box-shadow: 0 0 12px rgba(0, 136, 204, 0.5); transform: translateY(-2px); }
 
 /* ==================== 13. BOTÕES DE AÇÃO (RESPONSIVOS) ==================== */
-.btn-action-icon {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: clamp(32px, 6vw, 42px); height: clamp(32px, 6vw, 42px);
-    background-color: #1a1a1a; color: #ffffff;
-    border: 1px solid #333333; border-radius: 50%;
-    font-size: clamp(0.9rem, 1.8vw, 1.2rem);
-    text-decoration: none; cursor: pointer; transition: all 0.3s ease;
-    -webkit-tap-highlight-color: transparent;
-}
+.btn-action-icon { display: inline-flex; align-items: center; justify-content: center; width: clamp(32px, 6vw, 42px); height: clamp(32px, 6vw, 42px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.9rem, 1.8vw, 1.2rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
 .btn-share-icon:hover { color: #8b5cf6; border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
 .btn-subscribe-icon:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); transform: translateY(-2px); }
-
-.btn-ler-mais {
-    display: flex; align-items: center; justify-content: center;
-    height: 36px; padding: 0 16px;
-    background: var(--gradient-brand); color: #ffffff;
-    border: none; border-radius: 20px;
-    font-size: clamp(0.8rem, 1.5vw, 0.85rem);
-    font-weight: 600; cursor: pointer;
-    transition: var(--transition-smooth);
-    font-family: 'Satoshi', sans-serif;
-    margin: 10px auto 15px auto; width: fit-content;
-}
+.btn-ler-mais { display: flex; align-items: center; justify-content: center; height: 36px; padding: 0 16px; background: var(--gradient-brand); color: #ffffff; border: none; border-radius: 20px; font-size: clamp(0.8rem, 1.5vw, 0.85rem); font-weight: 600; cursor: pointer; transition: var(--transition-smooth); font-family: 'Satoshi', sans-serif; margin: 10px auto 15px auto; width: fit-content; }
 .btn-ler-mais:hover { filter: brightness(1.1); transform: translateY(-2px); }
-
 .artigos-loading { text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.9rem; }
 
 /* ==================== 14. SEÇÃO SOBRE ==================== */
-.about-container { background: #1e1e1e; border-radius: 8px; padding: 30px 20px; text-align: center; border: 1px solid #333; }
-.about-profile h2 { color: #fff; margin-bottom: 5px; font-family: 'Satoshi', sans-serif; }
-.about-subtitle { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; }
-.about-bio p {
-    color: #ccc; line-height: 1.6; margin-bottom: 15px;
-    text-align: justify;
-    -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word;
-    text-justify: inter-word; word-break: break-word;
-}
+.about-container { background: var(--about-bg); border-radius: 8px; padding: 30px 20px; text-align: center; border: 1px solid var(--border-color); }
+.about-profile h2 { color: var(--text-main); margin-bottom: 5px; font-family: 'Satoshi', sans-serif; }
+.about-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
+.about-bio p { color: var(--text-dim); line-height: 1.6; margin-bottom: 15px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 
 /* ==================== 15. BOTÃO DE TRADUÇÃO FLUTUANTE ==================== */
 .translate-widget { position: fixed; bottom: 80px; left: 12px; z-index: 999; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .translate-toggle { width: 42px; height: 42px; background-color: var(--primary-purple); color: #ffffff; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
 .translate-toggle:active { transform: scale(0.95); background-color: var(--primary-blue); }
-.translate-dropdown { display: none; flex-direction: column; gap: 2px; background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 8px; min-width: 180px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); animation: fadeInDown 0.2s ease; }
+.translate-dropdown { display: none; flex-direction: column; gap: 2px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px; min-width: 180px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); animation: fadeInDown 0.2s ease; }
 .translate-dropdown.active { display: flex; }
 .translate-dropdown-title { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px 2px; font-weight: 600; }
 .translate-option { background: transparent; border: none; color: var(--text-main); padding: 10px 12px; text-align: left; font-size: 0.85rem; cursor: pointer; border-radius: 8px; transition: var(--transition-smooth); font-family: 'Satoshi', sans-serif; font-weight: 500; width: 100%; -webkit-tap-highlight-color: transparent; }
 .translate-option:active { background: rgba(139, 92, 246, 0.3); color: var(--primary-purple); }
 .translate-option.active-lang { background: rgba(139, 92, 246, 0.2); color: var(--primary-purple); font-weight: 700; }
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Botão X de fechar tradução */
-.translate-close-btn {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 22px;
-    height: 22px;
-    background: #ff0000;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    font-size: 12px;
-    cursor: pointer;
-    z-index: 1000;
-    line-height: 1;
-    -webkit-tap-highlight-color: transparent;
-}
-.translate-close-btn:hover {
-    background: #cc0000;
-    transform: scale(1.1);
-}
-
+.translate-close-btn { display: none; position: absolute; top: -8px; right: -8px; width: 22px; height: 22px; background: #ff0000; color: #fff; border: none; border-radius: 50%; font-size: 12px; cursor: pointer; z-index: 1000; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.translate-close-btn:hover { background: #cc0000; transform: scale(1.1); }
 .goog-te-banner-frame.skiptranslate, .goog-te-balloon-frame, .goog-te-gadget-icon { display: none !important; }
 .skiptranslate { display: none !important; height: 0 !important; }
 .goog-te-banner-frame { display: none !important; height: 0 !important; }
@@ -329,51 +238,25 @@ body {
 .back-to-top { position: fixed; bottom: 16px; right: 12px; width: 42px; height: 42px; background-color: var(--primary-purple); color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 1000; cursor: pointer; transition: all 0.3s ease; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .back-to-top:active { background-color: var(--primary-blue); transform: scale(0.95); }
 
-/* ==================== 17. POPUP PWA E BOTÃO FLUTUANTE (SOMENTE MOBILE) ==================== */
-.pwa-popup-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.85);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 9999;
-}
-.pwa-popup-content {
-    background-color: #050505; color: #ffffff;
-    width: 80%; max-width: 400px; padding: 30px;
-    border-radius: 16px; text-align: center;
-    border: 2px solid #8b5cf6;
-    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
-}
+/* ==================== 17. BOTÃO DE TEMA (CLARO/ESCURO) ==================== */
+.theme-toggle-btn { position: fixed; top: 90px; right: 20px; z-index: 998; width: 42px; height: 42px; background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
+.theme-toggle-btn:hover { transform: scale(1.1); border-color: var(--primary-purple); }
+
+/* ==================== 18. POPUP PWA E BOTÃO FLUTUANTE (SOMENTE MOBILE) ==================== */
+.pwa-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+.pwa-popup-content { background-color: #050505; color: #ffffff; width: 80%; max-width: 400px; padding: 30px; border-radius: 16px; text-align: center; border: 2px solid #8b5cf6; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
 .pwa-popup-content h2 { font-size: 1.5rem; margin-bottom: 10px; }
 .pwa-popup-content h2::after { display: none !important; }
 .pwa-popup-content p { color: #aaa; margin-bottom: 20px; font-size: 0.95rem; }
-.pwa-btn-install {
-    background-color: #8b5cf6; color: #fff; border: none;
-    padding: 12px 20px; font-size: 1rem; font-weight: bold;
-    border-radius: 8px; cursor: pointer; width: 100%;
-    margin-bottom: 10px; font-family: 'Satoshi', sans-serif;
-}
+.pwa-btn-install { background-color: #8b5cf6; color: #fff; border: none; padding: 12px 20px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 10px; font-family: 'Satoshi', sans-serif; }
 .pwa-btn-install:hover { background-color: #7c4dff; }
-.pwa-btn-close {
-    background: transparent; color: #aaa; border: none;
-    padding: 10px; font-size: 0.9rem; cursor: pointer;
-    text-decoration: underline; font-family: 'Satoshi', sans-serif;
-}
+.pwa-btn-close { background: transparent; color: #aaa; border: none; padding: 10px; font-size: 0.9rem; cursor: pointer; text-decoration: underline; font-family: 'Satoshi', sans-serif; }
 .pwa-btn-close:hover { color: #fff; }
-
-.pwa-floating-btn {
-    position: fixed; bottom: 140px; left: 12px; z-index: 998;
-    display: flex; align-items: center; gap: 6px;
-    background-color: var(--primary-purple); color: #ffffff;
-    border: none; padding: 8px 14px; border-radius: 25px;
-    cursor: pointer; font-family: 'Satoshi', sans-serif;
-    font-size: 0.8rem; font-weight: 600;
-    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
-    transition: all 0.3s ease; white-space: nowrap;
-}
+.pwa-floating-btn { position: fixed; bottom: 140px; left: 12px; z-index: 998; display: flex; align-items: center; gap: 6px; background-color: var(--primary-purple); color: #ffffff; border: none; padding: 8px 14px; border-radius: 25px; cursor: pointer; font-family: 'Satoshi', sans-serif; font-size: 0.8rem; font-weight: 600; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); transition: all 0.3s ease; white-space: nowrap; }
 .pwa-floating-btn:hover { background-color: var(--primary-blue); transform: translateY(-3px); }
 .pwa-floating-text { font-size: 0.8rem; }
 
-/* ==================== 18. MODAL DE VÍDEO EM TELA CHEIA ==================== */
+/* ==================== 19. MODAL DE VÍDEO EM TELA CHEIA ==================== */
 .video-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #000000; justify-content: center; align-items: center; flex-direction: column; }
 .video-fullscreen-modal.active { display: flex; }
 .video-fullscreen-close { position: fixed; top: 15px; right: 15px; z-index: 100001; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: #ffffff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; opacity: 1; pointer-events: all; -webkit-tap-highlight-color: transparent; }
@@ -392,9 +275,7 @@ body {
 .video-fullscreen-container.landscape { align-items: center; padding-top: 0; }
 .video-fullscreen-container.landscape iframe { width: 100%; height: 100%; }
 
-/* ==================== 19. RESPONSIVIDADE ==================== */
-
-/* Tablet e Desktop: containers mais largos e grids */
+/* ==================== 20. RESPONSIVIDADE ==================== */
 @media (min-width: 768px) {
     .feed-header { padding: 15px 30px; }
     .feed-logo { width: 100px; height: 100px; }
@@ -405,15 +286,11 @@ body {
     #artigos-feed-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     #artigos-feed-container .artigo-card { margin-bottom: 0; }
 }
-
-/* Desktop grande: 3 colunas para vídeos */
 @media (min-width: 1024px) {
     .feed-container { max-width: 1000px; }
     #youtube-feed-container { grid-template-columns: 1fr 1fr 1fr; }
     .artigo-fullscreen-content { max-width: 800px; }
 }
-
-/* Mobile */
 @media (max-width: 767px) {
     .feed-header { padding: 15px 10px; }
     .feed-logo { width: 120px; height: 120px; }
@@ -429,6 +306,7 @@ body {
     .logo-subscribe-btn { font-size: 1.1rem; padding: 4px 10px; }
     .feed-tabs { flex-direction: column; align-items: center; }
     .tab-btn { width: 100%; max-width: 250px; }
+    .theme-toggle-btn { top: 80px; right: 12px; width: 36px; height: 36px; font-size: 1rem; }
     .translate-widget { bottom: 70px; left: 8px; }
     .translate-toggle { width: 38px; height: 38px; }
     .translate-toggle svg { width: 18px; height: 18px; }
@@ -453,6 +331,6 @@ body {
     .video-actions-bar .btn-action-icon { width: 36px; height: 36px; font-size: 1rem; }
 }
 
-/* ==================== 20. ACESSIBILIDADE ==================== */
+/* ==================== 21. ACESSIBILIDADE ==================== */
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--primary-purple); outline-offset: 3px; border-radius: 4px; }

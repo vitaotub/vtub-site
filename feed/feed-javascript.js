@@ -9,6 +9,7 @@
  * compartilhamento com link absoluto,
  * PWA (apenas mobile) com memória de instalação,
  * Botão de tradução arrastável e "fechável",
+ * Botão de tema (claro/escuro),
  * Botão voltar ao topo
  * Organizado por seções para facilitar manutenção
  * ============================================================
@@ -206,7 +207,6 @@ function abrirArtigoFullscreen(artigoId) {
     const btnLerMais = conteudo.querySelector('.btn-ler-mais');
     if (btnLerMais) btnLerMais.remove();
     
-    // Força o corpo do artigo a ficar visível e formatado
     const corpo = conteudo.querySelector('.artigo-corpo');
     if (corpo) {
         corpo.style.setProperty('display', 'block', 'important');
@@ -248,9 +248,7 @@ function abrirArtigoFullscreen(artigoId) {
 }
 function fecharArtigoFullscreen() { const modal = document.getElementById('artigo-fullscreen-modal'); if (modal) { modal.classList.remove('active'); document.body.style.overflow = ''; } }
 function initArtigoSwipeToClose() {
-    const modal = document.getElementById('artigo-fullscreen-modal');
-    const content = document.querySelector('.artigo-fullscreen-content');
-    if (!modal || !content) return;
+    const modal = document.getElementById('artigo-fullscreen-modal'); const content = document.querySelector('.artigo-fullscreen-content'); if (!modal || !content) return;
     let startX = 0, currentX = 0, isDragging = false;
     content.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDragging = true; content.style.transition = 'none'; }, { passive: true });
     content.addEventListener('touchmove', (e) => { if (!isDragging) return; currentX = e.touches[0].clientX; const diffX = currentX - startX; if (Math.abs(diffX) > 20) { content.style.transform = `translateX(${diffX}px)`; content.style.opacity = 1 - Math.abs(diffX) / 400; } }, { passive: true });
@@ -287,80 +285,25 @@ function initDraggableTranslate() {
     const widget = document.getElementById('translate-widget');
     const toggleBtn = document.getElementById('translate-toggle');
     if (!widget || !toggleBtn) return;
-    
-    // Verifica se o botão foi fechado antes
-    if (localStorage.getItem('vitaotub_translate_hidden')) {
-        widget.style.display = 'none';
-        return;
-    }
-    
-    let isDragging = false;
-    let startX, startY, startLeft, startBottom;
-    
-    // Criar botão de fechar (X)
+    if (localStorage.getItem('vitaotub_translate_hidden')) { widget.style.display = 'none'; return; }
+    let isDragging = false; let startX, startY, startLeft, startBottom;
     const closeBtn = document.createElement('button');
-    closeBtn.className = 'translate-close-btn';
-    closeBtn.innerHTML = '✕';
-    closeBtn.title = 'Esconder tradutor';
+    closeBtn.className = 'translate-close-btn'; closeBtn.innerHTML = '✕'; closeBtn.title = 'Esconder tradutor';
     closeBtn.style.cssText = 'display:none;position:absolute;top:-8px;right:-8px;width:22px;height:22px;background:#ff0000;color:#fff;border:none;border-radius:50%;font-size:12px;cursor:pointer;z-index:1000;line-height:1;';
     widget.appendChild(closeBtn);
-    
-    // Mostrar X ao passar o mouse (desktop)
     toggleBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
     widget.addEventListener('mouseleave', () => { if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; });
-    
-    // Toque rápido no mobile mostra o X
     let clickTimeout;
     toggleBtn.addEventListener('click', (e) => {
         if (isDragging) return;
-        if (clickTimeout) {
-            clearTimeout(clickTimeout); clickTimeout = null;
-            closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true';
-            setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000);
-        } else {
-            clickTimeout = setTimeout(() => { clickTimeout = null; toggleTranslateDropdown(); }, 300);
-        }
+        if (clickTimeout) { clearTimeout(clickTimeout); clickTimeout = null; closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true'; setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000); }
+        else { clickTimeout = setTimeout(() => { clickTimeout = null; toggleTranslateDropdown(); }, 300); }
     });
-    
-    // Fechar permanentemente
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        widget.style.display = 'none';
-        localStorage.setItem('vitaotub_translate_hidden', 'true');
-    });
-    
-    // Arrastar (desktop)
-    toggleBtn.addEventListener('mousedown', (e) => {
-        if (e.target === closeBtn) return;
-        isDragging = true; startX = e.clientX; startY = e.clientY;
-        const rect = widget.getBoundingClientRect();
-        startLeft = rect.left; startBottom = window.innerHeight - rect.bottom;
-        widget.style.transition = 'none'; e.preventDefault();
-    });
-    
-    // Arrastar (mobile)
-    toggleBtn.addEventListener('touchstart', (e) => {
-        if (e.target === closeBtn) return;
-        isDragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY;
-        const rect = widget.getBoundingClientRect();
-        startLeft = rect.left; startBottom = window.innerHeight - rect.bottom;
-        widget.style.transition = 'none';
-    }, { passive: true });
-    
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        widget.style.left = `${startLeft + e.clientX - startX}px`;
-        widget.style.bottom = `${startBottom - (e.clientY - startY)}px`;
-        widget.style.right = 'auto'; widget.style.top = 'auto';
-    });
-    
-    document.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        widget.style.left = `${startLeft + e.touches[0].clientX - startX}px`;
-        widget.style.bottom = `${startBottom - (e.touches[0].clientY - startY)}px`;
-        widget.style.right = 'auto'; widget.style.top = 'auto';
-    }, { passive: true });
-    
+    closeBtn.addEventListener('click', (e) => { e.stopPropagation(); widget.style.display = 'none'; localStorage.setItem('vitaotub_translate_hidden', 'true'); });
+    toggleBtn.addEventListener('mousedown', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.clientX; startY = e.clientY; const rect = widget.getBoundingClientRect(); startLeft = rect.left; startBottom = window.innerHeight - rect.bottom; widget.style.transition = 'none'; e.preventDefault(); });
+    toggleBtn.addEventListener('touchstart', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; const rect = widget.getBoundingClientRect(); startLeft = rect.left; startBottom = window.innerHeight - rect.bottom; widget.style.transition = 'none'; }, { passive: true });
+    document.addEventListener('mousemove', (e) => { if (!isDragging) return; widget.style.left = `${startLeft + e.clientX - startX}px`; widget.style.bottom = `${startBottom - (e.clientY - startY)}px`; widget.style.right = 'auto'; widget.style.top = 'auto'; });
+    document.addEventListener('touchmove', (e) => { if (!isDragging) return; widget.style.left = `${startLeft + e.touches[0].clientX - startX}px`; widget.style.bottom = `${startBottom - (e.touches[0].clientY - startY)}px`; widget.style.right = 'auto'; widget.style.top = 'auto'; }, { passive: true });
     document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; widget.style.transition = ''; } });
     document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; widget.style.transition = ''; } });
 }
@@ -370,71 +313,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const pwaPopup = document.getElementById('pwa-install-popup');
     const pwaFloatingBtn = document.getElementById('pwa-floating-btn');
     if (!pwaPopup && !pwaFloatingBtn) return;
-    
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-    
-    // Se for desktop, esconde tudo
-    if (!isMobile) {
-        if (pwaPopup) pwaPopup.style.display = 'none';
-        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
-        return;
-    }
-    
-    // Se já instalou
-    if (localStorage.getItem('vitaotub_pwa_installed')) {
-        if (pwaPopup) pwaPopup.style.display = 'none';
-        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
-        return;
-    }
-    
+    if (!isMobile) { if (pwaPopup) pwaPopup.style.display = 'none'; if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; return; }
+    if (localStorage.getItem('vitaotub_pwa_installed')) { if (pwaPopup) pwaPopup.style.display = 'none'; if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; return; }
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     if (isStandalone) { localStorage.setItem('vitaotub_pwa_installed', 'true'); return; }
-    
     let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); deferredPrompt = e;
-        const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
-        if (!jaRejeitou && pwaPopup) { pwaPopup.style.display = 'flex'; }
-        else if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; }
-    });
-    
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected'); if (!jaRejeitou && pwaPopup) { pwaPopup.style.display = 'flex'; } else if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; } });
     const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
     if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; }
-    
-    if (!jaRejeitou && pwaPopup) {
-        setTimeout(() => { if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) pwaPopup.style.display = 'flex'; }, 2000);
-    }
-    
+    if (!jaRejeitou && pwaPopup) { setTimeout(() => { if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) pwaPopup.style.display = 'flex'; }, 2000); }
     const installBtn = document.getElementById('pwa-install-btn');
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                pwaPopup.style.display = 'none'; deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; }
-                else { localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; }
-                deferredPrompt = null;
-            }
-        });
-    }
-    
+    if (installBtn) { installBtn.addEventListener('click', async () => { if (deferredPrompt) { pwaPopup.style.display = 'none'; deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; } else { localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; } deferredPrompt = null; } }); }
     const closeBtn = document.getElementById('pwa-close-btn');
     if (closeBtn) { closeBtn.addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; }); }
-    
-    if (pwaFloatingBtn) {
-        pwaFloatingBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); pwaFloatingBtn.style.display = 'none'; }
-                deferredPrompt = null;
-            } else { alert('Para instalar, acesse as opções do seu navegador.'); }
-        });
-    }
+    if (pwaFloatingBtn) { pwaFloatingBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); pwaFloatingBtn.style.display = 'none'; } deferredPrompt = null; } else { alert('Para instalar, acesse as opções do seu navegador.'); } }); }
 });
 
-// ==================== 11. BOTÃO VOLTAR AO TOPO ====================
+// ==================== 11. BOTÃO DE TEMA (CLARO/ESCURO) ====================
+function initThemeToggle() {
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (!themeBtn) return;
+    const savedTheme = localStorage.getItem('vitaotub_theme');
+    if (savedTheme === 'light') { document.body.classList.add('light-mode'); themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
+    else { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        if (document.body.classList.contains('light-mode')) { localStorage.setItem('vitaotub_theme', 'light'); themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
+        else { localStorage.setItem('vitaotub_theme', 'dark'); themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
+    });
+}
+
+// ==================== 12. BOTÃO VOLTAR AO TOPO ====================
 const backToTopButton = document.getElementById('back-to-top');
 if (backToTopButton) { backToTopButton.addEventListener('click', function(e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
 
-// ==================== 12. INICIALIZAÇÃO ====================
-document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); initDraggableTranslate(); verificarArtigoNaUrl(); });
+// ==================== 13. INICIALIZAÇÃO ====================
+document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); initDraggableTranslate(); initThemeToggle(); verificarArtigoNaUrl(); });
