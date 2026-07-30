@@ -20,14 +20,6 @@ const CONFIG = {
 };
 
 // ==================== 2. INTEGRAÇÃO ONESIGNAL PUSH ====================
-window.OneSignalDeferred = window.OneSignalDeferred || [];
-OneSignalDeferred.push(function(OneSignal) {
-    OneSignal.init({
-        appId: "13f4a7c5-2e82-4b2f-8047-f2b866470efe",
-        safari_web_id: "SEU_ID_SAFARI_AQUI_SE_HOUVER",
-        notifyButton: { enable: true },
-    });
-});
 
 // ==================== 3. SERVICE WORKER E PWA ====================
 if ('serviceWorker' in navigator) {
