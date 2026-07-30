@@ -195,71 +195,182 @@ function initArtigoDestaque() {
     artigos.forEach(artigo => observer.observe(artigo));
 }
 
+// ==================== 6.1 FUNÇÃO CORRIGIDA - ABRIR ARTIGO EM TELA CHEIA ====================
 function abrirArtigoFullscreen(artigoId) {
     const artigo = document.getElementById(artigoId);
     if (!artigo) return;
     const modal = document.getElementById('artigo-fullscreen-modal');
     const body = document.getElementById('artigo-fullscreen-body');
     if (!modal || !body) return;
+    
+    // Clona todo o conteúdo do artigo
     const conteudo = artigo.cloneNode(true);
     conteudo.style.cursor = 'default';
     conteudo.classList.add('artigo-fullscreen-active');
+    
+    // ===== REMOVE O RODAPÉ DO CARD (não necessário no modal) =====
+    const rodape = conteudo.querySelector('.artigo-rodape');
+    if (rodape) rodape.remove();
+    
+    // ===== REMOVE O BOTÃO "LER MAIS" =====
     const btnLerMais = conteudo.querySelector('.btn-ler-mais');
     if (btnLerMais) btnLerMais.remove();
     
+    // ===== FORÇA A EXIBIÇÃO DO CORPO DO ARTIGO =====
     const corpo = conteudo.querySelector('.artigo-corpo');
     if (corpo) {
-        corpo.style.setProperty('display', 'block', 'important');
-        corpo.style.setProperty('max-height', 'none', 'important');
-        corpo.style.setProperty('overflow', 'visible', 'important');
-        corpo.style.setProperty('padding', '15px 20px', 'important');
-        corpo.style.setProperty('text-align', 'justify', 'important');
-        corpo.style.setProperty('text-justify', 'inter-word', 'important');
-        corpo.style.setProperty('word-break', 'break-word', 'important');
-        corpo.style.setProperty('overflow-wrap', 'break-word', 'important');
-        corpo.style.setProperty('word-wrap', 'break-word', 'important');
-        corpo.style.setProperty('-webkit-hyphens', 'auto', 'important');
-        corpo.style.setProperty('-moz-hyphens', 'auto', 'important');
-        corpo.style.setProperty('-ms-hyphens', 'auto', 'important');
-        corpo.style.setProperty('hyphens', 'auto', 'important');
+        corpo.style.display = 'block';
+        corpo.style.maxHeight = 'none';
+        corpo.style.overflow = 'visible';
+        corpo.style.padding = '15px 20px';
+        corpo.style.textAlign = 'justify';
+        corpo.style.textJustify = 'inter-word';
+        corpo.style.wordBreak = 'break-word';
+        corpo.style.overflowWrap = 'break-word';
+        corpo.style.wordWrap = 'break-word';
+        corpo.style.webkitHyphens = 'auto';
+        corpo.style.mozHyphens = 'auto';
+        corpo.style.msHyphens = 'auto';
+        corpo.style.hyphens = 'auto';
         
+        // Aplica formatação aos parágrafos
         const paragrafos = corpo.querySelectorAll('p');
         paragrafos.forEach(p => {
-            p.style.setProperty('text-align', 'justify', 'important');
-            p.style.setProperty('text-justify', 'inter-word', 'important');
-            p.style.setProperty('word-break', 'break-word', 'important');
-            p.style.setProperty('overflow-wrap', 'break-word', 'important');
-            p.style.setProperty('word-wrap', 'break-word', 'important');
-            p.style.setProperty('-webkit-hyphens', 'auto', 'important');
-            p.style.setProperty('-moz-hyphens', 'auto', 'important');
-            p.style.setProperty('-ms-hyphens', 'auto', 'important');
-            p.style.setProperty('hyphens', 'auto', 'important');
-            p.style.setProperty('margin-bottom', '14px', 'important');
+            p.style.textAlign = 'justify';
+            p.style.textJustify = 'inter-word';
+            p.style.wordBreak = 'break-word';
+            p.style.overflowWrap = 'break-word';
+            p.style.wordWrap = 'break-word';
+            p.style.webkitHyphens = 'auto';
+            p.style.mozHyphens = 'auto';
+            p.style.msHyphens = 'auto';
+            p.style.hyphens = 'auto';
+            p.style.marginBottom = '14px';
         });
     }
     
+    // ===== AJUSTA O RESUMO NO MODAL =====
+    const resumo = conteudo.querySelector('.artigo-resumo');
+    if (resumo) {
+        resumo.style.display = 'block';
+        resumo.style.webkitLineClamp = 'unset';
+        resumo.style.overflow = 'visible';
+        resumo.style.maxHeight = 'none';
+        resumo.style.padding = '0 20px 10px 20px';
+        resumo.style.fontSize = '1rem';
+        resumo.style.textAlign = 'justify';
+        resumo.style.textJustify = 'inter-word';
+        resumo.style.wordBreak = 'break-word';
+        resumo.style.overflowWrap = 'break-word';
+        resumo.style.wordWrap = 'break-word';
+        resumo.style.webkitHyphens = 'auto';
+        resumo.style.mozHyphens = 'auto';
+        resumo.style.msHyphens = 'auto';
+        resumo.style.hyphens = 'auto';
+    }
+    
+    // ===== AJUSTA O TÍTULO NO MODAL =====
+    const titulo = conteudo.querySelector('.artigo-titulo');
+    if (titulo) {
+        titulo.style.fontSize = '1.6rem';
+        titulo.style.padding = '0 20px 10px 20px';
+        titulo.style.textAlign = 'justify';
+        titulo.style.webkitLineClamp = 'unset';
+        titulo.style.overflow = 'visible';
+        titulo.style.maxHeight = 'none';
+        titulo.style.webkitHyphens = 'auto';
+        titulo.style.mozHyphens = 'auto';
+        titulo.style.msHyphens = 'auto';
+        titulo.style.hyphens = 'auto';
+    }
+    
+    // ===== AJUSTA A META NO MODAL =====
+    const meta = conteudo.querySelector('.artigo-meta');
+    if (meta) {
+        meta.style.padding = '10px 20px';
+        meta.style.marginBottom = '15px';
+        meta.style.fontSize = '0.85rem';
+        meta.style.display = 'flex';
+        meta.style.justifyContent = 'space-between';
+    }
+    
+    // ===== AJUSTA O BANNER NO MODAL =====
+    const banner = conteudo.querySelector('.artigo-banner');
+    if (banner) {
+        banner.style.margin = '-20px -20px 20px -20px';
+        banner.style.width = 'calc(100% + 40px)';
+        banner.style.borderRadius = '0';
+    }
+    
+    // Insere o conteúdo no modal
     body.innerHTML = '';
     body.appendChild(conteudo);
+    
+    // Abre o modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     modal.scrollTop = 0;
     window.scrollTo(0, 0);
+    
+    // Inicializa o swipe to close
     initArtigoSwipeToClose();
 }
-function fecharArtigoFullscreen() { const modal = document.getElementById('artigo-fullscreen-modal'); if (modal) { modal.classList.remove('active'); document.body.style.overflow = ''; } }
-function initArtigoSwipeToClose() {
-    const modal = document.getElementById('artigo-fullscreen-modal'); const content = document.querySelector('.artigo-fullscreen-content'); if (!modal || !content) return;
-    let startX = 0, currentX = 0, isDragging = false;
-    content.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDragging = true; content.style.transition = 'none'; }, { passive: true });
-    content.addEventListener('touchmove', (e) => { if (!isDragging) return; currentX = e.touches[0].clientX; const diffX = currentX - startX; if (Math.abs(diffX) > 20) { content.style.transform = `translateX(${diffX}px)`; content.style.opacity = 1 - Math.abs(diffX) / 400; } }, { passive: true });
-    content.addEventListener('touchend', () => { if (!isDragging) return; isDragging = false; const diffX = currentX - startX; content.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; if (Math.abs(diffX) > 100) { content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; content.style.opacity = '0'; setTimeout(() => { fecharArtigoFullscreen(); content.style.transform = ''; content.style.opacity = ''; }, 300); } else { content.style.transform = ''; content.style.opacity = ''; } currentX = 0; });
+
+function fecharArtigoFullscreen() { 
+    const modal = document.getElementById('artigo-fullscreen-modal'); 
+    if (modal) { 
+        modal.classList.remove('active'); 
+        document.body.style.overflow = ''; 
+    } 
 }
+
+function initArtigoSwipeToClose() {
+    const modal = document.getElementById('artigo-fullscreen-modal'); 
+    const content = document.querySelector('.artigo-fullscreen-content'); 
+    if (!modal || !content) return;
+    let startX = 0, currentX = 0, isDragging = false;
+    content.addEventListener('touchstart', (e) => { 
+        startX = e.touches[0].clientX; 
+        isDragging = true; 
+        content.style.transition = 'none'; 
+    }, { passive: true });
+    content.addEventListener('touchmove', (e) => { 
+        if (!isDragging) return; 
+        currentX = e.touches[0].clientX; 
+        const diffX = currentX - startX; 
+        if (Math.abs(diffX) > 20) { 
+            content.style.transform = `translateX(${diffX}px)`; 
+            content.style.opacity = 1 - Math.abs(diffX) / 400; 
+        } 
+    }, { passive: true });
+    content.addEventListener('touchend', () => { 
+        if (!isDragging) return; 
+        isDragging = false; 
+        const diffX = currentX - startX; 
+        content.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; 
+        if (Math.abs(diffX) > 100) { 
+            content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; 
+            content.style.opacity = '0'; 
+            setTimeout(() => { 
+                fecharArtigoFullscreen(); 
+                content.style.transform = ''; 
+                content.style.opacity = ''; 
+            }, 300); 
+        } else { 
+            content.style.transform = ''; 
+            content.style.opacity = ''; 
+        } 
+        currentX = 0; 
+    });
+}
+
 function compartilharArtigo(artigoId, titulo) {
     const link = `https://www.vitaotub.com/feed/feed.html#${artigoId}`;
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
     if (isMobile && navigator.share) { navigator.share({ title: titulo || 'Artigo do VitãoTub', text: 'Confira este artigo!', url: link }).catch(() => {}); }
     else { navigator.clipboard.writeText(link).then(() => { alert('Link do artigo copiado! Compartilhe com seus amigos.'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = link; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do artigo copiado!'); }); }
 }
+
 function verificarArtigoNaUrl() {
     const hash = window.location.hash;
     if (hash && hash.startsWith('#artigo-')) {
