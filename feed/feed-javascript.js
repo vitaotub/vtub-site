@@ -307,23 +307,197 @@ function initDraggableTranslate() {
 // ==================== 10. BOTÃO DE INSTALAÇÃO PWA (APENAS MOBILE) ====================
 document.addEventListener("DOMContentLoaded", () => {
     const pwaPopup = document.getElementById('pwa-install-popup');
+    const popupContent = document.getElementById('pwa-popup-content');
     const pwaFloatingBtn = document.getElementById('pwa-floating-btn');
-    if (!pwaPopup && !pwaFloatingBtn) return;
+    
+    if (!pwaPopup || !popupContent) {
+        console.warn("Elementos PWA não encontrados");
+        return;
+    }
+    
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-    if (!isMobile) { if (pwaPopup) pwaPopup.style.display = 'none'; if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; return; }
-    if (localStorage.getItem('vitaotub_pwa_installed')) { if (pwaPopup) pwaPopup.style.display = 'none'; if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; return; }
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    if (isStandalone) { localStorage.setItem('vitaotub_pwa_installed', 'true'); return; }
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected'); if (!jaRejeitou && pwaPopup) { pwaPopup.style.display = 'flex'; } else if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; } });
+    
+    // Se já está instalado, não mostra nada
+    if (isStandalone) {
+        localStorage.setItem('vitaotub_pwa_installed', 'true');
+        pwaPopup.style.display = 'none';
+        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
+        return;
+    }
+    
+    const jaEntendeu = localStorage.getItem('vitaotub_pwa_entendido');
+    const jaInstalou = localStorage.getItem('vitaotub_pwa_installed');
     const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
-    if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; }
-    if (!jaRejeitou && pwaPopup) { setTimeout(() => { if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) pwaPopup.style.display = 'flex'; }, 2000); }
-    const installBtn = document.getElementById('pwa-install-btn');
-    if (installBtn) { installBtn.addEventListener('click', async () => { if (deferredPrompt) { pwaPopup.style.display = 'none'; deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; } else { localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; } deferredPrompt = null; } }); }
-    const closeBtn = document.getElementById('pwa-close-btn');
-    if (closeBtn) { closeBtn.addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; }); }
-    if (pwaFloatingBtn) { pwaFloatingBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); pwaFloatingBtn.style.display = 'none'; } deferredPrompt = null; } else { alert('Para instalar, acesse as opções do seu navegador.'); } }); }
+    
+    // DESKTOP: mostra mensagem informativa
+    if (!isMobile) {
+        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
+        if (jaEntendeu) return;
+        
+        // PREENCHE A POPUP PARA DESKTOP
+        popupContent.innerHTML = `
+            <h2>📱 App para Celular!</h2>
+            <img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'">
+            <p>Este site possui um <strong>App para celular</strong> com notícias, matérias e novidades. Acesse pelo seu próprio celular e o App estará disponível para instalação!</p>
+            <button id="pwa-desktop-ok-btn" class="pwa-btn-install">Entendi! 👍</button>
+        `;
+        
+        setTimeout(() => {
+            if (!localStorage.getItem('vitaotub_pwa_entendido')) {
+                pwaPopup.style.display = 'flex';
+            }
+        }, 2000);
+        
+        document.getElementById('pwa-desktop-ok-btn').addEventListener('click', () => {
+            pwaPopup.style.display = 'none';
+            localStorage.setItem('vitaotub_pwa_entendido', 'true');
+        });
+        return;
+    }
+    
+    // MOBILE: se já instalou, não mostra nada
+    if (jaInstalou) {
+        pwaPopup.style.display = 'none';
+        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
+        return;
+    }
+    
+    // MOBILE: função para preencher a popup
+    function preencherPopup(mensagem) {
+        if (!popupContent) return;
+        popupContent.innerHTML = mensagem;
+    }
+    
+    // MOBILE: mensagem padrão (caso o beforeinstallprompt não dispare)
+    function mostrarPopupPadrao() {
+        if (jaRejeitou) {
+            if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
+            return;
+        }
+        
+        preencherPopup(`
+            <h2>Bem-vindo ao VitãoTub! 🚀</h2>
+            <img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'">
+            <p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p>
+            <button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button>
+            <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
+        `);
+        
+        pwaPopup.style.display = 'flex';
+        
+        // Evento do botão "Instalar App"
+        document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                pwaPopup.style.display = 'none';
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    localStorage.setItem('vitaotub_pwa_installed', 'true');
+                    localStorage.removeItem('vitaotub_pwa_rejected');
+                    if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
+                } else {
+                    localStorage.setItem('vitaotub_pwa_rejected', 'true');
+                    if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
+                }
+                deferredPrompt = null;
+            } else {
+                // Fallback: explica como instalar manualmente
+                alert('Para instalar, acesse as opções do seu navegador e selecione "Adicionar à tela inicial".');
+                localStorage.setItem('vitaotub_pwa_rejected', 'true');
+                pwaPopup.style.display = 'none';
+                if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
+            }
+        });
+        
+        document.getElementById('pwa-close-btn').addEventListener('click', () => {
+            pwaPopup.style.display = 'none';
+            localStorage.setItem('vitaotub_pwa_rejected', 'true');
+            if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
+        });
+    }
+    
+    let deferredPrompt = null;
+    
+    // Tenta capturar o evento beforeinstallprompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log("beforeinstallprompt capturado!");
+        
+        if (!jaRejeitou) {
+            preencherPopup(`
+                <h2>Bem-vindo ao VitãoTub! 🚀</h2>
+                <img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'">
+                <p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p>
+                <button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button>
+                <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
+            `);
+            pwaPopup.style.display = 'flex';
+            
+            document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    pwaPopup.style.display = 'none';
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        localStorage.setItem('vitaotub_pwa_installed', 'true');
+                        localStorage.removeItem('vitaotub_pwa_rejected');
+                        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
+                    } else {
+                        localStorage.setItem('vitaotub_pwa_rejected', 'true');
+                        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
+                    }
+                    deferredPrompt = null;
+                }
+            });
+            
+            document.getElementById('pwa-close-btn').addEventListener('click', () => {
+                pwaPopup.style.display = 'none';
+                localStorage.setItem('vitaotub_pwa_rejected', 'true');
+                if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
+            });
+        } else if (jaRejeitou && pwaFloatingBtn) {
+            pwaFloatingBtn.style.display = 'flex';
+        }
+    });
+    
+    // Se já rejeitou, mostra o botão flutuante
+    if (jaRejeitou && pwaFloatingBtn) {
+        pwaFloatingBtn.style.display = 'flex';
+    }
+    
+    // Mostra a popup padrão após 2 segundos se:
+    // 1. O beforeinstallprompt não foi capturado
+    // 2. O usuário não rejeitou
+    // 3. O usuário não instalou
+    if (!jaRejeitou && !jaInstalou) {
+        setTimeout(() => {
+            // Se a popup não foi aberta pelo beforeinstallprompt
+            if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) {
+                console.log("Mostrando popup padrão (beforeinstallprompt não disparou)");
+                mostrarPopupPadrao();
+            }
+        }, 3000);
+    }
+    
+    // Botão flutuante
+    if (pwaFloatingBtn) {
+        pwaFloatingBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    localStorage.setItem('vitaotub_pwa_installed', 'true');
+                    localStorage.removeItem('vitaotub_pwa_rejected');
+                    pwaFloatingBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            } else {
+                alert('Para instalar, acesse as opções do seu navegador e selecione "Adicionar à tela inicial".');
+            }
+        });
+    }
 });
 
 // ==================== 11. BOTÃO DE TEMA (CLARO/ESCURO) ====================
