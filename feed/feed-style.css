@@ -123,36 +123,99 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
     cursor: pointer;
+    
+    /* === ALINHAMENTO DO RODAPÉ === */
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
 }
+
 .artigo-card.artigo-destaque { border-color: rgba(59, 130, 246, 0.8); box-shadow: 0 0 25px rgba(59, 130, 246, 0.25), 0 4px 15px rgba(0, 0, 0, 0.3); transform: scale(1.01); }
 .artigo-card:hover { border-color: var(--primary-purple); transform: translateY(-2px); }
 .artigo-card.artigo-destaque:hover { border-color: rgba(59, 130, 246, 0.9); transform: scale(1.01) translateY(-2px); }
 
-.artigo-banner { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; overflow: hidden; border-radius: 12px 12px 0 0; }
+.artigo-banner { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; overflow: hidden; border-radius: 12px 12px 0 0; flex-shrink: 0; }
 .artigo-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .artigo-card:hover .artigo-banner img { transform: scale(1.03); }
 
 .artigo-titulo {
-    font-size: 1.3rem; font-weight: 700; color: var(--text-main);
-    padding: 20px 20px 0 20px; margin: 0;
-    font-family: 'Satoshi', sans-serif; line-height: 1.4;
-    text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word;
-    text-justify: inter-word; word-break: break-word;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-main);
+    padding: 20px 20px 0 20px;
+    margin: 0;
+    font-family: 'Satoshi', sans-serif;
+    line-height: 1.4;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    text-justify: inter-word;
+    word-break: break-word;
+    flex-shrink: 0;
 }
+
 .artigo-resumo {
-    font-size: 0.95rem; color: var(--text-dim);
-    padding: 10px 20px; margin: 0; line-height: 1.6;
-    text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
-    overflow-wrap: break-word; word-wrap: break-word;
-    text-justify: inter-word; word-break: break-word;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    padding: 10px 20px;
+    margin: 0;
+    line-height: 1.6;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    text-justify: inter-word;
+    word-break: break-word;
+    flex: 1;
 }
+
 .artigo-card .artigo-corpo { display: none; }
-.artigo-meta { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--border-color); margin-bottom: 0; }
+
+.artigo-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border-color);
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
 .artigo-data { color: var(--primary-purple); font-weight: 600; }
 .artigo-autor { color: var(--primary-blue); font-weight: 600; }
 
-/* Rodapé do artigo - com proteção contra overflow */
+/* Botão "Ler Mais" */
+.btn-ler-mais {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 16px;
+    background: var(--gradient-brand);
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    font-size: clamp(0.8rem, 1.5vw, 0.85rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    font-family: 'Satoshi', sans-serif;
+    margin: 10px auto 15px auto;
+    width: fit-content;
+    flex-shrink: 0;
+}
+.btn-ler-mais:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+/* Rodapé do artigo - sempre no final */
 .artigo-rodape {
     display: flex;
     justify-content: space-between;
@@ -162,7 +225,13 @@ body {
     gap: clamp(4px, 1vw, 8px);
     flex-wrap: wrap;
     overflow: hidden;
+    margin-top: auto;
+    flex-shrink: 0;
 }
+
+.artigos-loading { text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.9rem; }
+
+/* ==================== 11. RODAPÉ DOS ARTIGOS (REDES SOCIAIS E AÇÕES) ==================== */
 .artigo-rodape-social {
     display: flex;
     gap: clamp(2px, 0.5vw, 4px);
@@ -176,7 +245,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA ==================== */
+/* ==================== 12. MODAL DE ARTIGO EM TELA CHEIA ==================== */
 .artigo-fullscreen-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: var(--modal-bg); overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .artigo-fullscreen-modal.active { display: block; }
 .artigo-fullscreen-content { width: 100%; max-width: 800px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; padding: 20px 20px 60px 20px; position: relative; background: var(--modal-bg); }
@@ -212,7 +281,7 @@ body {
 .artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
 
-/* ==================== 12. BOTÕES DE REDES SOCIAIS (RESPONSIVOS - 7 REDES) ==================== */
+/* ==================== 13. BOTÕES DE REDES SOCIAIS (RESPONSIVOS - 7 REDES) ==================== */
 .social-btn { display: inline-flex; align-items: center; justify-content: center; width: clamp(28px, 5vw, 36px); height: clamp(28px, 5vw, 36px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.7rem, 1.5vw, 1rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; }
 .social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; box-shadow: 0 0 12px rgba(225, 48, 108, 0.5); transform: translateY(-2px); }
 .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 12px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
@@ -222,21 +291,18 @@ body {
 .social-btn.github:hover { color: #ffffff; border-color: #ffffff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
 .social-btn.telegram:hover { color: #0088cc; border-color: #0088cc; box-shadow: 0 0 12px rgba(0, 136, 204, 0.5); transform: translateY(-2px); }
 
-/* ==================== 13. BOTÕES DE AÇÃO (RESPONSIVOS) ==================== */
+/* ==================== 14. BOTÕES DE AÇÃO (RESPONSIVOS) ==================== */
 .btn-action-icon { display: inline-flex; align-items: center; justify-content: center; width: clamp(32px, 6vw, 42px); height: clamp(32px, 6vw, 42px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.9rem, 1.8vw, 1.2rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
 .btn-share-icon:hover { color: #8b5cf6; border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
 .btn-subscribe-icon:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); transform: translateY(-2px); }
-.btn-ler-mais { display: flex; align-items: center; justify-content: center; height: 36px; padding: 0 16px; background: var(--gradient-brand); color: #ffffff; border: none; border-radius: 20px; font-size: clamp(0.8rem, 1.5vw, 0.85rem); font-weight: 600; cursor: pointer; transition: var(--transition-smooth); font-family: 'Satoshi', sans-serif; margin: 10px auto 15px auto; width: fit-content; }
-.btn-ler-mais:hover { filter: brightness(1.1); transform: translateY(-2px); }
-.artigos-loading { text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.9rem; }
 
-/* ==================== 14. SEÇÃO SOBRE ==================== */
+/* ==================== 15. SEÇÃO SOBRE ==================== */
 .about-container { background: var(--about-bg); border-radius: 8px; padding: 30px 20px; text-align: center; border: 1px solid var(--border-color); }
 .about-profile h2 { color: var(--text-main); margin-bottom: 5px; font-family: 'Satoshi', sans-serif; }
 .about-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
 .about-bio p { color: var(--text-dim); line-height: 1.6; margin-bottom: 15px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 
-/* ==================== 15. BOTÃO DE TRADUÇÃO FLUTUANTE ==================== */
+/* ==================== 16. BOTÃO DE TRADUÇÃO FLUTUANTE ==================== */
 .translate-widget { position: fixed; bottom: 80px; left: 12px; z-index: 999; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .translate-toggle { width: 42px; height: 42px; background-color: var(--primary-purple); color: #ffffff; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
 .translate-toggle:active { transform: scale(0.95); background-color: var(--primary-blue); }
@@ -273,11 +339,11 @@ body {
 .goog-te-banner-frame { display: none !important; height: 0 !important; }
 .goog-te-gadget { display: none !important; }
 
-/* ==================== 16. BOTÃO VOLTAR AO TOPO ==================== */
+/* ==================== 17. BOTÃO VOLTAR AO TOPO ==================== */
 .back-to-top { position: fixed; bottom: 16px; right: 12px; width: 42px; height: 42px; background-color: var(--primary-purple); color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 1000; cursor: pointer; transition: all 0.3s ease; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .back-to-top:active { background-color: var(--primary-blue); transform: scale(0.95); }
 
-/* ==================== 17. BOTÃO DE TEMA (CLARO/ESCURO) ==================== */
+/* ==================== 18. BOTÃO DE TEMA (CLARO/ESCURO) ==================== */
 .theme-toggle-btn {
     position: fixed;
     top: 90px;
@@ -320,7 +386,7 @@ body {
 }
 .theme-close-btn:hover { background: #cc0000; transform: scale(1.1); }
 
-/* ==================== 18. POPUP PWA E BOTÃO FLUTUANTE (SOMENTE MOBILE) ==================== */
+/* ==================== 19. POPUP PWA E BOTÃO FLUTUANTE (SOMENTE MOBILE) ==================== */
 .pwa-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .pwa-popup-content { background-color: #050505; color: #ffffff; width: 80%; max-width: 400px; padding: 30px; border-radius: 16px; text-align: center; border: 2px solid #8b5cf6; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
 .pwa-popup-content h2 { font-size: 1.5rem; margin-bottom: 10px; }
@@ -334,7 +400,7 @@ body {
 .pwa-floating-btn:hover { background-color: var(--primary-blue); transform: translateY(-3px); }
 .pwa-floating-text { font-size: 0.8rem; }
 
-/* ==================== 19. MODAL DE VÍDEO EM TELA CHEIA ==================== */
+/* ==================== 20. MODAL DE VÍDEO EM TELA CHEIA ==================== */
 .video-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #000000; justify-content: center; align-items: center; flex-direction: column; }
 .video-fullscreen-modal.active { display: flex; }
 .video-fullscreen-close { position: fixed; top: 15px; right: 15px; z-index: 100001; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: #ffffff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; opacity: 1; pointer-events: all; -webkit-tap-highlight-color: transparent; }
@@ -353,22 +419,39 @@ body {
 .video-fullscreen-container.landscape { align-items: center; padding-top: 0; }
 .video-fullscreen-container.landscape iframe { width: 100%; height: 100%; }
 
-/* ==================== 20. RESPONSIVIDADE ==================== */
+/* ==================== 21. RESPONSIVIDADE ==================== */
 @media (min-width: 768px) {
     .feed-header { padding: 15px 30px; }
     .feed-logo { width: 100px; height: 100px; }
     .feed-title { font-size: 1.8rem; }
     .feed-container { max-width: 800px; }
-    #youtube-feed-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    
+    #youtube-feed-container { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 20px; 
+    }
     #youtube-feed-container .feed-card { margin-bottom: 0; }
-    #artigos-feed-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    #artigos-feed-container .artigo-card { margin-bottom: 0; }
+    
+    #artigos-feed-container { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 20px;
+        align-items: stretch;
+    }
+    #artigos-feed-container .artigo-card { 
+        margin-bottom: 0;
+        height: 100%;
+    }
 }
+
 @media (min-width: 1024px) {
     .feed-container { max-width: 1000px; }
     #youtube-feed-container { grid-template-columns: 1fr 1fr 1fr; }
+    #artigos-feed-container { grid-template-columns: 1fr 1fr 1fr; }
     .artigo-fullscreen-content { max-width: 800px; }
 }
+
 @media (max-width: 767px) {
     .feed-header { padding: 15px 10px; }
     .feed-logo { width: 120px; height: 120px; }
@@ -378,6 +461,7 @@ body {
     .artigo-fullscreen-content { padding: 15px 15px 50px 15px; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
 }
+
 @media (max-width: 480px) {
     .feed-logo { width: 100px; height: 100px; }
     .feed-title { font-size: 1.2rem; }
@@ -404,11 +488,12 @@ body {
     .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
 }
+
 @media (orientation: landscape) {
     .video-actions-bar { bottom: 30px; }
     .video-actions-bar .btn-action-icon { width: 36px; height: 36px; font-size: 1rem; }
 }
 
-/* ==================== 21. ACESSIBILIDADE ==================== */
+/* ==================== 22. ACESSIBILIDADE ==================== */
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--primary-purple); outline-offset: 3px; border-radius: 4px; }
