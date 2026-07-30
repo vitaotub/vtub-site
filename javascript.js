@@ -23,7 +23,7 @@ const CONFIG = {
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 OneSignalDeferred.push(function(OneSignal) {
     OneSignal.init({
-        appId: "24dbec09-7c58-4193-9d90-8417abc8564e",
+        appId: "13f4a7c5-2e82-4b2f-8047-f2b866470efe",
         safari_web_id: "SEU_ID_SAFARI_AQUI_SE_HOUVER",
         notifyButton: { enable: true },
     });
