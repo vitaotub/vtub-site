@@ -178,8 +178,10 @@
         window.OneSignalDeferred.push(async function(OneSignal) {
             await OneSignal.init({
                 appId: "13f4a7c5-2e82-4b2f-8047-f2b866470efe",
+                serviceWorkerPath: "/OneSignalSDKWorker.js",  // ← CAMINHO ABSOLUTO
+                serviceWorkerScope: "/",                       // ← ESCOPO GLOBAL
             });
-            console.log("OneSignal inicializado com sucesso!");
+            console.log("✅ OneSignal inicializado com sucesso!");
             console.log("OneSignal:", OneSignal);
         });
     </script>
