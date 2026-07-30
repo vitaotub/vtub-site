@@ -257,10 +257,33 @@ body {
     flex-shrink: 0;
 }
 
-/* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA ==================== */
-.artigo-fullscreen-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: var(--modal-bg); overflow-y: auto; -webkit-overflow-scrolling: touch; }
-.artigo-fullscreen-modal.active { display: block; }
-.artigo-fullscreen-content { width: 100%; max-width: 800px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; padding: 20px 20px 60px 20px; position: relative; background: var(--modal-bg); }
+/* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA (CORRIGIDO) ==================== */
+.artigo-fullscreen-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    background: var(--modal-bg);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.artigo-fullscreen-modal.active {
+    display: block;
+}
+.artigo-fullscreen-content {
+    width: 100%;
+    max-width: 800px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0 auto;
+    padding: 20px 20px 60px 20px;
+    position: relative;
+    background: var(--modal-bg);
+}
+
 .artigo-fullscreen-close {
     position: sticky;
     top: 15px;
@@ -281,17 +304,126 @@ body {
     -webkit-tap-highlight-color: transparent;
     margin-right: -10px;
 }
-.artigo-fullscreen-close:hover, .artigo-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
-.artigo-fullscreen-body { clear: both; padding-top: 10px; background: var(--modal-bg); width: 100%; }
-.artigo-fullscreen-body .artigo-banner { margin: -20px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
-.artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 20px 10px 20px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
-.artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 20px 10px 20px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
-.artigo-fullscreen-body .artigo-meta { padding: 10px 20px; margin-bottom: 15px; }
+.artigo-fullscreen-close:hover,
+.artigo-fullscreen-close:active {
+    background: rgba(255, 0, 0, 0.8);
+    border-color: #ff0000;
+    transform: scale(1.1);
+}
+
+.artigo-fullscreen-body {
+    clear: both;
+    padding-top: 10px;
+    background: var(--modal-bg);
+    width: 100%;
+}
+
+/* ===== ESTILOS DO CONTEÚDO DENTRO DO MODAL ===== */
+.artigo-fullscreen-body .artigo-banner {
+    margin: -20px -20px 20px -20px;
+    width: calc(100% + 40px);
+    border-radius: 0;
+}
+
+.artigo-fullscreen-body .artigo-titulo {
+    font-size: 1.6rem;
+    padding: 0 20px 10px 20px;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    text-justify: inter-word;
+    word-break: break-word;
+}
+
+.artigo-fullscreen-body .artigo-resumo {
+    font-size: 1rem;
+    padding: 0 20px 10px 20px;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    text-justify: inter-word;
+    word-break: break-word;
+}
+
+.artigo-fullscreen-body .artigo-meta {
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
+
+/* ===== FORÇA A EXIBIÇÃO DO CORPO DO ARTIGO NO MODAL ===== */
 .artigo-fullscreen-body .artigo-card .artigo-corpo,
-.artigo-fullscreen-body .artigo-corpo { display: block !important; max-height: none; padding: 15px 20px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
-.artigo-fullscreen-body .artigo-corpo::after { display: none; }
-.artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
-.artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
+.artigo-fullscreen-body .artigo-corpo {
+    display: block !important;
+    max-height: none !important;
+    padding: 15px 20px !important;
+    text-align: justify !important;
+    -webkit-hyphens: auto !important;
+    -moz-hyphens: auto !important;
+    -ms-hyphens: auto !important;
+    hyphens: auto !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    text-justify: inter-word !important;
+    word-break: break-word !important;
+}
+
+.artigo-fullscreen-body .artigo-corpo p {
+    margin-bottom: 14px !important;
+    text-align: justify !important;
+    -webkit-hyphens: auto !important;
+    -moz-hyphens: auto !important;
+    -ms-hyphens: auto !important;
+    hyphens: auto !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    text-justify: inter-word !important;
+    word-break: break-word !important;
+}
+
+.artigo-fullscreen-body .artigo-corpo h3 {
+    font-size: 1.1rem !important;
+    margin-top: 20px !important;
+    margin-bottom: 10px !important;
+}
+
+.artigo-fullscreen-body .artigo-corpo ul,
+.artigo-fullscreen-body .artigo-corpo ol {
+    padding-left: 25px !important;
+    margin-bottom: 14px !important;
+}
+
+.artigo-fullscreen-body .artigo-corpo li {
+    text-align: justify !important;
+    -webkit-hyphens: auto !important;
+    -moz-hyphens: auto !important;
+    -ms-hyphens: auto !important;
+    hyphens: auto !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    text-justify: inter-word !important;
+    word-break: break-word !important;
+    margin-bottom: 6px !important;
+}
+
+/* ===== REMOVE O RODAPÉ DO CARD DENTRO DO MODAL ===== */
+.artigo-fullscreen-body .artigo-rodape {
+    display: none !important;
+}
+
+/* ===== REMOVE O BOTÃO "LER MAIS" DENTRO DO MODAL ===== */
+.artigo-fullscreen-body .btn-ler-mais {
+    display: none !important;
+}
 
 /* ==================== 12. BOTÕES DE REDES SOCIAIS (RESPONSIVOS - 7 REDES) ==================== */
 .social-btn { display: inline-flex; align-items: center; justify-content: center; width: clamp(24px, 4vw, 32px); height: clamp(24px, 4vw, 32px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.6rem, 1.2vw, 0.85rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; }

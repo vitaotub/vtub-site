@@ -198,10 +198,16 @@ function initArtigoDestaque() {
 // ==================== 6.1 FUNÇÃO CORRIGIDA - ABRIR ARTIGO EM TELA CHEIA ====================
 function abrirArtigoFullscreen(artigoId) {
     const artigo = document.getElementById(artigoId);
-    if (!artigo) return;
+    if (!artigo) {
+        console.error("Artigo não encontrado:", artigoId);
+        return;
+    }
     const modal = document.getElementById('artigo-fullscreen-modal');
     const body = document.getElementById('artigo-fullscreen-body');
-    if (!modal || !body) return;
+    if (!modal || !body) {
+        console.error("Modal não encontrado");
+        return;
+    }
     
     // Clona todo o conteúdo do artigo
     const conteudo = artigo.cloneNode(true);
@@ -219,6 +225,7 @@ function abrirArtigoFullscreen(artigoId) {
     // ===== FORÇA A EXIBIÇÃO DO CORPO DO ARTIGO =====
     const corpo = conteudo.querySelector('.artigo-corpo');
     if (corpo) {
+        // Remove qualquer estilo inline que possa estar ocultando
         corpo.style.display = 'block';
         corpo.style.maxHeight = 'none';
         corpo.style.overflow = 'visible';
@@ -247,6 +254,37 @@ function abrirArtigoFullscreen(artigoId) {
             p.style.hyphens = 'auto';
             p.style.marginBottom = '14px';
         });
+        
+        // Aplica formatação às listas
+        const listas = corpo.querySelectorAll('ul, ol');
+        listas.forEach(lista => {
+            lista.style.paddingLeft = '25px';
+            lista.style.marginBottom = '14px';
+        });
+        
+        const itens = corpo.querySelectorAll('li');
+        itens.forEach(item => {
+            item.style.textAlign = 'justify';
+            item.style.webkitHyphens = 'auto';
+            item.style.mozHyphens = 'auto';
+            item.style.msHyphens = 'auto';
+            item.style.hyphens = 'auto';
+            item.style.overflowWrap = 'break-word';
+            item.style.wordWrap = 'break-word';
+            item.style.textJustify = 'inter-word';
+            item.style.wordBreak = 'break-word';
+            item.style.marginBottom = '6px';
+        });
+        
+        // Aplica formatação aos títulos (h3)
+        const subtitulos = corpo.querySelectorAll('h3');
+        subtitulos.forEach(h3 => {
+            h3.style.fontSize = '1.1rem';
+            h3.style.marginTop = '20px';
+            h3.style.marginBottom = '10px';
+        });
+    } else {
+        console.warn("Corpo do artigo não encontrado para:", artigoId);
     }
     
     // ===== AJUSTA O RESUMO NO MODAL =====
@@ -309,6 +347,8 @@ function abrirArtigoFullscreen(artigoId) {
     // Abre o modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+    
+    // Rola para o topo do modal
     modal.scrollTop = 0;
     window.scrollTo(0, 0);
     
