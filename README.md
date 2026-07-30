@@ -1,7 +1,7 @@
 # 🌐 VitãoTub — Site Oficial & WebApp
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-ativo-8b5cf6?style=flat-square&logo=github)](https://www.vitaotub.com)
-[![PWA](https://img.shields.io/badge/PWA-instalável-ff0000?style=flat-square&logo=pwa)](https://www.vitaotub.com/feed/feed.html)
+[![PWA](https://img.shields.io/badge/PWA-instalável-ff0000?style=flat-square&logo=pwa)](https://www.vitaotub.com/feed/)
 [![Status](https://img.shields.io/badge/status-em%20desenvolvimento-blue?style=flat-square)](https://github.com/vitaotub/vtub-site)
 [![Licença](https://img.shields.io/badge/licença-MIT-green?style=flat-square)](LICENSE)
 
@@ -17,7 +17,7 @@ Este repositório contém o código-fonte completo do site **vitaotub.com**, div
 | Parte | Descrição | URL |
 |-------|-----------|-----|
 | 🏠 **Site Principal** | Apresentação do canal, estatísticas, vídeos populares e contato | [vitaotub.com](https://www.vitaotub.com) |
-| 📱 **WebApp (Feed)** | App instalável com vídeos recentes, artigos e dicas | [vitaotub.com/feed/](https://www.vitaotub.com/feed/feed.html) |
+| 📱 **WebApp (Feed)** | App instalável com vídeos recentes, artigos e dicas | [vitaotub.com/feed/](https://www.vitaotub.com/feed/) |
 
 ---
 
@@ -65,7 +65,7 @@ A página inicial (`index.html`) serve como **vitrine do canal** e inclui:
 
 ## 📱 WebApp (Feed)
 
-O feed (`feed/feed.html`) é um **PWA instalável** focado em conteúdo:
+O feed (`feed/index.html`) é um **PWA instalável** focado em conteúdo:
 
 - 🎥 **Feed de vídeos** — últimos 15 vídeos do canal via RSS
 - 📝 **Artigos** — sistema com scroll infinito, modal em tela cheia e compartilhamento

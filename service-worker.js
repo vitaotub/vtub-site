@@ -10,7 +10,7 @@
  */
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v1.0';
+const CACHE_NAME = 'vitaotub-cache-v1.4';
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
@@ -25,7 +25,7 @@ const urlsToCache = [
   '/bio-style.css',
   
   // Feed (PWA)
-  '/feed/feed.html',
+  '/feed/index.html',
   '/feed/feed-style.css',
   '/feed/feed-javascript.js',
   
@@ -122,7 +122,7 @@ self.addEventListener('fetch', event => {
           .catch(() => {
             // Se offline e não está em cache
             if (event.request.mode === 'navigate') {
-              return caches.match('/feed/feed.html');
+              return caches.match('/feed/index.html');
             }
             // Para outros recursos, retorna erro silencioso
             return new Response('Recurso não disponível offline', { status: 503 });

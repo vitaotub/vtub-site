@@ -20,7 +20,7 @@
   <!-- ==================== WE BAPP (FEED) ==================== -->
 
   <url>
-    <loc>https://www.vitaotub.com/feed/feed.html</loc>
+    <loc>https://www.vitaotub.com/feed/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
