@@ -196,6 +196,7 @@ function initArtigoDestaque() {
 }
 
 // ==================== 6.1 FUNÇÃO CORRIGIDA - ABRIR ARTIGO EM TELA CHEIA ====================
+// ==================== 6.1 FUNÇÃO CORRIGIDA - ABRIR ARTIGO EM TELA CHEIA ====================
 function abrirArtigoFullscreen(artigoId) {
     const artigo = document.getElementById(artigoId);
     if (!artigo) {
@@ -209,79 +210,88 @@ function abrirArtigoFullscreen(artigoId) {
         return;
     }
     
-    // Clona todo o conteúdo do artigo
+    // ===== CLONA O ARTIGO =====
     const conteudo = artigo.cloneNode(true);
     conteudo.style.cursor = 'default';
     conteudo.classList.add('artigo-fullscreen-active');
     
-    // ===== REMOVE O RODAPÉ DO CARD (não necessário no modal) =====
+    // ===== REMOVE RODAPÉ E BOTÃO "LER MAIS" =====
     const rodape = conteudo.querySelector('.artigo-rodape');
     if (rodape) rodape.remove();
-    
-    // ===== REMOVE O BOTÃO "LER MAIS" =====
     const btnLerMais = conteudo.querySelector('.btn-ler-mais');
     if (btnLerMais) btnLerMais.remove();
     
     // ===== FORÇA A EXIBIÇÃO DO CORPO DO ARTIGO =====
     const corpo = conteudo.querySelector('.artigo-corpo');
     if (corpo) {
-        // Remove qualquer estilo inline que possa estar ocultando
-        corpo.style.display = 'block';
-        corpo.style.maxHeight = 'none';
-        corpo.style.overflow = 'visible';
-        corpo.style.padding = '15px 20px';
-        corpo.style.textAlign = 'justify';
-        corpo.style.textJustify = 'inter-word';
-        corpo.style.wordBreak = 'break-word';
-        corpo.style.overflowWrap = 'break-word';
-        corpo.style.wordWrap = 'break-word';
-        corpo.style.webkitHyphens = 'auto';
-        corpo.style.mozHyphens = 'auto';
-        corpo.style.msHyphens = 'auto';
-        corpo.style.hyphens = 'auto';
+        // Remove qualquer classe que possa estar ocultando
+        corpo.classList.remove('hidden', 'oculto');
+        // Força o display block com !important via estilo inline
+        corpo.setAttribute('style', 
+            'display: block !important; ' +
+            'max-height: none !important; ' +
+            'overflow: visible !important; ' +
+            'padding: 15px 20px !important; ' +
+            'text-align: justify !important; ' +
+            'text-justify: inter-word !important; ' +
+            'word-break: break-word !important; ' +
+            'overflow-wrap: break-word !important; ' +
+            'word-wrap: break-word !important; ' +
+            '-webkit-hyphens: auto !important; ' +
+            '-moz-hyphens: auto !important; ' +
+            '-ms-hyphens: auto !important; ' +
+            'hyphens: auto !important;'
+        );
         
         // Aplica formatação aos parágrafos
         const paragrafos = corpo.querySelectorAll('p');
         paragrafos.forEach(p => {
-            p.style.textAlign = 'justify';
-            p.style.textJustify = 'inter-word';
-            p.style.wordBreak = 'break-word';
-            p.style.overflowWrap = 'break-word';
-            p.style.wordWrap = 'break-word';
-            p.style.webkitHyphens = 'auto';
-            p.style.mozHyphens = 'auto';
-            p.style.msHyphens = 'auto';
-            p.style.hyphens = 'auto';
-            p.style.marginBottom = '14px';
+            p.setAttribute('style',
+                'text-align: justify !important; ' +
+                'text-justify: inter-word !important; ' +
+                'word-break: break-word !important; ' +
+                'overflow-wrap: break-word !important; ' +
+                'word-wrap: break-word !important; ' +
+                '-webkit-hyphens: auto !important; ' +
+                '-moz-hyphens: auto !important; ' +
+                '-ms-hyphens: auto !important; ' +
+                'hyphens: auto !important; ' +
+                'margin-bottom: 14px !important;'
+            );
         });
         
         // Aplica formatação às listas
         const listas = corpo.querySelectorAll('ul, ol');
         listas.forEach(lista => {
-            lista.style.paddingLeft = '25px';
-            lista.style.marginBottom = '14px';
+            lista.setAttribute('style',
+                'padding-left: 25px !important; ' +
+                'margin-bottom: 14px !important;'
+            );
         });
         
         const itens = corpo.querySelectorAll('li');
         itens.forEach(item => {
-            item.style.textAlign = 'justify';
-            item.style.webkitHyphens = 'auto';
-            item.style.mozHyphens = 'auto';
-            item.style.msHyphens = 'auto';
-            item.style.hyphens = 'auto';
-            item.style.overflowWrap = 'break-word';
-            item.style.wordWrap = 'break-word';
-            item.style.textJustify = 'inter-word';
-            item.style.wordBreak = 'break-word';
-            item.style.marginBottom = '6px';
+            item.setAttribute('style',
+                'text-align: justify !important; ' +
+                '-webkit-hyphens: auto !important; ' +
+                '-moz-hyphens: auto !important; ' +
+                '-ms-hyphens: auto !important; ' +
+                'hyphens: auto !important; ' +
+                'overflow-wrap: break-word !important; ' +
+                'word-wrap: break-word !important; ' +
+                'text-justify: inter-word !important; ' +
+                'word-break: break-word !important; ' +
+                'margin-bottom: 6px !important;'
+            );
         });
         
-        // Aplica formatação aos títulos (h3)
         const subtitulos = corpo.querySelectorAll('h3');
         subtitulos.forEach(h3 => {
-            h3.style.fontSize = '1.1rem';
-            h3.style.marginTop = '20px';
-            h3.style.marginBottom = '10px';
+            h3.setAttribute('style',
+                'font-size: 1.1rem !important; ' +
+                'margin-top: 20px !important; ' +
+                'margin-bottom: 10px !important;'
+            );
         });
     } else {
         console.warn("Corpo do artigo não encontrado para:", artigoId);
@@ -290,69 +300,73 @@ function abrirArtigoFullscreen(artigoId) {
     // ===== AJUSTA O RESUMO NO MODAL =====
     const resumo = conteudo.querySelector('.artigo-resumo');
     if (resumo) {
-        resumo.style.display = 'block';
-        resumo.style.webkitLineClamp = 'unset';
-        resumo.style.overflow = 'visible';
-        resumo.style.maxHeight = 'none';
-        resumo.style.padding = '0 20px 10px 20px';
-        resumo.style.fontSize = '1rem';
-        resumo.style.textAlign = 'justify';
-        resumo.style.textJustify = 'inter-word';
-        resumo.style.wordBreak = 'break-word';
-        resumo.style.overflowWrap = 'break-word';
-        resumo.style.wordWrap = 'break-word';
-        resumo.style.webkitHyphens = 'auto';
-        resumo.style.mozHyphens = 'auto';
-        resumo.style.msHyphens = 'auto';
-        resumo.style.hyphens = 'auto';
+        resumo.setAttribute('style',
+            'display: block !important; ' +
+            'overflow: visible !important; ' +
+            'max-height: none !important; ' +
+            'padding: 0 20px 10px 20px !important; ' +
+            'font-size: 1rem !important; ' +
+            'text-align: justify !important; ' +
+            'text-justify: inter-word !important; ' +
+            'word-break: break-word !important; ' +
+            'overflow-wrap: break-word !important; ' +
+            'word-wrap: break-word !important; ' +
+            '-webkit-hyphens: auto !important; ' +
+            '-moz-hyphens: auto !important; ' +
+            '-ms-hyphens: auto !important; ' +
+            'hyphens: auto !important;'
+        );
     }
     
     // ===== AJUSTA O TÍTULO NO MODAL =====
     const titulo = conteudo.querySelector('.artigo-titulo');
     if (titulo) {
-        titulo.style.fontSize = '1.6rem';
-        titulo.style.padding = '0 20px 10px 20px';
-        titulo.style.textAlign = 'justify';
-        titulo.style.webkitLineClamp = 'unset';
-        titulo.style.overflow = 'visible';
-        titulo.style.maxHeight = 'none';
-        titulo.style.webkitHyphens = 'auto';
-        titulo.style.mozHyphens = 'auto';
-        titulo.style.msHyphens = 'auto';
-        titulo.style.hyphens = 'auto';
+        titulo.setAttribute('style',
+            'font-size: 1.6rem !important; ' +
+            'padding: 0 20px 10px 20px !important; ' +
+            'text-align: justify !important; ' +
+            'overflow: visible !important; ' +
+            'max-height: none !important; ' +
+            '-webkit-hyphens: auto !important; ' +
+            '-moz-hyphens: auto !important; ' +
+            '-ms-hyphens: auto !important; ' +
+            'hyphens: auto !important;'
+        );
     }
     
     // ===== AJUSTA A META NO MODAL =====
     const meta = conteudo.querySelector('.artigo-meta');
     if (meta) {
-        meta.style.padding = '10px 20px';
-        meta.style.marginBottom = '15px';
-        meta.style.fontSize = '0.85rem';
-        meta.style.display = 'flex';
-        meta.style.justifyContent = 'space-between';
+        meta.setAttribute('style',
+            'padding: 10px 20px !important; ' +
+            'margin-bottom: 15px !important; ' +
+            'font-size: 0.85rem !important; ' +
+            'display: flex !important; ' +
+            'justify-content: space-between !important;'
+        );
     }
     
     // ===== AJUSTA O BANNER NO MODAL =====
     const banner = conteudo.querySelector('.artigo-banner');
     if (banner) {
-        banner.style.margin = '-20px -20px 20px -20px';
-        banner.style.width = 'calc(100% + 40px)';
-        banner.style.borderRadius = '0';
+        banner.setAttribute('style',
+            'margin: -20px -20px 20px -20px !important; ' +
+            'width: calc(100% + 40px) !important; ' +
+            'border-radius: 0 !important;'
+        );
     }
     
-    // Insere o conteúdo no modal
+    // ===== INSERE O CONTEÚDO NO MODAL =====
     body.innerHTML = '';
     body.appendChild(conteudo);
     
-    // Abre o modal
+    // ===== ABRE O MODAL =====
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
-    // Rola para o topo do modal
     modal.scrollTop = 0;
     window.scrollTo(0, 0);
     
-    // Inicializa o swipe to close
+    // ===== INICIALIZA O SWIPE TO CLOSE =====
     initArtigoSwipeToClose();
 }
 

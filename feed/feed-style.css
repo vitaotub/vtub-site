@@ -365,29 +365,30 @@ body {
 .artigo-fullscreen-body .artigo-corpo {
     display: block !important;
     max-height: none !important;
+    overflow: visible !important;
     padding: 15px 20px !important;
     text-align: justify !important;
+    text-justify: inter-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
     -webkit-hyphens: auto !important;
     -moz-hyphens: auto !important;
     -ms-hyphens: auto !important;
     hyphens: auto !important;
-    overflow-wrap: break-word !important;
-    word-wrap: break-word !important;
-    text-justify: inter-word !important;
-    word-break: break-word !important;
 }
 
 .artigo-fullscreen-body .artigo-corpo p {
-    margin-bottom: 14px !important;
     text-align: justify !important;
+    text-justify: inter-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
     -webkit-hyphens: auto !important;
     -moz-hyphens: auto !important;
     -ms-hyphens: auto !important;
     hyphens: auto !important;
-    overflow-wrap: break-word !important;
-    word-wrap: break-word !important;
-    text-justify: inter-word !important;
-    word-break: break-word !important;
+    margin-bottom: 14px !important;
 }
 
 .artigo-fullscreen-body .artigo-corpo h3 {
