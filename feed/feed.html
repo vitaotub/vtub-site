@@ -172,18 +172,50 @@
 </script>
 
     <!-- ==================== ONESIGNAL PUSH NOTIFICATIONS ==================== -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.js" defer></script>
     <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        window.OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-                appId: "13f4a7c5-2e82-4b2f-8047-f2b866470efe",
-                serviceWorkerPath: "/OneSignalSDKWorker.js",  // ← CAMINHO ABSOLUTO
-                serviceWorkerScope: "/",                       // ← ESCOPO GLOBAL
-            });
-            console.log("✅ OneSignal inicializado com sucesso!");
-            console.log("OneSignal:", OneSignal);
-        });
+        // Carrega o OneSignal manualmente
+        function loadOneSignal() {
+            const script = document.createElement('script');
+            script.src = "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.js";
+            script.async = true;
+            script.onload = function() {
+                console.log("✅ OneSignal carregado!");
+                
+                // Inicializa o OneSignal e EXPÕE GLOBALMENTE
+                window.OneSignalDeferred = window.OneSignalDeferred || [];
+                window.OneSignalDeferred.push(async function(OneSignal) {
+                    await OneSignal.init({
+                        appId: "13f4a7c5-2e82-4b2f-8047-f2b866470efe",
+                        serviceWorkerPath: "/OneSignalSDKWorker.js",
+                        serviceWorkerScope: "/",
+                    });
+                    
+                    // EXPÕE O OneSignal GLOBALMENTE
+                    window.OneSignal = OneSignal;
+                    console.log("✅ OneSignal inicializado e disponível como window.OneSignal");
+                    console.log("OneSignal:", window.OneSignal);
+                    
+                    // Mostra o prompt automaticamente
+                    setTimeout(() => {
+                        if (window.OneSignal) {
+                            window.OneSignal.Notifications.requestPermission();
+                        }
+                    }, 1000);
+                });
+            };
+            script.onerror = function() {
+                console.error("❌ Falha ao carregar OneSignal. Tentando novamente...");
+                setTimeout(loadOneSignal, 3000);
+            };
+            document.head.appendChild(script);
+        }
+
+        // Inicia o carregamento
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadOneSignal);
+        } else {
+            loadOneSignal();
+        }
     </script>
 
 </body>
