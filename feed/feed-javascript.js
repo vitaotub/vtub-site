@@ -255,7 +255,7 @@ function initArtigoSwipeToClose() {
     content.addEventListener('touchend', () => { if (!isDragging) return; isDragging = false; const diffX = currentX - startX; content.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; if (Math.abs(diffX) > 100) { content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; content.style.opacity = '0'; setTimeout(() => { fecharArtigoFullscreen(); content.style.transform = ''; content.style.opacity = ''; }, 300); } else { content.style.transform = ''; content.style.opacity = ''; } currentX = 0; });
 }
 function compartilharArtigo(artigoId, titulo) {
-    const link = `https://www.vitaotub.com/feed/feed.html#${artigoId}`;
+    const link = `https://www.vitaotub.com/feed/index.html#${artigoId}`;
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
     if (isMobile && navigator.share) { navigator.share({ title: titulo || 'Artigo do VitãoTub', text: 'Confira este artigo!', url: link }).catch(() => {}); }
     else { navigator.clipboard.writeText(link).then(() => { alert('Link do artigo copiado! Compartilhe com seus amigos.'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = link; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do artigo copiado!'); }); }
