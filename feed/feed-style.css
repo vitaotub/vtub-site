@@ -321,18 +321,135 @@ body {
 .theme-close-btn:hover { background: #cc0000; transform: scale(1.1); }
 
 /* ==================== 18. POPUP PWA E BOTÃO FLUTUANTE (SOMENTE MOBILE) ==================== */
-.pwa-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; }
-.pwa-popup-content { background-color: #050505; color: #ffffff; width: 80%; max-width: 400px; padding: 30px; border-radius: 16px; text-align: center; border: 2px solid #8b5cf6; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
-.pwa-popup-content h2 { font-size: 1.5rem; margin-bottom: 10px; }
-.pwa-popup-content h2::after { display: none !important; }
-.pwa-popup-content p { color: #aaa; margin-bottom: 20px; font-size: 0.95rem; }
-.pwa-btn-install { background-color: #8b5cf6; color: #fff; border: none; padding: 12px 20px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 10px; font-family: 'Satoshi', sans-serif; }
-.pwa-btn-install:hover { background-color: #7c4dff; }
-.pwa-btn-close { background: transparent; color: #aaa; border: none; padding: 10px; font-size: 0.9rem; cursor: pointer; text-decoration: underline; font-family: 'Satoshi', sans-serif; }
-.pwa-btn-close:hover { color: #fff; }
-.pwa-floating-btn { position: fixed; bottom: 140px; left: 12px; z-index: 998; display: flex; align-items: center; gap: 6px; background-color: var(--primary-purple); color: #ffffff; border: none; padding: 8px 14px; border-radius: 25px; cursor: pointer; font-family: 'Satoshi', sans-serif; font-size: 0.8rem; font-weight: 600; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); transition: all 0.3s ease; white-space: nowrap; }
-.pwa-floating-btn:hover { background-color: var(--primary-blue); transform: translateY(-3px); }
-.pwa-floating-text { font-size: 0.8rem; }
+.pwa-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.pwa-popup-content {
+    background-color: #050505;
+    color: #ffffff;
+    width: 85%;
+    max-width: 400px;
+    padding: 30px 25px;
+    border-radius: 16px;
+    text-align: center;
+    border: 2px solid #8b5cf6;
+    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.pwa-popup-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+.pwa-popup-content h2::after {
+    display: none !important;
+}
+
+.pwa-popup-content p {
+    color: #aaa;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* ===== IMAGEM DA POPUP - TAMANHO CONTROLADO ===== */
+.pwa-welcome-img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    max-width: 80px;
+    max-height: 80px;
+    margin: 5px auto 15px auto;
+    border-radius: 20px;
+    object-fit: cover;
+    border: 2px solid #8b5cf6;
+}
+
+/* ===== BOTÕES ===== */
+.pwa-btn-install {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: #fff;
+    border: none;
+    padding: 14px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 12px;
+    font-family: 'Satoshi', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.pwa-btn-install:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+.pwa-btn-install:active {
+    transform: scale(0.98);
+}
+
+.pwa-btn-close {
+    background: transparent;
+    color: #aaa;
+    border: none;
+    padding: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'Satoshi', sans-serif;
+    transition: color 0.3s ease;
+}
+
+.pwa-btn-close:hover {
+    color: #fff;
+}
+
+.pwa-floating-btn {
+    position: fixed;
+    bottom: 140px;
+    left: 12px;
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--primary-purple);
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.pwa-floating-btn:hover {
+    background-color: var(--primary-blue);
+    transform: translateY(-3px);
+}
+
+.pwa-floating-text {
+    font-size: 0.8rem;
+}
 
 /* ==================== 19. MODAL DE VÍDEO EM TELA CHEIA ==================== */
 .video-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #000000; justify-content: center; align-items: center; flex-direction: column; }
