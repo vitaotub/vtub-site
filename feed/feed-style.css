@@ -366,17 +366,17 @@ body {
     line-height: 1.5;
 }
 
-/* ===== IMAGEM DA POPUP - TAMANHO CONTROLADO ===== */
+/* ===== IMAGEM DA POPUP - SEM BORDA E MAIOR ===== */
 .pwa-welcome-img {
     display: block;
-    width: 80px;
-    height: 80px;
-    max-width: 80px;
-    max-height: 80px;
+    width: 120px;
+    height: 120px;
+    max-width: 120px;
+    max-height: 120px;
     margin: 5px auto 15px auto;
     border-radius: 20px;
     object-fit: cover;
-    border: 2px solid #8b5cf6;
+    border: none;
 }
 
 /* ===== BOTÕES ===== */

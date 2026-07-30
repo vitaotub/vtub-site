@@ -377,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         preencherPopup(`
-            <h2>Bem-vindo ao VitãoTub! 🚀</h2>
+            <h2>Bem-Vindo!</h2>
             <img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'">
             <p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p>
             <button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button>
@@ -427,7 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (!jaRejeitou) {
             preencherPopup(`
-                <h2>Bem-vindo ao VitãoTub! 🚀</h2>
+                <h2>Bem-Vindo!</h2>
                 <img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'">
                 <p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p>
                 <button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button>
