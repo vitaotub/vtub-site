@@ -71,12 +71,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (jaInstalou) { pwaPopup.style.display = 'none'; if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; return; }
     
     let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if (!jaRejeitou) { popupContent.innerHTML = `<h2>Bem-vindo ao VitãoTub! 🚀</h2><img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img"><p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p><button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button><button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>`; pwaPopup.style.display = 'flex';
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if (!jaRejeitou) { popupContent.innerHTML = `<h2>Bem-vindo</h2><img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img"><p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p><button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button><button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>`; pwaPopup.style.display = 'flex';
         document.getElementById('pwa-install-btn').addEventListener('click', async () => { if (deferredPrompt) { pwaPopup.style.display = 'none'; deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; } else { localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; } deferredPrompt = null; } });
         document.getElementById('pwa-close-btn').addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; });
         } else if (jaRejeitou && pwaFloatingBtn) { pwaFloatingBtn.style.display = 'flex'; } });
     if (jaRejeitou && pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
-    if (!jaRejeitou && !jaInstalou) { setTimeout(() => { if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) { popupContent.innerHTML = `<h2>Bem-vindo ao VitãoTub! 🚀</h2><img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img"><p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p><button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button><button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>`; pwaPopup.style.display = 'flex';
+    if (!jaRejeitou && !jaInstalou) { setTimeout(() => { if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) { popupContent.innerHTML = `<h2>Bem-vindo</h2><img src="logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img"><p>Este site é a apresentação do canal. Se você quiser receber notificações direto no seu celular sobre novos vídeos, lives e artigos exclusivos, instale meu App oficial!</p><button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button><button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>`; pwaPopup.style.display = 'flex';
         document.getElementById('pwa-install-btn').addEventListener('click', async () => { if (deferredPrompt) { pwaPopup.style.display = 'none'; deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; } else { localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; } deferredPrompt = null; } });
         document.getElementById('pwa-close-btn').addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_rejected', 'true'); if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex'; }); } }, 2000); }
     if (pwaFloatingBtn) { pwaFloatingBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { localStorage.setItem('vitaotub_pwa_installed', 'true'); localStorage.removeItem('vitaotub_pwa_rejected'); pwaFloatingBtn.style.display = 'none'; } deferredPrompt = null; } else { alert('Para instalar, acesse as opções do seu navegador ou visite a página do feed.'); } }); }
@@ -109,7 +109,35 @@ function closeToast() { const toast = document.getElementById(CONFIG.toastContai
 
 // ==================== 10. EVENTOS GLOBAIS ====================
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeVideo(); closeToast(); closePrivacyModal(); closeMobileMenu(); const translateDropdown = document.getElementById('translate-dropdown'); if (translateDropdown) translateDropdown.classList.remove('active'); } });
-document.addEventListener('click', function(e) { if (e.target.id === CONFIG.modalId || (e.target.classList.contains('modal-overlay') && e.target.closest('#video-modal'))) closeVideo(); if (e.target.id === CONFIG.toastContainerId || e.target.classList.contains('toast-close-btn')) closeToast(); if (e.target.id === CONFIG.privacyModalId || (e.target.classList.contains('modal-overlay') && e.target.closest('#privacy-modal')) || e.target.classList.contains('modal-close')) closePrivacyModal(); const translateDropdown = document.getElementById('translate-dropdown'); const translateToggle = document.getElementById('translate-toggle'); if (translateDropdown && translateToggle) { if (!translateDropdown.contains(e.target) && e.target !== translateToggle) translateDropdown.classList.remove('active'); } });
+
+// ===== CONTROLE DO DROPDOWN DE TRADUÇÃO =====
+// Fecha o dropdown ao clicar fora, mas com delay para evitar fechamento acidental
+document.addEventListener('click', function(e) {
+    const translateDropdown = document.getElementById('translate-dropdown');
+    const translateToggle = document.getElementById('translate-toggle');
+    
+    if (!translateDropdown || !translateToggle) return;
+    
+    // Se o clique NÃO for no dropdown E NÃO for no botão de toggle
+    if (!translateDropdown.contains(e.target) && e.target !== translateToggle) {
+        // Pequeno delay para evitar conflitos com o clique no botão
+        setTimeout(() => {
+            translateDropdown.classList.remove('active');
+        }, 150);
+    }
+});
+
+// ===== TOGGLE DO DROPDOWN COM PREVENÇÃO DE PROPAGAÇÃO =====
+function toggleTranslateDropdown(e) {
+    if (e) {
+        e.stopPropagation(); // Impede que o clique no botão feche o dropdown
+        e.preventDefault();
+    }
+    const dropdown = document.getElementById('translate-dropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('active');
+    }
+}
 
 // ==================== 11. BOTÃO VOLTAR AO TOPO ====================
 const backToTopButton = document.getElementById('back-to-top');
@@ -120,11 +148,74 @@ function initCookieBanner() { const banner = document.getElementById("lgpd-banne
 document.addEventListener("DOMContentLoaded", initCookieBanner);
 
 // ==================== 13. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
-function toggleTranslateDropdown() { const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.toggle('active'); }
-function translatePage(lang) { if (lang === 'pt') { const select = document.querySelector('.goog-te-combo'); if (select) { select.value = 'pt'; select.dispatchEvent(new Event('change')); setTimeout(() => { document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;'; window.location.reload(); }, 300); } else { document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;'; document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;'; window.location.reload(); } const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.remove('active'); return; } setGoogleTranslateCookie(lang); const checkExist = setInterval(() => { const select = document.querySelector('.goog-te-combo'); if (select) { clearInterval(checkExist); select.value = lang; select.dispatchEvent(new Event('change')); const dropdown = document.getElementById('translate-dropdown'); if (dropdown) dropdown.classList.remove('active'); updateActiveLanguage(lang); } }, 100); setTimeout(() => { if (!document.querySelector('.goog-te-combo')) window.location.reload(); }, 3000); }
-function setGoogleTranslateCookie(lang) { const date = new Date(); date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000)); const expires = date.toUTCString(); document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; document.cookie = lang === 'pt' ? `googtrans=/pt/pt; expires=${expires}; path=/` : `googtrans=/pt/${lang}; expires=${expires}; path=/`; }
-function updateActiveLanguage(lang) { document.querySelectorAll('.translate-option').forEach(btn => { btn.classList.remove('active-lang'); if (btn.getAttribute('data-lang') === lang) btn.classList.add('active-lang'); }); }
-function initTranslateWidget() { const toggleBtn = document.getElementById('translate-toggle'); const dropdown = document.getElementById('translate-dropdown'); if (!toggleBtn || !dropdown) return; toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTranslateDropdown(); }); setTimeout(() => { const match = document.cookie.match(/googtrans=\/pt\/([^;]+)/); if (match && match[1]) updateActiveLanguage(match[1]); }, 1500); }
+function translatePage(lang) {
+    if (lang === 'pt') {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+            select.value = 'pt';
+            select.dispatchEvent(new Event('change'));
+            setTimeout(() => {
+                document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;';
+                document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;';
+                window.location.reload();
+            }, 300);
+        } else {
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/feed/;';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;';
+            window.location.reload();
+        }
+        const dropdown = document.getElementById('translate-dropdown');
+        if (dropdown) dropdown.classList.remove('active');
+        return;
+    }
+    setGoogleTranslateCookie(lang);
+    const checkExist = setInterval(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+            clearInterval(checkExist);
+            select.value = lang;
+            select.dispatchEvent(new Event('change'));
+            const dropdown = document.getElementById('translate-dropdown');
+            if (dropdown) dropdown.classList.remove('active');
+            updateActiveLanguage(lang);
+        }
+    }, 100);
+    setTimeout(() => {
+        if (!document.querySelector('.goog-te-combo')) window.location.reload();
+    }, 3000);
+}
+
+function setGoogleTranslateCookie(lang) {
+    const date = new Date();
+    date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+    const expires = date.toUTCString();
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = lang === 'pt' ? `googtrans=/pt/pt; expires=${expires}; path=/` : `googtrans=/pt/${lang}; expires=${expires}; path=/`;
+}
+
+function updateActiveLanguage(lang) {
+    document.querySelectorAll('.translate-option').forEach(btn => {
+        btn.classList.remove('active-lang');
+        if (btn.getAttribute('data-lang') === lang) btn.classList.add('active-lang');
+    });
+}
+
+function initTranslateWidget() {
+    const toggleBtn = document.getElementById('translate-toggle');
+    const dropdown = document.getElementById('translate-dropdown');
+    if (!toggleBtn || !dropdown) return;
+    
+    // Remove qualquer listener anterior para evitar duplicação
+    toggleBtn.removeEventListener('click', toggleTranslateDropdown);
+    toggleBtn.addEventListener('click', toggleTranslateDropdown);
+    
+    setTimeout(() => {
+        const match = document.cookie.match(/googtrans=\/pt\/([^;]+)/);
+        if (match && match[1]) updateActiveLanguage(match[1]);
+    }, 1500);
+}
 
 // ==================== 13.5 BOTÃO DE TRADUÇÃO ARRASTÁVEL E FECHÁVEL ====================
 function initDraggableTranslate() {
@@ -140,7 +231,7 @@ function initDraggableTranslate() {
     toggleBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
     widget.addEventListener('mouseleave', () => { if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; });
     let clickTimeout;
-    toggleBtn.addEventListener('click', (e) => { if (isDragging) return; if (clickTimeout) { clearTimeout(clickTimeout); clickTimeout = null; closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true'; setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000); } else { clickTimeout = setTimeout(() => { clickTimeout = null; toggleTranslateDropdown(); }, 300); } });
+    toggleBtn.addEventListener('click', (e) => { if (isDragging) return; if (clickTimeout) { clearTimeout(clickTimeout); clickTimeout = null; closeBtn.style.display = 'block'; closeBtn.dataset.forced = 'true'; setTimeout(() => { closeBtn.style.display = 'none'; closeBtn.dataset.forced = ''; }, 3000); } else { clickTimeout = setTimeout(() => { clickTimeout = null; toggleTranslateDropdown(e); }, 300); } });
     closeBtn.addEventListener('click', (e) => { e.stopPropagation(); widget.style.display = 'none'; localStorage.setItem('vitaotub_translate_hidden', 'true'); });
     toggleBtn.addEventListener('mousedown', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.clientX; startY = e.clientY; const rect = widget.getBoundingClientRect(); startLeft = rect.left; startBottom = window.innerHeight - rect.bottom; widget.style.transition = 'none'; e.preventDefault(); });
     toggleBtn.addEventListener('touchstart', (e) => { if (e.target === closeBtn) return; isDragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; const rect = widget.getBoundingClientRect(); startLeft = rect.left; startBottom = window.innerHeight - rect.bottom; widget.style.transition = 'none'; }, { passive: true });
