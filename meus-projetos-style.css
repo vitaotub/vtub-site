@@ -1,0 +1,1037 @@
+/* ============================================================ 
+   VITÃOTUB - ESTILOS MEUS PROJETOS
+   ============================================================ */
+
+/* ==================== 1. FONTES E VARIÁVEIS ==================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,900&display=swap');
+
+:root {
+    --bg-color: #050505;
+    --card-bg: #111111;
+    --primary-purple: #8b5cf6;
+    --primary-blue: #3b82f6;
+    --text-main: #ffffff;
+    --text-dim: rgba(255, 255, 255, 0.7);
+    --border-color: #333;
+    --container-max: 1100px;
+    --gradient-brand: linear-gradient(90deg, var(--primary-purple), var(--primary-blue));
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --header-bg: rgba(5, 5, 5, 0.85);
+}
+
+/* Modo claro */
+body.light-mode {
+    --bg-color: #f5f5f5;
+    --card-bg: #ffffff;
+    --text-main: #1a1a1a;
+    --text-dim: rgba(0, 0, 0, 0.6);
+    --border-color: #ddd;
+    --header-bg: rgba(255, 255, 255, 0.9);
+}
+
+/* ==================== 2. RESET E BASE ==================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Satoshi', 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    top: 0 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+h1, h2, h3, nav a, button { font-family: 'Satoshi', sans-serif; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; height: auto; display: block; }
+
+/* ==================== 3. CORREÇÃO GLOBAL DE ESPAÇAMENTO EM TEXTOS JUSTIFICADOS ==================== */
+p, h1, h2, h3, li, span, div {
+    text-justify: inter-word;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
+
+/* ==================== 4. BACKGROUND VISUAL ==================== */
+.bg-wrapper { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.bg-gradient-1 { position: absolute; width: 600px; height: 600px; top: -100px; left: -100px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%); filter: blur(80px); }
+.bg-noise { position: absolute; inset: 0; opacity: 0.03; }
+
+/* ==================== 5. HEADER E NAVEGAÇÃO ==================== */
+header {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+    padding: 20px 0; background: var(--header-bg);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
+}
+.header-content { max-width: var(--container-max); margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+header h1 span { color: var(--primary-purple); }
+nav ul { display: flex; gap: 30px; list-style: none; }
+nav a { text-decoration: none; color: var(--text-dim); transition: var(--transition-smooth); font-weight: 500; font-size: 0.95rem; position: relative; padding: 8px 0; }
+nav a:hover { color: var(--text-main); }
+nav a::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 100%; height: 3px; background: var(--gradient-brand); border-radius: 10px; transform: translateX(-50%) scaleX(0); transition: var(--transition-smooth); }
+nav a:hover::after { transform: translateX(-50%) scaleX(1); }
+.logo-link { text-decoration: none; color: inherit; cursor: pointer; }
+.logo-link:hover h1 { opacity: 0.8; transition: var(--transition-smooth); }
+
+/* Botão hamburguer */
+.menu-toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 40px; height: 40px; background: transparent; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; padding: 8px; transition: var(--transition-smooth); z-index: 1001; }
+.menu-toggle:hover { border-color: var(--primary-purple); }
+.menu-toggle-bar { display: block; width: 22px; height: 2px; background-color: var(--text-main); border-radius: 2px; transition: all 0.3s ease; transform-origin: center; }
+.menu-toggle.active .menu-toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle.active .menu-toggle-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.menu-toggle.active .menu-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Menu mobile */
+.mobile-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); padding: 0; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; z-index: 999; }
+.mobile-menu.active { max-height: 500px; padding: 15px 0; }
+.mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.mobile-menu li { border-bottom: 1px solid var(--border-color); }
+.mobile-menu li:last-child { border-bottom: none; }
+.mobile-menu a { display: block; padding: 14px 25px; color: var(--text-dim); text-decoration: none; font-size: 1rem; font-weight: 500; font-family: 'Satoshi', sans-serif; transition: var(--transition-smooth); }
+.mobile-menu a:hover { color: var(--text-main); background: rgba(139, 92, 246, 0.08); padding-left: 30px; }
+
+/* ==================== 6. GOOGLE TRANSLATE OVERRIDES ==================== */
+.goog-te-banner-frame.skiptranslate, .goog-te-balloon-frame, .goog-te-gadget-icon { display: none !important; }
+.skiptranslate { display: none !important; height: 0 !important; }
+.goog-te-banner-frame { display: none !important; height: 0 !important; }
+.goog-te-gadget { display: none !important; }
+body > .skiptranslate { display: none !important; }
+
+/* ==================== 7. BOTÃO DE TEMA (CLARO/ESCURO) ==================== */
+.theme-toggle-btn {
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    z-index: 998;
+    width: 42px;
+    height: 42px;
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.theme-toggle-btn:hover { transform: scale(1.1); border-color: var(--primary-purple); }
+
+/* Botão X de fechar tema */
+.theme-close-btn {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1000;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+.theme-close-btn:hover { background: #cc0000; transform: scale(1.1); }
+
+/* ==================== 8. ESTRUTURA DE SEÇÕES ==================== */
+.container { max-width: var(--container-max); margin: 0 auto; padding: 0 20px; width: 100%; }
+section { padding: 90px 0; }
+h2 { font-size: 2.5rem; margin-bottom: 50px; font-weight: 900; text-align: center; position: relative; padding-bottom: 20px; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--gradient-brand); border-radius: 10px; }
+
+/* ==================== 8.1 TÍTULO DA PÁGINA MEUS PROJETOS ==================== */
+.projects-title {
+    padding-top: 40px;
+    margin-top: 30px;
+}
+
+/* ==================== 9. SEÇÃO MEUS PROJETOS ==================== */
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.project-card {
+    display: flex;
+    gap: 30px;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 25px;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+    width: 100%;
+    position: relative;
+}
+
+/* Efeito de borda neon ao passar o mouse - APENAS BORDAS */
+.project-card:hover {
+    border-color: var(--primary-purple);
+    box-shadow: 
+        0 0 15px rgba(139, 92, 246, 0.2),
+        0 0 30px rgba(59, 130, 246, 0.15),
+        inset 0 0 15px rgba(139, 92, 246, 0.03);
+    transform: translateY(-3px);
+}
+
+/* Remove o pseudo-elemento que coloria o fundo */
+.project-card::before {
+    display: none;
+}
+
+/* Imagem do projeto */
+.project-image {
+    flex: 0 0 280px;
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
+}
+
+.project-card:hover .project-image {
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.03);
+}
+
+/* Informações do projeto */
+.project-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.project-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.2;
+    transition: color 0.3s ease;
+}
+
+.project-card:hover .project-name {
+    color: var(--primary-purple);
+}
+
+/* ==================== 9.5 BOTÕES DE PLATAFORMA ==================== */
+.project-platform {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: fit-content;
+    transition: all 0.3s ease;
+    border: 2px solid;
+    font-family: 'Satoshi', sans-serif;
+    background: transparent;
+}
+
+/* YouTube - borda vermelha */
+.project-platform.platform-youtube {
+    color: #FF0000;
+    border-color: #FF0000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
+}
+
+.project-card:hover .project-platform.platform-youtube {
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
+/* GitHub - borda cinza */
+.project-platform.platform-github {
+    color: #8b949e;
+    border-color: #8b949e;
+    box-shadow: 0 0 15px rgba(139, 148, 158, 0.1);
+}
+
+.project-card:hover .project-platform.platform-github {
+    box-shadow: 0 0 25px rgba(139, 148, 158, 0.25);
+    transform: translateY(-2px);
+}
+
+/* Modo claro - GitHub */
+body.light-mode .project-platform.platform-github {
+    color: #24292e;
+    border-color: #24292e;
+}
+
+/* Link do Git/YouTube */
+.project-git {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin: 2px 0;
+}
+
+.project-git a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: 'Inter', monospace;
+    font-size: 0.85rem;
+}
+
+.project-git a:hover {
+    color: var(--primary-purple);
+    transform: translateX(4px);
+}
+
+.project-git a svg {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.project-git a:hover svg {
+    transform: scale(1.1);
+}
+
+/* Descrição do projeto */
+.project-description {
+    font-size: 1rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin: 5px 0 0 0;
+    text-align: justify;
+    text-justify: inter-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* ==================== 10. FOOTER ==================== */
+footer {
+    padding: 60px 0;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-dim);
+}
+.footer-links {
+    margin-top: 10px;
+    font-size: 0.8rem;
+}
+.footer-links a {
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+.footer-links a:hover {
+    color: var(--primary-purple);
+}
+
+/* ==================== 11. BOTÃO VOLTAR AO TOPO ==================== */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background-color: var(--primary-purple);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+.back-to-top:hover {
+    background-color: var(--primary-blue);
+    transform: translateY(-5px);
+}
+
+/* ==================== 12. BOTÃO DE TRADUÇÃO FLUTUANTE ==================== */
+.translate-widget {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+.translate-toggle {
+    width: 45px;
+    height: 45px;
+    background-color: var(--primary-purple);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+.translate-toggle:hover {
+    background-color: var(--primary-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+.translate-dropdown {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 200px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: fadeInDown 0.2s ease;
+}
+.translate-dropdown.active {
+    display: flex;
+}
+.translate-dropdown-title {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px 10px 4px;
+    font-weight: 600;
+}
+.translate-option {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: var(--transition-smooth);
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 500;
+    width: 100%;
+}
+.translate-option:hover {
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--primary-purple);
+}
+.translate-option.active-lang {
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--primary-purple);
+    font-weight: 700;
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botão X de fechar tradução */
+.translate-close-btn {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1000;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+.translate-close-btn:hover {
+    background: #cc0000;
+    transform: scale(1.1);
+}
+
+/* ==================== 13. RESPONSIVIDADE ==================== */
+@media (max-width: 850px) {
+    .main-nav { display: none !important; }
+    .menu-toggle { display: flex; }
+    .mobile-menu.active { display: block; }
+    .header-content { padding: 0 10px; }
+    
+    .projects-title {
+        padding-top: 30px;
+        margin-top: 20px;
+    }
+    
+    .project-card {
+        flex-direction: column;
+        padding: 20px;
+    }
+    .project-image {
+        flex: 0 0 auto;
+        width: 100%;
+        height: 200px;
+        max-height: 200px;
+    }
+    .project-name { font-size: 1.3rem; }
+    .project-platform {
+        font-size: 0.75rem;
+        padding: 5px 14px;
+    }
+    .project-git { font-size: 0.8rem; }
+    .project-git a { font-size: 0.8rem; flex-wrap: wrap; }
+    .project-description { font-size: 0.95rem; }
+}
+
+@media (max-width: 480px) {
+    .theme-toggle-btn {
+        top: 80px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    .translate-widget {
+        bottom: 70px;
+        left: 12px;
+    }
+    .translate-toggle {
+        width: 40px;
+        height: 40px;
+    }
+    .translate-dropdown {
+        min-width: 170px;
+    }
+    .translate-option {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+    
+    .projects-title {
+        padding-top: 25px;
+        margin-top: 15px;
+    }
+    
+    .project-card {
+        padding: 15px;
+        gap: 15px;
+    }
+    .project-image {
+        height: 160px;
+        max-height: 160px;
+    }
+    .project-name { font-size: 1.1rem; }
+    .project-platform {
+        font-size: 0.7rem;
+        padding: 4px 12px;
+        gap: 6px;
+        border-width: 1.5px;
+    }
+    .project-platform svg {
+        width: 14px;
+        height: 14px;
+    }
+    .project-git a { font-size: 0.75rem; }
+    .project-description { font-size: 0.9rem; }
+}
+
+/* ==================== 14. ACESSIBILIDADE ==================== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--primary-purple);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* ==================== 15. MODAL DE DETALHES DO PROJETO ==================== */
+.project-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    animation: modalFadeIn 0.3s ease;
+}
+
+.project-modal.active {
+    display: flex !important;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.project-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+}
+
+.project-modal-content {
+    position: relative;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    padding: 40px 45px;
+    width: 92%;
+    max-width: 1000px;
+    max-height: 85vh;
+    overflow-y: auto;
+    z-index: 10001;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+    animation: modalSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(30px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Botão de fechar (X) */
+.project-modal-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    z-index: 10;
+    width: 42px;
+    height: 42px;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text-main);
+    -webkit-tap-highlight-color: transparent;
+    margin-bottom: 10px;
+}
+
+.project-modal-close:hover,
+.project-modal-close:active {
+    background: rgba(255, 0, 0, 0.8);
+    border-color: #ff0000;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* Conteúdo interno da modal */
+#project-modal-body {
+    clear: both;
+    padding-top: 10px;
+}
+
+#project-modal-body h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    padding-bottom: 0;
+    text-align: left;
+}
+
+#project-modal-body h2::after {
+    display: none;
+}
+
+#project-modal-body .modal-level {
+    display: inline-block;
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+#project-modal-body .modal-level.beginner {
+    background: rgba(46, 204, 113, 0.15);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+    color: #2ecc71;
+}
+
+#project-modal-body .modal-level.intermediate {
+    background: rgba(241, 196, 15, 0.15);
+    border: 1px solid rgba(241, 196, 15, 0.4);
+    color: #f1c40f;
+}
+
+#project-modal-body .modal-level.expert {
+    background: rgba(231, 76, 60, 0.15);
+    border: 1px solid rgba(231, 76, 60, 0.4);
+    color: #e74c3c;
+}
+
+#project-modal-body .modal-git-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-family: 'Inter', monospace;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+    padding: 6px 0;
+}
+
+#project-modal-body .modal-git-link:hover {
+    color: var(--primary-purple);
+}
+
+#project-modal-body .modal-git-link svg {
+    flex-shrink: 0;
+}
+
+#project-modal-body .modal-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+    text-align: justify;
+    text-justify: inter-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+#project-modal-body .modal-description p {
+    margin-bottom: 1.2em;
+}
+
+#project-modal-body .modal-image-large {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+}
+
+/* Scrollbar da modal */
+.project-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.project-modal-content::-webkit-scrollbar-track {
+    background: var(--bg-color);
+    border-radius: 10px;
+}
+
+.project-modal-content::-webkit-scrollbar-thumb {
+    background: var(--primary-purple);
+    border-radius: 10px;
+}
+
+.project-modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-blue);
+}
+
+/* ==================== 16. RESPONSIVIDADE DA MODAL ==================== */
+
+/* Tablet e mobile */
+@media (max-width: 850px) {
+    .project-modal-content {
+        padding: 30px 25px;
+        width: 95%;
+        max-height: 90vh;
+        border-radius: 16px;
+    }
+
+    #project-modal-body h2 {
+        font-size: 1.6rem;
+    }
+
+    #project-modal-body .modal-description {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    #project-modal-body .modal-image-large {
+        max-height: 280px;
+    }
+
+    .project-modal-close {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Celular - TELA CHEIA */
+@media (max-width: 600px) {
+    .project-modal-content {
+        padding: 25px 18px;
+        width: 100%;
+        max-width: 100%;
+        max-height: 100vh;
+        height: 100vh;
+        border-radius: 0;
+        border: none;
+        background: var(--bg-color);
+        box-shadow: none;
+        animation: none;
+    }
+
+    .project-modal-overlay {
+        display: none;
+    }
+
+    .project-modal {
+        background: var(--bg-color);
+    }
+
+    #project-modal-body h2 {
+        font-size: 1.4rem;
+        padding-right: 50px;
+    }
+
+    #project-modal-body .modal-description {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        padding: 0 4px;
+    }
+
+    #project-modal-body .modal-image-large {
+        max-height: 200px;
+        border-radius: 10px;
+    }
+
+    .project-modal-close {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        width: 44px;
+        height: 44px;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        font-size: 1.3rem;
+        z-index: 10002;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .project-modal-close:hover,
+    .project-modal-close:active {
+        background: rgba(255, 0, 0, 0.8);
+        border-color: #ff0000;
+    }
+
+    #project-modal-body .modal-git-link {
+        font-size: 0.8rem;
+        padding: 4px 0;
+    }
+
+    #project-modal-body .modal-level {
+        font-size: 0.75rem;
+        padding: 4px 12px;
+    }
+}
+
+/* ===== BADGE DE PLATAFORMA DENTRO DA MODAL ===== */
+#project-modal-body .modal-platform {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    border: 2px solid;
+    font-family: 'Satoshi', sans-serif;
+    background: transparent;
+    width: fit-content;
+}
+
+/* YouTube na modal */
+#project-modal-body .modal-platform.platform-youtube {
+    color: #FF0000;
+    border-color: #FF0000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
+}
+
+/* GitHub na modal */
+#project-modal-body .modal-platform.platform-github {
+    color: #8b949e;
+    border-color: #8b949e;
+    box-shadow: 0 0 15px rgba(139, 148, 158, 0.1);
+}
+
+/* Modo claro - GitHub na modal */
+body.light-mode #project-modal-body .modal-platform.platform-github {
+    color: #24292e;
+    border-color: #24292e;
+}
+
+/* Ajustes para mobile na modal */
+@media (max-width: 600px) {
+    #project-modal-body .modal-platform {
+        font-size: 0.75rem;
+        padding: 4px 12px;
+        gap: 6px;
+    }
+    #project-modal-body .modal-platform svg {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* Ajustes para o modo claro */
+body.light-mode .project-modal-content {
+    border-color: #ddd;
+}
+
+body.light-mode .project-modal-close {
+    background: var(--card-bg);
+    border-color: #ddd;
+    color: var(--text-main);
+}
+
+body.light-mode .project-modal-close:hover,
+body.light-mode .project-modal-close:active {
+    background: rgba(255, 0, 0, 0.7);
+    border-color: #ff0000;
+    color: #ffffff;
+}
+
+body.light-mode .project-modal-overlay {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 600px) {
+    body.light-mode .project-modal {
+        background: var(--bg-color);
+    }
+
+    body.light-mode .project-modal-close {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(0, 0, 0, 0.15);
+        color: var(--text-main);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    body.light-mode .project-modal-close:hover,
+    body.light-mode .project-modal-close:active {
+        background: rgba(255, 0, 0, 0.8);
+        border-color: #ff0000;
+        color: #ffffff;
+    }
+}
+
+/* ==================== CONTEÚDO DO PROJETO CARREGADO VIA FETCH ==================== */
+#project-modal-body .projeto-detalhe h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    padding-bottom: 0;
+    text-align: left;
+}
+
+#project-modal-body .projeto-detalhe h2::after {
+    display: none;
+}
+
+#project-modal-body .projeto-detalhe p {
+    margin-bottom: 1.2em;
+    color: var(--text-dim);
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+#project-modal-body .projeto-detalhe h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    text-align: left;
+}
+
+#project-modal-body .projeto-detalhe ul {
+    padding-left: 20px;
+    margin-bottom: 1.5em;
+}
+
+#project-modal-body .projeto-detalhe li {
+    color: var(--text-dim);
+    margin-bottom: 0.6em;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+#project-modal-body .projeto-detalhe strong {
+    color: var(--text-main);
+}

@@ -293,3 +293,124 @@ function initDraggableTheme() {
 
 // ==================== 16. INICIALIZAÇÃO ====================
 document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); initDraggableTranslate(); initThemeToggle(); initDraggableTheme(); });
+
+// ==================== 17. MODAL DE DETALHES DOS PROJETOS ====================
+const projetosFiles = {
+    1: 'projetos/projeto-1.html',
+    2: 'projetos/projeto-2.html',
+    3: 'projetos/projeto-3.html',
+    4: 'projetos/projeto-4.html',
+    5: 'projetos/projeto-5.html'
+};
+
+// ==================== ABRIR MODAL DE PROJETO ====================
+function openProjectModal(projectId) {
+    const modal = document.getElementById('project-modal');
+    const body = document.getElementById('project-modal-body');
+
+    if (!modal || !body) return;
+
+    // Bloquear scroll da página
+    document.body.style.overflow = 'hidden';
+
+    // Carregar o conteúdo do arquivo HTML
+    const filePath = projetosFiles[projectId];
+    if (!filePath) {
+        body.innerHTML = '<p>Projeto não encontrado.</p>';
+        return;
+    }
+
+    // Mostrar loading
+    body.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-dim);">Carregando...</p>';
+    modal.classList.add('active');
+
+    fetch(filePath)
+        .then(response => {
+            if (!response.ok) throw new Error('Arquivo não encontrado');
+            return response.text();
+        })
+        .then(html => {
+            body.innerHTML = html;
+            // Inicializa o swipe to close
+            initProjectSwipeToClose();
+        })
+        .catch(error => {
+            body.innerHTML = `
+                <p style="text-align:center;padding:40px;color:var(--text-dim);">
+                    Erro ao carregar o projeto. Tente novamente mais tarde.
+                </p>
+            `;
+            console.error('Erro ao carregar projeto:', error);
+        });
+}
+
+function closeProjectModal() {
+    const modal = document.getElementById('project-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// ==================== SWIPE TO CLOSE PARA MODAL DE PROJETOS ====================
+function initProjectSwipeToClose() {
+    const modal = document.getElementById('project-modal');
+    const content = document.querySelector('.project-modal-content');
+    if (!modal || !content) return;
+    
+    let startX = 0, currentX = 0, isDragging = false;
+    
+    content.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        content.style.transition = 'none';
+    }, { passive: true });
+    
+    content.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX;
+        const diffX = currentX - startX;
+        if (Math.abs(diffX) > 20) {
+            content.style.transform = `translateX(${diffX}px)`;
+            content.style.opacity = 1 - Math.abs(diffX) / 400;
+        }
+    }, { passive: true });
+    
+    content.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diffX = currentX - startX;
+        content.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        if (Math.abs(diffX) > 100) {
+            content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)';
+            content.style.opacity = '0';
+            setTimeout(() => {
+                closeProjectModal();
+                content.style.transform = '';
+                content.style.opacity = '';
+            }, 300);
+        } else {
+            content.style.transform = '';
+            content.style.opacity = '';
+        }
+        currentX = 0;
+    });
+}
+
+// Fechar modal com ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeProjectModal();
+    }
+});
+
+// Fechar modal ao clicar fora (apenas desktop)
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('project-modal');
+    const content = document.querySelector('.project-modal-content');
+    if (modal && modal.classList.contains('active') && content) {
+        if (e.target === modal || e.target.classList.contains('project-modal-overlay')) {
+            closeProjectModal();
+        }
+    }
+});

@@ -51,11 +51,13 @@ A página inicial (`index.html`) serve como **vitrine do canal** e inclui:
 - 🍪 **Banner LGPD** (consentimento de cookies)
 - 🌍 **Tradução automática** (PT, EN, ES)
 - 📲 **Popup de instalação do PWA** (com memória de escolha)
+- 📂 **Meus Projetos** — página com todos os projetos do criador
 
 ### Funcionalidades técnicas:
 
 - ✅ Menu mobile hamburguer (≤850px)
 - ✅ Modal de vídeo do YouTube
+- ✅ Modal de projetos com swipe to close
 - ✅ Scroll suave para âncoras
 - ✅ Botão "Voltar ao topo"
 - ✅ Animações de estatísticas (Intersection Observer)
