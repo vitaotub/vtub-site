@@ -40,15 +40,18 @@ function positionTooltip(e) {
     const button = e.currentTarget;
     const rect = button.getBoundingClientRect();
     
-    const tooltipTop = rect.top - 10;
+    // Posiciona o tooltip acima do botão com um pequeno offset
+    const tooltipTop = rect.top - 8;
     const tooltipLeft = rect.left + rect.width / 2;
     
+    // Armazena a posição em variáveis CSS
     button.style.setProperty('--tooltip-top', tooltipTop + 'px');
     button.style.setProperty('--tooltip-left', tooltipLeft + 'px');
 }
 
 function hideTooltip(e) {
     const button = e.currentTarget;
+    // Remove as variáveis CSS para esconder o tooltip
     button.style.removeProperty('--tooltip-top');
     button.style.removeProperty('--tooltip-left');
 }
