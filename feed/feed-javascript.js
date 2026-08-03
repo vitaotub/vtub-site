@@ -183,7 +183,7 @@ async function carregarProjetos() {
     projetos.forEach(proj => {
         const card = document.createElement('div');
         card.className = 'projeto-card-feed';
-        card.onclick = () => openProjectModal(proj.id);
+        card.onclick = () => openProjectModal(proj.id); // ← CHAMA O MODAL
         
         const isYoutube = proj.plataforma === 'YouTube';
         const platformClass = isYoutube ? 'platform-youtube' : 'platform-github';
