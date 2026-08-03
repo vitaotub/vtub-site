@@ -287,32 +287,34 @@ function openProjectModal(projectId) {
         ? '<i class="fa-brands fa-youtube"></i>'
         : '<i class="fa-brands fa-github"></i>';
     
-    modal.innerHTML = `
-        <div class="projeto-modal-content">
-            <button class="projeto-modal-close" onclick="fecharProjetoModal()" aria-label="Fechar">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="projeto-modal-body">
-                <div class="projeto-modal-imagem">
-                    <img src="${projeto.imagem}" alt="${projeto.nome}" loading="lazy" onerror="this.style.display='none'">
-                </div>
-                <h2 class="projeto-modal-titulo">${projeto.nome}</h2>
-                <div class="projeto-modal-platform">
-                    ${platformIcon} ${projeto.plataforma}
-                </div>
-                <p class="projeto-modal-descricao">${projeto.descricao}</p>
-                <div class="projeto-modal-info">
-                    ${projeto.inscritos ? `<span class="projeto-modal-tag">📺 ${projeto.inscritos} inscritos</span>` : ''}
-                    ${projeto.videos ? `<span class="projeto-modal-tag">🎬 ${projeto.videos} vídeos</span>` : ''}
-                    ${projeto.linguagem ? `<span class="projeto-modal-tag">💻 ${projeto.linguagem}</span>` : ''}
-                    ${projeto.stars ? `<span class="projeto-modal-tag">⭐ ${projeto.stars} stars</span>` : ''}
-                </div>
+modal.innerHTML = `
+    <div class="projeto-modal-content">
+        <button class="projeto-modal-close" onclick="fecharProjetoModal()" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="projeto-modal-body">
+            <div class="projeto-modal-imagem">
+                <img src="${projeto.imagem}" alt="${projeto.nome}" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <h2 class="projeto-modal-titulo">${projeto.nome}</h2>
+            <div class="projeto-modal-platform">
+                ${platformIcon} ${projeto.plataforma}
+            </div>
+            <p class="projeto-modal-descricao">${projeto.descricao}</p>
+            <div class="projeto-modal-info">
+                ${projeto.inscritos ? `<span class="projeto-modal-tag">📺 ${projeto.inscritos} inscritos</span>` : ''}
+                ${projeto.videos ? `<span class="projeto-modal-tag">🎬 ${projeto.videos} vídeos</span>` : ''}
+                ${projeto.linguagem ? `<span class="projeto-modal-tag">💻 ${projeto.linguagem}</span>` : ''}
+                ${projeto.stars ? `<span class="projeto-modal-tag">⭐ ${projeto.stars} stars</span>` : ''}
+            </div>
+            <div class="projeto-modal-link-wrapper">
                 <a href="${projeto.link}" target="_blank" rel="noopener" class="projeto-modal-link">
                     ${isYoutube ? '▶️ Visitar Canal' : '🔗 Ver no GitHub'}
                 </a>
             </div>
         </div>
-    `;
+    </div>
+`;
     
     modal.addEventListener('click', function(e) {
         if (e.target === modal) fecharProjetoModal();

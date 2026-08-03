@@ -972,7 +972,7 @@ body {
     color: var(--text-main);
     margin: 0 0 4px 0;
     font-family: 'Satoshi', sans-serif;
-    text-align: left;
+    text-align: center; /* CENTRALIZADO */
 }
 
 .projeto-modal-platform {
@@ -986,7 +986,7 @@ body {
     background: transparent;
     border: 1.5px solid var(--primary-purple);
     color: var(--primary-purple);
-    margin-bottom: 12px;
+    margin: 0 auto 12px auto; /* CENTRALIZADO */
 }
 
 .projeto-modal-descricao {
@@ -995,6 +995,7 @@ body {
     line-height: 1.6;
     margin-bottom: 15px;
     text-align: left;
+    text-indent: 2em; /* RECUO NO INÍCIO DO PARÁGRAFO */
 }
 
 .projeto-modal-info {
@@ -1014,6 +1015,14 @@ body {
     border: 1px solid var(--border-color);
 }
 
+/* CONTAINER DO BOTÃO - FORÇA CENTRALIZAÇÃO */
+.projeto-modal-link-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5px;
+}
+
 .projeto-modal-link {
     display: inline-flex;
     align-items: center;
@@ -1030,9 +1039,8 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Satoshi', sans-serif;
-    margin: 0 auto; /* Centralizado no desktop */
-    width: auto; /* Largura automática no desktop */
-    min-width: 180px; /* Largura mínima para não ficar muito pequeno */
+    width: auto;
+    min-width: 180px;
     max-width: 100%;
 }
 
@@ -1056,6 +1064,7 @@ body {
     }
     .projeto-modal-descricao {
         font-size: 0.85rem;
+        text-indent: 1.5em; /* Recuo menor no mobile */
     }
     .projeto-modal-close {
         width: 32px;
@@ -1068,11 +1077,9 @@ body {
     .projeto-modal-link {
         padding: 10px 18px;
         font-size: 0.85rem;
-        width: calc(100% - 20px); /* Quase toda a largura, com margem de 10px cada lado */
         min-width: unset;
-        margin: 0 auto;
+        width: 100%;
         justify-content: center;
-        box-sizing: border-box;
     }
 }
 
