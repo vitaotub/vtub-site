@@ -231,24 +231,62 @@ function compartilharVideoFeed(videoId) {
     const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
     const mensagem = `🎬 Vídeo publicado no Canal VitãoTub: ${videoUrl}`;
     
-    if (navigator.share) {
+    // Detecta se é dispositivo móvel E se suporta Web Share API
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    const isShareSupported = navigator.share !== undefined;
+    
+    // Se for mobile E suportar share, usa a API nativa
+    if (isMobile && isShareSupported) {
         navigator.share({
             title: 'Vídeo do VitãoTub',
             text: 'Confira este vídeo no YouTube!',
             url: videoUrl
-        }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(mensagem).then(() => {
-            alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
-        }).catch(() => {
-            const tempInput = document.createElement('input');
-            tempInput.value = mensagem;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+        }).catch((err) => {
+            // Se o usuário cancelar, não faz nada
+            if (err.name !== 'AbortError') {
+                console.error('Erro ao compartilhar:', err);
+            }
         });
+        return;
+    }
+    
+    // Desktop ou mobile sem suporte: copia para área de transferência
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(mensagem)
+            .then(() => {
+                alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+            })
+            .catch(() => {
+                // Fallback: input temporário
+                const tempInput = document.createElement('input');
+                tempInput.value = mensagem;
+                tempInput.style.position = 'fixed';
+                tempInput.style.opacity = '0';
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+                } catch (e) {
+                    alert('❌ Não foi possível copiar o link. Tente manualmente.');
+                }
+                document.body.removeChild(tempInput);
+            });
+    } else {
+        // Fallback mais antigo
+        const tempInput = document.createElement('input');
+        tempInput.value = mensagem;
+        tempInput.style.position = 'fixed';
+        tempInput.style.opacity = '0';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+            document.execCommand('copy');
+            alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+        } catch (e) {
+            alert('❌ Não foi possível copiar o link. Tente manualmente.');
+        }
+        document.body.removeChild(tempInput);
     }
 }
 
