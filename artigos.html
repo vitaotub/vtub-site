@@ -6,7 +6,7 @@
     
     <!-- ==================== SEO META TAGS ==================== -->
     <title>Artigos & Dicas | VitãoTub</title>
-    <meta name="description" content="Artigos e dicas sobre tecnologia, segurança digital e games.">
+    <meta name="description" content="Artigos e dicas sobre tecnologia, segurança digital e games do VitãoTub.">
     <meta name="author" content="Victor Lopes">
     <meta name="theme-color" content="#121212">
     
@@ -401,24 +401,45 @@
 <body>
     
     <!-- ==================== HEADER ==================== -->
-    <header class="header" id="header">
-        <div class="container">
-            <div class="logo-container">
-                <img src="eu-frente-feed.png" alt="Logo VitãoTub" class="logo">
-                <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="logo-subscribe-btn">
-                    <i class="fa-brands fa-youtube"></i> Inscreva-se
-                </a>
-            </div>
+    <header>
+        <div class="header-content">
+            <a href="index.html#home" class="logo-link">
+                <h1>Vitãotub<span>.</span></h1>
+            </a>
             
+            <!-- Navegação desktop (visível em telas grandes) -->
             <nav class="main-nav" aria-label="Navegação principal">
                 <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="bio.html">Sobre</a></li>
+                    <li><a href="index.html#about">Sobre</a></li>
+                    <li><a href="index.html#stats">Estatísticas</a></li>
+                    <li><a href="index.html#featured-videos">Principais Vídeos</a></li>
                     <li><a href="meus-projetos.html">Meus Projetos</a></li>
                     <li><a href="artigos.html" class="active">Artigos & Dicas</a></li>
+                    <li><a href="bio.html">Bio</a></li>
+                    <li><a href="index.html#contact">Contato</a></li>
                 </ul>
             </nav>
+            
+            <!-- Botão hamburguer (visível apenas em mobile) -->
+            <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+            </button>
         </div>
+        
+        <!-- Menu mobile (oculto por padrão) -->
+        <nav id="mobile-menu" class="mobile-menu" aria-label="Menu mobile">
+            <ul>
+                <li><a href="index.html#about" onclick="closeMobileMenu()">Sobre</a></li>
+                <li><a href="index.html#stats" onclick="closeMobileMenu()">Estatísticas</a></li>
+                <li><a href="index.html#featured-videos" onclick="closeMobileMenu()">Principais Vídeos</a></li>
+                <li><a href="meus-projetos.html">Meus Projetos</a></li>
+                <li><a href="artigos.html">Artigos & Dicas</a></li>
+                <li><a href="bio.html" onclick="closeMobileMenu()">Bio</a></li>
+                <li><a href="index.html#contact" onclick="closeMobileMenu()">Contato</a></li>
+            </ul>
+        </nav>
     </header>
 
     <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
@@ -448,17 +469,22 @@
     </div>
 
     <!-- ==================== FOOTER ==================== -->
-    <footer class="footer">
+    <footer>
         <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2026 VitãoTub. Todos os direitos reservados.</p>
-                <div class="footer-links">
-                    <a href="politica-de-privacidade.html">Política de Privacidade</a>
-                    <a href="termos-de-uso.html">Termos de Uso</a>
-                </div>
+            <p>&copy; 2026 Victor Lopes | VitãoTub</p>
+            <div class="footer-links">
+                <a href="politica-de-privacidade.html">Política de Privacidade</a>
+                <a href="termos-de-uso.html">Termos de Uso</a>
             </div>
         </div>
     </footer>
+
+    <!-- ==================== BOTÃO VOLTAR AO TOPO ==================== -->
+    <a href="#home" id="back-to-top" class="back-to-top" aria-label="Voltar ao topo da página">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </a>
 
     <!-- ==================== SCRIPTS ==================== -->
     <script src="javascript.js"></script>
