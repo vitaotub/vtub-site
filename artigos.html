@@ -134,26 +134,26 @@
         
         /* BOTÃO LER ARTIGO - CENTRALIZADO */
         .btn-ler-mais-site {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 20px;
-            background: var(--gradient-brand);
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Satoshi', sans-serif;
-            margin: 10px auto 0 auto;
-            width: fit-content;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 8px 20px !important;
+            background: var(--gradient-brand) !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 20px !important;
+            font-size: 0.8rem !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            font-family: 'Satoshi', sans-serif !important;
+            margin: 10px auto 0 auto !important;
+            width: fit-content !important;
         }
         
         .btn-ler-mais-site:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
+            transform: translateY(-2px) !important;
+            filter: brightness(1.1) !important;
         }
         
         .artigos-loading-site {
@@ -163,306 +163,306 @@
             font-size: 0.9rem;
         }
         
-        /* ==================== MODAL DE ARTIGO - ESTILOS IDÊNTICOS AO FEED ==================== */
+        /* ==================== MODAL DE ARTIGO - ESTILOS COM !important ==================== */
         .artigo-fullscreen-modal-site {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 99999;
-            background: var(--modal-bg);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            z-index: 99999 !important;
+            background: var(--modal-bg) !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
         }
         
         .artigo-fullscreen-modal-site.active {
-            display: block;
+            display: block !important;
         }
         
         .artigo-fullscreen-content-site {
-            width: 100%;
-            max-width: 800px;
-            min-height: 100vh;
-            min-height: 100dvh;
-            margin: 0 auto;
-            padding: 10px 20px 60px 20px;
-            position: relative;
-            background: var(--modal-bg);
+            width: 100% !important;
+            max-width: 800px !important;
+            min-height: 100vh !important;
+            min-height: 100dvh !important;
+            margin: 0 auto !important;
+            padding: 10px 20px 60px 20px !important;
+            position: relative !important;
+            background: var(--modal-bg) !important;
         }
         
-        /* BOTÃO X - Fundo transparente, borda vermelha brilhante (igual ao feed) */
+        /* BOTÃO X - Fundo transparente, borda vermelha brilhante */
         .artigo-fullscreen-close-site {
-            position: sticky;
-            top: 15px;
-            float: right;
-            z-index: 100001;
-            width: 40px;
-            height: 40px;
+            position: sticky !important;
+            top: 15px !important;
+            float: right !important;
+            z-index: 100001 !important;
+            width: 40px !important;
+            height: 40px !important;
             background: transparent !important;
             border: 2px solid #ff0000 !important;
             border-radius: 50% !important;
             color: #ff0000 !important;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
-            margin-right: -10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            font-size: 1.2rem !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.3s ease !important;
+            -webkit-tap-highlight-color: transparent !important;
+            margin-right: -10px !important;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3) !important;
         }
         
         .artigo-fullscreen-close-site:hover,
         .artigo-fullscreen-close-site:active {
             background: rgba(255, 0, 0, 0.2) !important;
             border-color: #ff0000 !important;
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
-            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6) !important;
+            transform: scale(1.1) !important;
             color: #ff0000 !important;
         }
         
         .artigo-fullscreen-body-site {
-            clear: both;
-            padding-top: 10px;
-            background: var(--modal-bg);
-            width: 100%;
+            clear: both !important;
+            padding-top: 10px !important;
+            background: var(--modal-bg) !important;
+            width: 100% !important;
         }
         
         /* BANNER DO ARTIGO NO MODAL */
         .artigo-fullscreen-body-site .artigo-banner {
-            margin: -10px -20px 20px -20px;
-            width: calc(100% + 40px);
-            border-radius: 0;
-            position: relative;
-            padding-bottom: 56.25%;
-            background: #000;
-            overflow: hidden;
+            margin: -10px -20px 20px -20px !important;
+            width: calc(100% + 40px) !important;
+            border-radius: 0 !important;
+            position: relative !important;
+            padding-bottom: 56.25% !important;
+            background: #000 !important;
+            overflow: hidden !important;
         }
         
         .artigo-fullscreen-body-site .artigo-banner img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
         }
         
         /* TÍTULO DO ARTIGO NO MODAL */
         .artigo-fullscreen-body-site .artigo-titulo {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--text-main);
-            padding: 0 20px 10px 20px;
-            text-align: justify;
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            -ms-hyphens: auto;
-            hyphens: auto;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            text-justify: inter-word;
-            word-break: break-word;
+            font-size: 1.6rem !important;
+            font-weight: 700 !important;
+            color: var(--text-main) !important;
+            padding: 0 20px 10px 20px !important;
+            text-align: justify !important;
+            -webkit-hyphens: auto !important;
+            -moz-hyphens: auto !important;
+            -ms-hyphens: auto !important;
+            hyphens: auto !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            text-justify: inter-word !important;
+            word-break: break-word !important;
         }
         
         /* RESUMO DO ARTIGO NO MODAL */
         .artigo-fullscreen-body-site .artigo-resumo {
-            font-size: 1rem;
-            padding: 0 20px 10px 20px;
-            color: var(--text-dim);
-            text-align: justify;
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            -ms-hyphens: auto;
-            hyphens: auto;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            text-justify: inter-word;
-            word-break: break-word;
+            font-size: 1rem !important;
+            padding: 0 20px 10px 20px !important;
+            color: var(--text-dim) !important;
+            text-align: justify !important;
+            -webkit-hyphens: auto !important;
+            -moz-hyphens: auto !important;
+            -ms-hyphens: auto !important;
+            hyphens: auto !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            text-justify: inter-word !important;
+            word-break: break-word !important;
         }
         
         /* METADADOS DO ARTIGO NO MODAL */
         .artigo-fullscreen-body-site .artigo-meta {
-            padding: 10px 20px;
-            margin-bottom: 15px;
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
+            padding: 10px 20px !important;
+            margin-bottom: 15px !important;
+            font-size: 0.8rem !important;
+            color: var(--text-dim) !important;
+            border-top: 1px solid var(--border-color) !important;
+            display: flex !important;
+            justify-content: space-between !important;
         }
         
         .artigo-fullscreen-body-site .artigo-data {
-            color: var(--primary-purple);
-            font-weight: 600;
+            color: var(--primary-purple) !important;
+            font-weight: 600 !important;
         }
         
         .artigo-fullscreen-body-site .artigo-autor {
-            color: var(--primary-blue);
-            font-weight: 600;
+            color: var(--primary-blue) !important;
+            font-weight: 600 !important;
         }
         
         /* CORPO DO ARTIGO NO MODAL - COM MARGENS, JUSTIFICADO E HIFENIZADO */
         .artigo-fullscreen-body-site .artigo-corpo {
-            padding: 15px 25px;
-            text-align: justify;
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            -ms-hyphens: auto;
-            hyphens: auto;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            text-justify: inter-word;
-            word-break: break-word;
+            padding: 15px 25px !important;
+            text-align: justify !important;
+            -webkit-hyphens: auto !important;
+            -moz-hyphens: auto !important;
+            -ms-hyphens: auto !important;
+            hyphens: auto !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            text-justify: inter-word !important;
+            word-break: break-word !important;
         }
         
         .artigo-fullscreen-body-site .artigo-corpo p {
-            margin-bottom: 14px;
-            text-align: justify;
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            -ms-hyphens: auto;
-            hyphens: auto;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            text-justify: inter-word;
-            word-break: break-word;
-            text-indent: 1.5em;
+            margin-bottom: 14px !important;
+            text-align: justify !important;
+            -webkit-hyphens: auto !important;
+            -moz-hyphens: auto !important;
+            -ms-hyphens: auto !important;
+            hyphens: auto !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            text-justify: inter-word !important;
+            word-break: break-word !important;
+            text-indent: 1.5em !important;
         }
         
         .artigo-fullscreen-body-site .artigo-corpo h3 {
-            font-size: 1.1rem;
-            margin: 15px 0 8px 0;
-            color: var(--text-main);
+            font-size: 1.1rem !important;
+            margin: 15px 0 8px 0 !important;
+            color: var(--text-main) !important;
         }
         
         /* ==================== EFEITO DE DESTAQUE (BORDA COLORIDA) ==================== */
         .artigo-fullscreen-body-site .artigo-card {
             border: 2px solid rgba(59, 130, 246, 0.6) !important;
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.15) !important;
-            border-radius: 12px;
-            overflow: hidden;
+            border-radius: 12px !important;
+            overflow: hidden !important;
         }
         
         /* ==================== RODAPÉ DO ARTIGO NO MODAL - IGUAL AO FEED ==================== */
         .artigo-fullscreen-body-site .artigo-rodape {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px);
-            border-top: 1px solid var(--border-color);
-            gap: clamp(4px, 1vw, 8px);
-            flex-wrap: wrap;
-            overflow: hidden;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px) !important;
+            border-top: 1px solid var(--border-color) !important;
+            gap: clamp(4px, 1vw, 8px) !important;
+            flex-wrap: wrap !important;
+            overflow: hidden !important;
         }
         
         /* BOTÕES DE REDES SOCIAIS - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-social {
-            display: flex;
-            gap: clamp(2px, 0.5vw, 4px);
-            flex-shrink: 0;
-            flex-wrap: wrap;
+            display: flex !important;
+            gap: clamp(2px, 0.5vw, 4px) !important;
+            flex-shrink: 0 !important;
+            flex-wrap: wrap !important;
         }
         
         .artigo-fullscreen-body-site .social-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: clamp(28px, 5vw, 36px);
-            height: clamp(28px, 5vw, 36px);
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            font-size: clamp(0.7rem, 1.5vw, 1rem);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: clamp(28px, 5vw, 36px) !important;
+            height: clamp(28px, 5vw, 36px) !important;
+            background-color: var(--card-bg) !important;
+            color: var(--text-main) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 50% !important;
+            font-size: clamp(0.7rem, 1.5vw, 1rem) !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
         }
         
         .artigo-fullscreen-body-site .social-btn.instagram:hover {
-            color: #E1306C;
-            border-color: #E1306C;
-            box-shadow: 0 0 12px rgba(225, 48, 108, 0.5);
-            transform: translateY(-2px);
+            color: #E1306C !important;
+            border-color: #E1306C !important;
+            box-shadow: 0 0 12px rgba(225, 48, 108, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.youtube:hover {
-            color: #FF0000;
-            border-color: #FF0000;
-            box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
-            transform: translateY(-2px);
+            color: #FF0000 !important;
+            border-color: #FF0000 !important;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.tiktok:hover {
-            color: #ff0050;
-            border-color: #ff0050;
-            box-shadow: 0 0 12px rgba(255, 0, 80, 0.5);
-            transform: translateY(-2px);
+            color: #ff0050 !important;
+            border-color: #ff0050 !important;
+            box-shadow: 0 0 12px rgba(255, 0, 80, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.twitch:hover {
-            color: #9146FF;
-            border-color: #9146FF;
-            box-shadow: 0 0 12px rgba(145, 70, 255, 0.5);
-            transform: translateY(-2px);
+            color: #9146FF !important;
+            border-color: #9146FF !important;
+            box-shadow: 0 0 12px rgba(145, 70, 255, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.x-twitter:hover {
-            color: #cccccc;
-            border-color: #888888;
-            box-shadow: 0 0 12px rgba(200, 200, 200, 0.4);
-            transform: translateY(-2px);
+            color: #cccccc !important;
+            border-color: #888888 !important;
+            box-shadow: 0 0 12px rgba(200, 200, 200, 0.4) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.github:hover {
-            color: #ffffff;
-            border-color: #ffffff;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.telegram:hover {
-            color: #0088cc;
-            border-color: #0088cc;
-            box-shadow: 0 0 12px rgba(0, 136, 204, 0.5);
-            transform: translateY(-2px);
+            color: #0088cc !important;
+            border-color: #0088cc !important;
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         
         /* BOTÕES DE AÇÃO (COMPARTILHAR E INSCREVER-SE) - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-acoes {
-            display: flex;
-            gap: clamp(3px, 0.8vw, 6px);
-            align-items: center;
-            flex-shrink: 0;
+            display: flex !important;
+            gap: clamp(3px, 0.8vw, 6px) !important;
+            align-items: center !important;
+            flex-shrink: 0 !important;
         }
         
         .artigo-fullscreen-body-site .btn-action-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: clamp(32px, 6vw, 42px);
-            height: clamp(32px, 6vw, 42px);
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: clamp(32px, 6vw, 42px) !important;
+            height: clamp(32px, 6vw, 42px) !important;
+            background-color: var(--card-bg) !important;
+            color: var(--text-main) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 50% !important;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem) !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            -webkit-tap-highlight-color: transparent !important;
         }
         
         .artigo-fullscreen-body-site .btn-share-icon:hover {
-            color: #8b5cf6;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
-            transform: translateY(-2px);
+            color: #8b5cf6 !important;
+            border-color: #8b5cf6 !important;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6) !important;
+            transform: translateY(-2px) !important;
         }
         
         .artigo-fullscreen-body-site .btn-subscribe-icon:hover {
-            color: #FF0000;
-            border-color: #FF0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-            transform: translateY(-2px);
+            color: #FF0000 !important;
+            border-color: #FF0000 !important;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6) !important;
+            transform: translateY(-2px) !important;
         }
         
         @media (max-width: 480px) {
@@ -470,18 +470,18 @@
                 font-size: 1.5rem;
             }
             .artigo-fullscreen-content-site {
-                padding: 10px 15px 50px 15px;
+                padding: 10px 15px 50px 15px !important;
             }
             .artigo-fullscreen-body-site .artigo-titulo {
-                font-size: 1.2rem;
+                font-size: 1.2rem !important;
             }
             .artigo-fullscreen-close-site {
-                width: 34px;
-                height: 34px;
-                font-size: 1rem;
+                width: 34px !important;
+                height: 34px !important;
+                font-size: 1rem !important;
             }
             .artigo-fullscreen-body-site .artigo-corpo {
-                padding: 15px 18px;
+                padding: 15px 18px !important;
             }
         }
     </style>
