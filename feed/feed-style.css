@@ -331,22 +331,23 @@ body {
     content: attr(data-tooltip);
     position: fixed;
     bottom: auto;
-    top: var(--tooltip-top, calc(50% - 40px));
+    top: var(--tooltip-top, calc(50% - 45px));
     left: var(--tooltip-left, 50%);
     transform: translateX(-50%) scale(0.9);
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.95);
     color: #fff;
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-size: 0.7rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.75rem;
     font-weight: 500;
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
     transition: all 0.2s ease;
     font-family: 'Satoshi', sans-serif;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 9999;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 999999;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 /* Seta do tooltip */
@@ -355,15 +356,15 @@ body {
     content: '';
     position: fixed;
     bottom: auto;
-    top: var(--tooltip-top, calc(50% - 20px));
+    top: var(--tooltip-top, calc(50% - 22px));
     left: var(--tooltip-left, 50%);
     transform: translateX(-50%) scale(0.9);
-    border: 6px solid transparent;
-    border-top-color: rgba(0, 0, 0, 0.9);
+    border: 7px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.95);
     pointer-events: none;
     opacity: 0;
     transition: all 0.2s ease;
-    z-index: 9999;
+    z-index: 999999;
 }
 
 /* Mostrar tooltip no hover */
@@ -411,12 +412,14 @@ body {
     }
     .btn-video-share::after,
     .btn-video-youtube::after {
-        font-size: 0.55rem;
-        padding: 3px 8px;
+        font-size: 0.6rem;
+        padding: 4px 10px;
+        top: var(--tooltip-top, calc(50% - 38px));
     }
     .btn-video-share::before,
     .btn-video-youtube::before {
-        border-width: 4px;
+        top: var(--tooltip-top, calc(50% - 20px));
+        border-width: 5px;
     }
 }
 
