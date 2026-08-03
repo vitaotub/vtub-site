@@ -28,7 +28,6 @@ function positionTooltips() {
     const buttons = document.querySelectorAll('.btn-video-share, .btn-video-youtube');
     
     buttons.forEach(button => {
-        // Remove listeners antigos para evitar duplicação
         button.removeEventListener('mouseenter', positionTooltip);
         button.removeEventListener('mouseleave', hideTooltip);
         
@@ -41,7 +40,6 @@ function positionTooltip(e) {
     const button = e.currentTarget;
     const rect = button.getBoundingClientRect();
     
-    // Posiciona o tooltip acima do botão
     const tooltipTop = rect.top - 10;
     const tooltipLeft = rect.left + rect.width / 2;
     
@@ -86,7 +84,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// ==================== 4. NAVEGAÇÃO POR ABAS (CORRIGIDA) ====================
+// ==================== 4. NAVEGAÇÃO POR ABAS ====================
 function mudarAba(aba) {
     const btnVideos = document.getElementById('btn-tab-videos');
     const btnArtigos = document.getElementById('btn-tab-artigos');
@@ -97,19 +95,16 @@ function mudarAba(aba) {
     const secaoProjetos = document.getElementById('secao-projetos');
     const secaoSobre = document.getElementById('secao-sobre');
     
-    // Esconde todas as seções
     if (secaoVideos) secaoVideos.style.display = 'none';
     if (secaoArtigos) secaoArtigos.style.display = 'none';
     if (secaoProjetos) secaoProjetos.style.display = 'none';
     if (secaoSobre) secaoSobre.style.display = 'none';
     
-    // Remove active de todos os botões
     if (btnVideos) { btnVideos.classList.remove('active'); btnVideos.setAttribute('aria-pressed', 'false'); }
     if (btnArtigos) { btnArtigos.classList.remove('active'); btnArtigos.setAttribute('aria-pressed', 'false'); }
     if (btnProjetos) { btnProjetos.classList.remove('active'); btnProjetos.setAttribute('aria-pressed', 'false'); }
     if (btnSobre) { btnSobre.classList.remove('active'); btnSobre.setAttribute('aria-pressed', 'false'); }
     
-    // Ativa a aba selecionada
     if (aba === 'videos') {
         if (btnVideos) { btnVideos.classList.add('active'); btnVideos.setAttribute('aria-pressed', 'true'); }
         if (secaoVideos) secaoVideos.style.display = 'block';
@@ -134,7 +129,6 @@ async function carregarProjetos() {
     const container = document.getElementById('projetos-feed-container');
     if (!container) return;
     
-    // Os mesmos projetos do meus-projetos.html, mas em formato compacto
     const projetos = [
         {
             id: 1,
@@ -183,7 +177,10 @@ async function carregarProjetos() {
     projetos.forEach(proj => {
         const card = document.createElement('div');
         card.className = 'projeto-card-feed';
-        card.onclick = () => openProjectModal(proj.id); // ← CHAMA O MODAL
+        card.onclick = function() {
+            console.log('🟢 Card clicado! ID:', proj.id);
+            openProjectModal(proj.id);
+        };
         
         const isYoutube = proj.plataforma === 'YouTube';
         const platformClass = isYoutube ? 'platform-youtube' : 'platform-github';
@@ -209,6 +206,146 @@ async function carregarProjetos() {
     projetosCarregados = true;
 }
 
+// ==================== MODAL DE PROJETOS ====================
+function openProjectModal(projectId) {
+    console.log('🟢 openProjectModal chamado com ID:', projectId);
+    
+    const projetos = [
+        {
+            id: 1,
+            nome: 'VitãoTub',
+            plataforma: 'YouTube',
+            descricao: 'Canal principal de tecnologia, segurança digital e games. Conteúdo diário sobre hardware, software, dicas de segurança e muito mais.',
+            link: 'https://www.youtube.com/@vitaotub?sub_confirmation=1',
+            imagem: '../projeto-001.jpg',
+            inscritos: '16 mil+',
+            videos: '200+'
+        },
+        {
+            id: 2,
+            nome: 'Tutorials Insolentes',
+            plataforma: 'YouTube',
+            descricao: 'Canal secundário com tutoriais e dicas rápidas para resolver problemas específicos de tecnologia.',
+            link: 'https://www.youtube.com/@tutoriaisinsolentes?sub_confirmation=1',
+            imagem: '../projeto-002.jpg',
+            inscritos: '1 mil+',
+            videos: '50+'
+        },
+        {
+            id: 3,
+            nome: 'Fedora Only Fans (FOF)',
+            plataforma: 'GitHub',
+            descricao: 'Aplicativo para tornar o Fedora Linux mais prático e acessível para usuários iniciantes e avançados.',
+            link: 'https://github.com/vitaotub/fedora-only-fans',
+            imagem: '../projeto-003.jpg',
+            linguagem: 'Python',
+            stars: '15'
+        },
+        {
+            id: 4,
+            nome: 'Site VitãoTub',
+            plataforma: 'GitHub',
+            descricao: 'Site oficial do canal com HTML, CSS e JavaScript puro. Design responsivo e otimizado para SEO.',
+            link: 'https://github.com/vitaotub/vtub-site',
+            imagem: '../projeto-004.jpg',
+            linguagem: 'HTML/CSS/JS',
+            stars: '8'
+        },
+        {
+            id: 5,
+            nome: 'WebApp VitãoTub',
+            plataforma: 'GitHub',
+            descricao: 'PWA com feed de vídeos e artigos, instalável em dispositivos móveis para acesso offline.',
+            link: 'https://github.com/vitaotub/vtub-app',
+            imagem: '../projeto-005.jpg',
+            linguagem: 'HTML/CSS/JS',
+            stars: '12'
+        }
+    ];
+    
+    const projeto = projetos.find(p => p.id === projectId);
+    if (!projeto) {
+        console.error('❌ Projeto não encontrado:', projectId);
+        return;
+    }
+    
+    console.log('✅ Projeto encontrado:', projeto.nome);
+    
+    // Remove modal antigo se existir
+    const modalAntigo = document.getElementById('projeto-modal');
+    if (modalAntigo) {
+        modalAntigo.remove();
+    }
+    
+    // Cria o modal
+    const modal = document.createElement('div');
+    modal.id = 'projeto-modal';
+    modal.className = 'projeto-modal-overlay';
+    
+    const isYoutube = projeto.plataforma === 'YouTube';
+    const platformIcon = isYoutube
+        ? '<i class="fa-brands fa-youtube"></i>'
+        : '<i class="fa-brands fa-github"></i>';
+    
+    modal.innerHTML = `
+        <div class="projeto-modal-content">
+            <button class="projeto-modal-close" onclick="fecharProjetoModal()" aria-label="Fechar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="projeto-modal-body">
+                <div class="projeto-modal-imagem">
+                    <img src="${projeto.imagem}" alt="${projeto.nome}" loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <h2 class="projeto-modal-titulo">${projeto.nome}</h2>
+                <div class="projeto-modal-platform">
+                    ${platformIcon} ${projeto.plataforma}
+                </div>
+                <p class="projeto-modal-descricao">${projeto.descricao}</p>
+                <div class="projeto-modal-info">
+                    ${projeto.inscritos ? `<span class="projeto-modal-tag">📺 ${projeto.inscritos} inscritos</span>` : ''}
+                    ${projeto.videos ? `<span class="projeto-modal-tag">🎬 ${projeto.videos} vídeos</span>` : ''}
+                    ${projeto.linguagem ? `<span class="projeto-modal-tag">💻 ${projeto.linguagem}</span>` : ''}
+                    ${projeto.stars ? `<span class="projeto-modal-tag">⭐ ${projeto.stars} stars</span>` : ''}
+                </div>
+                <a href="${projeto.link}" target="_blank" rel="noopener" class="projeto-modal-link">
+                    ${isYoutube ? '▶️ Visitar Canal' : '🔗 Ver no GitHub'}
+                </a>
+            </div>
+        </div>
+    `;
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) fecharProjetoModal();
+    });
+    
+    document.body.appendChild(modal);
+    
+    setTimeout(() => {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        console.log('✅ Modal aberto!');
+    }, 50);
+}
+
+function fecharProjetoModal() {
+    const modal = document.getElementById('projeto-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+        console.log('🔴 Modal fechado');
+    }
+}
+
+// Fecha com ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        fecharProjetoModal();
+    }
+});
+
 // ==================== 5. CARREGAMENTO DO FEED DO YOUTUBE (RSS) ====================
 const ytContainer = document.getElementById('youtube-feed-container');
 if (ytContainer) { carregarYouTubeAutomatico(); }
@@ -221,7 +358,7 @@ async function carregarYouTubeAutomatico() {
         const data = await response.json();
         if (data.status === 'ok' && data.items && data.items.length > 0) {
             ytContainer.innerHTML = '';
-            positionTooltips(); // ← POSICIONA OS TOOLTIPS APÓS CRIAR OS BOTÕES
+            positionTooltips();
             
             data.items.forEach(video => {
                 const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
@@ -265,18 +402,15 @@ function compartilharVideoFeed(videoId) {
     const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
     const mensagem = `🎬 Vídeo publicado no Canal VitãoTub: ${videoUrl}`;
     
-    // Detecta se é dispositivo móvel E se suporta Web Share API
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
     const isShareSupported = navigator.share !== undefined;
     
-    // Se for mobile E suportar share, usa a API nativa
     if (isMobile && isShareSupported) {
         navigator.share({
             title: 'Vídeo do VitãoTub',
             text: 'Confira este vídeo no YouTube!',
             url: videoUrl
         }).catch((err) => {
-            // Se o usuário cancelar, não faz nada
             if (err.name !== 'AbortError') {
                 console.error('Erro ao compartilhar:', err);
             }
@@ -284,14 +418,12 @@ function compartilharVideoFeed(videoId) {
         return;
     }
     
-    // Desktop ou mobile sem suporte: copia para área de transferência
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(mensagem)
             .then(() => {
                 alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
             })
             .catch(() => {
-                // Fallback: input temporário
                 const tempInput = document.createElement('input');
                 tempInput.value = mensagem;
                 tempInput.style.position = 'fixed';
@@ -307,7 +439,6 @@ function compartilharVideoFeed(videoId) {
                 document.body.removeChild(tempInput);
             });
     } else {
-        // Fallback mais antigo
         const tempInput = document.createElement('input');
         tempInput.value = mensagem;
         tempInput.style.position = 'fixed';
@@ -522,7 +653,6 @@ function verificarArtigoNaUrl() {
 // ==================== 8. EVENTOS GLOBAIS ====================
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { fecharVideoModal(); fecharArtigoFullscreen(); const translateDropdown = document.getElementById('translate-dropdown'); if (translateDropdown) translateDropdown.classList.remove('active'); } });
 
-// ===== CONTROLE DO DROPDOWN DE TRADUÇÃO =====
 document.addEventListener('click', function(e) {
     const translateDropdown = document.getElementById('translate-dropdown');
     const translateToggle = document.getElementById('translate-toggle');
@@ -640,7 +770,7 @@ function initDraggableTranslate() {
     document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; widget.style.transition = ''; } });
 }
 
-// ==================== 11. BOTÃO DE INSTALAÇÃO PWA (APENAS MOBILE) ====================
+// ==================== 11. BOTÃO DE INSTALAÇÃO PWA ====================
 document.addEventListener("DOMContentLoaded", () => {
     const pwaPopup = document.getElementById('pwa-install-popup');
     const popupContent = document.getElementById('pwa-popup-content');
@@ -820,7 +950,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ==================== 12. BOTÃO DE TEMA (CLARO/ESCURO) ====================
+// ==================== 12. BOTÃO DE TEMA ====================
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
     const themeBtn = document.getElementById('theme-toggle-btn');
