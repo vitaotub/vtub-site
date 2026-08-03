@@ -346,7 +346,33 @@ function abrirVideoModal(videoId) {
 }
 function fecharVideoModal() { const modal = document.getElementById('video-fullscreen-modal'); const iframe = document.getElementById('video-fullscreen-iframe'); if (modal) { modal.classList.remove('active'); if (iframe) iframe.src = ''; document.body.style.overflow = ''; } window.removeEventListener('orientationchange', verificarOrientacao); }
 function verificarOrientacao() { const container = document.getElementById('video-container'); if (!container) return; if (window.innerWidth > window.innerHeight) { container.classList.add('landscape'); container.classList.remove('portrait'); } else { container.classList.add('portrait'); container.classList.remove('landscape'); } }
-function compartilharVideo(videoId) { const videoUrl = `https://www.youtube.com/watch?v=${videoId}`; const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent); if (isMobile && navigator.share) { navigator.share({ title: 'Confira este vídeo do VitãoTub!', text: 'Assista este vídeo no YouTube', url: videoUrl }).catch(() => {}); } else { navigator.clipboard.writeText(videoUrl).then(() => { alert('Link do vídeo copiado!'); }).catch(() => { const tempInput = document.createElement('input'); tempInput.value = videoUrl; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); alert('Link do vídeo copiado!'); }); } }
+function compartilharVideo(videoId) {
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    
+    if (isMobile && navigator.share) {
+        navigator.share({
+            title: 'Assista a este vídeo do VitãoTub!',
+            text: 'Assista a este vídeo do VitãoTub:',
+            url: videoUrl
+        }).catch(() => {});
+    } else {
+        const mensagem = `Assista a este vídeo do VitãoTub:\n${videoUrl}`;
+        navigator.clipboard.writeText(mensagem)
+            .then(() => {
+                alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+            })
+            .catch(() => {
+                const tempInput = document.createElement('input');
+                tempInput.value = mensagem;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+            });
+    }
+}
 
 function initVideoSwipeToClose() {
     const modal = document.getElementById('video-fullscreen-modal'); if (!modal) return;

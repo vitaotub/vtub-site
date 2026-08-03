@@ -243,28 +243,36 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-top: 6px;
+    gap: 8px;
+    flex-wrap: nowrap; /* Impede que os elementos quebrem linha */
 }
 
 .video-meta-left {
     display: flex;
     flex-direction: column;
     gap: 2px;
-}
-.video-date {
-    font-size: 0.8rem;
-    color: var(--primary-purple);
-    font-weight: 600;
-}
-.video-author {
-    font-size: 0.75rem;
-    color: var(--text-dim);
+    flex-shrink: 1; /* Permite encolher se necessário */
+    min-width: 0; /* Permite encolher */
 }
 
 .video-meta-right {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
-    flex-shrink: 0;
+    flex-shrink: 0; /* NÃO permite encolher - mantém os botões fixos */
+}
+
+.video-date {
+    font-size: 0.8rem;
+    color: var(--primary-purple);
+    font-weight: 600;
+    white-space: nowrap; /* Impede que a data quebre */
+}
+
+.video-author {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    white-space: nowrap; /* Impede que o autor quebre */
 }
 
 /* BOTÕES CIRCULARES SEM TEXTO */
@@ -323,7 +331,8 @@ body {
     content: attr(data-tooltip);
     position: fixed;
     bottom: auto;
-    /* Posiciona o tooltip acima do botão usando a posição do botão */
+    top: var(--tooltip-top, calc(50% - 40px));
+    left: var(--tooltip-left, 50%);
     transform: translateX(-50%) scale(0.9);
     background: rgba(0, 0, 0, 0.9);
     color: #fff;
@@ -338,7 +347,6 @@ body {
     font-family: 'Satoshi', sans-serif;
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 9999;
-    /* Posição calculada dinamicamente via JavaScript */
 }
 
 /* Seta do tooltip */
@@ -347,6 +355,8 @@ body {
     content: '';
     position: fixed;
     bottom: auto;
+    top: var(--tooltip-top, calc(50% - 20px));
+    left: var(--tooltip-left, 50%);
     transform: translateX(-50%) scale(0.9);
     border: 6px solid transparent;
     border-top-color: rgba(0, 0, 0, 0.9);
@@ -367,35 +377,47 @@ body {
 
 @media (max-width: 480px) {
     .video-meta-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 4px;
     }
     .video-meta-right {
-        width: 100%;
-        justify-content: flex-start;
-        gap: 8px;
+        flex-shrink: 0;
+        gap: 4px;
+    }
+    .video-meta-left {
+        flex-shrink: 1;
+        min-width: 0;
+        gap: 1px;
+    }
+    .video-date {
+        font-size: 0.65rem;
+        white-space: nowrap;
+    }
+    .video-author {
+        font-size: 0.6rem;
+        white-space: nowrap;
     }
     .btn-video-share,
     .btn-video-youtube {
-        width: 34px;
-        height: 34px;
+        width: 30px;
+        height: 30px;
     }
     .btn-video-share svg,
     .btn-video-youtube svg {
-        width: 15px;
-        height: 15px;
+        width: 13px;
+        height: 13px;
     }
     /* Tooltips menores no mobile */
     .btn-video-share::after,
     .btn-video-youtube::after {
-        font-size: 0.6rem;
-        padding: 4px 8px;
-        top: calc(50% - 35px);
+        font-size: 0.55rem;
+        padding: 3px 8px;
     }
     .btn-video-share::before,
     .btn-video-youtube::before {
-        top: calc(50% - 18px);
+        border-width: 4px;
     }
 }
 
