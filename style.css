@@ -255,8 +255,39 @@ h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: tr
 /* ==================== 15. MODAL DE VÍDEO ==================== */
 .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center; }
 .video-modal.active { display: flex !important; opacity: 1; visibility: visible; }
+/* Para o modal de vídeo */
+.video-modal .modal-close {
+    position: sticky;
+    top: 15px;
+    float: right;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    background: transparent !important;
+    border: 2px solid #ff0000 !important;
+    border-radius: 50% !important;
+    color: #ff0000 !important;
+    font-size: 1.6rem !important;
+    font-weight: 300;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.15);
+    -webkit-tap-highlight-color: transparent;
+    margin-right: -8px;
+}
+.video-modal .modal-close:hover,
+.video-modal .modal-close:active {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    background: transparent !important;
+    border-color: #ff0000 !important;
+    color: #ff0000 !important;
+}
 .modal-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.modal-content { position: relative; width: 90%; max-width: 1000px; z-index: 2; }
+.modal-content { position: relative; width: 90%; max-width: 1000px; padding-top: 20px; z-index: 2; }
 .modal-video-container { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 20px; overflow: hidden; }
 .modal-video-container iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
 .modal-close { position: absolute; top: -50px; right: 0; background: none; border: none; color: #fff; font-size: 40px; cursor: pointer; }
@@ -264,7 +295,37 @@ h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: tr
 /* ==================== 16. MODAL DE PRIVACIDADE E TERMOS ==================== */
 #privacy-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; touch-action: pan-y; }
 #privacy-modal.active { display: flex !important; }
-#privacy-modal .modal-content { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 92% !important; max-width: 800px; max-height: 80vh !important; padding: 25px !important; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); margin: auto; transition: transform 0.3s ease, opacity 0.3s ease; }
+#privacy-modal .modal-content { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 92% !important; max-width: 800px; max-height: 80vh !important; padding: 15px 25px 25px 25px !important; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); margin: auto; transition: transform 0.3s ease, opacity 0.3s ease; }
+/* Para o modal de privacidade */
+#privacy-modal .modal-close-btn {
+    position: sticky;
+    top: 10px;
+    float: right;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    background: transparent !important;
+    border: 2px solid #ff0000 !important;
+    border-radius: 50% !important;
+    color: #ff0000 !important;
+    font-size: 1.6rem !important;
+    font-weight: 300;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.15);
+    -webkit-tap-highlight-color: transparent;
+}
+#privacy-modal .modal-close-btn:hover,
+#privacy-modal .modal-close-btn:active {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    background: transparent !important;
+    border-color: #ff0000 !important;
+    color: #ff0000 !important;
+}
 
 /* Botão X de fechar - visível em ambos os temas */
 .modal-close-btn {
@@ -302,6 +363,36 @@ h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: tr
 
 #privacy-content-target, #privacy-content-target * { -webkit-hyphens: auto !important; -moz-hyphens: auto !important; -ms-hyphens: auto !important; hyphens: auto !important; overflow-wrap: break-word !important; word-wrap: break-word !important; word-break: break-word !important; }
 #privacy-content-target p, #privacy-content-target li { text-align: justify !important; text-justify: inter-word !important; text-align-last: left; font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.2em; }
+
+/* ==================== RECUO DE PARÁGRAFOS ==================== */
+/* Aplica recuo em parágrafos de conteúdo, exceto na página inicial */
+#privacy-content-target p,
+.project-modal-body .projeto-detalhe p,
+.artigo-fullscreen-body .artigo-corpo p,
+.feed-content p,
+.bio-text p,
+.privacy-body p {
+    text-indent: 1.5em !important;
+}
+
+/* Remove recuo do primeiro parágrafo após um título (para não ficar estranho) */
+#privacy-content-target h2 + p,
+#privacy-content-target h3 + p,
+.project-modal-body .projeto-detalhe h2 + p,
+.project-modal-body .projeto-detalhe h3 + p,
+.artigo-fullscreen-body .artigo-corpo h2 + p,
+.artigo-fullscreen-body .artigo-corpo h3 + p,
+.privacy-body h2 + p,
+.privacy-body h3 + p {
+    text-indent: 0 !important;
+}
+
+/* Remove recuo de parágrafos dentro de listas */
+#privacy-content-target li p,
+.project-modal-body .projeto-detalhe li p {
+    text-indent: 0 !important;
+}
+
 #privacy-content-target h1, #privacy-content-target h2, #privacy-content-target h3 { color: var(--text-main); font-family: 'Satoshi', sans-serif; margin-top: 1.5em; margin-bottom: 0.8em; text-align: left !important; hyphens: none !important; -webkit-hyphens: none !important; }
 #privacy-content-target h1 { font-size: 2rem; text-align: center !important; color: var(--primary-purple); margin-top: 0; padding-right: 40px; }
 #privacy-content-target h2 { font-size: 1.4rem; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
@@ -638,7 +729,7 @@ body.light-mode .project-platform.platform-github {
     background: var(--card-bg);
     border: 2px solid var(--border-color);
     border-radius: 20px;
-    padding: 40px 45px;
+    padding: 20px 45px 40px 45px;
     width: 92%;
     max-width: 1000px;
     max-height: 85vh;
@@ -653,32 +744,67 @@ body.light-mode .project-platform.platform-github {
 }
 .project-modal-close {
     position: sticky;
-    top: 0;
+    top: 10px;
     float: right;
     z-index: 10;
-    width: 42px;
-    height: 42px;
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: transparent !important;
+    border: 2px solid #ff0000 !important;
+    border-radius: 50% !important;
+    color: #ff0000 !important;
+    font-size: 1.6rem !important;
+    font-weight: 300;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    font-size: 1.2rem;
-    font-weight: 300;
-    color: var(--text-main);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.15);
     -webkit-tap-highlight-color: transparent;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 .project-modal-close:hover,
 .project-modal-close:active {
-    background: rgba(255, 0, 0, 0.8);
-    border-color: #ff0000;
-    color: #ffffff;
-    transform: scale(1.1);
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    background: transparent !important;
+    border-color: #ff0000 !important;
+    color: #ff0000 !important;
 }
+
+/* Para o modal de artigos no feed */
+.artigo-fullscreen-close {
+    position: sticky;
+    top: 10px;
+    float: right;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    background: transparent !important;
+    border: 2px solid #ff0000 !important;
+    border-radius: 50% !important;
+    color: #ff0000 !important;
+    font-size: 1.6rem !important;
+    font-weight: 300;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.15);
+    -webkit-tap-highlight-color: transparent;
+    margin-right: -8px;
+}
+.artigo-fullscreen-close:hover,
+.artigo-fullscreen-close:active {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    background: transparent !important;
+    border-color: #ff0000 !important;
+    color: #ff0000 !important;
+}
+
 #project-modal-body { clear: both; padding-top: 10px; }
 #project-modal-body h2 {
     font-size: 2rem;
@@ -822,7 +948,7 @@ body.light-mode #project-modal-body .modal-platform.platform-github {
 }
 @media (max-width: 600px) {
     .social-grid-center .stat-card { width: 100%; min-width: unset; }
-    .project-modal-content { padding: 25px 18px; width: 100%; max-width: 100%; max-height: 100vh; height: 100vh; border-radius: 0; border: none; background: var(--bg-color); box-shadow: none; animation: none; }
+    .project-modal-content { padding: 15px 18px 25px 18px; width: 100%; max-width: 100%; max-height: 100vh; height: 100vh; border-radius: 0; border: none; background: var(--bg-color); box-shadow: none; animation: none; }
     .project-modal-overlay { display: none; }
     .project-modal { background: var(--bg-color); }
     #project-modal-body h2 { font-size: 1.4rem; padding-right: 50px; }
@@ -967,4 +1093,44 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     outline: 2px solid var(--primary-purple);
     outline-offset: 3px;
     border-radius: 4px;
+}
+
+/* ==================== 32. EFEITO DE DESTAQUE NOS ARTIGOS ==================== */
+/* Efeito padrão - borda mais escura e sutil */
+.artigo-card {
+    border-color: rgba(139, 92, 246, 0.15);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+/* Mobile: apenas o card no centro da tela tem destaque */
+@media (max-width: 850px) {
+    .artigo-card.artigo-destaque {
+        border-color: rgba(139, 92, 246, 0.8) !important;
+        box-shadow: 0 0 25px rgba(139, 92, 246, 0.25), 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        transform: scale(1.01);
+    }
+    .artigo-card.artigo-destaque:hover {
+        border-color: rgba(139, 92, 246, 0.9) !important;
+        transform: scale(1.01) translateY(-2px);
+    }
+}
+
+/* Desktop: destaque apenas no card clicado (via JS) */
+@media (min-width: 851px) {
+    .artigo-card.artigo-destaque {
+        border-color: rgba(139, 92, 246, 0.6) !important;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.2), 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        transform: scale(1.01);
+    }
+    .artigo-card.artigo-destaque:hover {
+        border-color: rgba(139, 92, 246, 0.8) !important;
+        transform: scale(1.01) translateY(-2px);
+    }
+}
+
+/* Remove destaque quando o card não está ativo */
+.artigo-card:not(.artigo-destaque) {
+    border-color: rgba(139, 92, 246, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transform: none;
 }
