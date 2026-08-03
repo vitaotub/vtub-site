@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ==================== SEO META TAGS ==================== -->
+    <title>Artigos & Dicas | VitãoTub</title>
+    <meta name="description" content="Artigos e dicas sobre tecnologia, segurança digital e games do VitãoTub.">
+    <meta name="author" content="Victor Lopes">
+    <meta name="theme-color" content="#121212">
+    
+    <!-- ==================== ÍCONES ==================== -->
+    <link rel="icon" type="image/png" sizes="512x512" href="logo-app.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo-app.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="logo-app.png">
+    
+    <!-- ==================== FONTES E ESTILOS ==================== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- ==================== ESTILOS DOS ARTIGOS (HERDADOS DO FEED) ==================== -->
+    <style>
+        /* ==================== ESTILOS DOS ARTIGOS - HERDADOS DO FEED ==================== */
+        
+        /* Container da página de artigos */
+        .artigos-page {
+            padding: 30px 0 60px;
+            margin-top: 80px;
+        }
+        
+        .artigos-page .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            font-family: 'Satoshi', sans-serif;
+            text-align: center;
+        }
+        
+        /* Grid de artigos - IGUAL AO FEED */
+        #artigos-feed-container-site {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        @media (min-width: 768px) {
+            #artigos-feed-container-site {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        /* Cards de artigos - IGUAL AO FEED */
+        .artigo-card-site {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .artigo-card-site:hover {
+            border-color: var(--primary-purple);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .artigo-card-site .artigo-banner {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+            overflow: hidden;
+        }
+        
+        .artigo-card-site .artigo-banner img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .artigo-card-site:hover .artigo-banner img {
+            transform: scale(1.03);
+        }
+        
+        .artigo-card-site .artigo-content {
+            padding: 18px 20px 20px;
+        }
+        
+        .artigo-card-site .artigo-titulo {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+        
+        .artigo-card-site .artigo-resumo {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin: 0 0 12px 0;
+            line-height: 1.6;
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+        
+        .artigo-card-site .artigo-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .artigo-card-site .artigo-data {
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+        
+        .artigo-card-site .artigo-autor {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
+        .btn-ler-mais-site {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 20px;
+            background: var(--gradient-brand);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Satoshi', sans-serif;
+            margin: 10px auto 0 auto;
+            width: fit-content;
+        }
+        
+        .btn-ler-mais-site:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+        
+        .artigos-loading-site {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        
+        /* ==================== MODAL DE ARTIGO - IGUAL AO FEED ==================== */
+        .artigo-fullscreen-modal-site {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background: var(--modal-bg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .artigo-fullscreen-modal-site.active {
+            display: block;
+        }
+        
+        .artigo-fullscreen-content-site {
+            width: 100%;
+            max-width: 800px;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0 auto;
+            padding: 10px 20px 60px 20px;
+            position: relative;
+            background: var(--modal-bg);
+        }
+        
+        /* BOTÃO X - Fundo transparente, borda vermelha brilhante (igual ao feed) */
+        .artigo-fullscreen-close-site {
+            position: sticky;
+            top: 15px;
+            float: right;
+            z-index: 100001;
+            width: 40px;
+            height: 40px;
+            background: transparent !important;
+            border: 2px solid #ff0000 !important;
+            border-radius: 50% !important;
+            color: #ff0000 !important;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            margin-right: -10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        .artigo-fullscreen-close-site:hover,
+        .artigo-fullscreen-close-site:active {
+            background: rgba(255, 0, 0, 0.2) !important;
+            border-color: #ff0000 !important;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+            transform: scale(1.1);
+            color: #ff0000 !important;
+        }
+        
+        .artigo-fullscreen-body-site {
+            clear: both;
+            padding-top: 10px;
+            background: var(--modal-bg);
+            width: 100%;
+        }
+        
+        /* BANNER DO ARTIGO NO MODAL */
+        .artigo-fullscreen-body-site .artigo-banner {
+            margin: -10px -20px 20px -20px;
+            width: calc(100% + 40px);
+            border-radius: 0;
+            position: relative;
+            padding-bottom: 56.25%;
+            background: #000;
+            overflow: hidden;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-banner img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-titulo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-main);
+            padding: 0 20px 10px 20px;
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            text-justify: inter-word;
+            word-break: break-word;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-resumo {
+            font-size: 1rem;
+            padding: 0 20px 10px 20px;
+            color: var(--text-dim);
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            text-justify: inter-word;
+            word-break: break-word;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-meta {
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-data {
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-autor {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
+        /* CORPO DO ARTIGO NO MODAL - JUSTIFICADO, HIFENIZADO, RECUO */
+        .artigo-fullscreen-body-site .artigo-corpo {
+            padding: 15px 25px;
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            text-justify: inter-word;
+            word-break: break-word;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-corpo p {
+            margin-bottom: 14px;
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            text-justify: inter-word;
+            word-break: break-word;
+            text-indent: 1.5em;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-corpo h3 {
+            font-size: 1.1rem;
+            margin: 15px 0 8px 0;
+            color: var(--text-main);
+        }
+        
+        /* EFEITO DE DESTAQUE (BORDA COLORIDA) - IGUAL AO FEED */
+        .artigo-fullscreen-body-site .artigo-card {
+            border: 2px solid rgba(59, 130, 246, 0.6) !important;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15) !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        /* ==================== RODAPÉ DO ARTIGO - IGUAL AO FEED ==================== */
+        .artigo-fullscreen-body-site .artigo-rodape {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px);
+            border-top: 1px solid var(--border-color);
+            gap: clamp(4px, 1vw, 8px);
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-rodape-social {
+            display: flex;
+            gap: clamp(2px, 0.5vw, 4px);
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+        
+        /* BOTÕES DE REDES SOCIAIS - IGUAL AO FEED */
+        .artigo-fullscreen-body-site .social-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(28px, 5vw, 36px);
+            height: clamp(28px, 5vw, 36px);
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            font-size: clamp(0.7rem, 1.5vw, 1rem);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .artigo-fullscreen-body-site .social-btn.instagram:hover {
+            color: #E1306C;
+            border-color: #E1306C;
+            box-shadow: 0 0 12px rgba(225, 48, 108, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.youtube:hover {
+            color: #FF0000;
+            border-color: #FF0000;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.tiktok:hover {
+            color: #ff0050;
+            border-color: #ff0050;
+            box-shadow: 0 0 12px rgba(255, 0, 80, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.twitch:hover {
+            color: #9146FF;
+            border-color: #9146FF;
+            box-shadow: 0 0 12px rgba(145, 70, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.x-twitter:hover {
+            color: #cccccc;
+            border-color: #888888;
+            box-shadow: 0 0 12px rgba(200, 200, 200, 0.4);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.github:hover {
+            color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.telegram:hover {
+            color: #0088cc;
+            border-color: #0088cc;
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        /* BOTÕES DE AÇÃO - IGUAL AO FEED */
+        .artigo-fullscreen-body-site .artigo-rodape-acoes {
+            display: flex;
+            gap: clamp(3px, 0.8vw, 6px);
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .artigo-fullscreen-body-site .btn-action-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(32px, 6vw, 42px);
+            height: clamp(32px, 6vw, 42px);
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .artigo-fullscreen-body-site .btn-share-icon:hover {
+            color: #8b5cf6;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        .artigo-fullscreen-body-site .btn-subscribe-icon:hover {
+            color: #FF0000;
+            border-color: #FF0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 480px) {
+            .artigos-page .page-title {
+                font-size: 1.5rem;
+            }
+            .artigo-fullscreen-content-site {
+                padding: 10px 15px 50px 15px;
+            }
+            .artigo-fullscreen-body-site .artigo-titulo {
+                font-size: 1.2rem;
+            }
+            .artigo-fullscreen-close-site {
+                width: 34px;
+                height: 34px;
+                font-size: 1rem;
+            }
+            .artigo-fullscreen-body-site .artigo-corpo {
+                padding: 15px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- ==================== HEADER ==================== -->
+    <header>
+        <div class="header-content">
+            <a href="index.html#home" class="logo-link">
+                <h1>Vitãotub<span>.</span></h1>
+            </a>
+            
+            <nav class="main-nav" aria-label="Navegação principal">
+                <ul>
+                    <li><a href="index.html#about">Sobre</a></li>
+                    <li><a href="index.html#stats">Estatísticas</a></li>
+                    <li><a href="index.html#featured-videos">Principais Vídeos</a></li>
+                    <li><a href="meus-projetos.html">Meus Projetos</a></li>
+                    <li><a href="artigos.html" class="active">Artigos & Dicas</a></li>
+                    <li><a href="bio.html">Bio</a></li>
+                    <li><a href="index.html#contact">Contato</a></li>
+                </ul>
+            </nav>
+            
+            <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+            </button>
+        </div>
+        
+        <nav id="mobile-menu" class="mobile-menu" aria-label="Menu mobile">
+            <ul>
+                <li><a href="index.html#about" onclick="closeMobileMenu()">Sobre</a></li>
+                <li><a href="index.html#stats" onclick="closeMobileMenu()">Estatísticas</a></li>
+                <li><a href="index.html#featured-videos" onclick="closeMobileMenu()">Principais Vídeos</a></li>
+                <li><a href="meus-projetos.html">Meus Projetos</a></li>
+                <li><a href="artigos.html">Artigos & Dicas</a></li>
+                <li><a href="bio.html" onclick="closeMobileMenu()">Bio</a></li>
+                <li><a href="index.html#contact" onclick="closeMobileMenu()">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ==================== BOTÕES FLUTUANTES ==================== -->
+    <!-- TEMA -->
+    <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Alternar tema" title="Mudar para modo claro">☀️</button>
+    
+    <!-- TRADUÇÃO -->
+    <div id="translate-widget" class="translate-widget">
+        <button id="translate-toggle" class="translate-toggle" aria-label="Traduzir site" title="Traduzir site" onclick="toggleTranslateDropdown(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+        </button>
+        <div id="translate-dropdown" class="translate-dropdown">
+            <span class="translate-dropdown-title">Traduzir para:</span>
+            <button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button>
+            <button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button>
+            <button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button>
+        </div>
+    </div>
+    <div id="google_translate_element" style="display: none;"></div>
+
+    <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+    <main class="artigos-page">
+        <div class="container">
+            <h1 class="page-title">📰 Artigos & Dicas</h1>
+            
+            <div id="artigos-feed-container-site" class="artigos-grid">
+                <p style="text-align: center; color: #aaa;">Carregando artigos...</p>
+            </div>
+            <div id="artigos-loading-site" class="artigos-loading-site" style="display: none;">
+                <p>Carregando mais artigos...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==================== MODAL DE ARTIGO EM TELA CHEIA ==================== -->
+    <div id="artigo-fullscreen-modal-site" class="artigo-fullscreen-modal-site">
+        <div class="artigo-fullscreen-content-site">
+            <button class="artigo-fullscreen-close-site" onclick="fecharArtigoFullscreenSite()" aria-label="Fechar artigo">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="artigo-fullscreen-body-site"></div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Victor Lopes | VitãoTub</p>
+            <div class="footer-links">
+                <a href="politica-de-privacidade.html">Política de Privacidade</a>
+                <a href="termos-de-uso.html">Termos de Uso</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== BOTÃO VOLTAR AO TOPO ==================== -->
+    <a href="#home" id="back-to-top" class="back-to-top" aria-label="Voltar ao topo da página">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </a>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="javascript.js"></script>
+    
+    <script>
+    // ==================== SISTEMA DE ARTIGOS NO SITE PRINCIPAL ====================
+    let todosArtigosSite = [];
+    let artigosCarregadosSite = false;
+    let artigosExibidosSite = 0;
+    const CONFIG_SITE = {
+        artigosFiles: ['feed/artigos.html'],
+        artigosPorVez: 20,
+        artigosIncremento: 10
+    };
+
+    async function carregarTodosArtigosSite() {
+        const container = document.getElementById('artigos-feed-container-site');
+        if (!container) return;
+        
+        container.innerHTML = '<p style="text-align: center; color: #aaa;">Carregando artigos...</p>';
+        todosArtigosSite = [];
+        
+        for (const file of CONFIG_SITE.artigosFiles) {
+            try {
+                const response = await fetch(file);
+                if (!response.ok) continue;
+                const htmlText = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlText, 'text/html');
+                const artigos = doc.querySelectorAll('.artigo-card');
+                artigos.forEach(artigo => {
+                    todosArtigosSite.push({
+                        element: artigo.cloneNode(true),
+                        data: new Date(artigo.getAttribute('data-data').split('/').reverse().join('-')),
+                        id: artigo.id
+                    });
+                });
+            } catch (error) {
+                console.warn(`Erro ao carregar ${file}:`, error);
+            }
+        }
+        
+        todosArtigosSite.sort((a, b) => b.data - a.data);
+        
+        if (todosArtigosSite.length > 0) {
+            artigosCarregadosSite = true;
+            artigosExibidosSite = 0;
+            container.innerHTML = '';
+            carregarMaisArtigosSite();
+            configurarScrollInfinitoSite();
+        } else {
+            container.innerHTML = '<p style="text-align: center; color: #aaa;">Nenhum artigo encontrado.</p>';
+        }
+    }
+
+    function carregarMaisArtigosSite() {
+        const container = document.getElementById('artigos-feed-container-site');
+        const loading = document.getElementById('artigos-loading-site');
+        if (!container) return;
+        
+        const proximos = todosArtigosSite.slice(artigosExibidosSite, artigosExibidosSite + CONFIG_SITE.artigosIncremento);
+        if (proximos.length === 0) {
+            if (loading) loading.style.display = 'none';
+            return;
+        }
+        
+        proximos.forEach(artigo => {
+            const card = document.createElement('div');
+            card.className = 'artigo-card-site';
+            card.dataset.id = artigo.id;
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', function(e) {
+                if (e.target.closest('button') || e.target.closest('a')) return;
+                abrirArtigoFullscreenSite(artigo.id);
+            });
+            
+            const original = artigo.element;
+            const bannerImg = original.querySelector('.artigo-banner img');
+            const titulo = original.querySelector('.artigo-titulo');
+            const resumo = original.querySelector('.artigo-resumo');
+            const meta = original.querySelector('.artigo-meta');
+            
+            // CORRIGE CAMINHO DAS IMAGENS
+            let imgSrc = '';
+            if (bannerImg) {
+                const src = bannerImg.getAttribute('src');
+                if (src) {
+                    const fileName = src.split('/').pop();
+                    imgSrc = `/feed/imgs/${fileName}`;
+                }
+            }
+            
+            card.innerHTML = `
+                <div class="artigo-banner">
+                    ${imgSrc ? `<img src="${imgSrc}" alt="${bannerImg ? bannerImg.alt : ''}" loading="lazy">` : ''}
+                </div>
+                <div class="artigo-content">
+                    <h3 class="artigo-titulo">${titulo ? titulo.textContent : ''}</h3>
+                    <p class="artigo-resumo">${resumo ? resumo.textContent : ''}</p>
+                    <div class="artigo-meta">
+                        <span class="artigo-data">${meta ? meta.querySelector('.artigo-data')?.textContent || '' : ''}</span>
+                        <span class="artigo-autor">${meta ? meta.querySelector('.artigo-autor')?.textContent || '' : ''}</span>
+                    </div>
+                    <button class="btn-ler-mais-site" onclick="event.stopPropagation(); abrirArtigoFullscreenSite('${artigo.id}')">📖 Ler Artigo Completo</button>
+                </div>
+            `;
+            
+            container.appendChild(card);
+        });
+        
+        artigosExibidosSite += proximos.length;
+        if (artigosExibidosSite >= todosArtigosSite.length && loading) {
+            loading.style.display = 'none';
+        }
+    }
+
+    function configurarScrollInfinitoSite() {
+        const loading = document.getElementById('artigos-loading-site');
+        
+        window.addEventListener('scroll', () => {
+            const scrollBottom = window.innerHeight + window.scrollY;
+            const pageBottom = document.body.offsetHeight - 300;
+            
+            if (scrollBottom >= pageBottom && artigosExibidosSite < todosArtigosSite.length) {
+                if (loading) loading.style.display = 'block';
+                carregarMaisArtigosSite();
+                if (artigosExibidosSite >= todosArtigosSite.length && loading) {
+                    loading.innerHTML = '<p>Todos os artigos foram carregados! 🎉</p>';
+                    setTimeout(() => { loading.style.display = 'none'; }, 3000);
+                }
+            }
+        });
+    }
+
+    function abrirArtigoFullscreenSite(artigoId) {
+        const artigo = todosArtigosSite.find(a => a.id === artigoId);
+        if (!artigo) return;
+        
+        const modal = document.getElementById('artigo-fullscreen-modal-site');
+        const body = document.getElementById('artigo-fullscreen-body-site');
+        if (!modal || !body) return;
+        
+        const conteudo = artigo.element.cloneNode(true);
+        const btnLerMais = conteudo.querySelector('.btn-ler-mais');
+        if (btnLerMais) btnLerMais.remove();
+        
+        // CORRIGE CAMINHO DAS IMAGENS NO MODAL
+        const imagens = conteudo.querySelectorAll('img');
+        imagens.forEach(img => {
+            const src = img.getAttribute('src');
+            if (src) {
+                const fileName = src.split('/').pop();
+                img.src = `/feed/imgs/${fileName}`;
+            }
+        });
+        
+        const corpo = conteudo.querySelector('.artigo-corpo');
+        if (corpo) {
+            corpo.style.display = 'block';
+            corpo.style.maxHeight = 'none';
+            corpo.style.overflow = 'visible';
+        }
+        
+        body.innerHTML = '';
+        body.appendChild(conteudo);
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        modal.scrollTop = 0;
+        window.scrollTo(0, 0);
+    }
+
+    function fecharArtigoFullscreenSite() {
+        const modal = document.getElementById('artigo-fullscreen-modal-site');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Fechar modal com ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            fecharArtigoFullscreenSite();
+        }
+    });
+
+    // ==================== INICIALIZAÇÃO ====================
+    document.addEventListener("DOMContentLoaded", () => {
+        carregarTodosArtigosSite();
+    });
+    </script>
+
+</body>
+</html>
