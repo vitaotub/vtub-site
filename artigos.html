@@ -147,7 +147,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Satoshi', sans-serif;
-            margin: 10px auto 0 auto; /* CENTRALIZADO */
+            margin: 10px auto 0 auto;
             width: fit-content;
         }
         
@@ -192,6 +192,7 @@
             background: var(--modal-bg);
         }
         
+        /* BOTÃO X - Fundo transparente, borda vermelha brilhante (igual ao feed) */
         .artigo-fullscreen-close-site {
             position: sticky;
             top: 15px;
@@ -230,6 +231,7 @@
             width: 100%;
         }
         
+        /* BANNER DO ARTIGO NO MODAL */
         .artigo-fullscreen-body-site .artigo-banner {
             margin: -10px -20px 20px -20px;
             width: calc(100% + 40px);
@@ -249,6 +251,7 @@
             object-fit: cover;
         }
         
+        /* TÍTULO DO ARTIGO NO MODAL */
         .artigo-fullscreen-body-site .artigo-titulo {
             font-size: 1.6rem;
             font-weight: 700;
@@ -259,8 +262,13 @@
             -moz-hyphens: auto;
             -ms-hyphens: auto;
             hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            text-justify: inter-word;
+            word-break: break-word;
         }
         
+        /* RESUMO DO ARTIGO NO MODAL */
         .artigo-fullscreen-body-site .artigo-resumo {
             font-size: 1rem;
             padding: 0 20px 10px 20px;
@@ -270,8 +278,13 @@
             -moz-hyphens: auto;
             -ms-hyphens: auto;
             hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            text-justify: inter-word;
+            word-break: break-word;
         }
         
+        /* METADADOS DO ARTIGO NO MODAL */
         .artigo-fullscreen-body-site .artigo-meta {
             padding: 10px 20px;
             margin-bottom: 15px;
@@ -292,23 +305,32 @@
             font-weight: 600;
         }
         
+        /* CORPO DO ARTIGO NO MODAL - COM MARGENS, JUSTIFICADO E HIFENIZADO */
         .artigo-fullscreen-body-site .artigo-corpo {
-            padding: 15px 20px;
+            padding: 15px 25px;
             text-align: justify;
             -webkit-hyphens: auto;
             -moz-hyphens: auto;
             -ms-hyphens: auto;
             hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            text-justify: inter-word;
+            word-break: break-word;
         }
         
         .artigo-fullscreen-body-site .artigo-corpo p {
             margin-bottom: 14px;
-            text-indent: 1.5em;
             text-align: justify;
             -webkit-hyphens: auto;
             -moz-hyphens: auto;
             -ms-hyphens: auto;
             hyphens: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            text-justify: inter-word;
+            word-break: break-word;
+            text-indent: 1.5em;
         }
         
         .artigo-fullscreen-body-site .artigo-corpo h3 {
@@ -317,6 +339,15 @@
             color: var(--text-main);
         }
         
+        /* ==================== EFEITO DE DESTAQUE (BORDA COLORIDA) ==================== */
+        .artigo-fullscreen-body-site .artigo-card {
+            border: 2px solid rgba(59, 130, 246, 0.6) !important;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15) !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        /* ==================== RODAPÉ DO ARTIGO NO MODAL - IGUAL AO FEED ==================== */
         .artigo-fullscreen-body-site .artigo-rodape {
             display: flex;
             justify-content: space-between;
@@ -328,6 +359,7 @@
             overflow: hidden;
         }
         
+        /* BOTÕES DE REDES SOCIAIS - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-social {
             display: flex;
             gap: clamp(2px, 0.5vw, 4px);
@@ -394,6 +426,7 @@
             transform: translateY(-2px);
         }
         
+        /* BOTÕES DE AÇÃO (COMPARTILHAR E INSCREVER-SE) - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-acoes {
             display: flex;
             gap: clamp(3px, 0.8vw, 6px);
@@ -446,6 +479,9 @@
                 width: 34px;
                 height: 34px;
                 font-size: 1rem;
+            }
+            .artigo-fullscreen-body-site .artigo-corpo {
+                padding: 15px 18px;
             }
         }
     </style>
@@ -677,6 +713,7 @@
         const btnLerMais = conteudo.querySelector('.btn-ler-mais');
         if (btnLerMais) btnLerMais.remove();
         
+        // Corrige caminhos das imagens no modal para /feed/imgs/
         const imagens = conteudo.querySelectorAll('img');
         imagens.forEach(img => {
             const src = img.getAttribute('src');
