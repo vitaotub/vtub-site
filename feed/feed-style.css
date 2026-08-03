@@ -318,38 +318,51 @@ body {
 }
 
 /* TOOLTIPS PERSONALIZADOS */
-.btn-video-share[title]:hover::after,
-.btn-video-youtube[title]:hover::after {
+.btn-video-share::after,
+.btn-video-youtube::after {
     content: attr(title);
     position: absolute;
     bottom: calc(100% + 8px);
     left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.85);
+    transform: translateX(-50%) scale(0.9);
+    background: rgba(0, 0, 0, 0.9);
     color: #fff;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 6px;
     font-size: 0.7rem;
     font-weight: 500;
     white-space: nowrap;
     pointer-events: none;
-    z-index: 999;
+    opacity: 0;
+    transition: all 0.2s ease;
     font-family: 'Satoshi', sans-serif;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 999;
 }
 
 /* Seta do tooltip */
-.btn-video-share[title]:hover::before,
-.btn-video-youtube[title]:hover::before {
+.btn-video-share::before,
+.btn-video-youtube::before {
     content: '';
     position: absolute;
     bottom: calc(100% + 2px);
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0.9);
     border: 6px solid transparent;
-    border-top-color: rgba(0, 0, 0, 0.85);
+    border-top-color: rgba(0, 0, 0, 0.9);
     pointer-events: none;
+    opacity: 0;
+    transition: all 0.2s ease;
     z-index: 999;
+}
+
+/* Mostrar tooltip no hover */
+.btn-video-share:hover::after,
+.btn-video-youtube:hover::after,
+.btn-video-share:hover::before,
+.btn-video-youtube:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
 }
 
 @media (max-width: 480px) {
@@ -372,6 +385,12 @@ body {
     .btn-video-youtube svg {
         width: 15px;
         height: 15px;
+    }
+    /* Tooltips menores no mobile */
+    .btn-video-share::after,
+    .btn-video-youtube::after {
+        font-size: 0.6rem;
+        padding: 4px 8px;
     }
 }
 
@@ -534,7 +553,7 @@ body {
     color: var(--text-main);
     margin-bottom: 4px;
     text-indent: 0 !important;
-    text-align: center !important; /* Força centralização */
+    text-align: center !important;
     -webkit-hyphens: none !important;
     -moz-hyphens: none !important;
     -ms-hyphens: none !important;
@@ -547,7 +566,7 @@ body {
 .perola-autor {
     font-size: 0.8rem;
     color: var(--text-dim);
-    text-align: right !important; /* Força alinhamento à direita */
+    text-align: right !important;
     margin-bottom: 0;
     -webkit-hyphens: none !important;
     -moz-hyphens: none !important;
