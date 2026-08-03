@@ -161,7 +161,7 @@
             font-size: 0.9rem;
         }
         
-        /* ==================== MODAL DE ARTIGO - ESTILOS DO FEED ==================== */
+        /* ==================== MODAL DE ARTIGO - ESTILOS IDÊNTICOS AO FEED ==================== */
         .artigo-fullscreen-modal-site {
             display: none;
             position: fixed;
@@ -190,6 +190,7 @@
             background: var(--modal-bg);
         }
         
+        /* BOTÃO X - Fundo transparente, borda vermelha brilhante (igual ao feed) */
         .artigo-fullscreen-close-site {
             position: sticky;
             top: 15px;
@@ -197,24 +198,28 @@
             z-index: 100001;
             width: 40px;
             height: 40px;
-            background: transparent;
-            border: 2px solid #ff0000;
-            border-radius: 50%;
-            color: #fff;
+            background: transparent !important;
+            border: 2px solid #ff0000 !important;
+            border-radius: 50% !important;
+            color: #ff0000 !important;
             font-size: 1.2rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            -webkit-tap-highlight-color: transparent;
             margin-right: -10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
         }
         
-        .artigo-fullscreen-close-site:hover {
-            background: rgba(255, 0, 0, 0.2);
-            transform: scale(1.1);
+        .artigo-fullscreen-close-site:hover,
+        .artigo-fullscreen-close-site:active {
+            background: rgba(255, 0, 0, 0.2) !important;
+            border-color: #ff0000 !important;
             box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+            transform: scale(1.1);
+            color: #ff0000 !important;
         }
         
         .artigo-fullscreen-body-site {
@@ -276,6 +281,16 @@
             justify-content: space-between;
         }
         
+        .artigo-fullscreen-body-site .artigo-data {
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+        
+        .artigo-fullscreen-body-site .artigo-autor {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
         .artigo-fullscreen-body-site .artigo-corpo {
             padding: 15px 20px;
             text-align: justify;
@@ -301,19 +316,23 @@
             color: var(--text-main);
         }
         
+        /* ==================== RODAPÉ DO ARTIGO NO MODAL - IGUAL AO FEED ==================== */
         .artigo-fullscreen-body-site .artigo-rodape {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 20px;
+            padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px);
             border-top: 1px solid var(--border-color);
+            gap: clamp(4px, 1vw, 8px);
             flex-wrap: wrap;
-            gap: 8px;
+            overflow: hidden;
         }
         
+        /* BOTÕES DE REDES SOCIAIS - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-social {
             display: flex;
-            gap: 4px;
+            gap: clamp(2px, 0.5vw, 4px);
+            flex-shrink: 0;
             flex-wrap: wrap;
         }
         
@@ -329,17 +348,54 @@
             border-radius: 50%;
             font-size: clamp(0.7rem, 1.5vw, 1rem);
             text-decoration: none;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
         
-        .artigo-fullscreen-body-site .social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; box-shadow: 0 0 12px rgba(225, 48, 108, 0.5); transform: translateY(-2px); }
-        .artigo-fullscreen-body-site .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 12px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
-        .artigo-fullscreen-body-site .social-btn.tiktok:hover { color: #ff0050; border-color: #ff0050; box-shadow: 0 0 12px rgba(255, 0, 80, 0.5); transform: translateY(-2px); }
-        .artigo-fullscreen-body-site .social-btn.twitch:hover { color: #9146FF; border-color: #9146FF; box-shadow: 0 0 12px rgba(145, 70, 255, 0.5); transform: translateY(-2px); }
-        .artigo-fullscreen-body-site .social-btn.x-twitter:hover { color: #cccccc; border-color: #888888; box-shadow: 0 0 12px rgba(200, 200, 200, 0.4); transform: translateY(-2px); }
-        .artigo-fullscreen-body-site .social-btn.github:hover { color: #ffffff; border-color: #ffffff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
-        .artigo-fullscreen-body-site .social-btn.telegram:hover { color: #0088cc; border-color: #0088cc; box-shadow: 0 0 12px rgba(0, 136, 204, 0.5); transform: translateY(-2px); }
+        .artigo-fullscreen-body-site .social-btn.instagram:hover {
+            color: #E1306C;
+            border-color: #E1306C;
+            box-shadow: 0 0 12px rgba(225, 48, 108, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.youtube:hover {
+            color: #FF0000;
+            border-color: #FF0000;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.tiktok:hover {
+            color: #ff0050;
+            border-color: #ff0050;
+            box-shadow: 0 0 12px rgba(255, 0, 80, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.twitch:hover {
+            color: #9146FF;
+            border-color: #9146FF;
+            box-shadow: 0 0 12px rgba(145, 70, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.x-twitter:hover {
+            color: #cccccc;
+            border-color: #888888;
+            box-shadow: 0 0 12px rgba(200, 200, 200, 0.4);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.github:hover {
+            color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .artigo-fullscreen-body-site .social-btn.telegram:hover {
+            color: #0088cc;
+            border-color: #0088cc;
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.5);
+            transform: translateY(-2px);
+        }
         
+        /* BOTÕES DE AÇÃO (COMPARTILHAR E INSCREVER-SE) - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-acoes {
             display: flex;
             gap: clamp(3px, 0.8vw, 6px);
@@ -560,7 +616,6 @@
             const resumo = original.querySelector('.artigo-resumo');
             const meta = original.querySelector('.artigo-meta');
             
-            // CORRIGIDO: Busca imagens em /feed/imgs/
             let imgSrc = '';
             if (bannerImg) {
                 const src = bannerImg.getAttribute('src');
@@ -624,11 +679,7 @@
         const btnLerMais = conteudo.querySelector('.btn-ler-mais');
         if (btnLerMais) btnLerMais.remove();
         
-        // Remove botões de compartilhamento que não funcionam no site principal
-        const btnShare = conteudo.querySelector('.btn-share-icon');
-        if (btnShare) btnShare.remove();
-        
-        // CORRIGIDO: Corrige caminhos das imagens no modal para /feed/imgs/
+        // Corrige caminhos das imagens no modal para /feed/imgs/
         const imagens = conteudo.querySelectorAll('img');
         imagens.forEach(img => {
             const src = img.getAttribute('src');
