@@ -281,6 +281,7 @@ body {
     border: none;
     text-decoration: none;
     flex-shrink: 0;
+    position: relative;
 }
 
 .btn-video-share {
@@ -314,6 +315,41 @@ body {
     height: 18px;
     flex-shrink: 0;
     display: block;
+}
+
+/* TOOLTIPS PERSONALIZADOS */
+.btn-video-share[title]:hover::after,
+.btn-video-youtube[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 999;
+    font-family: 'Satoshi', sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Seta do tooltip */
+.btn-video-share[title]:hover::before,
+.btn-video-youtube[title]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.85);
+    pointer-events: none;
+    z-index: 999;
 }
 
 @media (max-width: 480px) {
