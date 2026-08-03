@@ -244,35 +244,35 @@ body {
     align-items: center;
     margin-top: 6px;
     gap: 8px;
-    flex-wrap: nowrap; /* Impede que os elementos quebrem linha */
+    flex-wrap: nowrap;
 }
 
 .video-meta-left {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    flex-shrink: 1; /* Permite encolher se necessário */
-    min-width: 0; /* Permite encolher */
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .video-meta-right {
     display: flex;
     gap: 8px;
     align-items: center;
-    flex-shrink: 0; /* NÃO permite encolher - mantém os botões fixos */
+    flex-shrink: 0;
 }
 
 .video-date {
     font-size: 0.8rem;
     color: var(--primary-purple);
     font-weight: 600;
-    white-space: nowrap; /* Impede que a data quebre */
+    white-space: nowrap;
 }
 
 .video-author {
     font-size: 0.75rem;
     color: var(--text-dim);
-    white-space: nowrap; /* Impede que o autor quebre */
+    white-space: nowrap;
 }
 
 /* BOTÕES CIRCULARES SEM TEXTO */
@@ -366,7 +366,7 @@ body {
     z-index: 9999;
 }
 
-/* Mostrar tooltip no hover - a posição será definida pelo JavaScript */
+/* Mostrar tooltip no hover */
 .btn-video-share:hover::after,
 .btn-video-youtube:hover::after,
 .btn-video-share:hover::before,
@@ -409,7 +409,6 @@ body {
         width: 13px;
         height: 13px;
     }
-    /* Tooltips menores no mobile */
     .btn-video-share::after,
     .btn-video-youtube::after {
         font-size: 0.55rem;
@@ -460,7 +459,7 @@ body {
 .artigo-data { color: var(--primary-purple); font-weight: 600; }
 .artigo-autor { color: var(--primary-blue); font-weight: 600; }
 
-/* Rodapé do artigo - com proteção contra overflow */
+/* Rodapé do artigo */
 .artigo-rodape {
     display: flex;
     justify-content: space-between;
@@ -544,7 +543,7 @@ body {
 
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
 
-/* ==================== 12. BOTÕES DE REDES SOCIAIS (RESPONSIVOS - 7 REDES) ==================== */
+/* ==================== 12. BOTÕES DE REDES SOCIAIS ==================== */
 .social-btn { display: inline-flex; align-items: center; justify-content: center; width: clamp(28px, 5vw, 36px); height: clamp(28px, 5vw, 36px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.7rem, 1.5vw, 1rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; }
 .social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; box-shadow: 0 0 12px rgba(225, 48, 108, 0.5); transform: translateY(-2px); }
 .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 12px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
@@ -554,7 +553,7 @@ body {
 .social-btn.github:hover { color: #ffffff; border-color: #ffffff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
 .social-btn.telegram:hover { color: #0088cc; border-color: #0088cc; box-shadow: 0 0 12px rgba(0, 136, 204, 0.5); transform: translateY(-2px); }
 
-/* ==================== 13. BOTÕES DE AÇÃO (RESPONSIVOS) ==================== */
+/* ==================== 13. BOTÕES DE AÇÃO ==================== */
 .btn-action-icon { display: inline-flex; align-items: center; justify-content: center; width: clamp(32px, 6vw, 42px); height: clamp(32px, 6vw, 42px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.9rem, 1.8vw, 1.2rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
 .btn-share-icon:hover { color: #8b5cf6; border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
 .btn-subscribe-icon:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); transform: translateY(-2px); }
@@ -652,7 +651,7 @@ body {
 .back-to-top { position: fixed; bottom: 16px; right: 12px; width: 42px; height: 42px; background-color: var(--primary-purple); color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 1000; cursor: pointer; transition: all 0.3s ease; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .back-to-top:active { background-color: var(--primary-blue); transform: scale(0.95); }
 
-/* ==================== 17. BOTÃO DE TEMA (CLARO/ESCURO) ==================== */
+/* ==================== 17. BOTÃO DE TEMA ==================== */
 .theme-toggle-btn {
     position: fixed;
     top: calc(50% - 30px);
@@ -699,7 +698,7 @@ body {
 }
 .theme-close-btn:hover { background: #cc0000; transform: scale(1.1); }
 
-/* ==================== 18. POPUP PWA E BOTÃO FLUTUANTE (SOMENTE MOBILE) ==================== */
+/* ==================== 18. POPUP PWA E BOTÃO FLUTUANTE ==================== */
 .pwa-popup-overlay {
     position: fixed;
     top: 0;
@@ -745,7 +744,6 @@ body {
     line-height: 1.5;
 }
 
-/* ===== IMAGEM DA POPUP - SEM BORDA E MAIOR ===== */
 .pwa-welcome-img {
     display: block;
     width: 120px;
@@ -758,7 +756,6 @@ body {
     border: none;
 }
 
-/* ===== BOTÕES ===== */
 .pwa-btn-install {
     background: linear-gradient(135deg, #8b5cf6, #6d28d9);
     color: #fff;
@@ -834,7 +831,6 @@ body {
 .video-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #000000; justify-content: center; align-items: center; flex-direction: column; }
 .video-fullscreen-modal.active { display: flex; }
 
-/* BOTÃO X - Fundo transparente, borda vermelha brilhante */
 .video-fullscreen-close {
     position: fixed;
     top: 15px;
@@ -953,6 +949,9 @@ body {
 .projeto-modal-body {
     padding: 20px 25px 30px;
     clear: both;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .projeto-modal-imagem {
@@ -976,6 +975,7 @@ body {
     color: var(--text-main);
     margin: 0 0 4px 0;
     font-family: 'Satoshi', sans-serif;
+    text-align: center;
 }
 
 .projeto-modal-platform {
@@ -989,7 +989,7 @@ body {
     background: transparent;
     border: 1.5px solid var(--primary-purple);
     color: var(--primary-purple);
-    margin-bottom: 12px;
+    margin: 0 auto 12px auto;
 }
 
 .projeto-modal-descricao {
@@ -997,7 +997,7 @@ body {
     color: var(--text-dim);
     line-height: 1.6;
     margin-bottom: 15px;
-    text-align: justify;
+    text-align: center;
 }
 
 .projeto-modal-info {
@@ -1005,6 +1005,7 @@ body {
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 20px;
+    justify-content: center;
 }
 
 .projeto-modal-tag {
@@ -1031,6 +1032,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Satoshi', sans-serif;
+    margin: 0 auto;
 }
 
 .projeto-modal-link:hover {
@@ -1102,7 +1104,6 @@ body {
     .feed-tabs { flex-direction: column; align-items: center; }
     .tab-btn { width: 100%; max-width: 250px; }
     
-    /* BOTÕES ALINHADOS VERTICALMENTE - MOBILE */
     .theme-toggle-btn {
         position: fixed;
         top: calc(50% - 25px);
