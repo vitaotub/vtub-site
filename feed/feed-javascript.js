@@ -54,23 +54,127 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// ==================== 4. NAVEGAÇÃO POR ABAS ====================
+// ==================== 4. NAVEGAÇÃO POR ABAS (CORRIGIDA) ====================
 function mudarAba(aba) {
     const btnVideos = document.getElementById('btn-tab-videos');
     const btnArtigos = document.getElementById('btn-tab-artigos');
+    const btnProjetos = document.getElementById('btn-tab-projetos');
     const btnSobre = document.getElementById('btn-tab-sobre');
     const secaoVideos = document.getElementById('secao-videos');
     const secaoArtigos = document.getElementById('secao-artigos');
+    const secaoProjetos = document.getElementById('secao-projetos');
     const secaoSobre = document.getElementById('secao-sobre');
+    
+    // Esconde todas as seções
     if (secaoVideos) secaoVideos.style.display = 'none';
     if (secaoArtigos) secaoArtigos.style.display = 'none';
+    if (secaoProjetos) secaoProjetos.style.display = 'none';
     if (secaoSobre) secaoSobre.style.display = 'none';
+    
+    // Remove active de todos os botões
     if (btnVideos) { btnVideos.classList.remove('active'); btnVideos.setAttribute('aria-pressed', 'false'); }
     if (btnArtigos) { btnArtigos.classList.remove('active'); btnArtigos.setAttribute('aria-pressed', 'false'); }
+    if (btnProjetos) { btnProjetos.classList.remove('active'); btnProjetos.setAttribute('aria-pressed', 'false'); }
     if (btnSobre) { btnSobre.classList.remove('active'); btnSobre.setAttribute('aria-pressed', 'false'); }
-    if (aba === 'videos') { if (btnVideos) { btnVideos.classList.add('active'); btnVideos.setAttribute('aria-pressed', 'true'); } if (secaoVideos) secaoVideos.style.display = 'block'; }
-    else if (aba === 'artigos') { if (btnArtigos) { btnArtigos.classList.add('active'); btnArtigos.setAttribute('aria-pressed', 'true'); } if (secaoArtigos) secaoArtigos.style.display = 'block'; if (!artigosCarregados) carregarTodosArtigos(); }
-    else if (aba === 'sobre') { if (btnSobre) { btnSobre.classList.add('active'); btnSobre.setAttribute('aria-pressed', 'true'); } if (secaoSobre) secaoSobre.style.display = 'block'; }
+    
+    // Ativa a aba selecionada
+    if (aba === 'videos') {
+        if (btnVideos) { btnVideos.classList.add('active'); btnVideos.setAttribute('aria-pressed', 'true'); }
+        if (secaoVideos) secaoVideos.style.display = 'block';
+    } else if (aba === 'artigos') {
+        if (btnArtigos) { btnArtigos.classList.add('active'); btnArtigos.setAttribute('aria-pressed', 'true'); }
+        if (secaoArtigos) secaoArtigos.style.display = 'block';
+        if (!artigosCarregados) carregarTodosArtigos();
+    } else if (aba === 'projetos') {
+        if (btnProjetos) { btnProjetos.classList.add('active'); btnProjetos.setAttribute('aria-pressed', 'true'); }
+        if (secaoProjetos) secaoProjetos.style.display = 'block';
+        if (!projetosCarregados) carregarProjetos();
+    } else if (aba === 'sobre') {
+        if (btnSobre) { btnSobre.classList.add('active'); btnSobre.setAttribute('aria-pressed', 'true'); }
+        if (secaoSobre) secaoSobre.style.display = 'block';
+    }
+}
+
+// ==================== CARREGAR PROJETOS NO FEED ====================
+let projetosCarregados = false;
+
+async function carregarProjetos() {
+    const container = document.getElementById('projetos-feed-container');
+    if (!container) return;
+    
+    // Os mesmos projetos do meus-projetos.html, mas em formato compacto
+    const projetos = [
+        {
+            id: 1,
+            nome: 'VitãoTub',
+            plataforma: 'YouTube',
+            descricao: 'Canal principal de tecnologia, segurança digital e games.',
+            link: 'https://www.youtube.com/@vitaotub?sub_confirmation=1',
+            imagem: '../projeto-001.jpg'
+        },
+        {
+            id: 2,
+            nome: 'Tutorials Insolentes',
+            plataforma: 'YouTube',
+            descricao: 'Canal secundário com tutoriais e dicas rápidas.',
+            link: 'https://www.youtube.com/@tutoriaisinsolentes?sub_confirmation=1',
+            imagem: '../projeto-002.jpg'
+        },
+        {
+            id: 3,
+            nome: 'Fedora Only Fans (FOF)',
+            plataforma: 'GitHub',
+            descricao: 'Aplicativo para tornar o Fedora Linux mais prático.',
+            link: 'https://github.com/vitaotub/fedora-only-fans',
+            imagem: '../projeto-003.jpg'
+        },
+        {
+            id: 4,
+            nome: 'Site VitãoTub',
+            plataforma: 'GitHub',
+            descricao: 'Site oficial com HTML, CSS e JavaScript puro.',
+            link: 'https://github.com/vitaotub/vtub-site',
+            imagem: '../projeto-004.jpg'
+        },
+        {
+            id: 5,
+            nome: 'WebApp VitãoTub',
+            plataforma: 'GitHub',
+            descricao: 'PWA com feed de vídeos e artigos.',
+            link: 'https://github.com/vitaotub/vtub-app',
+            imagem: '../projeto-005.jpg'
+        }
+    ];
+    
+    container.innerHTML = '';
+    
+    projetos.forEach(proj => {
+        const card = document.createElement('div');
+        card.className = 'projeto-card-feed';
+        card.onclick = () => openProjectModal(proj.id);
+        
+        const isYoutube = proj.plataforma === 'YouTube';
+        const platformClass = isYoutube ? 'platform-youtube' : 'platform-github';
+        const platformIcon = isYoutube
+            ? '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'
+            : '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>';
+        
+        card.innerHTML = `
+            <div class="projeto-card-feed-image">
+                <img src="${proj.imagem}" alt="${proj.nome}" loading="lazy">
+            </div>
+            <div class="projeto-card-feed-info">
+                <h4 class="projeto-card-feed-nome">${proj.nome}</h4>
+                <span class="projeto-card-feed-platform ${platformClass}">${platformIcon} ${proj.plataforma}</span>
+                <p class="projeto-card-feed-descricao">${proj.descricao}</p>
+                <a href="${proj.link}" target="_blank" rel="noopener" class="projeto-card-feed-link" onclick="event.stopPropagation();">Ver Projeto</a>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+    
+    projetosCarregados = true;
 }
 
 // ==================== 5. CARREGAMENTO DO FEED DO YOUTUBE (RSS) ====================
@@ -93,7 +197,31 @@ async function carregarYouTubeAutomatico() {
                     postElement.className = 'feed-card';
                     const dataPub = new Date(video.pubDate).toLocaleDateString('pt-BR');
                     const thumbnailUrl = video.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-                    postElement.innerHTML = `<div class="video-thumbnail-container" onclick="abrirVideoModal('${videoId}')" role="button" tabindex="0" aria-label="Assistir: ${escapeHtml(video.title)}"><img src="${thumbnailUrl}" alt="${escapeHtml(video.title)}" loading="lazy" class="video-thumbnail" onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'"><div class="play-icon-overlay"><i class="fa-solid fa-circle-play"></i></div></div><div class="feed-content"><h2>${escapeHtml(video.title)}</h2><div class="feed-meta-header"><span class="feed-date">📅 ${dataPub}</span><span class="feed-author">✍️ VitãoTub</span></div></div>`;
+                    postElement.innerHTML = `
+    <div class="video-thumbnail-container" onclick="abrirVideoModal('${videoId}')" role="button" tabindex="0" aria-label="Assistir: ${escapeHtml(video.title)}">
+        <img src="${thumbnailUrl}" alt="${escapeHtml(video.title)}" loading="lazy" class="video-thumbnail" onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'">
+        <div class="play-icon-overlay"><i class="fa-solid fa-circle-play"></i></div>
+    </div>
+    <div class="feed-content">
+        <h2 class="video-title">${escapeHtml(video.title)}</h2>
+        <div class="video-meta-wrapper">
+            <div class="video-meta-left">
+                <span class="video-date">📅 ${dataPub}</span>
+                <span class="video-author">✍️ VitãoTub</span>
+            </div>
+            <div class="video-meta-right">
+                <button class="btn-video-share" onclick="event.stopPropagation(); compartilharVideoFeed('${videoId}')" title="Compartilhar vídeo">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    Compartilhar
+                </button>
+                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener" class="btn-video-youtube" onclick="event.stopPropagation();">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    YouTube
+                </a>
+            </div>
+        </div>
+    </div>
+`;
                     ytContainer.appendChild(postElement);
                 }
             });
@@ -101,7 +229,32 @@ async function carregarYouTubeAutomatico() {
     } catch (error) { console.error("Erro ao buscar feed do YouTube:", error); ytContainer.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro ao carregar vídeos. Verifique sua conexão.</p>'; }
 }
 
-// ==================== 5.1 MODAL DE VÍDEO EM TELA CHEIA ====================
+function compartilharVideoFeed(videoId) {
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    const mensagem = `🎬 Vídeo publicado no Canal VitãoTub: ${videoUrl}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Vídeo do VitãoTub',
+            text: 'Confira este vídeo no YouTube!',
+            url: videoUrl
+        }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(mensagem).then(() => {
+            alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+        }).catch(() => {
+            const tempInput = document.createElement('input');
+            tempInput.value = mensagem;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+        });
+    }
+}
+
+// ==================== 6. MODAL DE VÍDEO EM TELA CHEIA ====================
 function abrirVideoModal(videoId) {
     let modal = document.getElementById('video-fullscreen-modal');
     if (!modal) {
@@ -133,7 +286,7 @@ function initVideoSwipeToClose() {
     modal.addEventListener('touchend', () => { if (!isDragging) return; isDragging = false; const diffX = currentX - startX; const diffY = currentY - startY; modal.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; if (Math.abs(diffX) > 100 || diffY > 150) { if (Math.abs(diffX) > Math.abs(diffY)) { modal.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; } else { modal.style.transform = 'translateY(100%)'; } modal.style.opacity = '0'; setTimeout(() => { fecharVideoModal(); modal.style.transform = ''; modal.style.opacity = ''; }, 300); } else { modal.style.transform = ''; modal.style.opacity = ''; } currentX = 0; currentY = 0; });
 }
 
-// ==================== 6. SISTEMA DE ARTIGOS ====================
+// ==================== 7. SISTEMA DE ARTIGOS ====================
 let todosArtigos = [];
 let artigosCarregados = false;
 let artigosExibidos = 0;
@@ -235,6 +388,7 @@ function abrirArtigoFullscreen(artigoId) {
             p.style.setProperty('-ms-hyphens', 'auto', 'important');
             p.style.setProperty('hyphens', 'auto', 'important');
             p.style.setProperty('margin-bottom', '14px', 'important');
+            p.style.setProperty('text-indent', '1.5em', 'important');
         });
     }
     
@@ -269,27 +423,23 @@ function verificarArtigoNaUrl() {
     }
 }
 
-// ==================== 7. EVENTOS GLOBAIS ====================
+// ==================== 8. EVENTOS GLOBAIS ====================
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { fecharVideoModal(); fecharArtigoFullscreen(); const translateDropdown = document.getElementById('translate-dropdown'); if (translateDropdown) translateDropdown.classList.remove('active'); } });
 
 // ===== CONTROLE DO DROPDOWN DE TRADUÇÃO =====
-// Fecha o dropdown ao clicar fora, mas com delay para evitar fechamento acidental
 document.addEventListener('click', function(e) {
     const translateDropdown = document.getElementById('translate-dropdown');
     const translateToggle = document.getElementById('translate-toggle');
     
     if (!translateDropdown || !translateToggle) return;
     
-    // Se o clique NÃO for no dropdown E NÃO for no botão de toggle
     if (!translateDropdown.contains(e.target) && e.target !== translateToggle) {
-        // Pequeno delay para evitar conflitos com o clique no botão
         setTimeout(() => {
             translateDropdown.classList.remove('active');
         }, 150);
     }
 });
 
-// ===== TOGGLE DO DROPDOWN COM PREVENÇÃO DE PROPAGAÇÃO =====
 function toggleTranslateDropdown(e) {
     if (e) {
         e.stopPropagation();
@@ -301,7 +451,7 @@ function toggleTranslateDropdown(e) {
     }
 }
 
-// ==================== 8. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
+// ==================== 9. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
 function translatePage(lang) {
     if (lang === 'pt') {
         const select = document.querySelector('.goog-te-combo');
@@ -361,7 +511,6 @@ function initTranslateWidget() {
     const dropdown = document.getElementById('translate-dropdown');
     if (!toggleBtn || !dropdown) return;
     
-    // Remove qualquer listener anterior para evitar duplicação
     toggleBtn.removeEventListener('click', toggleTranslateDropdown);
     toggleBtn.addEventListener('click', toggleTranslateDropdown);
     
@@ -371,7 +520,7 @@ function initTranslateWidget() {
     }, 1500);
 }
 
-// ==================== 9. BOTÃO DE TRADUÇÃO ARRASTÁVEL E FECHÁVEL ====================
+// ==================== 10. BOTÃO DE TRADUÇÃO ARRASTÁVEL E FECHÁVEL ====================
 function initDraggableTranslate() {
     const widget = document.getElementById('translate-widget');
     const toggleBtn = document.getElementById('translate-toggle');
@@ -395,7 +544,7 @@ function initDraggableTranslate() {
     document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; widget.style.transition = ''; } });
 }
 
-// ==================== 10. BOTÃO DE INSTALAÇÃO PWA (APENAS MOBILE) ====================
+// ==================== 11. BOTÃO DE INSTALAÇÃO PWA (APENAS MOBILE) ====================
 document.addEventListener("DOMContentLoaded", () => {
     const pwaPopup = document.getElementById('pwa-install-popup');
     const popupContent = document.getElementById('pwa-popup-content');
@@ -409,7 +558,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     
-    // Se já está instalado, não mostra nada
     if (isStandalone) {
         localStorage.setItem('vitaotub_pwa_installed', 'true');
         pwaPopup.style.display = 'none';
@@ -421,12 +569,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const jaInstalou = localStorage.getItem('vitaotub_pwa_installed');
     const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
     
-    // DESKTOP: mostra mensagem informativa
     if (!isMobile) {
         if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
         if (jaEntendeu) return;
         
-        // PREENCHE A POPUP PARA DESKTOP
         popupContent.innerHTML = `
             <h2>📱 App para Celular!</h2>
             <img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'">
@@ -447,20 +593,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
     
-    // MOBILE: se já instalou, não mostra nada
     if (jaInstalou) {
         pwaPopup.style.display = 'none';
         if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
         return;
     }
     
-    // MOBILE: função para preencher a popup
     function preencherPopup(mensagem) {
         if (!popupContent) return;
         popupContent.innerHTML = mensagem;
     }
     
-    // MOBILE: mensagem padrão (caso o beforeinstallprompt não dispare)
     function mostrarPopupPadrao() {
         if (jaRejeitou) {
             if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
@@ -477,7 +620,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
         pwaPopup.style.display = 'flex';
         
-        // Evento do botão "Instalar App"
         document.getElementById('pwa-install-btn').addEventListener('click', async () => {
             if (deferredPrompt) {
                 pwaPopup.style.display = 'none';
@@ -493,7 +635,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 deferredPrompt = null;
             } else {
-                // Fallback: explica como instalar manualmente
                 alert('Para instalar, acesse as opções do seu navegador e selecione "Adicionar à tela inicial".');
                 localStorage.setItem('vitaotub_pwa_rejected', 'true');
                 pwaPopup.style.display = 'none';
@@ -510,7 +651,6 @@ document.addEventListener("DOMContentLoaded", () => {
     
     let deferredPrompt = null;
     
-    // Tenta capturar o evento beforeinstallprompt
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -553,18 +693,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
     
-    // Se já rejeitou, mostra o botão flutuante
     if (jaRejeitou && pwaFloatingBtn) {
         pwaFloatingBtn.style.display = 'flex';
     }
     
-    // Mostra a popup padrão após 2 segundos se:
-    // 1. O beforeinstallprompt não foi capturado
-    // 2. O usuário não rejeitou
-    // 3. O usuário não instalou
     if (!jaRejeitou && !jaInstalou) {
         setTimeout(() => {
-            // Se a popup não foi aberta pelo beforeinstallprompt
             if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) {
                 console.log("Mostrando popup padrão (beforeinstallprompt não disparou)");
                 mostrarPopupPadrao();
@@ -572,7 +706,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3000);
     }
     
-    // Botão flutuante
     if (pwaFloatingBtn) {
         pwaFloatingBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
@@ -591,7 +724,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ==================== 11. BOTÃO DE TEMA (CLARO/ESCURO) ====================
+// ==================== 12. BOTÃO DE TEMA (CLARO/ESCURO) ====================
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
     const themeBtn = document.getElementById('theme-toggle-btn');
@@ -612,7 +745,7 @@ function initThemeToggle() {
     else { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
 }
 
-// ==================== 11.5 BOTÃO DE TEMA ARRASTÁVEL E FECHÁVEL ====================
+// ==================== 13. BOTÃO DE TEMA ARRASTÁVEL E FECHÁVEL ====================
 function initDraggableTheme() {
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (!themeBtn) return;
@@ -635,9 +768,9 @@ function initDraggableTheme() {
     document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; themeBtn.style.transition = ''; } });
 }
 
-// ==================== 12. BOTÃO VOLTAR AO TOPO ====================
+// ==================== 14. BOTÃO VOLTAR AO TOPO ====================
 const backToTopButton = document.getElementById('back-to-top');
 if (backToTopButton) { backToTopButton.addEventListener('click', function(e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }); }
 
-// ==================== 13. INICIALIZAÇÃO ====================
+// ==================== 15. INICIALIZAÇÃO ====================
 document.addEventListener("DOMContentLoaded", () => { initTranslateWidget(); initDraggableTranslate(); initThemeToggle(); initDraggableTheme(); verificarArtigoNaUrl(); });

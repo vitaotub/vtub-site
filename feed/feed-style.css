@@ -93,6 +93,118 @@ body {
 .tab-btn:hover { border-color: #8b5cf6; color: var(--text-main); }
 .tab-btn.active { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border-color: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); }
 
+/* ==================== PROJETOS NO FEED ==================== */
+#projetos-feed-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.projeto-card-feed {
+    display: flex;
+    gap: 15px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    align-items: center;
+}
+.projeto-card-feed:hover {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+}
+
+.projeto-card-feed-image {
+    flex: 0 0 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-color);
+}
+.projeto-card-feed-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.projeto-card-feed-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.projeto-card-feed-nome {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.projeto-card-feed-platform {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 12px;
+    width: fit-content;
+    border: 1.5px solid;
+    background: transparent;
+}
+.projeto-card-feed-platform.platform-youtube {
+    color: #FF0000;
+    border-color: #FF0000;
+}
+.projeto-card-feed-platform.platform-github {
+    color: #8b949e;
+    border-color: #8b949e;
+}
+
+.projeto-card-feed-descricao {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin: 2px 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.projeto-card-feed-link {
+    font-size: 0.8rem;
+    color: var(--primary-purple);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    align-self: flex-start;
+}
+.projeto-card-feed-link:hover {
+    color: var(--primary-blue);
+}
+
+@media (max-width: 480px) {
+    .projeto-card-feed {
+        padding: 12px;
+        gap: 12px;
+    }
+    .projeto-card-feed-image {
+        flex: 0 0 60px;
+        height: 60px;
+    }
+    .projeto-card-feed-nome {
+        font-size: 0.9rem;
+    }
+    .projeto-card-feed-descricao {
+        font-size: 0.75rem;
+        -webkit-line-clamp: 2;
+    }
+}
+
 /* ==================== 6. CONTAINER DO FEED (RESPONSIVO) ==================== */
 .feed-container { max-width: 600px; margin: 20px auto; padding: 0 15px 50px; }
 
@@ -112,6 +224,102 @@ body {
 .feed-meta-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 12px; flex-wrap: nowrap; gap: 10px; }
 .feed-date { color: #8b5cf6; font-weight: bold; white-space: nowrap; }
 .feed-author { color: #3b82f6; font-weight: 600; white-space: nowrap; }
+
+/* ==================== VÍDEOS - NOVO LAYOUT ==================== */
+.feed-content h2.video-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 10px 0 8px 0;
+    text-align: left;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+.video-meta-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.video-meta-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.video-date {
+    font-size: 0.8rem;
+    color: var(--primary-purple);
+    font-weight: 600;
+}
+.video-author {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
+
+.video-meta-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.btn-video-share,
+.btn-video-youtube {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Satoshi', sans-serif;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-video-share {
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--primary-purple);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+.btn-video-share:hover {
+    background: rgba(139, 92, 246, 0.25);
+    transform: translateY(-2px);
+}
+
+.btn-video-youtube {
+    background: #FF0000;
+    color: #ffffff;
+    border: 1px solid #FF0000;
+}
+.btn-video-youtube:hover {
+    background: #cc0000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+}
+
+@media (max-width: 480px) {
+    .video-meta-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .video-meta-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .btn-video-share,
+    .btn-video-youtube {
+        padding: 4px 10px;
+        font-size: 0.7rem;
+    }
+}
 
 /* ==================== 10. ARTIGOS (SISTEMA COMPLETO) ==================== */
 .artigo-card {
@@ -179,7 +387,9 @@ body {
 /* ==================== 11. MODAL DE ARTIGO EM TELA CHEIA ==================== */
 .artigo-fullscreen-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: var(--modal-bg); overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .artigo-fullscreen-modal.active { display: block; }
-.artigo-fullscreen-content { width: 100%; max-width: 800px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; padding: 20px 20px 60px 20px; position: relative; background: var(--modal-bg); }
+.artigo-fullscreen-content { width: 100%; max-width: 800px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; padding: 10px 20px 60px 20px; position: relative; background: var(--modal-bg); }
+
+/* BOTÃO X - Fundo transparente, borda vermelha brilhante */
 .artigo-fullscreen-close {
     position: sticky;
     top: 15px;
@@ -187,8 +397,8 @@ body {
     z-index: 100001;
     width: 40px;
     height: 40px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    border: 2px solid #ff0000;
     border-radius: 50%;
     color: #ffffff;
     font-size: 1.2rem;
@@ -196,20 +406,42 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     -webkit-tap-highlight-color: transparent;
     margin-right: -10px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
 }
-.artigo-fullscreen-close:hover, .artigo-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
+.artigo-fullscreen-close:hover, .artigo-fullscreen-close:active {
+    background: rgba(255, 0, 0, 0.2);
+    border-color: #ff0000;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+    transform: scale(1.1);
+}
+
 .artigo-fullscreen-body { clear: both; padding-top: 10px; background: var(--modal-bg); width: 100%; }
-.artigo-fullscreen-body .artigo-banner { margin: -20px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
+.artigo-fullscreen-body .artigo-banner { margin: -10px -20px 20px -20px; width: calc(100% + 40px); border-radius: 0; }
 .artigo-fullscreen-body .artigo-titulo { font-size: 1.6rem; padding: 0 20px 10px 20px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-resumo { font-size: 1rem; padding: 0 20px 10px 20px; -webkit-line-clamp: unset; overflow: visible; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-meta { padding: 10px 20px; margin-bottom: 15px; }
 .artigo-fullscreen-body .artigo-card .artigo-corpo,
 .artigo-fullscreen-body .artigo-corpo { display: block !important; max-height: none; padding: 15px 20px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 .artigo-fullscreen-body .artigo-corpo::after { display: none; }
-.artigo-fullscreen-body .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
+
+/* RECUO DE PARÁGRAFOS */
+.artigo-corpo p {
+    margin-bottom: 14px;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    text-justify: inter-word;
+    word-break: break-word;
+    text-indent: 1.5em;
+}
+
 .artigo-fullscreen-body .artigo-corpo h3 { font-size: 1.1rem; }
 
 /* ==================== 12. BOTÕES DE REDES SOCIAIS (RESPONSIVOS - 7 REDES) ==================== */
@@ -230,14 +462,46 @@ body {
 .btn-ler-mais:hover { filter: brightness(1.1); transform: translateY(-2px); }
 .artigos-loading { text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.9rem; }
 
-/* ==================== 14. SEÇÃO SOBRE ==================== */
+/* ==================== 14. SEÇÃO SOBRE (PÉROLAS) ==================== */
 .about-container { background: var(--about-bg); border-radius: 8px; padding: 30px 20px; text-align: center; border: 1px solid var(--border-color); }
 .about-profile h2 { color: var(--text-main); margin-bottom: 5px; font-family: 'Satoshi', sans-serif; }
 .about-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
 .about-bio p { color: var(--text-dim); line-height: 1.6; margin-bottom: 15px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; word-wrap: break-word; text-justify: inter-word; word-break: break-word; }
 
+.perola-item {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--primary-purple);
+    text-align: left;
+}
+.perola-text {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    margin-bottom: 4px;
+    text-indent: 0 !important;
+}
+.perola-autor {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: right;
+    margin-bottom: 0;
+}
+
 /* ==================== 15. BOTÃO DE TRADUÇÃO FLUTUANTE ==================== */
-.translate-widget { position: fixed; bottom: 80px; left: 12px; z-index: 999; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.translate-widget {
+    position: fixed;
+    top: calc(50% + 30px);
+    left: 20px;
+    transform: translateY(-50%);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
 .translate-toggle { width: 42px; height: 42px; background-color: var(--primary-purple); color: #ffffff; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
 .translate-toggle:active { transform: scale(0.95); background-color: var(--primary-blue); }
 .translate-dropdown { display: none; flex-direction: column; gap: 2px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px; min-width: 180px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); animation: fadeInDown 0.2s ease; }
@@ -280,8 +544,9 @@ body {
 /* ==================== 17. BOTÃO DE TEMA (CLARO/ESCURO) ==================== */
 .theme-toggle-btn {
     position: fixed;
-    top: 90px;
-    right: 20px;
+    top: calc(50% - 30px);
+    left: 20px;
+    transform: translateY(-50%);
     z-index: 998;
     width: 42px;
     height: 42px;
@@ -298,7 +563,10 @@ body {
     transition: all 0.3s ease;
     -webkit-tap-highlight-color: transparent;
 }
-.theme-toggle-btn:hover { transform: scale(1.1); border-color: var(--primary-purple); }
+.theme-toggle-btn:hover {
+    transform: translateY(-50%) scale(1.1);
+    border-color: var(--primary-purple);
+}
 
 /* Botão X de fechar tema */
 .theme-close-btn {
@@ -454,8 +722,37 @@ body {
 /* ==================== 19. MODAL DE VÍDEO EM TELA CHEIA ==================== */
 .video-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #000000; justify-content: center; align-items: center; flex-direction: column; }
 .video-fullscreen-modal.active { display: flex; }
-.video-fullscreen-close { position: fixed; top: 15px; right: 15px; z-index: 100001; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: #ffffff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; opacity: 1; pointer-events: all; -webkit-tap-highlight-color: transparent; }
-.video-fullscreen-close:hover, .video-fullscreen-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; transform: scale(1.1); }
+
+/* BOTÃO X - Fundo transparente, borda vermelha brilhante */
+.video-fullscreen-close {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 100001;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid #ff0000;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 1;
+    pointer-events: all;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+.video-fullscreen-close:hover, .video-fullscreen-close:active {
+    background: rgba(255, 0, 0, 0.2);
+    border-color: #ff0000;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+    transform: scale(1.1);
+}
+
 .video-tap-hint { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; font-family: 'Satoshi', sans-serif; background: rgba(0, 0, 0, 0.7); padding: 8px 16px; border-radius: 20px; z-index: 99999; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
 .video-tap-hint.visible { opacity: 1; }
 .video-actions-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 100001; opacity: 1; transition: opacity 0.3s; pointer-events: all; }
@@ -492,7 +789,7 @@ body {
     .feed-container { padding: 0 10px 40px; }
     .translate-widget { bottom: 70px; }
     .back-to-top { bottom: 12px; }
-    .artigo-fullscreen-content { padding: 15px 15px 50px 15px; }
+    .artigo-fullscreen-content { padding: 10px 15px 50px 15px; }
     .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
 }
 @media (max-width: 480px) {
@@ -501,8 +798,29 @@ body {
     .logo-subscribe-btn { font-size: 1.1rem; padding: 4px 10px; }
     .feed-tabs { flex-direction: column; align-items: center; }
     .tab-btn { width: 100%; max-width: 250px; }
-    .theme-toggle-btn { top: 80px; right: 12px; width: 36px; height: 36px; font-size: 1rem; }
-    .translate-widget { bottom: 70px; left: 8px; }
+    
+    /* BOTÕES ALINHADOS VERTICALMENTE - MOBILE */
+    .theme-toggle-btn {
+        position: fixed;
+        top: calc(50% - 25px);
+        left: 12px;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+        z-index: 998;
+    }
+    .translate-widget {
+        position: fixed;
+        top: calc(50% + 25px);
+        left: 12px;
+        transform: translateY(-50%);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
     .translate-toggle { width: 38px; height: 38px; }
     .translate-toggle svg { width: 18px; height: 18px; }
     .translate-dropdown { min-width: 160px; }

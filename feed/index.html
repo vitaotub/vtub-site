@@ -34,11 +34,12 @@
         <h1 class="feed-title">VitãoTub</h1>
         
         <!-- Abas de navegação -->
-        <nav class="feed-tabs" aria-label="Navegação do feed">
-            <button id="btn-tab-videos" class="tab-btn active" onclick="mudarAba('videos')" aria-pressed="true">Vídeos & Lives</button>
-            <button id="btn-tab-artigos" class="tab-btn" onclick="mudarAba('artigos')" aria-pressed="false">Artigos & Dicas</button>
-            <button id="btn-tab-sobre" class="tab-btn" onclick="mudarAba('sobre')" aria-pressed="false">Sobre</button>
-        </nav>
+<nav class="feed-tabs" aria-label="Navegação do feed">
+    <button id="btn-tab-videos" class="tab-btn active" onclick="mudarAba('videos')" aria-pressed="true">Vídeos & Lives</button>
+    <button id="btn-tab-artigos" class="tab-btn" onclick="mudarAba('artigos')" aria-pressed="false">Artigos & Dicas</button>
+    <button id="btn-tab-projetos" class="tab-btn" onclick="mudarAba('projetos')" aria-pressed="false">Meus Projetos</button> <!-- NOVO -->
+    <button id="btn-tab-sobre" class="tab-btn" onclick="mudarAba('sobre')" aria-pressed="false">Pérolas</button> <!-- Trocado "Sobre" para "Pérolas" -->
+</nav>
     </header>
 
     <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
@@ -60,19 +61,47 @@
                 <p>Carregando mais artigos...</p>
             </div>
         </section>
-
-        <!-- Seção 3: Sobre o Canal -->
-        <section id="secao-sobre" class="feed-section" style="display: none;" aria-label="Sobre o canal">
-            <div class="about-container">
-                <div class="about-profile">
-                    <h2>VitãoTub</h2>
-                    <p class="about-subtitle">Criador de Conteúdo</p>
-                </div>
-                <div class="about-bio">
-                    <p>Olá! Bem-vindo ao feed oficial do canal VitãoTub. Aqui centralizo meus vídeos mais recentes, artigos técnicos, dicas e tutoriais de tecnologia.</p>
-                </div>
+<!-- Seção 4: Meus Projetos (NOVO) -->
+<section id="secao-projetos" class="feed-section" style="display: none;" aria-label="Meus Projetos">
+    <div id="projetos-feed-container">
+        <p style="text-align: center; color: #aaa;">Carregando projetos...</p>
+    </div>
+</section>
+<section id="secao-sobre" class="feed-section" style="display: none;" aria-label="Pérolas">
+    <div class="about-container">
+        <div class="about-profile">
+            <h2>💎 Pérolas</h2>
+            <p class="about-subtitle">Mensagens dos fãs</p>
+        </div>
+        <div class="about-bio">
+            <!-- Mensagem 1 -->
+            <div class="perola-item">
+                <p class="perola-text">"A tecnologia é a ponte entre o impossível e o inevitável. Cada bug corrigido é uma vitória."</p>
+                <p class="perola-autor">— Carlos Alberto, SP</p>
             </div>
-        </section>
+            <!-- Mensagem 2 -->
+            <div class="perola-item">
+                <p class="perola-text">"Se o PC não ligar, respira fundo, toma um café e chama o VitãoTub. Ele sempre tem a solução!"</p>
+                <p class="perola-autor">— Mariana Silva, RJ</p>
+            </div>
+            <!-- Mensagem 3 -->
+            <div class="perola-item">
+                <p class="perola-text">"Linux é que nem café: depois que você prova o bom, não quer mais o de pacote."</p>
+                <p class="perola-autor">— João Pedro, MG</p>
+            </div>
+            <!-- Mensagem 4 -->
+            <div class="perola-item">
+                <p class="perola-text">"Minha mãe falou que 'esse negócio de tecnologia é coisa de nerd'. Hoje ela me pede ajuda pra usar o WhatsApp."</p>
+                <p class="perola-autor">— Rafael Oliveira, BA</p>
+            </div>
+            <!-- Mensagem 5 -->
+            <div class="perola-item">
+                <p class="perola-text">"O melhor antivírus é o bom senso. O segundo melhor é o Windows Defender + Malwarebytes."</p>
+                <p class="perola-autor">— VitãoTub (é claro!)</p>
+            </div>
+        </div>
+    </div>
+</section>
         
     </main>
 
