@@ -972,12 +972,13 @@ body {
     color: var(--text-main);
     margin: 0 0 4px 0;
     font-family: 'Satoshi', sans-serif;
-    text-align: center; /* CENTRALIZADO */
+    text-align: center;
 }
 
 .projeto-modal-platform {
-    display: inline-flex;
+    display: flex; /* Mudamos de inline-flex para flex */
     align-items: center;
+    justify-content: center; /* Força centralização horizontal */
     gap: 6px;
     font-size: 0.8rem;
     font-weight: 600;
@@ -986,7 +987,8 @@ body {
     background: transparent;
     border: 1.5px solid var(--primary-purple);
     color: var(--primary-purple);
-    margin: 0 auto 12px auto; /* CENTRALIZADO */
+    margin: 0 auto 12px auto; /* Centraliza o bloco */
+    width: fit-content; /* Ajusta à largura do conteúdo */
 }
 
 .projeto-modal-descricao {
@@ -995,7 +997,7 @@ body {
     line-height: 1.6;
     margin-bottom: 15px;
     text-align: left;
-    text-indent: 2em; /* RECUO NO INÍCIO DO PARÁGRAFO */
+    text-indent: 2em;
 }
 
 .projeto-modal-info {
@@ -1064,7 +1066,7 @@ body {
     }
     .projeto-modal-descricao {
         font-size: 0.85rem;
-        text-indent: 1.5em; /* Recuo menor no mobile */
+        text-indent: 1.5em;
     }
     .projeto-modal-close {
         width: 32px;
