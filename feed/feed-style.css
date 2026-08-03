@@ -262,46 +262,61 @@ body {
 
 .video-meta-right {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     align-items: center;
     flex-shrink: 0;
 }
 
+/* BOTÕES CIRCULARES SEM TEXTO - MAIORES */
 .btn-video-share,
 .btn-video-youtube {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Satoshi', sans-serif;
     border: none;
     text-decoration: none;
+    flex-shrink: 0;
 }
 
 .btn-video-share {
     background: rgba(139, 92, 246, 0.15);
     color: var(--primary-purple);
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    border: 2px solid rgba(139, 92, 246, 0.3);
 }
 .btn-video-share:hover {
     background: rgba(139, 92, 246, 0.25);
+    border-color: var(--primary-purple);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .btn-video-youtube {
     background: #FF0000;
     color: #ffffff;
-    border: 1px solid #FF0000;
+    border: 2px solid #FF0000;
 }
 .btn-video-youtube:hover {
     background: #cc0000;
+    border-color: #cc0000;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+}
+
+/* ÍCONES DENTRO DOS BOTÕES */
+.btn-video-share svg,
+.btn-video-youtube svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: block;
 }
 
 @media (max-width: 480px) {
@@ -313,11 +328,18 @@ body {
     .video-meta-right {
         width: 100%;
         justify-content: flex-start;
+        gap: 8px;
     }
     .btn-video-share,
     .btn-video-youtube {
-        padding: 4px 10px;
-        font-size: 0.7rem;
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
+    }
+    .btn-video-share svg,
+    .btn-video-youtube svg {
+        width: 17px;
+        height: 17px;
     }
 }
 
