@@ -323,8 +323,7 @@ body {
     content: attr(data-tooltip);
     position: fixed;
     bottom: auto;
-    top: calc(50% - 40px);
-    left: 50%;
+    /* Posiciona o tooltip acima do botão usando a posição do botão */
     transform: translateX(-50%) scale(0.9);
     background: rgba(0, 0, 0, 0.9);
     color: #fff;
@@ -339,6 +338,7 @@ body {
     font-family: 'Satoshi', sans-serif;
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 9999;
+    /* Posição calculada dinamicamente via JavaScript */
 }
 
 /* Seta do tooltip */
@@ -347,8 +347,6 @@ body {
     content: '';
     position: fixed;
     bottom: auto;
-    top: calc(50% - 20px);
-    left: 50%;
     transform: translateX(-50%) scale(0.9);
     border: 6px solid transparent;
     border-top-color: rgba(0, 0, 0, 0.9);
@@ -358,7 +356,7 @@ body {
     z-index: 9999;
 }
 
-/* Mostrar tooltip no hover */
+/* Mostrar tooltip no hover - a posição será definida pelo JavaScript */
 .btn-video-share:hover::after,
 .btn-video-youtube:hover::after,
 .btn-video-share:hover::before,

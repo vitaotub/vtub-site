@@ -23,6 +23,38 @@ const CONFIG = {
     artigosIncremento: 10
 };
 
+// ==================== POSICIONAMENTO DE TOOLTIPS ====================
+function positionTooltips() {
+    const buttons = document.querySelectorAll('.btn-video-share, .btn-video-youtube');
+    
+    buttons.forEach(button => {
+        // Remove listeners antigos para evitar duplicação
+        button.removeEventListener('mouseenter', positionTooltip);
+        button.removeEventListener('mouseleave', hideTooltip);
+        
+        button.addEventListener('mouseenter', positionTooltip);
+        button.addEventListener('mouseleave', hideTooltip);
+    });
+}
+
+function positionTooltip(e) {
+    const button = e.currentTarget;
+    const rect = button.getBoundingClientRect();
+    
+    // Posiciona o tooltip acima do botão
+    const tooltipTop = rect.top - 10;
+    const tooltipLeft = rect.left + rect.width / 2;
+    
+    button.style.setProperty('--tooltip-top', tooltipTop + 'px');
+    button.style.setProperty('--tooltip-left', tooltipLeft + 'px');
+}
+
+function hideTooltip(e) {
+    const button = e.currentTarget;
+    button.style.removeProperty('--tooltip-top');
+    button.style.removeProperty('--tooltip-left');
+}
+
 // ==================== 2. UTILITÁRIOS ====================
 function escapeHtml(text) {
     if (!text) return '';
@@ -189,6 +221,8 @@ async function carregarYouTubeAutomatico() {
         const data = await response.json();
         if (data.status === 'ok' && data.items && data.items.length > 0) {
             ytContainer.innerHTML = '';
+            positionTooltips(); // ← POSICIONA OS TOOLTIPS APÓS CRIAR OS BOTÕES
+            
             data.items.forEach(video => {
                 const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
                 const videoId = videoIdMatch ? videoIdMatch[1] : '';
