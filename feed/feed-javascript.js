@@ -40,19 +40,44 @@ function positionTooltip(e) {
     const button = e.currentTarget;
     const rect = button.getBoundingClientRect();
     
-    // Posiciona a tooltip ACIMA do botão, com offset de 8px
-    const tooltipTop = rect.top - 8;
+    // Altura aproximada do tooltip (padding + font-size)
+    const TOOLTIP_HEIGHT = 36;
+    const OFFSET = 10;
+    
+    // Verifica se o tooltip cabe ACIMA do botão
+    const spaceAbove = rect.top - OFFSET;
+    const spaceBelow = window.innerHeight - rect.bottom - OFFSET;
+    
+    let tooltipTop;
+    let tooltipDirection = 'above';
+    
+    if (spaceAbove >= TOOLTIP_HEIGHT) {
+        // Cabe acima: posiciona acima
+        tooltipTop = rect.top - OFFSET;
+        tooltipDirection = 'above';
+    } else if (spaceBelow >= TOOLTIP_HEIGHT) {
+        // Não cabe acima, mas cabe abaixo
+        tooltipTop = rect.bottom + OFFSET + TOOLTIP_HEIGHT;
+        tooltipDirection = 'below';
+    } else {
+        // Não cabe nem acima nem abaixo: centraliza na tela
+        tooltipTop = window.innerHeight / 2 - TOOLTIP_HEIGHT / 2;
+        tooltipDirection = 'center';
+    }
+    
     const tooltipLeft = rect.left + rect.width / 2;
     
     // Armazena a posição em variáveis CSS
     button.style.setProperty('--tooltip-top', tooltipTop + 'px');
     button.style.setProperty('--tooltip-left', tooltipLeft + 'px');
+    button.style.setProperty('--tooltip-direction', tooltipDirection);
 }
 
 function hideTooltip(e) {
     const button = e.currentTarget;
     button.style.removeProperty('--tooltip-top');
     button.style.removeProperty('--tooltip-left');
+    button.style.removeProperty('--tooltip-direction');
 }
 
 // ==================== 2. UTILITÁRIOS ====================

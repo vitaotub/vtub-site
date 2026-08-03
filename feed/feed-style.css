@@ -1208,3 +1208,19 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--primary-purple)
         z-index: 999999 !important;
     }
 }
+
+/* ==================== TOOLTIP - POSIÇÃO DINÂMICA ==================== */
+/* Tooltip acima (padrão) */
+.btn-video-share::before,
+.btn-video-youtube::before {
+    border-top-color: rgba(0, 0, 0, 0.95);
+    border-bottom-color: transparent;
+}
+
+/* Tooltip abaixo - ajusta a seta */
+.btn-video-share[style*="--tooltip-direction: below"]::before,
+.btn-video-youtube[style*="--tooltip-direction: below"]::before {
+    border-top-color: transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.95);
+    top: calc(var(--tooltip-top) - 15px);
+}
