@@ -132,8 +132,9 @@
             font-weight: 600;
         }
         
+        /* BOTÃO LER ARTIGO - CENTRALIZADO */
         .btn-ler-mais-site {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: 8px 20px;
@@ -146,7 +147,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Satoshi', sans-serif;
-            margin-top: 10px;
+            margin: 10px auto 0 auto; /* CENTRALIZADO */
+            width: fit-content;
         }
         
         .btn-ler-mais-site:hover {
@@ -190,7 +192,6 @@
             background: var(--modal-bg);
         }
         
-        /* BOTÃO X - Fundo transparente, borda vermelha brilhante (igual ao feed) */
         .artigo-fullscreen-close-site {
             position: sticky;
             top: 15px;
@@ -316,7 +317,6 @@
             color: var(--text-main);
         }
         
-        /* ==================== RODAPÉ DO ARTIGO NO MODAL - IGUAL AO FEED ==================== */
         .artigo-fullscreen-body-site .artigo-rodape {
             display: flex;
             justify-content: space-between;
@@ -328,7 +328,6 @@
             overflow: hidden;
         }
         
-        /* BOTÕES DE REDES SOCIAIS - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-social {
             display: flex;
             gap: clamp(2px, 0.5vw, 4px);
@@ -395,7 +394,6 @@
             transform: translateY(-2px);
         }
         
-        /* BOTÕES DE AÇÃO (COMPARTILHAR E INSCREVER-SE) - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-acoes {
             display: flex;
             gap: clamp(3px, 0.8vw, 6px);
@@ -679,7 +677,6 @@
         const btnLerMais = conteudo.querySelector('.btn-ler-mais');
         if (btnLerMais) btnLerMais.remove();
         
-        // Corrige caminhos das imagens no modal para /feed/imgs/
         const imagens = conteudo.querySelectorAll('img');
         imagens.forEach(img => {
             const src = img.getAttribute('src');
