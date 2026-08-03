@@ -496,7 +496,7 @@ body {
     padding: 15px 20px;
     margin-bottom: 12px;
     border-left: 3px solid var(--primary-purple);
-    text-align: left;
+    text-align: center; /* Centraliza todo o conteúdo */
 }
 .perola-text {
     font-style: italic;
@@ -504,11 +504,12 @@ body {
     color: var(--text-main);
     margin-bottom: 4px;
     text-indent: 0 !important;
+    text-align: center; /* Centraliza o texto */
 }
 .perola-autor {
     font-size: 0.8rem;
     color: var(--text-dim);
-    text-align: right;
+    text-align: right; /* Mantém o autor à direita */
     margin-bottom: 0;
 }
 
