@@ -1175,3 +1175,36 @@ body {
 /* ==================== 21. ACESSIBILIDADE ==================== */
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--primary-purple); outline-offset: 3px; border-radius: 4px; }
+
+/* ==================== CORREÇÃO DE TOOLTIPS - OVERFLOW ==================== */
+/* Garante que os cards não cortem os tooltips com position: fixed */
+.feed-card {
+    overflow: visible !important;
+}
+
+/* Garante que o container dos botões também não corte */
+.video-meta-right {
+    overflow: visible !important;
+    position: relative;
+    z-index: 5;
+}
+
+/* Reforça o z-index dos tooltips */
+.btn-video-share::after,
+.btn-video-youtube::after,
+.btn-video-share::before,
+.btn-video-youtube::before {
+    z-index: 999999 !important;
+    pointer-events: none !important;
+}
+
+/* Para mobile, garante que os tooltips não sejam cortados */
+@media (max-width: 480px) {
+    .video-meta-right {
+        overflow: visible !important;
+    }
+    .btn-video-share::after,
+    .btn-video-youtube::after {
+        z-index: 999999 !important;
+    }
+}

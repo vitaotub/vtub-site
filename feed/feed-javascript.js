@@ -40,7 +40,7 @@ function positionTooltip(e) {
     const button = e.currentTarget;
     const rect = button.getBoundingClientRect();
     
-    // Posiciona o tooltip acima do botão com um pequeno offset
+    // Posiciona a tooltip ACIMA do botão, com offset de 8px
     const tooltipTop = rect.top - 8;
     const tooltipLeft = rect.left + rect.width / 2;
     
@@ -51,7 +51,6 @@ function positionTooltip(e) {
 
 function hideTooltip(e) {
     const button = e.currentTarget;
-    // Remove as variáveis CSS para esconder o tooltip
     button.style.removeProperty('--tooltip-top');
     button.style.removeProperty('--tooltip-left');
 }
