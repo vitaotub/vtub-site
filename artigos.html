@@ -23,7 +23,7 @@
     <style>
         /* ==================== ARTIGOS NO SITE PRINCIPAL ==================== */
         .artigos-page {
-            padding: 40px 0 60px;
+            padding: 30px 0 60px; /* Reduzido o padding-top para menos espaço */
         }
         
         .artigos-page .page-title {
@@ -34,17 +34,11 @@
             font-family: 'Satoshi', sans-serif;
         }
         
-        .artigos-page .page-subtitle {
-            font-size: 1rem;
-            color: var(--text-dim);
-            margin-bottom: 30px;
-        }
-        
         .artigos-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
-            margin-top: 20px;
+            margin-top: 30px; /* Espaçamento entre título e artigos */
         }
         
         @media (min-width: 768px) {
@@ -167,7 +161,7 @@
             font-size: 0.9rem;
         }
         
-        /* ==================== MODAL DE ARTIGO ==================== */
+        /* ==================== MODAL DE ARTIGO - ESTILOS DO FEED ==================== */
         .artigo-fullscreen-modal-site {
             display: none;
             position: fixed;
@@ -327,57 +321,61 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
+            width: clamp(28px, 5vw, 36px);
+            height: clamp(28px, 5vw, 36px);
             background-color: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
             border-radius: 50%;
-            font-size: 0.85rem;
+            font-size: clamp(0.7rem, 1.5vw, 1rem);
             text-decoration: none;
             transition: all 0.3s ease;
         }
         
-        .artigo-fullscreen-body-site .social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; }
-        .artigo-fullscreen-body-site .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; }
-        .artigo-fullscreen-body-site .social-btn.tiktok:hover { color: #ff0050; border-color: #ff0050; }
-        .artigo-fullscreen-body-site .social-btn.twitch:hover { color: #9146FF; border-color: #9146FF; }
-        .artigo-fullscreen-body-site .social-btn.x-twitter:hover { color: #cccccc; border-color: #888888; }
-        .artigo-fullscreen-body-site .social-btn.github:hover { color: #ffffff; border-color: #ffffff; }
-        .artigo-fullscreen-body-site .social-btn.telegram:hover { color: #0088cc; border-color: #0088cc; }
+        .artigo-fullscreen-body-site .social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; box-shadow: 0 0 12px rgba(225, 48, 108, 0.5); transform: translateY(-2px); }
+        .artigo-fullscreen-body-site .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 12px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
+        .artigo-fullscreen-body-site .social-btn.tiktok:hover { color: #ff0050; border-color: #ff0050; box-shadow: 0 0 12px rgba(255, 0, 80, 0.5); transform: translateY(-2px); }
+        .artigo-fullscreen-body-site .social-btn.twitch:hover { color: #9146FF; border-color: #9146FF; box-shadow: 0 0 12px rgba(145, 70, 255, 0.5); transform: translateY(-2px); }
+        .artigo-fullscreen-body-site .social-btn.x-twitter:hover { color: #cccccc; border-color: #888888; box-shadow: 0 0 12px rgba(200, 200, 200, 0.4); transform: translateY(-2px); }
+        .artigo-fullscreen-body-site .social-btn.github:hover { color: #ffffff; border-color: #ffffff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+        .artigo-fullscreen-body-site .social-btn.telegram:hover { color: #0088cc; border-color: #0088cc; box-shadow: 0 0 12px rgba(0, 136, 204, 0.5); transform: translateY(-2px); }
         
         .artigo-fullscreen-body-site .artigo-rodape-acoes {
             display: flex;
-            gap: 6px;
+            gap: clamp(3px, 0.8vw, 6px);
             align-items: center;
+            flex-shrink: 0;
         }
         
         .artigo-fullscreen-body-site .btn-action-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            height: 36px;
+            width: clamp(32px, 6vw, 42px);
+            height: clamp(32px, 6vw, 42px);
             background-color: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
             border-radius: 50%;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .artigo-fullscreen-body-site .btn-share-icon:hover {
             color: #8b5cf6;
             border-color: #8b5cf6;
             box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+            transform: translateY(-2px);
         }
         
         .artigo-fullscreen-body-site .btn-subscribe-icon:hover {
             color: #FF0000;
             border-color: #FF0000;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            transform: translateY(-2px);
         }
         
         @media (max-width: 480px) {
@@ -407,7 +405,7 @@
                 <h1>Vitãotub<span>.</span></h1>
             </a>
             
-            <!-- Navegação desktop (visível em telas grandes) -->
+            <!-- Navegação desktop -->
             <nav class="main-nav" aria-label="Navegação principal">
                 <ul>
                     <li><a href="index.html#about">Sobre</a></li>
@@ -420,7 +418,7 @@
                 </ul>
             </nav>
             
-            <!-- Botão hamburguer (visível apenas em mobile) -->
+            <!-- Botão hamburguer -->
             <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
                 <span class="menu-toggle-bar"></span>
                 <span class="menu-toggle-bar"></span>
@@ -428,7 +426,7 @@
             </button>
         </div>
         
-        <!-- Menu mobile (oculto por padrão) -->
+        <!-- Menu mobile -->
         <nav id="mobile-menu" class="mobile-menu" aria-label="Menu mobile">
             <ul>
                 <li><a href="index.html#about" onclick="closeMobileMenu()">Sobre</a></li>
@@ -446,7 +444,7 @@
     <main class="artigos-page">
         <div class="container">
             <h1 class="page-title">📰 Artigos & Dicas</h1>
-            <p class="page-subtitle">Tecnologia, segurança e games em artigos exclusivos</p>
+            <!-- Mensagem removida conforme solicitado -->
             
             <!-- Container onde os artigos serão carregados -->
             <div id="artigos-feed-container-site" class="artigos-grid">
@@ -567,9 +565,16 @@
             const resumo = original.querySelector('.artigo-resumo');
             const meta = original.querySelector('.artigo-meta');
             
+            // Corrige o caminho das imagens - adiciona 'feed/' se necessário
+            let imgSrc = bannerImg ? bannerImg.src : '';
+            if (imgSrc && !imgSrc.startsWith('http') && !imgSrc.startsWith('/')) {
+                // Se for caminho relativo, ajusta para a raiz
+                imgSrc = '/' + imgSrc;
+            }
+            
             card.innerHTML = `
                 <div class="artigo-banner">
-                    ${bannerImg ? `<img src="${bannerImg.src}" alt="${bannerImg.alt}" loading="lazy">` : ''}
+                    ${bannerImg ? `<img src="${imgSrc}" alt="${bannerImg.alt}" loading="lazy">` : ''}
                 </div>
                 <div class="artigo-content">
                     <h3 class="artigo-titulo">${titulo ? titulo.textContent : ''}</h3>
@@ -620,6 +625,19 @@
         const conteudo = artigo.element.cloneNode(true);
         const btnLerMais = conteudo.querySelector('.btn-ler-mais');
         if (btnLerMais) btnLerMais.remove();
+        
+        // Remove botões de compartilhamento que não funcionam no site principal
+        const btnShare = conteudo.querySelector('.btn-share-icon');
+        if (btnShare) btnShare.remove();
+        
+        // Corrige caminhos das imagens no modal
+        const imagens = conteudo.querySelectorAll('img');
+        imagens.forEach(img => {
+            const src = img.getAttribute('src');
+            if (src && !src.startsWith('http') && !src.startsWith('/')) {
+                img.src = '/' + src;
+            }
+        });
         
         const corpo = conteudo.querySelector('.artigo-corpo');
         if (corpo) {
