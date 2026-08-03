@@ -138,6 +138,122 @@
             font-weight: 600;
         }
         
+        /* RODAPÉ DO CARD - ÍCONES SOCIAIS E BOTÕES DE AÇÃO (IGUAL AO FEED) */
+        .artigo-card-site .artigo-rodape {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px);
+            border-top: 1px solid var(--border-color);
+            gap: clamp(4px, 1vw, 8px);
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+        
+        .artigo-card-site .artigo-rodape-social {
+            display: flex;
+            gap: clamp(2px, 0.5vw, 4px);
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+        
+        .artigo-card-site .social-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(28px, 5vw, 36px);
+            height: clamp(28px, 5vw, 36px);
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            font-size: clamp(0.7rem, 1.5vw, 1rem);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .artigo-card-site .social-btn.instagram:hover {
+            color: #E1306C;
+            border-color: #E1306C;
+            box-shadow: 0 0 12px rgba(225, 48, 108, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-card-site .social-btn.youtube:hover {
+            color: #FF0000;
+            border-color: #FF0000;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-card-site .social-btn.tiktok:hover {
+            color: #ff0050;
+            border-color: #ff0050;
+            box-shadow: 0 0 12px rgba(255, 0, 80, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-card-site .social-btn.twitch:hover {
+            color: #9146FF;
+            border-color: #9146FF;
+            box-shadow: 0 0 12px rgba(145, 70, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        .artigo-card-site .social-btn.x-twitter:hover {
+            color: #cccccc;
+            border-color: #888888;
+            box-shadow: 0 0 12px rgba(200, 200, 200, 0.4);
+            transform: translateY(-2px);
+        }
+        .artigo-card-site .social-btn.github:hover {
+            color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .artigo-card-site .social-btn.telegram:hover {
+            color: #0088cc;
+            border-color: #0088cc;
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .artigo-card-site .artigo-rodape-acoes {
+            display: flex;
+            gap: clamp(3px, 0.8vw, 6px);
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .artigo-card-site .btn-action-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(32px, 6vw, 42px);
+            height: clamp(32px, 6vw, 42px);
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .artigo-card-site .btn-share-icon:hover {
+            color: #8b5cf6;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        .artigo-card-site .btn-subscribe-icon:hover {
+            color: #FF0000;
+            border-color: #FF0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            transform: translateY(-2px);
+        }
+        
         .btn-ler-mais-site {
             display: flex;
             align-items: center;
@@ -309,30 +425,30 @@
         
         /* CORPO DO ARTIGO NO MODAL - JUSTIFICADO, HIFENIZADO, RECUO */
         .artigo-fullscreen-body-site .artigo-corpo {
-            padding: 15px 25px;
-            text-align: justify;
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            -ms-hyphens: auto;
-            hyphens: auto;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            text-justify: inter-word;
-            word-break: break-word;
+            padding: 15px 25px !important;
+            text-align: justify !important;
+            -webkit-hyphens: auto !important;
+            -moz-hyphens: auto !important;
+            -ms-hyphens: auto !important;
+            hyphens: auto !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            text-justify: inter-word !important;
+            word-break: break-word !important;
         }
         
         .artigo-fullscreen-body-site .artigo-corpo p {
-            margin-bottom: 14px;
-            text-align: justify;
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            -ms-hyphens: auto;
-            hyphens: auto;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            text-justify: inter-word;
-            word-break: break-word;
-            text-indent: 1.5em;
+            margin-bottom: 14px !important;
+            text-align: justify !important;
+            -webkit-hyphens: auto !important;
+            -moz-hyphens: auto !important;
+            -ms-hyphens: auto !important;
+            hyphens: auto !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            text-justify: inter-word !important;
+            word-break: break-word !important;
+            text-indent: 1.5em !important;
         }
         
         .artigo-fullscreen-body-site .artigo-corpo h3 {
@@ -345,126 +461,126 @@
         .artigo-fullscreen-body-site .artigo-card {
             border: 2px solid rgba(59, 130, 246, 0.6) !important;
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.15) !important;
-            border-radius: 12px;
-            overflow: hidden;
+            border-radius: 12px !important;
+            overflow: hidden !important;
         }
         
-        /* ==================== RODAPÉ DO ARTIGO - IGUAL AO FEED ==================== */
+        /* ==================== RODAPÉ DO ARTIGO NO MODAL - IGUAL AO FEED ==================== */
         .artigo-fullscreen-body-site .artigo-rodape {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px);
-            border-top: 1px solid var(--border-color);
-            gap: clamp(4px, 1vw, 8px);
-            flex-wrap: wrap;
-            overflow: hidden;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px) !important;
+            border-top: 1px solid var(--border-color) !important;
+            gap: clamp(4px, 1vw, 8px) !important;
+            flex-wrap: wrap !important;
+            overflow: hidden !important;
         }
         
         .artigo-fullscreen-body-site .artigo-rodape-social {
-            display: flex;
-            gap: clamp(2px, 0.5vw, 4px);
-            flex-shrink: 0;
-            flex-wrap: wrap;
+            display: flex !important;
+            gap: clamp(2px, 0.5vw, 4px) !important;
+            flex-shrink: 0 !important;
+            flex-wrap: wrap !important;
         }
         
-        /* BOTÕES DE REDES SOCIAIS - IGUAL AO FEED */
+        /* BOTÕES DE REDES SOCIAIS NO MODAL - IGUAL AO FEED */
         .artigo-fullscreen-body-site .social-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: clamp(28px, 5vw, 36px);
-            height: clamp(28px, 5vw, 36px);
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            font-size: clamp(0.7rem, 1.5vw, 1rem);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: clamp(28px, 5vw, 36px) !important;
+            height: clamp(28px, 5vw, 36px) !important;
+            background-color: var(--card-bg) !important;
+            color: var(--text-main) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 50% !important;
+            font-size: clamp(0.7rem, 1.5vw, 1rem) !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
         }
         
         .artigo-fullscreen-body-site .social-btn.instagram:hover {
-            color: #E1306C;
-            border-color: #E1306C;
-            box-shadow: 0 0 12px rgba(225, 48, 108, 0.5);
-            transform: translateY(-2px);
+            color: #E1306C !important;
+            border-color: #E1306C !important;
+            box-shadow: 0 0 12px rgba(225, 48, 108, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.youtube:hover {
-            color: #FF0000;
-            border-color: #FF0000;
-            box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
-            transform: translateY(-2px);
+            color: #FF0000 !important;
+            border-color: #FF0000 !important;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.tiktok:hover {
-            color: #ff0050;
-            border-color: #ff0050;
-            box-shadow: 0 0 12px rgba(255, 0, 80, 0.5);
-            transform: translateY(-2px);
+            color: #ff0050 !important;
+            border-color: #ff0050 !important;
+            box-shadow: 0 0 12px rgba(255, 0, 80, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.twitch:hover {
-            color: #9146FF;
-            border-color: #9146FF;
-            box-shadow: 0 0 12px rgba(145, 70, 255, 0.5);
-            transform: translateY(-2px);
+            color: #9146FF !important;
+            border-color: #9146FF !important;
+            box-shadow: 0 0 12px rgba(145, 70, 255, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.x-twitter:hover {
-            color: #cccccc;
-            border-color: #888888;
-            box-shadow: 0 0 12px rgba(200, 200, 200, 0.4);
-            transform: translateY(-2px);
+            color: #cccccc !important;
+            border-color: #888888 !important;
+            box-shadow: 0 0 12px rgba(200, 200, 200, 0.4) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.github:hover {
-            color: #ffffff;
-            border-color: #ffffff;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3) !important;
+            transform: translateY(-2px) !important;
         }
         .artigo-fullscreen-body-site .social-btn.telegram:hover {
-            color: #0088cc;
-            border-color: #0088cc;
-            box-shadow: 0 0 12px rgba(0, 136, 204, 0.5);
-            transform: translateY(-2px);
+            color: #0088cc !important;
+            border-color: #0088cc !important;
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.5) !important;
+            transform: translateY(-2px) !important;
         }
         
-        /* BOTÕES DE AÇÃO - IGUAL AO FEED */
+        /* BOTÕES DE AÇÃO NO MODAL - IGUAL AO FEED */
         .artigo-fullscreen-body-site .artigo-rodape-acoes {
-            display: flex;
-            gap: clamp(3px, 0.8vw, 6px);
-            align-items: center;
-            flex-shrink: 0;
+            display: flex !important;
+            gap: clamp(3px, 0.8vw, 6px) !important;
+            align-items: center !important;
+            flex-shrink: 0 !important;
         }
         
         .artigo-fullscreen-body-site .btn-action-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: clamp(32px, 6vw, 42px);
-            height: clamp(32px, 6vw, 42px);
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: clamp(32px, 6vw, 42px) !important;
+            height: clamp(32px, 6vw, 42px) !important;
+            background-color: var(--card-bg) !important;
+            color: var(--text-main) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 50% !important;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem) !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            -webkit-tap-highlight-color: transparent !important;
         }
         
         .artigo-fullscreen-body-site .btn-share-icon:hover {
-            color: #8b5cf6;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
-            transform: translateY(-2px);
+            color: #8b5cf6 !important;
+            border-color: #8b5cf6 !important;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6) !important;
+            transform: translateY(-2px) !important;
         }
         
         .artigo-fullscreen-body-site .btn-subscribe-icon:hover {
-            color: #FF0000;
-            border-color: #FF0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-            transform: translateY(-2px);
+            color: #FF0000 !important;
+            border-color: #FF0000 !important;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6) !important;
+            transform: translateY(-2px) !important;
         }
         
         @media (max-width: 480px) {
@@ -483,7 +599,7 @@
                 font-size: 1rem;
             }
             .artigo-fullscreen-body-site .artigo-corpo {
-                padding: 15px 18px;
+                padding: 15px 18px !important;
             }
         }
     </style>
@@ -556,7 +672,7 @@
         <div class="container">
             <h1 class="page-title">📰 Artigos & Dicas</h1>
             
-            <div id="artigos-feed-container-site" class="artigos-grid">
+            <div id="artigos-feed-container-site">
                 <p style="text-align: center; color: #aaa;">Carregando artigos...</p>
             </div>
             <div id="artigos-loading-site" class="artigos-loading-site" style="display: none;">
@@ -575,16 +691,27 @@
         </div>
     </div>
 
-    <!-- ==================== FOOTER ==================== -->
+    <!-- ==================== FOOTER (IGUAL AO INDEX.HTML) ==================== -->
     <footer>
         <div class="container">
             <p>&copy; 2026 Victor Lopes | VitãoTub</p>
             <div class="footer-links">
-                <a href="politica-de-privacidade.html">Política de Privacidade</a>
-                <a href="termos-de-uso.html">Termos de Uso</a>
+                <a href="javascript:void(0)" onclick="openPrivacyModal()">Política de Privacidade</a> | 
+                <a href="javascript:void(0)" onclick="openTermsModal()">Termos de Uso</a>
             </div>
         </div>
     </footer>
+
+    <!-- ==================== MODAL DE PRIVACIDADE (IGUAL AO INDEX.HTML) ==================== -->
+    <div id="privacy-modal" class="modal">
+        <div class="modal-content" id="privacy-modal-content">
+            <button class="modal-close-btn" onclick="closePrivacyModal()" aria-label="Fechar">
+                <span class="modal-close-icon">✕</span>
+            </button>
+            <div class="modal-swipe-indicator"><span></span></div>
+            <div id="privacy-content-target" lang="pt-BR"></div>
+        </div>
+    </div>
 
     <!-- ==================== BOTÃO VOLTAR AO TOPO ==================== -->
     <a href="#home" id="back-to-top" class="back-to-top" aria-label="Voltar ao topo da página">
@@ -684,6 +811,13 @@
                 }
             }
             
+            // CLONA O RODAPÉ COMPLETO DO ARTIGO ORIGINAL (COM OS ÍCONES)
+            const rodapeOriginal = original.querySelector('.artigo-rodape');
+            let rodapeHtml = '';
+            if (rodapeOriginal) {
+                rodapeHtml = rodapeOriginal.outerHTML;
+            }
+            
             card.innerHTML = `
                 <div class="artigo-banner">
                     ${imgSrc ? `<img src="${imgSrc}" alt="${bannerImg ? bannerImg.alt : ''}" loading="lazy">` : ''}
@@ -695,6 +829,7 @@
                         <span class="artigo-data">${meta ? meta.querySelector('.artigo-data')?.textContent || '' : ''}</span>
                         <span class="artigo-autor">${meta ? meta.querySelector('.artigo-autor')?.textContent || '' : ''}</span>
                     </div>
+                    ${rodapeHtml}
                     <button class="btn-ler-mais-site" onclick="event.stopPropagation(); abrirArtigoFullscreenSite('${artigo.id}')">📖 Ler Artigo Completo</button>
                 </div>
             `;
@@ -748,11 +883,31 @@
             }
         });
         
+        // FORÇA OS ESTILOS DO CORPO DO ARTIGO
         const corpo = conteudo.querySelector('.artigo-corpo');
         if (corpo) {
             corpo.style.display = 'block';
             corpo.style.maxHeight = 'none';
             corpo.style.overflow = 'visible';
+            corpo.style.padding = '15px 25px';
+            corpo.style.textAlign = 'justify';
+            corpo.style.webkitHyphens = 'auto';
+            corpo.style.mozHyphens = 'auto';
+            corpo.style.msHyphens = 'auto';
+            corpo.style.hyphens = 'auto';
+            corpo.style.textJustify = 'inter-word';
+            
+            const paragrafos = corpo.querySelectorAll('p');
+            paragrafos.forEach(p => {
+                p.style.textAlign = 'justify';
+                p.style.webkitHyphens = 'auto';
+                p.style.mozHyphens = 'auto';
+                p.style.msHyphens = 'auto';
+                p.style.hyphens = 'auto';
+                p.style.textJustify = 'inter-word';
+                p.style.textIndent = '1.5em';
+                p.style.marginBottom = '14px';
+            });
         }
         
         body.innerHTML = '';
