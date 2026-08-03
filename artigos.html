@@ -23,7 +23,7 @@
     <style>
         /* ==================== ARTIGOS NO SITE PRINCIPAL ==================== */
         .artigos-page {
-            padding: 30px 0 60px; /* Reduzido o padding-top para menos espaço */
+            padding: 30px 0 60px;
         }
         
         .artigos-page .page-title {
@@ -38,7 +38,7 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
-            margin-top: 30px; /* Espaçamento entre título e artigos */
+            margin-top: 30px;
         }
         
         @media (min-width: 768px) {
@@ -405,7 +405,6 @@
                 <h1>Vitãotub<span>.</span></h1>
             </a>
             
-            <!-- Navegação desktop -->
             <nav class="main-nav" aria-label="Navegação principal">
                 <ul>
                     <li><a href="index.html#about">Sobre</a></li>
@@ -418,7 +417,6 @@
                 </ul>
             </nav>
             
-            <!-- Botão hamburguer -->
             <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
                 <span class="menu-toggle-bar"></span>
                 <span class="menu-toggle-bar"></span>
@@ -426,7 +424,6 @@
             </button>
         </div>
         
-        <!-- Menu mobile -->
         <nav id="mobile-menu" class="mobile-menu" aria-label="Menu mobile">
             <ul>
                 <li><a href="index.html#about" onclick="closeMobileMenu()">Sobre</a></li>
@@ -444,9 +441,7 @@
     <main class="artigos-page">
         <div class="container">
             <h1 class="page-title">📰 Artigos & Dicas</h1>
-            <!-- Mensagem removida conforme solicitado -->
             
-            <!-- Container onde os artigos serão carregados -->
             <div id="artigos-feed-container-site" class="artigos-grid">
                 <p style="text-align: center; color: #aaa;">Carregando artigos...</p>
             </div>
@@ -565,16 +560,19 @@
             const resumo = original.querySelector('.artigo-resumo');
             const meta = original.querySelector('.artigo-meta');
             
-            // Corrige o caminho das imagens - adiciona 'feed/' se necessário
-            let imgSrc = bannerImg ? bannerImg.src : '';
-            if (imgSrc && !imgSrc.startsWith('http') && !imgSrc.startsWith('/')) {
-                // Se for caminho relativo, ajusta para a raiz
-                imgSrc = '/' + imgSrc;
+            // CORRIGIDO: Busca imagens em /feed/imgs/
+            let imgSrc = '';
+            if (bannerImg) {
+                const src = bannerImg.getAttribute('src');
+                if (src) {
+                    const fileName = src.split('/').pop();
+                    imgSrc = `/feed/imgs/${fileName}`;
+                }
             }
             
             card.innerHTML = `
                 <div class="artigo-banner">
-                    ${bannerImg ? `<img src="${imgSrc}" alt="${bannerImg.alt}" loading="lazy">` : ''}
+                    ${imgSrc ? `<img src="${imgSrc}" alt="${bannerImg ? bannerImg.alt : ''}" loading="lazy">` : ''}
                 </div>
                 <div class="artigo-content">
                     <h3 class="artigo-titulo">${titulo ? titulo.textContent : ''}</h3>
@@ -630,12 +628,13 @@
         const btnShare = conteudo.querySelector('.btn-share-icon');
         if (btnShare) btnShare.remove();
         
-        // Corrige caminhos das imagens no modal
+        // CORRIGIDO: Corrige caminhos das imagens no modal para /feed/imgs/
         const imagens = conteudo.querySelectorAll('img');
         imagens.forEach(img => {
             const src = img.getAttribute('src');
-            if (src && !src.startsWith('http') && !src.startsWith('/')) {
-                img.src = '/' + src;
+            if (src) {
+                const fileName = src.split('/').pop();
+                img.src = `/feed/imgs/${fileName}`;
             }
         });
         
