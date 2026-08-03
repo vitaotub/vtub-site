@@ -267,20 +267,17 @@ body {
     flex-shrink: 0;
 }
 
-/* BOTÕES CIRCULARES SEM TEXTO - MAIORES */
+/* BOTÕES CIRCULARES SEM TEXTO */
 .btn-video-share,
 .btn-video-youtube {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    font-size: 1.1rem;
-    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Satoshi', sans-serif;
     border: none;
     text-decoration: none;
     flex-shrink: 0;
@@ -313,8 +310,8 @@ body {
 /* ÍCONES DENTRO DOS BOTÕES */
 .btn-video-share svg,
 .btn-video-youtube svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
     display: block;
 }
@@ -332,14 +329,13 @@ body {
     }
     .btn-video-share,
     .btn-video-youtube {
-        width: 38px;
-        height: 38px;
-        font-size: 0.9rem;
+        width: 34px;
+        height: 34px;
     }
     .btn-video-share svg,
     .btn-video-youtube svg {
-        width: 17px;
-        height: 17px;
+        width: 15px;
+        height: 15px;
     }
 }
 
