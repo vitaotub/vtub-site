@@ -317,12 +317,13 @@ body {
     display: block;
 }
 
-/* TOOLTIPS PERSONALIZADOS */
+/* TOOLTIPS PERSONALIZADOS - POSIÇÃO FIXA PARA NÃO SER CORTADO */
 .btn-video-share::after,
 .btn-video-youtube::after {
     content: attr(data-tooltip);
-    position: absolute;
-    bottom: calc(100% + 8px);
+    position: fixed;
+    bottom: auto;
+    top: calc(50% - 40px);
     left: 50%;
     transform: translateX(-50%) scale(0.9);
     background: rgba(0, 0, 0, 0.9);
@@ -337,15 +338,16 @@ body {
     transition: all 0.2s ease;
     font-family: 'Satoshi', sans-serif;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 999;
+    z-index: 9999;
 }
 
 /* Seta do tooltip */
 .btn-video-share::before,
 .btn-video-youtube::before {
     content: '';
-    position: absolute;
-    bottom: calc(100% + 2px);
+    position: fixed;
+    bottom: auto;
+    top: calc(50% - 20px);
     left: 50%;
     transform: translateX(-50%) scale(0.9);
     border: 6px solid transparent;
@@ -353,7 +355,7 @@ body {
     pointer-events: none;
     opacity: 0;
     transition: all 0.2s ease;
-    z-index: 999;
+    z-index: 9999;
 }
 
 /* Mostrar tooltip no hover */
@@ -391,6 +393,11 @@ body {
     .btn-video-youtube::after {
         font-size: 0.6rem;
         padding: 4px 8px;
+        top: calc(50% - 35px);
+    }
+    .btn-video-share::before,
+    .btn-video-youtube::before {
+        top: calc(50% - 18px);
     }
 }
 
