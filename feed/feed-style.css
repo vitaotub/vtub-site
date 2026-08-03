@@ -1017,6 +1017,7 @@ body {
 .projeto-modal-link {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     padding: 10px 24px;
     background: var(--gradient-brand);
@@ -1029,8 +1030,10 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Satoshi', sans-serif;
-    margin: 0 auto; /* CENTRALIZADO */
-    width: fit-content; /* Ajusta à largura do conteúdo */
+    margin: 0 auto; /* Centralizado no desktop */
+    width: auto; /* Largura automática no desktop */
+    min-width: 180px; /* Largura mínima para não ficar muito pequeno */
+    max-width: 100%;
 }
 
 .projeto-modal-link:hover {
@@ -1063,10 +1066,13 @@ body {
         margin: 6px 6px 0 0;
     }
     .projeto-modal-link {
-        padding: 8px 18px;
+        padding: 10px 18px;
         font-size: 0.85rem;
-        width: 100%;
+        width: calc(100% - 20px); /* Quase toda a largura, com margem de 10px cada lado */
+        min-width: unset;
+        margin: 0 auto;
         justify-content: center;
+        box-sizing: border-box;
     }
 }
 
