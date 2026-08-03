@@ -976,9 +976,9 @@ body {
 }
 
 .projeto-modal-platform {
-    display: flex; /* Mudamos de inline-flex para flex */
+    display: flex;
     align-items: center;
-    justify-content: center; /* Força centralização horizontal */
+    justify-content: center;
     gap: 6px;
     font-size: 0.8rem;
     font-weight: 600;
@@ -987,8 +987,8 @@ body {
     background: transparent;
     border: 1.5px solid var(--primary-purple);
     color: var(--primary-purple);
-    margin: 0 auto 12px auto; /* Centraliza o bloco */
-    width: fit-content; /* Ajusta à largura do conteúdo */
+    margin: 0 auto 12px auto;
+    width: fit-content;
 }
 
 .projeto-modal-descricao {
@@ -996,7 +996,15 @@ body {
     color: var(--text-dim);
     line-height: 1.6;
     margin-bottom: 15px;
-    text-align: left;
+    text-align: justify;
+    text-justify: inter-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
     text-indent: 2em;
 }
 
