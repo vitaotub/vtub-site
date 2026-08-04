@@ -145,26 +145,6 @@ body > .skiptranslate { display: none !important; }
 }
 .theme-toggle-btn:hover { transform: translateY(-50%) scale(1.1); border-color: var(--primary-purple); }
 
-/* Botão X de fechar tema */
-.theme-close-btn {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 22px;
-    height: 22px;
-    background: #ff0000;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    font-size: 12px;
-    cursor: pointer;
-    z-index: 1000;
-    line-height: 1;
-    -webkit-tap-highlight-color: transparent;
-}
-.theme-close-btn:hover { background: #cc0000; transform: scale(1.1); }
-
 /* ==================== 8. BOTÃO DE TRADUÇÃO FLUTUANTE ==================== */
 .translate-widget {
     position: fixed;
@@ -257,26 +237,6 @@ body > .skiptranslate { display: none !important; }
 body.light-mode .translate-dropdown::-webkit-scrollbar-track {
     background: #f0f0f0;
 }
-
-/* Botão X de fechar tradução */
-.translate-close-btn {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 22px;
-    height: 22px;
-    background: #ff0000;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    font-size: 12px;
-    cursor: pointer;
-    z-index: 1000;
-    line-height: 1;
-    -webkit-tap-highlight-color: transparent;
-}
-.translate-close-btn:hover { background: #cc0000; transform: scale(1.1); }
 
 /* ==================== 9. ESTRUTURA DE SEÇÕES E HERO ==================== */
 .container { max-width: var(--container-max); margin: 0 auto; padding: 0 20px; width: 100%; }

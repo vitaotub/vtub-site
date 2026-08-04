@@ -481,7 +481,7 @@ function initTranslateWidget() {
     }, 1500);
 }
 
-// ==================== 14. BOTÃO DE TRADUÇÃO ARRASTÁVEL E FECHÁVEL ====================
+// ==================== 14. BOTÃO DE TRADUÇÃO ARRASTÁVEL ====================
 function initDraggableTranslate() {
     const widget = document.getElementById('translate-widget');
     const toggleBtn = document.getElementById('translate-toggle');
@@ -491,25 +491,9 @@ function initDraggableTranslate() {
     let isDragging = false;
     let hasDragged = false;
     let startX, startY, startLeft, startBottom;
-    
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'translate-close-btn';
-    closeBtn.innerHTML = '✕';
-    closeBtn.title = 'Esconder tradutor';
-    closeBtn.style.cssText = 'display:none;position:absolute;top:-8px;right:-8px;width:22px;height:22px;background:#ff0000;color:#fff;border:none;border-radius:50%;font-size:12px;cursor:pointer;z-index:1000;line-height:1;';
-    widget.appendChild(closeBtn);
-    
-    toggleBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
-    widget.addEventListener('mouseleave', () => { if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; });
-    
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        widget.style.display = 'none';
-        localStorage.setItem('vitaotub_translate_hidden', 'true');
-    });
+    let dragTimeout = null;
     
     toggleBtn.addEventListener('mousedown', (e) => {
-        if (e.target === closeBtn) return;
         isDragging = true;
         hasDragged = false;
         startX = e.clientX;
@@ -522,7 +506,6 @@ function initDraggableTranslate() {
     });
     
     toggleBtn.addEventListener('touchstart', (e) => {
-        if (e.target === closeBtn) return;
         isDragging = true;
         hasDragged = false;
         startX = e.touches[0].clientX;
@@ -555,6 +538,10 @@ function initDraggableTranslate() {
         if (isDragging) {
             isDragging = false;
             widget.style.transition = '';
+            clearTimeout(dragTimeout);
+            dragTimeout = setTimeout(() => {
+                hasDragged = false;
+            }, 150);
         }
     });
     
@@ -562,10 +549,14 @@ function initDraggableTranslate() {
         if (isDragging) {
             isDragging = false;
             widget.style.transition = '';
+            clearTimeout(dragTimeout);
+            dragTimeout = setTimeout(() => {
+                hasDragged = false;
+            }, 150);
         }
     });
     
-    // CLIQUE - só executa se NÃO arrastou
+    // === CLIQUE ===
     toggleBtn.addEventListener('click', function(e) {
         if (hasDragged) {
             hasDragged = false;
@@ -638,7 +629,7 @@ function initThemeToggle() {
     else { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
 }
 
-// ==================== 17. BOTÃO DE TEMA ARRASTÁVEL E FECHÁVEL ====================
+// ==================== 17. BOTÃO DE TEMA ARRASTÁVEL ====================
 function initDraggableTheme() {
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (!themeBtn) {
@@ -652,32 +643,13 @@ function initDraggableTheme() {
         return; 
     }
     
-    // === BOTÃO X PARA FECHAR ===
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'theme-close-btn';
-    closeBtn.innerHTML = '✕';
-    closeBtn.title = 'Esconder botão de tema';
-    closeBtn.style.cssText = 'display:none;position:absolute;top:-8px;right:-8px;width:22px;height:22px;background:#ff0000;color:#fff;border:none;border-radius:50%;font-size:12px;cursor:pointer;z-index:1000;line-height:1;';
-    themeBtn.appendChild(closeBtn);
-    
-    themeBtn.addEventListener('mouseenter', () => { closeBtn.style.display = 'block'; });
-    themeBtn.addEventListener('mouseleave', () => { 
-        if (!closeBtn.dataset.forced) closeBtn.style.display = 'none'; 
-    });
-    
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        themeBtn.style.display = 'none';
-        localStorage.setItem('vitaotub_theme_hidden', 'true');
-    });
-    
     // === LÓGICA DE ARRASTE ===
     let isDragging = false;
     let hasDragged = false;
     let startX, startY, startTop, startRight;
+    let dragTimeout = null;
     
     themeBtn.addEventListener('mousedown', (e) => {
-        if (e.target === closeBtn) return;
         isDragging = true;
         hasDragged = false;
         startX = e.clientX;
@@ -690,7 +662,6 @@ function initDraggableTheme() {
     });
     
     themeBtn.addEventListener('touchstart', (e) => {
-        if (e.target === closeBtn) return;
         isDragging = true;
         hasDragged = false;
         startX = e.touches[0].clientX;
@@ -723,8 +694,10 @@ function initDraggableTheme() {
         if (isDragging) {
             isDragging = false;
             themeBtn.style.transition = '';
-            // Pequeno delay para evitar que o clique seja interpretado como arraste
-            setTimeout(() => { hasDragged = false; }, 100);
+            clearTimeout(dragTimeout);
+            dragTimeout = setTimeout(() => {
+                hasDragged = false;
+            }, 150);
         }
     });
     
@@ -732,22 +705,19 @@ function initDraggableTheme() {
         if (isDragging) {
             isDragging = false;
             themeBtn.style.transition = '';
-            setTimeout(() => { hasDragged = false; }, 100);
+            clearTimeout(dragTimeout);
+            dragTimeout = setTimeout(() => {
+                hasDragged = false;
+            }, 150);
         }
     });
     
-    // === CLIQUE - SIMPLES E DIRETO ===
+    // === CLIQUE ===
     themeBtn.addEventListener('click', function(e) {
-        // Se clicou no X, não faz nada
-        if (e.target === closeBtn) return;
-        
-        // Se houve arraste, ignora
         if (hasDragged) {
             hasDragged = false;
             return;
         }
-        
-        // Executa toggleTheme
         toggleTheme();
     });
 }
