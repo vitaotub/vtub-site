@@ -563,7 +563,7 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 /* Feed container - ESPAÇAMENTO REDUZIDO */
 .feed-container { 
     max-width: 600px; 
-    margin: 10px auto 30px auto; /* REDUZIDO de 20px para 10px */
+    margin: 5px auto 30px auto; /* REDUZIDO de 20px para 10px */
     padding: 0 15px 50px; 
 }
 
