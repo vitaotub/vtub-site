@@ -18,12 +18,12 @@
     
     <!-- ==================== FONTES E ESTILOS ==================== -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../style.css">  <!-- ← CORRIGIDO -->
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body class="feed-body no-title-underline">
     
     <!-- ==================== HEADER ==================== -->
-    <header class="feed-header">
+    <header class="feed-header" style="padding: 12px 15px 8px 15px;">
         <div class="logo-container">
             <img src="../eu-frente-feed.png" alt="Logo VitãoTub" class="feed-logo">
             <a href="https://www.youtube.com/@VitaoTub?sub_confirmation=1" target="_blank" class="logo-subscribe-btn" rel="noopener noreferrer">
@@ -31,29 +31,29 @@
             </a>
         </div>
         
-        <h1 class="feed-title">VitãoTub</h1>
+        <h1 class="feed-title" style="margin: 0 0 6px 0;">VitãoTub</h1>
         
         <!-- Abas de navegação -->
-<nav class="feed-tabs" aria-label="Navegação do feed">
-    <button id="btn-tab-videos" class="tab-btn active" onclick="mudarAba('videos')" aria-pressed="true">Vídeos & Lives</button>
-    <button id="btn-tab-artigos" class="tab-btn" onclick="mudarAba('artigos')" aria-pressed="false">Artigos & Dicas</button>
-    <button id="btn-tab-projetos" class="tab-btn" onclick="mudarAba('projetos')" aria-pressed="false">Meus Projetos</button> <!-- NOVO -->
-    <button id="btn-tab-sobre" class="tab-btn" onclick="mudarAba('sobre')" aria-pressed="false">Pérolas</button> <!-- Trocado "Sobre" para "Pérolas" -->
-</nav>
+        <nav class="feed-tabs" style="margin-top: 2px;" aria-label="Navegação do feed">
+            <button id="btn-tab-videos" class="tab-btn active" onclick="mudarAba('videos')" aria-pressed="true">Vídeos & Lives</button>
+            <button id="btn-tab-artigos" class="tab-btn" onclick="mudarAba('artigos')" aria-pressed="false">Artigos & Dicas</button>
+            <button id="btn-tab-projetos" class="tab-btn" onclick="mudarAba('projetos')" aria-pressed="false">Meus Projetos</button>
+            <button id="btn-tab-sobre" class="tab-btn" onclick="mudarAba('sobre')" aria-pressed="false">Pérolas</button>
+        </nav>
     </header>
 
     <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
-    <main class="feed-container">
+    <main class="feed-container" style="margin-top: 0; padding-top: 5px;">
         
         <!-- Seção 1: Vídeos do YouTube (carregados via RSS) -->
-        <section id="secao-videos" class="feed-section active" aria-label="Vídeos recentes">
+        <section id="secao-videos" class="feed-section active" style="padding-top: 5px;" aria-label="Vídeos recentes">
             <div id="youtube-feed-container">
                 <p style="text-align: center; color: #aaa;">Buscando vídeos recentes do canal...</p>
             </div>
         </section>
 
         <!-- Seção 2: Artigos & Dicas (carregados dinamicamente) -->
-        <section id="secao-artigos" class="feed-section" style="display: none;" aria-label="Artigos e dicas">
+        <section id="secao-artigos" class="feed-section" style="display: none; padding-top: 5px;" aria-label="Artigos e dicas">
             <div id="artigos-feed-container">
                 <p style="text-align: center; color: #aaa;">Carregando artigos...</p>
             </div>
@@ -61,46 +61,49 @@
                 <p>Carregando mais artigos...</p>
             </div>
         </section>
-<!-- Seção 4: Meus Projetos (NOVO) -->
-<section id="secao-projetos" class="feed-section" style="display: none;" aria-label="Meus Projetos">
-    <div id="projetos-feed-container">
-        <p style="text-align: center; color: #aaa;">Carregando projetos...</p>
-    </div>
-</section>
-<section id="secao-sobre" class="feed-section" style="display: none;" aria-label="Pérolas">
-    <div class="about-container">
-        <div class="about-profile">
-            <h2>💎 Pérolas</h2>
-        </div>
-        <div class="about-bio">
-            <!-- Mensagem 1 -->
-            <div class="perola-item">
-                <p class="perola-text">"A tecnologia é a ponte entre o impossível e o inevitável. Cada bug corrigido é uma vitória."</p>
-                <p class="perola-autor">— Carlos Alberto, SP</p>
+        
+        <!-- Seção 3: Meus Projetos -->
+        <section id="secao-projetos" class="feed-section" style="display: none; padding-top: 5px;" aria-label="Meus Projetos">
+            <div id="projetos-feed-container">
+                <p style="text-align: center; color: #aaa;">Carregando projetos...</p>
             </div>
-            <!-- Mensagem 2 -->
-            <div class="perola-item">
-                <p class="perola-text">"Se o PC não ligar, respira fundo, toma um café e chama o VitãoTub. Ele sempre tem a solução!"</p>
-                <p class="perola-autor">— Mariana Silva, RJ</p>
+        </section>
+        
+        <!-- Seção 4: Pérolas -->
+        <section id="secao-sobre" class="feed-section" style="display: none; padding-top: 5px;" aria-label="Pérolas">
+            <div class="about-container">
+                <div class="about-profile">
+                    <h2>💎 Pérolas</h2>
+                </div>
+                <div class="about-bio">
+                    <!-- Mensagem 1 -->
+                    <div class="perola-item">
+                        <p class="perola-text">"A tecnologia é a ponte entre o impossível e o inevitável. Cada bug corrigido é uma vitória."</p>
+                        <p class="perola-autor">— Carlos Alberto, SP</p>
+                    </div>
+                    <!-- Mensagem 2 -->
+                    <div class="perola-item">
+                        <p class="perola-text">"Se o PC não ligar, respira fundo, toma um café e chama o VitãoTub. Ele sempre tem a solução!"</p>
+                        <p class="perola-autor">— Mariana Silva, RJ</p>
+                    </div>
+                    <!-- Mensagem 3 -->
+                    <div class="perola-item">
+                        <p class="perola-text">"Linux é que nem café: depois que você prova o bom, não quer mais o de pacote."</p>
+                        <p class="perola-autor">— João Pedro, MG</p>
+                    </div>
+                    <!-- Mensagem 4 -->
+                    <div class="perola-item">
+                        <p class="perola-text">"Minha mãe falou que 'esse negócio de tecnologia é coisa de nerd'. Hoje ela me pede ajuda pra usar o WhatsApp."</p>
+                        <p class="perola-autor">— Rafael Oliveira, BA</p>
+                    </div>
+                    <!-- Mensagem 5 -->
+                    <div class="perola-item">
+                        <p class="perola-text">"O melhor antivírus é o bom senso. O segundo melhor é... Migrar para Linux? :D"</p>
+                        <p class="perola-autor">— Vitão</p>
+                    </div>
+                </div>
             </div>
-            <!-- Mensagem 3 -->
-            <div class="perola-item">
-                <p class="perola-text">"Linux é que nem café: depois que você prova o bom, não quer mais o de pacote."</p>
-                <p class="perola-autor">— João Pedro, MG</p>
-            </div>
-            <!-- Mensagem 4 -->
-            <div class="perola-item">
-                <p class="perola-text">"Minha mãe falou que 'esse negócio de tecnologia é coisa de nerd'. Hoje ela me pede ajuda pra usar o WhatsApp."</p>
-                <p class="perola-autor">— Rafael Oliveira, BA</p>
-            </div>
-            <!-- Mensagem 5 -->
-            <div class="perola-item">
-                <p class="perola-text">"O melhor antivírus é o bom senso. O segundo melhor é... Migrar para Linux? :D"</p>
-                <p class="perola-autor">— Vitão</p>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
         
     </main>
 
@@ -114,7 +117,7 @@
         </div>
     </div>
 
-       <!-- ==================== BOTÃO DE TEMA (CLARO/ESCURO) ==================== -->
+    <!-- ==================== BOTÃO DE TEMA (CLARO/ESCURO) ==================== -->
     <button id="theme-toggle-btn" class="theme-toggle-btn" style="top: 40%;" aria-label="Alternar tema" title="Mudar para modo claro">☀️</button>
 
     <!-- ==================== POPUP DE INSTALAÇÃO PWA (SOMENTE MOBILE) ==================== -->
@@ -143,17 +146,17 @@
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
         </button>
-<div id="translate-dropdown" class="translate-dropdown">
-    <span class="translate-dropdown-title">Traduzir para:</span>
-    <button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button>
-    <button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button>
-    <button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button>
-    <button class="translate-option" data-lang="it" onclick="translatePage('it')">🇮🇹 Italiano</button>
-    <button class="translate-option" data-lang="fr" onclick="translatePage('fr')">🇫🇷 Français</button>
-    <button class="translate-option" data-lang="zh-CN" onclick="translatePage('zh-CN')">🇨🇳 中文</button>
-    <button class="translate-option" data-lang="ja" onclick="translatePage('ja')">🇯🇵 日本語</button>
-    <button class="translate-option" data-lang="hi" onclick="translatePage('hi')">🇮🇳 हिन्दी</button>
-</div>
+        <div id="translate-dropdown" class="translate-dropdown">
+            <span class="translate-dropdown-title">Traduzir para:</span>
+            <button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button>
+            <button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button>
+            <button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button>
+            <button class="translate-option" data-lang="it" onclick="translatePage('it')">🇮🇹 Italiano</button>
+            <button class="translate-option" data-lang="fr" onclick="translatePage('fr')">🇫🇷 Français</button>
+            <button class="translate-option" data-lang="zh-CN" onclick="translatePage('zh-CN')">🇨🇳 中文</button>
+            <button class="translate-option" data-lang="ja" onclick="translatePage('ja')">🇯🇵 日本語</button>
+            <button class="translate-option" data-lang="hi" onclick="translatePage('hi')">🇮🇳 हिन्दी</button>
+        </div>
     </div>
 
     <!-- Container oculto do Google Tradutor -->
@@ -172,25 +175,25 @@
     <!-- Google Translate -->
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<!-- ==================== SCHEMA.ORG - DADOS ESTRUTURADOS ==================== -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Victor Lopes",
-  "alternateName": "VitãoTub",
-  "description": "Criador de conteúdo sobre tecnologia, segurança digital e games. Mais de 16 mil inscritos no YouTube.",
-  "url": "https://www.vitaotub.com/",
-  "sameAs": [
-    "https://www.youtube.com/@vitaotub",
-    "https://www.instagram.com/vitaotub",
-    "https://www.tiktok.com/@vitaotub",
-    "https://www.twitch.tv/vitaotub",
-    "https://github.com/vitaotub",
-    "https://t.me/+6dT_v5m0lnQzNDAx"
-  ]
-}
-</script>
+    <!-- ==================== SCHEMA.ORG - DADOS ESTRUTURADOS ==================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Victor Lopes",
+      "alternateName": "VitãoTub",
+      "description": "Criador de conteúdo sobre tecnologia, segurança digital e games. Mais de 16 mil inscritos no YouTube.",
+      "url": "https://www.vitaotub.com/",
+      "sameAs": [
+        "https://www.youtube.com/@vitaotub",
+        "https://www.instagram.com/vitaotub",
+        "https://www.tiktok.com/@vitaotub",
+        "https://www.twitch.tv/vitaotub",
+        "https://github.com/vitaotub",
+        "https://t.me/+6dT_v5m0lnQzNDAx"
+      ]
+    }
+    </script>
 
 </body>
 </html>
