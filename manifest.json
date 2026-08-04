@@ -1,5 +1,6 @@
 {
-  "name": "VitãoTub - Tecnologia, Segurança e Games",
+  "name": "VitãoTub App",
+  "short_name": "VitãoTub App",
   "short_name": "VitãoTub",
   "description": "Tecnologia, Segurança Digital e Games de forma acessível. Feed com vídeos, lives, artigos e projetos.",
   "start_url": "/feed/index.html",

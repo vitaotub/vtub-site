@@ -127,7 +127,7 @@ body > .skiptranslate { display: none !important; }
     top: 50%;
     left: 20px;
     transform: translateY(-50%);
-    z-index: 998;
+    z-index: 1001;
     width: 42px;
     height: 42px;
     background-color: var(--card-bg);
@@ -171,7 +171,7 @@ body > .skiptranslate { display: none !important; }
     top: calc(50% + 60px);
     left: 20px;
     transform: translateY(-50%);
-    z-index: 999;
+    z-index: 1002;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
