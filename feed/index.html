@@ -114,8 +114,8 @@
         </div>
     </div>
 
-    <!-- ==================== BOTÃO DE TEMA (CLARO/ESCURO) ==================== -->
-    <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Alternar tema" title="Mudar para modo claro">☀️</button>
+       <!-- ==================== BOTÃO DE TEMA (CLARO/ESCURO) ==================== -->
+    <button id="theme-toggle-btn" class="theme-toggle-btn" style="top: 40%;" aria-label="Alternar tema" title="Mudar para modo claro">☀️</button>
 
     <!-- ==================== POPUP DE INSTALAÇÃO PWA (SOMENTE MOBILE) ==================== -->
     <div id="pwa-install-popup" class="pwa-popup-overlay" style="display: none;">
@@ -143,12 +143,17 @@
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
         </button>
-        <div id="translate-dropdown" class="translate-dropdown">
-            <span class="translate-dropdown-title">Traduzir para:</span>
-            <button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button>
-            <button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button>
-            <button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button>
-        </div>
+<div id="translate-dropdown" class="translate-dropdown">
+    <span class="translate-dropdown-title">Traduzir para:</span>
+    <button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button>
+    <button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button>
+    <button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button>
+    <button class="translate-option" data-lang="it" onclick="translatePage('it')">🇮🇹 Italiano</button>
+    <button class="translate-option" data-lang="fr" onclick="translatePage('fr')">🇫🇷 Français</button>
+    <button class="translate-option" data-lang="zh-CN" onclick="translatePage('zh-CN')">🇨🇳 中文</button>
+    <button class="translate-option" data-lang="ja" onclick="translatePage('ja')">🇯🇵 日本語</button>
+    <button class="translate-option" data-lang="hi" onclick="translatePage('hi')">🇮🇳 हिन्दी</button>
+</div>
     </div>
 
     <!-- Container oculto do Google Tradutor -->
@@ -165,18 +170,6 @@
     <script src="../javascript.js"></script>
     
     <!-- Google Translate -->
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'pt', 
-                includedLanguages: 'en,es,pt', 
-                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
-                autoDisplay: false,
-                multilanguagePage: true,
-                gaTrack: false
-            }, 'google_translate_element');
-        }
-    </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <!-- ==================== SCHEMA.ORG - DADOS ESTRUTURADOS ==================== -->
