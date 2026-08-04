@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ==================== ÍCONES E PWA ==================== -->
+    <link rel="icon" type="image/png" sizes="512x512" href="logo-app.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo-app.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="logo-app.png">
+
+    <!-- Manifest do PWA -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- ==================== SEO META TAGS ==================== -->
+    <title>Artigos & Dicas | VitãoTub</title>
+    <meta name="theme-color" content="#121212">
+    <meta name="description" content="Artigos e dicas sobre tecnologia, segurança digital, Linux, Windows e games. Conteúdo exclusivo do VitãoTub.">
+    <meta name="keywords" content="vitãotub, artigos, dicas, tecnologia, segurança, linux, windows, games">
+    <meta name="author" content="Victor Lopes">
+    <link rel="canonical" href="https://www.vitaotub.com/artigos-dicas.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.vitaotub.com/artigos-dicas.html">
+    <meta property="og:title" content="Artigos & Dicas | VitãoTub">
+    <meta property="og:description" content="Artigos exclusivos sobre tecnologia, segurança digital e games.">
+    <meta property="og:image" content="https://img.youtube.com/vi/BbQccfi-1D8/maxresdefault.jpg">
+
+    <!-- Twitter Card -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.vitaotub.com/artigos-dicas.html">
+    <meta property="twitter:title" content="Artigos & Dicas | VitãoTub">
+    <meta property="twitter:description" content="Artigos exclusivos sobre tecnologia, segurança digital e games.">
+    <meta property="twitter:image" content="https://img.youtube.com/vi/BbQccfi-1D8/maxresdefault.jpg">
+
+    <!-- ==================== FONTES E ESTILOS ==================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="artigos" class="no-title-underline">
+
+    <!-- ==================== BACKGROUND VISUAL ==================== -->
+    <div class="bg-wrapper" aria-hidden="true">
+        <div class="bg-gradient-1"></div>
+        <div class="bg-noise"></div>
+    </div>
+
+    <!-- ==================== HEADER ==================== -->
+    <header>
+        <div class="header-content">
+            <a href="index.html#home" class="logo-link">
+                <h1>Vitãotub<span>.</span></h1>
+            </a>
+            
+            <!-- Navegação desktop (visível em telas grandes) -->
+            <nav class="main-nav" aria-label="Navegação principal">
+                <ul>
+                    <li><a href="index.html#about">Sobre</a></li>
+                    <li><a href="index.html#stats">Estatísticas</a></li>
+                    <li><a href="index.html#featured-videos">Principais Vídeos</a></li>
+                    <li><a href="meus-projetos.html">Meus Projetos</a></li>
+                    <li><a href="artigos-dicas.html">Artigos & Dicas</a></li>
+                    <li><a href="bio.html">Bio</a></li>
+                    <li><a href="index.html#contact">Contato</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Botão hamburguer (visível apenas em mobile) -->
+            <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+            </button>
+        </div>
+        
+        <!-- Menu mobile (oculto por padrão) -->
+        <nav id="mobile-menu" class="mobile-menu" aria-label="Menu mobile">
+            <ul>
+                <li><a href="index.html#about" onclick="closeMobileMenu()">Sobre</a></li>
+                <li><a href="index.html#stats" onclick="closeMobileMenu()">Estatísticas</a></li>
+                <li><a href="index.html#featured-videos" onclick="closeMobileMenu()">Principais Vídeos</a></li>
+                <li><a href="meus-projetos.html" onclick="closeMobileMenu()">Meus Projetos</a></li>
+                <li><a href="artigos-dicas.html" onclick="closeMobileMenu()">Artigos & Dicas</a></li>
+                <li><a href="bio.html" onclick="closeMobileMenu()">Bio</a></li>
+                <li><a href="index.html#contact" onclick="closeMobileMenu()">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+    <main>
+
+        <!-- ==================== SEÇÃO ARTIGOS & DICAS ==================== -->
+<section id="artigos" aria-label="Artigos e dicas">
+    <div class="container">
+        <h2 class="artigos-title">Artigos & Dicas</h2>
+        
+        <div id="artigos-container">
+            <p style="text-align: center; color: var(--text-dim); padding: 40px 0;">Carregando artigos...</p>
+        </div>
+        <div id="artigos-loading" class="artigos-loading" style="display: none;">
+            <p>Carregando mais artigos...</p>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <!-- ==================== MODAL DE ARTIGO EM TELA CHEIA ==================== -->
+    <div id="artigo-fullscreen-modal" class="artigo-fullscreen-modal">
+        <div class="artigo-fullscreen-content">
+            <button class="artigo-fullscreen-close" onclick="fecharArtigoFullscreen()" aria-label="Fechar artigo">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="artigo-fullscreen-body"></div>
+        </div>
+    </div>
+
+    <!-- ==================== BOTÃO DE TEMA (CLARO/ESCURO) ==================== -->
+    <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Alternar tema" title="Mudar para modo claro">☀️</button>
+
+    <!-- ==================== BOTÃO DE TRADUÇÃO FLUTUANTE ==================== -->
+    <div id="translate-widget" class="translate-widget">
+        <button id="translate-toggle" class="translate-toggle" aria-label="Traduzir site" title="Traduzir site" onclick="toggleTranslateDropdown(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+        </button>
+<div id="translate-dropdown" class="translate-dropdown">
+    <span class="translate-dropdown-title">Traduzir para:</span>
+    <button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button>
+    <button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button>
+    <button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button>
+    <button class="translate-option" data-lang="it" onclick="translatePage('it')">🇮🇹 Italiano</button>
+    <button class="translate-option" data-lang="fr" onclick="translatePage('fr')">🇫🇷 Français</button>
+    <button class="translate-option" data-lang="zh-CN" onclick="translatePage('zh-CN')">🇨🇳 中文</button>
+    <button class="translate-option" data-lang="ja" onclick="translatePage('ja')">🇯🇵 日本語</button>
+    <button class="translate-option" data-lang="hi" onclick="translatePage('hi')">🇮🇳 हिन्दी</button>
+</div>
+    </div>
+    <div id="google_translate_element" style="display: none;"></div>
+
+    <!-- ==================== MODAL DE PRIVACIDADE ==================== -->
+    <div id="privacy-modal" class="modal">
+        <div class="modal-content" id="privacy-modal-content">
+            <button class="modal-close-btn" onclick="closePrivacyModal()" aria-label="Fechar"><span class="modal-close-icon">✕</span></button>
+            <div class="modal-swipe-indicator"><span></span></div>
+            <div id="privacy-content-target" lang="pt-BR"></div>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST DE CONFIRMAÇÃO ==================== -->
+    <div id="toast-container" class="toast-overlay">
+        <div id="toast-notification" class="toast-central">
+            <div class="toast-content">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="30" height="30">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </div>
+                <h3>Quase lá 🚀</h3>
+                <p>Abrimos o seu e-mail com todos os detalhes preenchidos. Verifique a janela do seu aplicativo de e-mail e finalize o envio por lá. Te respondo em breve!</p>
+                <button type="button" class="toast-close-btn" onclick="closeToast()">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== BOTÃO VOLTAR AO TOPO ==================== -->
+    <a href="#" id="back-to-top" class="back-to-top" aria-label="Voltar ao topo da página">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </a>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Victor Lopes | VitãoTub</p>
+            <div class="footer-links">
+                <a href="#" onclick="event.preventDefault(); openPrivacyModal();">Política de Privacidade</a> | 
+                <a href="#" onclick="event.preventDefault(); openTermsModal();">Termos de Uso</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="javascript.js"></script>
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pt', 
+                includedLanguages: 'en,es,pt', 
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+                autoDisplay: false,
+                multilanguagePage: true,
+                gaTrack: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- ==================== SCHEMA.ORG - DADOS ESTRUTURADOS ==================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Victor Lopes",
+      "alternateName": "VitãoTub",
+      "description": "Criador de conteúdo sobre tecnologia, segurança digital e games. Mais de 16 mil inscritos no YouTube.",
+      "url": "https://www.vitaotub.com/",
+      "sameAs": [
+        "https://www.youtube.com/@vitaotub",
+        "https://www.instagram.com/vitaotub",
+        "https://www.tiktok.com/@vitaotub",
+        "https://www.twitch.tv/vitaotub",
+        "https://github.com/vitaotub",
+        "https://t.me/+6dT_v5m0lnQzNDAx"
+      ]
+    }
+    </script>
+
+    <!-- ==================== CARREGAR ARTIGOS ==================== -->
+<script>
+    // Carrega os artigos ao iniciar a página
+    document.addEventListener("DOMContentLoaded", function() {
+        carregarArtigosPagina();
+    });
+
+    function carregarArtigosPagina() {
+        const container = document.getElementById('artigos-container');
+        const loading = document.getElementById('artigos-loading');
+        
+        if (!container) return;
+        
+        container.innerHTML = '<p style="text-align: center; color: var(--text-dim);">Carregando artigos...</p>';
+        
+        fetch('feed/artigos.html')
+            .then(response => {
+                if (!response.ok) throw new Error('Arquivo não encontrado');
+                return response.text();
+            })
+            .then(html => {
+                // 🔧 CORREÇÃO: Substitui os caminhos das imagens
+                // De "imgs/" para "feed/imgs/" (já que estamos na raiz)
+                html = html.replace(/src="imgs\//g, 'src="feed/imgs/');
+                
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const artigos = doc.querySelectorAll('.artigo-card');
+                
+                if (artigos.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-dim);">Nenhum artigo encontrado.</p>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                // Ordenar artigos por data (mais recente primeiro)
+                const artigosArray = Array.from(artigos);
+                artigosArray.sort((a, b) => {
+                    const dataA = a.getAttribute('data-data').split('/').reverse().join('-');
+                    const dataB = b.getAttribute('data-data').split('/').reverse().join('-');
+                    return new Date(dataB) - new Date(dataA);
+                });
+                
+                artigosArray.forEach(artigo => {
+                    const card = artigo.cloneNode(true);
+                    card.style.cursor = 'pointer';
+                    
+                    card.addEventListener('click', function(e) {
+                        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('iframe')) return;
+                        const artigoId = this.id;
+                        if (artigoId && typeof abrirArtigoFullscreen === 'function') {
+                            abrirArtigoFullscreen(artigoId);
+                        }
+                    });
+                    
+                    const btnLerMais = document.createElement('button');
+                    btnLerMais.className = 'btn-ler-mais';
+                    btnLerMais.innerHTML = '📖 Ler Artigo Completo';
+                    btnLerMais.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const artigoId = card.id;
+                        if (artigoId && typeof abrirArtigoFullscreen === 'function') {
+                            abrirArtigoFullscreen(artigoId);
+                        }
+                    });
+                    
+                    const meta = card.querySelector('.artigo-meta');
+                    if (meta) {
+                        meta.after(btnLerMais);
+                    } else {
+                        card.appendChild(btnLerMais);
+                    }
+                    
+                    container.appendChild(card);
+                });
+                
+                if (typeof initArtigoDestaque === 'function') {
+                    initArtigoDestaque();
+                }
+                
+                if (loading) loading.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Erro ao carregar artigos:', error);
+                container.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro ao carregar artigos. Tente novamente mais tarde.</p>';
+                if (loading) loading.style.display = 'none';
+            });
+    }
+</script>
+
+</body>
+</html>

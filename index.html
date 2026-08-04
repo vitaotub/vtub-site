@@ -65,6 +65,7 @@
                     <li><a href="#stats">Estatísticas</a></li>
                     <li><a href="#featured-videos">Principais Vídeos</a></li>
                     <li><a href="meus-projetos.html">Meus Projetos</a></li>
+                    <li><a href="artigos-dicas.html">Artigos & Dicas</a></li>
                     <li><a href="bio.html">Bio</a></li>
                     <li><a href="#contact">Contato</a></li>
                 </ul>
@@ -84,8 +85,8 @@
                 <li><a href="index.html#about" onclick="closeMobileMenu()">Sobre</a></li>
                 <li><a href="index.html#stats" onclick="closeMobileMenu()">Estatísticas</a></li>
                 <li><a href="index.html#featured-videos" onclick="closeMobileMenu()">Principais Vídeos</a></li>
-		<li><a href="meus-projetos.html">Meus Projetos</a></li>
-                <li><a href="bio.html" onclick="closeMobileMenu()">Bio</a></li>
+                <li><a href="meus-projetos.html" onclick="closeMobileMenu()">Meus Projetos</a></li>
+                <li><a href="artigos-dicas.html" onclick="closeMobileMenu()">Artigos & Dicas</a></li>
                 <li><a href="index.html#contact" onclick="closeMobileMenu()">Contato</a></li>
             </ul>
         </nav>
@@ -246,8 +247,19 @@
     <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Alternar tema" title="Mudar para modo claro">☀️</button>
 
     <!-- ==================== BOTÃO DE TRADUÇÃO FLUTUANTE ==================== -->
-    <div id="translate-widget" class="translate-widget"><button id="translate-toggle" class="translate-toggle" aria-label="Traduzir site" title="Traduzir site" onclick="toggleTranslateDropdown(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button><div id="translate-dropdown" class="translate-dropdown"><span class="translate-dropdown-title">Traduzir para:</span><button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button><button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button><button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button></div></div>
-    <div id="google_translate_element" style="display: none;"></div>
+<div id="translate-widget" class="translate-widget"><button id="translate-toggle" class="translate-toggle" aria-label="Traduzir site" title="Traduzir site" onclick="toggleTranslateDropdown(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button><div id="translate-dropdown" class="translate-dropdown">
+    <span class="translate-dropdown-title">Traduzir para:</span>
+    <button class="translate-option active-lang" data-lang="pt" onclick="translatePage('pt')">🇧🇷 Português (Original)</button>
+    <button class="translate-option" data-lang="en" onclick="translatePage('en')">🇺🇸 English</button>
+    <button class="translate-option" data-lang="es" onclick="translatePage('es')">🇪🇸 Español</button>
+    <button class="translate-option" data-lang="it" onclick="translatePage('it')">🇮🇹 Italiano</button>
+    <button class="translate-option" data-lang="fr" onclick="translatePage('fr')">🇫🇷 Français</button>
+    <button class="translate-option" data-lang="zh-CN" onclick="translatePage('zh-CN')">🇨🇳 中文</button>
+    <button class="translate-option" data-lang="ja" onclick="translatePage('ja')">🇯🇵 日本語</button>
+    <button class="translate-option" data-lang="hi" onclick="translatePage('hi')">🇮🇳 हिन्दी</button>
+</div>
+</div>
+<div id="google_translate_element" style="display: none;"></div>
 
     <!-- ==================== FOOTER ==================== -->
     <footer><div class="container"><p>&copy; 2026 Victor Lopes | VitãoTub</p><div class="footer-links"><a href="javascript:void(0)" onclick="openPrivacyModal()">Política de Privacidade</a> | <a href="javascript:void(0)" onclick="openTermsModal()">Termos de Uso</a></div></div></footer>
