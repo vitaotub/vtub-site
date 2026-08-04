@@ -546,16 +546,35 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 .feed-body { background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; }
 
 /* Header do feed */
-.feed-header { background-color: var(--header-bg); padding: 20px 15px; text-align: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); }
+.feed-header { 
+    background-color: var(--header-bg); 
+    padding: 15px 15px 10px 15px; /* REDUZIDO de 20px 15px */
+    text-align: center; 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    border-bottom: 1px solid var(--border-color); 
+}
 .feed-logo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px auto; display: block; border: 2px solid #8b5cf6; }
-.feed-title { margin: 0 0 15px 0; font-size: 1.5rem; font-weight: bold; color: var(--text-main); }
+.feed-title { 
+    margin: 0 0 10px 0; /* REDUZIDO de 15px para 10px */
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    color: var(--text-main); 
+}
 .logo-container { position: relative; display: inline-block; margin-bottom: 15px; }
 .logo-subscribe-btn { position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); background-color: #ff0000; color: #fff; padding: 6px 12px; border-radius: 25px; font-size: 1.35rem; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); border: 2px solid #121212; white-space: nowrap; transition: var(--transition-smooth); }
 .logo-subscribe-btn:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 6px 15px rgba(255, 0, 0, 0.4); }
 .logo-subscribe-btn i { font-size: 1.4rem; }
 
 /* Abas do feed */
-.feed-tabs { display: flex; justify-content: center; gap: 12px; margin-top: 5px; flex-wrap: wrap; }
+.feed-tabs { 
+    display: flex; 
+    justify-content: center; 
+    gap: 12px; 
+    margin-top: 5px; 
+    flex-wrap: wrap; 
+}
 .tab-btn { background-color: var(--card-bg-alt); color: var(--text-dim); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: 'Satoshi', sans-serif; }
 .tab-btn:hover { border-color: #8b5cf6; color: var(--text-main); }
 .tab-btn.active { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border-color: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); }
@@ -563,7 +582,7 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 /* Feed container - ESPAÇAMENTO REDUZIDO */
 .feed-container { 
     max-width: 600px; 
-    margin: 5px auto 30px auto; /* REDUZIDO de 20px para 10px */
+    margin: 8px auto 30px auto; /* REDUZIDO para 8px */
     padding: 0 15px 50px; 
 }
 
