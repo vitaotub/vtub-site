@@ -10,7 +10,7 @@
  */
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v2.1';
+const CACHE_NAME = 'vitaotub-cache-v2.4';
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
