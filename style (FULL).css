@@ -596,15 +596,14 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     margin-top: 10px;
 }
 
-/* Desktop: 3 colunas */
+/* Desktop: 3 colunas com cards mais largos */
 @media (min-width: 1025px) {
     #youtube-feed-container {
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        gap: 24px; /* AUMENTADO: 20px → 24px para melhor espaçamento */
     }
-    /* AUMENTA O CONTAINER NO DESKTOP PARA CARDS MAIS LARGOS */
     .feed-container { 
-        max-width: 1100px; /* AUMENTADO de 1000px para 1100px */
+        max-width: 1200px; /* AUMENTADO: 1000px → 1200px */
     }
 }
 
@@ -613,6 +612,9 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     #youtube-feed-container {
         grid-template-columns: repeat(2, 1fr);
         gap: 18px;
+    }
+    .feed-container { 
+        max-width: 800px;
     }
 }
 
