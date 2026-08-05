@@ -5,12 +5,12 @@
  * offline do site principal e do feed (PWA)
  * Integração com OneSignal para push notifications
  * Auto-update: detecta novas versões e notifica o app
- * Versão: 3.0 - Removidos arquivos antigos e atualizado cache
+ * Versão: 3.1 - Adicionado videos.json ao cache
  * ============================================================
  */
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v3.1-20260804'; // ← ATUALIZADO
+const CACHE_NAME = 'vitaotub-cache-v3.1-20260805'; // ← ATUALIZADO
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
@@ -53,6 +53,9 @@ const urlsToCache = [
   // Ícones PWA
   '/logo-192x192.png',
   '/logo-512x512.png',
+  
+  // NOVO: Arquivo de vídeos (JSON estático)
+  '/videos.json',
   
   // Font Awesome (CDN) - cache para offline
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
@@ -126,7 +129,32 @@ self.addEventListener('fetch', event => {
   
   // ===== ESTRATÉGIAS ESPECÍFICAS =====
   
-  // 1. API do YouTube/RSS - Estratégia: Network First
+  // 1. videos.json - Estratégia: Cache First (para PWA offline)
+  if (url.includes('/videos.json')) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          return response || fetch(event.request).then(networkResponse => {
+            // Cacheia a resposta para uso futuro
+            const clonedResponse = networkResponse.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, clonedResponse);
+            });
+            return networkResponse;
+          });
+        })
+        .catch(() => {
+          // Retorna um JSON vazio em caso de erro extremo
+          return new Response(JSON.stringify({ videos: [] }), {
+            headers: { 'Content-Type': 'application/json' }
+          });
+        })
+    );
+    return;
+  }
+  
+  // 2. API do YouTube/RSS - REMOVIDO (não usado mais)
+  // Mantido apenas para compatibilidade com versões antigas
   if (url.includes('youtube.com') || 
       url.includes('rss2json.com') ||
       url.includes('api.rss2json.com')) {
@@ -146,7 +174,7 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // 2. Font Awesome e Google Fonts - Estratégia: Cache First
+  // 3. Font Awesome e Google Fonts - Estratégia: Cache First
   if (url.includes('font-awesome') || 
       url.includes('fonts.googleapis.com') ||
       url.includes('fontshare.com') ||
@@ -162,14 +190,14 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // 3. OneSignal - Estratégia: Network Only (não cachear)
+  // 4. OneSignal - Estratégia: Network Only (não cachear)
   if (url.includes('onesignal.com') || 
       url.includes('cdn.onesignal.com')) {
     event.respondWith(fetch(event.request));
     return;
   }
   
-  // 4. Google Analytics e Tracking - Estratégia: Network Only
+  // 5. Google Analytics e Tracking - Estratégia: Network Only
   if (url.includes('google-analytics.com') ||
       url.includes('googletagmanager.com') ||
       url.includes('googleads.g.doubleclick.net')) {
@@ -236,7 +264,8 @@ self.addEventListener('sync', event => {
         return cache.addAll([
           '/feed/index.html',
           '/feed/artigos.html',
-          '/artigos-dicas.html'
+          '/artigos-dicas.html',
+          '/videos.json' // ADICIONADO
         ]);
       })
     );
