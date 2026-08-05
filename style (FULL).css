@@ -2,7 +2,7 @@
    VITÃOTUB - ESTILOS UNIFICADOS (SEM BIO)
    Descrição: Tema escuro/claro unificado para site principal,
    meus-projetos e feed (PWA) - Bio mantém seu próprio CSS
-   Versão: 3.2 - Correção do layout do feed de vídeos com Grid
+   Versão: 3.3 - Cards de vídeo mais largos no desktop
    ============================================================ */
 
 /* ==================== 1. FONTES E VARIÁVEIS ==================== */
@@ -602,6 +602,10 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
     }
+    /* AUMENTA O CONTAINER NO DESKTOP PARA CARDS MAIS LARGOS */
+    .feed-container { 
+        max-width: 1100px; /* AUMENTADO de 1000px para 1100px */
+    }
 }
 
 /* Tablet: 2 colunas */
@@ -613,13 +617,13 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 }
 
 /* ============================================================ */
-/* CARDS DE VÍDEO - ALTURA CONSISTENTE */
+/* CARDS DE VÍDEO - LAYOUT ORIGINAL */
 /* ============================================================ */
 .feed-card { 
     background-color: var(--card-bg-alt); 
     border-radius: 12px; 
     overflow: visible; 
-    margin-bottom: 0; /* ← Mudamos para 0 porque o grid controla o espaçamento */
+    margin-bottom: 0;
     border: 1px solid var(--border-color); 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
@@ -1238,7 +1242,6 @@ body.light-mode #artigos-container .btn-action-icon {
         grid-template-columns: repeat(3, 1fr); /* 3 colunas no desktop */
         gap: 20px;
     }
-    .feed-container { max-width: 1000px; }
 }
 
 @media (min-width: 768px) {

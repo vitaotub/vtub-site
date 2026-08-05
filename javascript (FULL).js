@@ -20,7 +20,7 @@ const CONFIG = {
     artigosFiles: ['artigos.html'],
     artigosPorVez: 20,
     artigosIncremento: 10,
-    videosPorLote: 20
+    videosPorLote: 21 // ← ALTERADO: 20 → 21
 };
 
 // ==================== 2. UTILITÁRIOS ====================
@@ -1009,7 +1009,7 @@ async function carregarVideosDoJSON() {
             sentinelaObserver = null;
         }
 
-        // Carrega os primeiros 20 vídeos
+        // Carrega os primeiros 21 vídeos
         carregarProximosVideos();
 
         // Configura o scroll infinito (CORRIGIDO)
@@ -1025,7 +1025,7 @@ async function carregarVideosDoJSON() {
 }
 
 /**
- * Carrega o próximo lote de vídeos (20 por vez)
+ * Carrega o próximo lote de vídeos (21 por vez)
  */
 function carregarProximosVideos() {
     const container = document.getElementById('youtube-feed-container');
@@ -1042,7 +1042,7 @@ function carregarProximosVideos() {
     if (estaCarregandoVideos) return;
     estaCarregandoVideos = true;
 
-    // Pega o próximo lote
+    // Pega o próximo lote (21 vídeos)
     const proximos = todosOsVideos.slice(videosCarregados, videosCarregados + CONFIG.videosPorLote);
 
     // Cria os cards
@@ -1140,23 +1140,23 @@ function configurarScrollInfinitoVideos() {
 }
 
 /**
- * Limpa os vídeos extras mantendo apenas os 20 primeiros
+ * Limpa os vídeos extras mantendo apenas os 21 primeiros
  */
 function limparVideosCarregados() {
     const container = document.getElementById('youtube-feed-container');
     if (!container) return;
 
     const cards = container.querySelectorAll('.feed-card');
-    if (cards.length > 20) {
+    if (cards.length > 21) { // ← ALTERADO: 20 → 21
         console.log('🧹 Limpando vídeos antigos da memória...');
         
-        // Remove todos os cards EXCETO os 20 primeiros
-        for (let i = 20; i < cards.length; i++) {
+        // Remove todos os cards EXCETO os 21 primeiros
+        for (let i = 21; i < cards.length; i++) { // ← ALTERADO: 20 → 21
             cards[i].remove();
         }
         
-        // Atualiza o contador para 20
-        videosCarregados = 20;
+        // Atualiza o contador para 21
+        videosCarregados = 21; // ← ALTERADO: 20 → 21
         
         // Reconecta o sentinela para continuar o scroll
         const sentinela = document.getElementById('scroll-sentinel-videos');
@@ -1164,7 +1164,7 @@ function limparVideosCarregados() {
             configurarScrollInfinitoVideos();
         }
         
-        console.log('✅ Memória limpa! Apenas 20 vídeos mantidos.');
+        console.log('✅ Memória limpa! Apenas 21 vídeos mantidos.');
     }
 }
 
@@ -1190,7 +1190,7 @@ function configurarCleanupAoMudarAba() {
             console.log('🚪 Usuário saiu da aba de vídeos');
             secaoVideosAtiva = false;
             
-            // Limpa os vídeos extras (mantém apenas 20)
+            // Limpa os vídeos extras (mantém apenas 21)
             limparVideosCarregados();
             
             // Desconecta o observer do scroll (economiza recursos)
