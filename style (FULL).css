@@ -596,19 +596,32 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     margin-top: 10px;
 }
 
+/* Desktop: 3 colunas */
+@media (min-width: 1025px) {
+    #youtube-feed-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Tablet: 2 colunas */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #youtube-feed-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+}
+
 /* ============================================================ */
 /* CARDS DE VÍDEO - ALTURA CONSISTENTE */
 /* ============================================================ */
 .feed-card { 
     background-color: var(--card-bg-alt); 
     border-radius: 12px; 
-    overflow: hidden; 
+    overflow: visible; 
+    margin-bottom: 0; /* ← Mudamos para 0 porque o grid controla o espaçamento */
     border: 1px solid var(--border-color); 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Garante que todos os cards tenham a mesma altura na grid */
-    transition: border-color 0.3s ease, transform 0.3s ease;
 }
 .feed-card:hover {
     border-color: var(--primary-purple);
@@ -616,9 +629,6 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 }
 .feed-content { 
     padding: 15px; 
-    flex: 1; /* Ocupa o espaço restante */
-    display: flex;
-    flex-direction: column;
 }
 .feed-content h2.video-title { 
     font-size: 1.1rem; 
@@ -630,7 +640,6 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     -moz-hyphens: none; 
     -ms-hyphens: none; 
     hyphens: none;
-    flex: 1; /* Empurra o rodapé para baixo */
 }
 
 /* Vídeos */
