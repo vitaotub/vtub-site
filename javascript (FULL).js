@@ -4,7 +4,7 @@
  * Descrição: Lógica completa do site principal, bio, projetos
  * e feed (PWA) com modais, formulário, PWA, tema, tradução,
  * carregamento de vídeos e artigos
- * Versão: 3.0 - Unificação completa
+ * Versão: 3.2 - Scroll infinito corrigido + limpeza de memória ao trocar de aba
  * ============================================================
  */
 
@@ -19,7 +19,8 @@ const CONFIG = {
     channelID: 'UCUNyU0HewM1JQVVKMAEAfyQ',
     artigosFiles: ['artigos.html'],
     artigosPorVez: 20,
-    artigosIncremento: 10
+    artigosIncremento: 10,
+    videosPorLote: 20
 };
 
 // ==================== 2. UTILITÁRIOS ====================
@@ -358,7 +359,7 @@ document.addEventListener('keydown', (e) => {
         fecharArtigoFullscreen(); 
         fecharVideoModal(); 
         fecharProjetoModal(); 
-        fecharProjetoModalFeed(); // ADICIONADO
+        fecharProjetoModalFeed();
         const translateDropdown = document.getElementById('translate-dropdown'); 
         if (translateDropdown) translateDropdown.classList.remove('active'); 
     } 
@@ -948,82 +949,272 @@ function fecharProjetoModalFeed() {
     }
 }
 
-// ==================== 22. FEED - CARREGAR VÍDEOS DO YOUTUBE ====================
-const ytContainer = document.getElementById('youtube-feed-container');
-if (ytContainer) { carregarYouTubeAutomatico(); }
+// ==================== 22. FEED - CARREGAR VÍDEOS DO JSON (SCROLL INFINITO COM CLEANUP) ====================
+let todosOsVideos = [];
+let videosCarregados = 0;
+let estaCarregandoVideos = false;
+let sentinelaObserver = null;
+let secaoVideosAtiva = true;
+let abaObserver = null;
 
-async function carregarYouTubeAutomatico() {
-    try {
-        const API_KEY = 'a2ffjzqucytgmqa6xn9wbm16slffblnydpk3hcn7';
-        const RSS_URL = `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2Ffeeds%2Fvideos.xml%3Fchannel_id%3D${CONFIG.channelID}&api_key=${API_KEY}&count=15`;
-        const response = await fetch(RSS_URL);
-        const data = await response.json();
-        if (data.status === 'ok' && data.items && data.items.length > 0) {
-            ytContainer.innerHTML = '';
-            positionTooltips();
-            data.items.forEach(video => {
-                const videoIdMatch = video.link.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/);
-                const videoId = videoIdMatch ? videoIdMatch[1] : '';
-                if (videoId) {
-                    const postElement = document.createElement('article');
-                    postElement.className = 'feed-card';
-                    const dataPub = new Date(video.pubDate).toLocaleDateString('pt-BR');
-                    const thumbnailUrl = video.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-                    postElement.innerHTML = `
-                        <div class="video-thumbnail-container" onclick="abrirVideoModal('${videoId}')" role="button" tabindex="0" aria-label="Assistir: ${escapeHtml(video.title)}">
-                            <img src="${thumbnailUrl}" alt="${escapeHtml(video.title)}" loading="lazy" class="video-thumbnail" onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'">
-                            <div class="play-icon-overlay"><i class="fa-solid fa-circle-play"></i></div>
-                        </div>
-                        <div class="feed-content">
-                            <h2 class="video-title">${escapeHtml(video.title)}</h2>
-                            <div class="video-meta-wrapper">
-                                <div class="video-meta-left">
-                                    <span class="video-date">📅 ${dataPub}</span>
-                                    <span class="video-author">✍️ VitãoTub</span>
-                                </div>
-                                <div class="video-meta-right">
-                                    <button class="btn-video-share" onclick="event.stopPropagation(); compartilharVideoFeed('${videoId}')" data-tooltip="Compartilhar vídeo" aria-label="Compartilhar vídeo">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                                    </button>
-                                    <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener" class="btn-video-youtube" onclick="event.stopPropagation();" data-tooltip="Assistir no YouTube" aria-label="Assistir no YouTube">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    ytContainer.appendChild(postElement);
-                }
-            });
-        } else { ytContainer.innerHTML = '<p style="text-align: center; color: #aaa;">Não foi possível carregar os vídeos no momento.</p>'; }
-    } catch (error) { console.error("Erro ao buscar feed do YouTube:", error); ytContainer.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro ao carregar vídeos. Verifique sua conexão.</p>'; }
+// Verifica se o container existe e inicia o carregamento
+const ytContainer = document.getElementById('youtube-feed-container');
+if (ytContainer) { 
+    carregarVideosDoJSON(); 
 }
 
-function compartilharVideoFeed(videoId) {
-    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-    const mensagem = `🎬 Vídeo publicado no Canal VitãoTub: ${videoUrl}`;
-    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-    if (isMobile && navigator.share) {
-        navigator.share({ title: 'Vídeo do VitãoTub', text: 'Confira este vídeo no YouTube!', url: videoUrl })
-            .catch((err) => { if (err.name !== 'AbortError') console.error('Erro ao compartilhar:', err); });
+/**
+ * Função principal: carrega os vídeos do arquivo videos.json
+ */
+async function carregarVideosDoJSON() {
+    const container = document.getElementById('youtube-feed-container');
+    if (!container) return;
+
+    try {
+        // Tenta buscar do cache primeiro (para PWA offline)
+        let data = null;
+        try {
+            const cache = await caches.open('vitaotub-cache-v3.1-20260804');
+            const cachedResponse = await cache.match('/videos.json');
+            if (cachedResponse) {
+                data = await cachedResponse.json();
+            }
+        } catch (e) {
+            // Fallback para fetch normal
+        }
+
+        // Se não achou no cache, faz fetch normal
+        if (!data) {
+            const response = await fetch('/videos.json');
+            if (!response.ok) throw new Error('Erro ao carregar vídeos');
+            data = await response.json();
+        }
+
+        todosOsVideos = data.videos;
+
+        if (!todosOsVideos || todosOsVideos.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: var(--text-dim);">Nenhum vídeo encontrado.</p>';
+            return;
+        }
+
+        // Reinicia o estado
+        videosCarregados = 0;
+        container.innerHTML = '';
+        estaCarregandoVideos = false;
+        secaoVideosAtiva = true;
+
+        // Remove observer anterior se existir
+        if (sentinelaObserver) {
+            sentinelaObserver.disconnect();
+            sentinelaObserver = null;
+        }
+
+        // Carrega os primeiros 20 vídeos
+        carregarProximosVideos();
+
+        // Configura o scroll infinito (CORRIGIDO)
+        configurarScrollInfinitoVideos();
+
+        // Configura o cleanup ao mudar de aba
+        configurarCleanupAoMudarAba();
+
+    } catch (error) {
+        console.error('Erro ao carregar vídeos:', error);
+        container.innerHTML = '<p style="text-align: center; color: #ff5555;">Erro ao carregar vídeos. Tente novamente mais tarde.</p>';
+    }
+}
+
+/**
+ * Carrega o próximo lote de vídeos (20 por vez)
+ */
+function carregarProximosVideos() {
+    const container = document.getElementById('youtube-feed-container');
+    if (!container) return;
+
+    // Verifica se já carregou todos
+    if (videosCarregados >= todosOsVideos.length) {
+        const sentinela = document.getElementById('scroll-sentinel-videos');
+        if (sentinela) sentinela.remove();
         return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(mensagem)
-            .then(() => { alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.'); })
-            .catch(() => { fallbackCopy(mensagem); });
-    } else { fallbackCopy(mensagem); }
+
+    // Previne carregamento duplicado
+    if (estaCarregandoVideos) return;
+    estaCarregandoVideos = true;
+
+    // Pega o próximo lote
+    const proximos = todosOsVideos.slice(videosCarregados, videosCarregados + CONFIG.videosPorLote);
+
+    // Cria os cards
+    proximos.forEach(video => {
+        const card = criarCardVideo(video);
+        container.appendChild(card);
+    });
+
+    videosCarregados += proximos.length;
+    estaCarregandoVideos = false;
+
+    // Posiciona os tooltips nos novos botões
+    positionTooltips();
+
+    // Se carregou todos, remove o sentinela
+    if (videosCarregados >= todosOsVideos.length) {
+        const sentinela = document.getElementById('scroll-sentinel-videos');
+        if (sentinela) sentinela.remove();
+    }
 }
 
-function fallbackCopy(text) {
-    const tempInput = document.createElement('input');
-    tempInput.value = text;
-    tempInput.style.position = 'fixed';
-    tempInput.style.opacity = '0';
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    try { document.execCommand('copy'); alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.'); } catch (e) { alert('❌ Não foi possível copiar o link. Tente manualmente.'); }
-    document.body.removeChild(tempInput);
+/**
+ * Cria um card de vídeo no formato do feed
+ */
+function criarCardVideo(video) {
+    const videoId = video.id;
+    const titulo = video.title || 'Vídeo sem título';
+    const dataPub = video.date || new Date().toLocaleDateString('pt-BR');
+    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
+    const card = document.createElement('article');
+    card.className = 'feed-card';
+
+    card.innerHTML = `
+        <div class="video-thumbnail-container" onclick="abrirVideoModal('${videoId}')" role="button" tabindex="0" aria-label="Assistir: ${escapeHtml(titulo)}">
+            <img src="${thumbnailUrl}" alt="${escapeHtml(titulo)}" loading="lazy" class="video-thumbnail" onerror="this.src='https://img.youtube.com/vi/${videoId}/hqdefault.jpg'">
+            <div class="play-icon-overlay"><i class="fa-solid fa-circle-play"></i></div>
+        </div>
+        <div class="feed-content">
+            <h2 class="video-title">${escapeHtml(titulo)}</h2>
+            <div class="video-meta-wrapper">
+                <div class="video-meta-left">
+                    <span class="video-date">📅 ${escapeHtml(dataPub)}</span>
+                    <span class="video-author">✍️ VitãoTub</span>
+                </div>
+                <div class="video-meta-right">
+                    <button class="btn-video-share" onclick="event.stopPropagation(); compartilharVideoFeed('${videoId}')" data-tooltip="Compartilhar vídeo" aria-label="Compartilhar vídeo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    </button>
+                    <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener" class="btn-video-youtube" onclick="event.stopPropagation();" data-tooltip="Assistir no YouTube" aria-label="Assistir no YouTube">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+
+    return card;
+}
+
+/**
+ * Configura o scroll infinito para os vídeos usando IntersectionObserver (CORRIGIDO)
+ */
+function configurarScrollInfinitoVideos() {
+    const container = document.getElementById('youtube-feed-container');
+    if (!container) return;
+
+    // Remove sentinela anterior se existir
+    const sentinelaAntigo = document.getElementById('scroll-sentinel-videos');
+    if (sentinelaAntigo) sentinelaAntigo.remove();
+
+    // Cria um elemento sentinela no final do container
+    const sentinela = document.createElement('div');
+    sentinela.id = 'scroll-sentinel-videos';
+    sentinela.style.height = '1px';
+    sentinela.style.width = '100%';
+    sentinela.style.visibility = 'hidden';
+    container.appendChild(sentinela);
+
+    // Configura o observer com rootMargin maior para carregar ANTES de chegar no fim
+    sentinelaObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !estaCarregandoVideos && videosCarregados < todosOsVideos.length && secaoVideosAtiva) {
+                console.log('🔄 Carregando mais vídeos... (sentinela visível)');
+                carregarProximosVideos();
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '0px 0px 50px 0px', // Começa a carregar 50px ANTES de chegar no fim
+        threshold: 0.1
+    });
+
+    sentinelaObserver.observe(sentinela);
+}
+
+/**
+ * Limpa os vídeos extras mantendo apenas os 20 primeiros
+ */
+function limparVideosCarregados() {
+    const container = document.getElementById('youtube-feed-container');
+    if (!container) return;
+
+    const cards = container.querySelectorAll('.feed-card');
+    if (cards.length > 20) {
+        console.log('🧹 Limpando vídeos antigos da memória...');
+        
+        // Remove todos os cards EXCETO os 20 primeiros
+        for (let i = 20; i < cards.length; i++) {
+            cards[i].remove();
+        }
+        
+        // Atualiza o contador para 20
+        videosCarregados = 20;
+        
+        // Reconecta o sentinela para continuar o scroll
+        const sentinela = document.getElementById('scroll-sentinel-videos');
+        if (!sentinela) {
+            configurarScrollInfinitoVideos();
+        }
+        
+        console.log('✅ Memória limpa! Apenas 20 vídeos mantidos.');
+    }
+}
+
+/**
+ * Configura o cleanup automático quando o usuário troca de aba
+ */
+function configurarCleanupAoMudarAba() {
+    const secaoVideos = document.getElementById('secao-videos');
+    if (!secaoVideos) return;
+
+    // Remove observer anterior se existir
+    if (abaObserver) {
+        abaObserver.disconnect();
+        abaObserver = null;
+    }
+
+    // Observa mudanças no estilo display da seção de vídeos
+    abaObserver = new MutationObserver(() => {
+        const isActive = secaoVideos.style.display !== 'none';
+        
+        if (!isActive && secaoVideosAtiva) {
+            // Usuário SAIU da aba de vídeos
+            console.log('🚪 Usuário saiu da aba de vídeos');
+            secaoVideosAtiva = false;
+            
+            // Limpa os vídeos extras (mantém apenas 20)
+            limparVideosCarregados();
+            
+            // Desconecta o observer do scroll (economiza recursos)
+            if (sentinelaObserver) {
+                sentinelaObserver.disconnect();
+                sentinelaObserver = null;
+            }
+        } else if (isActive && !secaoVideosAtiva) {
+            // Usuário VOLTOU para a aba de vídeos
+            console.log('🚪 Usuário voltou para a aba de vídeos');
+            secaoVideosAtiva = true;
+            
+            // Reconecta o observer do scroll
+            if (!sentinelaObserver) {
+                configurarScrollInfinitoVideos();
+            }
+        }
+    });
+
+    // Observa mudanças no estilo display da seção de vídeos
+    abaObserver.observe(secaoVideos, {
+        attributes: true,
+        attributeFilter: ['style']
+    });
 }
 
 // ==================== 23. FEED - TOOLTIPS ====================
@@ -1140,6 +1331,33 @@ function initVideoSwipeToClose() {
     });
 }
 
+function compartilharVideoFeed(videoId) {
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    const mensagem = `🎬 Vídeo publicado no Canal VitãoTub: ${videoUrl}`;
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    if (isMobile && navigator.share) {
+        navigator.share({ title: 'Vídeo do VitãoTub', text: 'Confira este vídeo no YouTube!', url: videoUrl })
+            .catch((err) => { if (err.name !== 'AbortError') console.error('Erro ao compartilhar:', err); });
+        return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(mensagem)
+            .then(() => { alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.'); })
+            .catch(() => { fallbackCopy(mensagem); });
+    } else { fallbackCopy(mensagem); }
+}
+
+function fallbackCopy(text) {
+    const tempInput = document.createElement('input');
+    tempInput.value = text;
+    tempInput.style.position = 'fixed';
+    tempInput.style.opacity = '0';
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    try { document.execCommand('copy'); alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.'); } catch (e) { alert('❌ Não foi possível copiar o link. Tente manualmente.'); }
+    document.body.removeChild(tempInput);
+}
+
 // ==================== 25. FEED - SISTEMA DE ARTIGOS ====================
 let todosArtigos = [];
 let artigosCarregados = false;
@@ -1162,7 +1380,7 @@ async function carregarTodosArtigos() {
         } catch (error) { console.warn(`Erro ao carregar ${file}:`, error); }
     }
     todosArtigos.sort((a, b) => b.data - a.data);
-    if (todosArtigos.length > 0) { artigosCarregados = true; artigosExibidos = 0; container.innerHTML = ''; carregarMaisArtigos(); configurarScrollInfinito(); initArtigoDestaque(); }
+    if (todosArtigos.length > 0) { artigosCarregados = true; artigosExibidos = 0; container.innerHTML = ''; carregarMaisArtigos(); configurarScrollInfinitoArtigos(); initArtigoDestaque(); }
     else { container.innerHTML = '<p style="text-align: center; color: #aaa;">Nenhum artigo encontrado.</p>'; }
 }
 
@@ -1186,7 +1404,7 @@ function carregarMaisArtigos() {
     initArtigoDestaque();
 }
 
-function configurarScrollInfinito() {
+function configurarScrollInfinitoArtigos() {
     const loading = document.getElementById('artigos-loading');
     window.addEventListener('scroll', () => {
         const secaoArtigos = document.getElementById('secao-artigos'); if (!secaoArtigos || secaoArtigos.style.display === 'none') return;
@@ -1203,26 +1421,19 @@ function initArtigoDestaque() {
     const artigos = document.querySelectorAll('.artigo-card');
     if (artigos.length === 0) return;
     
-    // Remove qualquer classe de destaque que possa ter sido aplicada automaticamente
     artigos.forEach(artigo => {
         artigo.classList.remove('artigo-destaque');
     });
     
-    // Adiciona evento de hover/focus para mobile também
     artigos.forEach(artigo => {
-        // Para desktop: hover
         artigo.addEventListener('mouseenter', function() {
             this.classList.add('artigo-destaque');
         });
         artigo.addEventListener('mouseleave', function() {
             this.classList.remove('artigo-destaque');
         });
-        
-        // Para mobile: touch (feedback visual)
         artigo.addEventListener('touchstart', function() {
-            // Adiciona destaque temporário no toque
             this.classList.add('artigo-destaque');
-            // Remove após um tempo
             setTimeout(() => {
                 this.classList.remove('artigo-destaque');
             }, 800);
@@ -1238,22 +1449,16 @@ function abrirArtigoFullscreen(artigoId) {
     const body = document.getElementById('artigo-fullscreen-body');
     if (!modal || !body) return;
     
-    // Clona o artigo para não alterar o original
     const conteudo = artigo.cloneNode(true);
     conteudo.style.cursor = 'default';
-    
-    // Remove a classe artigo-card para evitar conflitos de estilo
     conteudo.classList.remove('artigo-card');
     conteudo.classList.add('artigo-fullscreen-active');
     
-    // Remove o botão "Ler Mais" se existir
     const btnLerMais = conteudo.querySelector('.btn-ler-mais');
     if (btnLerMais) btnLerMais.remove();
     
-    // GARANTE que o corpo do artigo seja exibido
     const corpo = conteudo.querySelector('.artigo-corpo');
     if (corpo) {
-        // Remove qualquer estilo inline que possa estar ocultando
         corpo.style.display = 'block';
         corpo.style.maxHeight = 'none';
         corpo.style.overflow = 'visible';
@@ -1268,7 +1473,6 @@ function abrirArtigoFullscreen(artigoId) {
         corpo.style.msHyphens = 'auto';
         corpo.style.hyphens = 'auto';
         
-        // Aplica formatação nos parágrafos
         const paragrafos = corpo.querySelectorAll('p');
         paragrafos.forEach(p => {
             p.style.textAlign = 'justify';
@@ -1284,21 +1488,17 @@ function abrirArtigoFullscreen(artigoId) {
             p.style.textIndent = '1.5em';
         });
         
-        // Remove qualquer classe que possa estar ocultando
         corpo.classList.remove('hidden', 'oculto', 'fechado');
     }
     
-    // Limpa e insere o conteúdo
     body.innerHTML = '';
     body.appendChild(conteudo);
     
-    // Abre o modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     modal.scrollTop = 0;
     window.scrollTo(0, 0);
     
-    // Reinicia o swipe to close
     initArtigoSwipeToClose();
 }
 
