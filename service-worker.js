@@ -5,12 +5,12 @@
  * offline do site principal e do feed (PWA)
  * Integração com OneSignal para push notifications
  * Auto-update: detecta novas versões e notifica o app
- * Versão: 2.0 - Atualizado com novos arquivos do feed
+ * Versão: 3.0 - Removidos arquivos antigos e atualizado cache
  * ============================================================
  */
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v1.0';
+const CACHE_NAME = 'vitaotub-cache-v3.0'; // ← ATUALIZADO
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
@@ -27,10 +27,11 @@ const urlsToCache = [
   // Página Meus Projetos
   '/meus-projetos.html',
   
-  // Feed (PWA) - NOVOS ARQUIVOS
+  // Página Artigos & Dicas (NOVA)
+  '/artigos-dicas.html',
+  
+  // Feed (PWA)
   '/feed/index.html',
-  '/feed/feed-style.css',
-  '/feed/feed-javascript.js',
   '/feed/artigos.html',
   
   // Manifest e ícones
@@ -49,7 +50,7 @@ const urlsToCache = [
   '/sitemap.xml',
   '/robots.txt',
   
-  // Ícones PWA (se existirem)
+  // Ícones PWA
   '/logo-192x192.png',
   '/logo-512x512.png',
   
@@ -231,12 +232,11 @@ self.addEventListener('sync', event => {
   
   if (event.tag === 'sync-feed') {
     event.waitUntil(
-      // Lógica para sincronizar dados do feed em segundo plano
-      // Pode ser usada para atualizar o cache quando o usuário estiver online
       caches.open(CACHE_NAME).then(cache => {
         return cache.addAll([
           '/feed/index.html',
-          '/feed/artigos.html'
+          '/feed/artigos.html',
+          '/artigos-dicas.html'
         ]);
       })
     );
