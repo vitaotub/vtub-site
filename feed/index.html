@@ -45,17 +45,17 @@
     <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
     <main class="feed-container" style="margin-top: 0; padding-top: 15px;">
         
-        <!-- Seção 1: Vídeos do YouTube (carregados via RSS) -->
+        <!-- Seção 1: Vídeos do YouTube (carregados via JSON estático) -->
         <section id="secao-videos" class="feed-section active" style="padding-top: 15px;" aria-label="Vídeos recentes">
             <div id="youtube-feed-container">
-                <p style="text-align: center; color: #aaa;">Buscando vídeos recentes do canal...</p>
+                <p style="text-align: center; color: var(--text-dim);">Carregando vídeos...</p>
             </div>
         </section>
 
         <!-- Seção 2: Artigos & Dicas (carregados dinamicamente) -->
         <section id="secao-artigos" class="feed-section" style="display: none; padding-top: 15px;" aria-label="Artigos e dicas">
             <div id="artigos-feed-container">
-                <p style="text-align: center; color: #aaa;">Carregando artigos...</p>
+                <p style="text-align: center; color: var(--text-dim);">Carregando artigos...</p>
             </div>
             <div id="artigos-loading" class="artigos-loading" style="display: none;">
                 <p>Carregando mais artigos...</p>
@@ -65,7 +65,7 @@
         <!-- Seção 3: Meus Projetos -->
         <section id="secao-projetos" class="feed-section" style="display: none; padding-top: 15px;" aria-label="Meus Projetos">
             <div id="projetos-feed-container">
-                <p style="text-align: center; color: #aaa;">Carregando projetos...</p>
+                <p style="text-align: center; color: var(--text-dim);">Carregando projetos...</p>
             </div>
         </section>
         
