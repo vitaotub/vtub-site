@@ -386,6 +386,22 @@ function toggleTranslateDropdown(e) {
 // ==================== 11. BOTÃO VOLTAR AO TOPO ====================
 const backToTopButton = document.getElementById('back-to-top');
 if (backToTopButton) { 
+    // Mostra/esconde o botão ao rolar
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            backToTopButton.style.display = 'flex';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
+    
+    // Verifica se já está rolado ao carregar
+    if (window.scrollY > 300) {
+        backToTopButton.style.display = 'flex';
+    } else {
+        backToTopButton.style.display = 'none';
+    }
+    
     backToTopButton.addEventListener('click', function(e) { 
         e.preventDefault(); 
         window.scrollTo({ top: 0, behavior: 'smooth' }); 

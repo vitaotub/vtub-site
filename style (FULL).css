@@ -1239,13 +1239,6 @@ body.light-mode #artigos-container .btn-action-icon {
     }
 }
 
-@media (min-width: 1025px) {
-    #youtube-feed-container {
-        grid-template-columns: repeat(3, 1fr); /* 3 colunas no desktop */
-        gap: 20px;
-    }
-}
-
 @media (min-width: 768px) {
     .feed-header { padding: 15px 30px; }
     .feed-logo { width: 100px; height: 100px; }
