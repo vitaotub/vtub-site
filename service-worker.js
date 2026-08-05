@@ -10,7 +10,7 @@
  */
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v3.1-20260805'; // ← ATUALIZADO
+const CACHE_NAME = 'vitaotub-cache-v3.2-20260805'; // ← ATUALIZADO COM SCROLL INFINITO E AUTO CLEAN PARA VÍDEOS
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
