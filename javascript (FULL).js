@@ -386,6 +386,9 @@ function toggleTranslateDropdown(e) {
 // ==================== 11. BOTÃO VOLTAR AO TOPO ====================
 const backToTopButton = document.getElementById('back-to-top');
 if (backToTopButton) { 
+    // Inicialmente escondido
+    backToTopButton.style.display = 'none';
+    
     // Mostra/esconde o botão ao rolar
     window.addEventListener('scroll', function() {
         if (window.scrollY > 300) {
@@ -395,17 +398,12 @@ if (backToTopButton) {
         }
     });
     
-    // Verifica se já está rolado ao carregar
-    if (window.scrollY > 300) {
-        backToTopButton.style.display = 'flex';
-    } else {
-        backToTopButton.style.display = 'none';
-    }
-    
     backToTopButton.addEventListener('click', function(e) { 
         e.preventDefault(); 
         window.scrollTo({ top: 0, behavior: 'smooth' }); 
     }); 
+} else {
+    console.warn('⚠️ Botão "Voltar ao Topo" não encontrado no DOM!');
 }
 
 // ==================== 12. BANNER DE COOKIES (LGPD) ====================

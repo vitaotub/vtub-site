@@ -538,7 +538,27 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 .footer-links a:hover { color: var(--primary-purple); }
 
 /* ==================== 24. BOTÃO VOLTAR AO TOPO ==================== */
-.back-to-top { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background-color: var(--primary-purple); color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 1000; cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background-color: var(--primary-purple);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    /* FORÇA A VISIBILIDADE */
+    opacity: 1 !important;
+    visibility: visible !important;
+}
 .back-to-top:hover { background-color: var(--primary-blue); transform: translateY(-5px); }
 
 /* ==================== 25. FEED (PWA) - ESTILOS ESPECÍFICOS ==================== */
@@ -1246,23 +1266,6 @@ body.light-mode #artigos-container .btn-action-icon {
     .feed-container { max-width: 800px; }
     #artigos-feed-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     #artigos-feed-container .artigo-card { margin-bottom: 0; }
-}
-
-@media (max-width: 768px) {
-    .video-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
-    .lgpd-overlay { padding: 20px; width: 95%; bottom: 15px; }
-    .lgpd-container { flex-direction: column; align-items: stretch; gap: 15px; }
-    .lgpd-content p { text-align: justify !important; -webkit-hyphens: auto !important; -moz-hyphens: auto !important; -ms-hyphens: auto !important; hyphens: auto !important; overflow-wrap: break-word !important; }
-    .lgpd-actions { display: flex; justify-content: flex-end; gap: 10px; }
-    .lgpd-btn-main, .lgpd-btn-secondary { padding: 12px 20px; font-size: 0.9rem; flex: 1; }
-    
-    /* AJUSTE DOS BOTÕES PARA TABLET */
-    .theme-toggle-btn {
-        top: 80px !important;
-    }
-    .translate-widget {
-        bottom: 90px !important;
-    }
 }
 
 @media (max-width: 600px) {
