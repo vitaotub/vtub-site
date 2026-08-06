@@ -1456,7 +1456,10 @@ function carregarProximosVideos() {
     // Verifica se já carregou todos
     if (videosCarregados >= todosOsVideos.length) {
         const sentinela = document.getElementById('scroll-sentinel-videos');
-        if (sentinela) sentinela.remove();
+        if (sentinela) {
+            sentinela.textContent = '🎉 Todos os vídeos carregados!';
+            sentinela.style.color = 'var(--primary-purple)';
+        }
         return;
     }
 
@@ -1479,10 +1482,24 @@ function carregarProximosVideos() {
     // Posiciona os tooltips nos novos botões
     positionTooltips();
 
-    // Se carregou todos, remove o sentinela
+    // Atualiza o texto do sentinela
+    const sentinela = document.getElementById('scroll-sentinel-videos');
+    if (sentinela) {
+        if (videosCarregados < todosOsVideos.length) {
+            sentinela.textContent = '🔄 Carregando mais vídeos...';
+        } else {
+            sentinela.textContent = '🎉 Todos os vídeos carregados!';
+            sentinela.style.color = 'var(--primary-purple)';
+        }
+    }
+
+    // Se carregou todos, mantém o sentinela com a mensagem final
     if (videosCarregados >= todosOsVideos.length) {
-        const sentinela = document.getElementById('scroll-sentinel-videos');
-        if (sentinela) sentinela.remove();
+        const sentinelaFinal = document.getElementById('scroll-sentinel-videos');
+        if (sentinelaFinal) {
+            sentinelaFinal.textContent = '🎉 Todos os vídeos carregados!';
+            sentinelaFinal.style.color = 'var(--primary-purple)';
+        }
     }
 }
 
@@ -1541,9 +1558,16 @@ function configurarScrollInfinitoVideos() {
     // Cria um elemento sentinela no final do container
     const sentinela = document.createElement('div');
     sentinela.id = 'scroll-sentinel-videos';
-    sentinela.style.height = '1px';
+    sentinela.style.height = '20px'; /* Aumentado para melhor visibilidade */
     sentinela.style.width = '100%';
-    sentinela.style.visibility = 'hidden';
+    sentinela.style.visibility = 'visible'; /* Mudado para visible */
+    sentinela.style.display = 'flex';
+    sentinela.style.justifyContent = 'center';
+    sentinela.style.alignItems = 'center';
+    sentinela.style.color = 'var(--text-dim)';
+    sentinela.style.fontSize = '0.9rem';
+    sentinela.style.padding = '20px 0';
+    sentinela.textContent = '🔄 Carregando mais vídeos...';
     container.appendChild(sentinela);
 
     // Configura o observer com rootMargin para carregar ANTES de chegar no fim
@@ -1551,12 +1575,15 @@ function configurarScrollInfinitoVideos() {
         entries.forEach(entry => {
             if (entry.isIntersecting && !estaCarregandoVideos && videosCarregados < todosOsVideos.length && secaoVideosAtiva) {
                 console.log('🔄 Carregando mais vídeos... (sentinela visível)');
+                // Muda o texto do sentinela
+                const sentinelaEl = document.getElementById('scroll-sentinel-videos');
+                if (sentinelaEl) sentinelaEl.textContent = '🔄 Carregando mais vídeos...';
                 carregarProximosVideos();
             }
         });
     }, {
         root: null,
-        rootMargin: '0px 0px 50px 0px', // Começa a carregar 50px ANTES de chegar no fim
+        rootMargin: '0px 0px 200px 0px', // Aumentado para carregar mais cedo
         threshold: 0.1
     });
 
