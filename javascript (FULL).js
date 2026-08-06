@@ -4,37 +4,65 @@
  * Descrição: Lógica completa do site principal, bio, projetos
  * e feed (PWA) com modais, formulário, PWA, tema, tradução,
  * carregamento de vídeos e artigos
- * Versão: 3.2 - Scroll infinito corrigido + limpeza de memória ao trocar de aba
+ * Versão: 3.3 - Código reorganizado e comentado
  * ============================================================
  */
 
-// ==================== 1. CONFIGURAÇÕES GERAIS ====================
+// ============================================================
+// 1. CONFIGURAÇÕES GERAIS
+// ============================================================
 const CONFIG = {
+    // IDs dos elementos HTML
     modalId: 'video-modal',
     iframeTargetId: 'modal-iframe-target',
     toastContainerId: 'toast-container',
     privacyModalId: 'privacy-modal',
     privacyTargetId: 'privacy-content-target',
+    
+    // URLs e configurações
     scriptURL: 'https://script.google.com/macros/s/AKfycbwOnJ8aLNMfbOss06eRh_glZRNULpJ3j9HqeL7PCGPDfr80_vcCB5-hLEHkDddO-LFrqA/exec',
     channelID: 'UCUNyU0HewM1JQVVKMAEAfyQ',
+    
+    // Artigos
     artigosFiles: ['artigos.html'],
     artigosPorVez: 20,
     artigosIncremento: 10,
-    videosPorLote: 21 // ← ALTERADO: 20 → 21
+    
+    // Vídeos (scroll infinito)
+    videosPorLote: 21
 };
 
-// ==================== 2. UTILITÁRIOS ====================
+// ============================================================
+// 2. UTILITÁRIOS
+// ============================================================
+
+/**
+ * Escapa caracteres especiais para prevenir XSS
+ * @param {string} text - Texto a ser escapado
+ * @returns {string} Texto escapado
+ */
 function escapeHtml(text) {
     if (!text) return '';
-    return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-// ==================== 3. SERVICE WORKER COM AUTO-UPDATE ====================
+// ============================================================
+// 3. SERVICE WORKER (PWA)
+// ============================================================
+
 if ('serviceWorker' in navigator) {
+    // Registra o Service Worker ao carregar a página
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js')
             .then(registration => {
-                console.log('Service Worker registrado com sucesso!');
+                console.log('✅ Service Worker registrado com sucesso!');
+                
+                // Detecta atualizações
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
                     newWorker.addEventListener('statechange', () => {
@@ -47,18 +75,26 @@ if ('serviceWorker' in navigator) {
                         }
                     });
                 });
+                
+                // Verifica atualizações a cada 30 minutos
                 setInterval(() => { registration.update(); }, 30 * 60 * 1000);
-                document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') registration.update(); });
+                
+                // Verifica atualizações quando a página fica visível
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible') registration.update();
+                });
             })
-            .catch(error => console.log('Erro ao registrar o Service Worker:', error));
+            .catch(error => console.log('❌ Erro ao registrar o Service Worker:', error));
     });
+    
+    // Atualiza automaticamente quando uma nova versão é encontrada
     navigator.serviceWorker.ready.then(registration => {
         registration.update();
         registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing;
             newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    console.log('Nova versão do app disponível. Atualizando...');
+                    console.log('🔄 Nova versão do app disponível. Atualizando...');
                     window.location.reload();
                 }
             });
@@ -66,7 +102,10 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// ==================== 4. POPUP DE INSTALAÇÃO PWA (SITE PRINCIPAL) ====================
+// ============================================================
+// 4. POPUP DE INSTALAÇÃO PWA
+// ============================================================
+
 document.addEventListener("DOMContentLoaded", () => {
     const pwaPopup = document.getElementById('pwa-install-popup');
     const popupContent = document.getElementById('pwa-popup-content');
@@ -77,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     
+    // Se já está instalado como PWA, esconde o popup
     if (isStandalone) { 
         localStorage.setItem('vitaotub_pwa_installed', 'true'); 
         pwaPopup.style.display = 'none'; 
@@ -88,17 +128,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const jaInstalou = localStorage.getItem('vitaotub_pwa_installed');
     const jaRejeitou = localStorage.getItem('vitaotub_pwa_rejected');
     
+    // Desktop: mostra uma mensagem informativa
     if (!isMobile) {
         if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
         if (jaEntendeu) return;
-        popupContent.innerHTML = `<h2>📱 App para Celular!</h2><img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'"><p>Este site possui um <strong>App para celular</strong> com notícias, matérias e novidades. Acesse pelo seu próprio celular e o App estará disponível para instalação!</p><button id="pwa-desktop-ok-btn" class="pwa-btn-install">Entendi! 👍</button>`;
-        setTimeout(() => { if (!localStorage.getItem('vitaotub_pwa_entendido')) pwaPopup.style.display = 'flex'; }, 2000);
-        document.getElementById('pwa-desktop-ok-btn').addEventListener('click', () => { pwaPopup.style.display = 'none'; localStorage.setItem('vitaotub_pwa_entendido', 'true'); });
+        
+        popupContent.innerHTML = `
+            <h2>📱 App para Celular!</h2>
+            <img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'">
+            <p>Este site possui um <strong>App para celular</strong> com notícias, matérias e novidades. Acesse pelo seu próprio celular e o App estará disponível para instalação!</p>
+            <button id="pwa-desktop-ok-btn" class="pwa-btn-install">Entendi! 👍</button>
+        `;
+        
+        setTimeout(() => {
+            if (!localStorage.getItem('vitaotub_pwa_entendido')) {
+                pwaPopup.style.display = 'flex';
+            }
+        }, 2000);
+        
+        document.getElementById('pwa-desktop-ok-btn').addEventListener('click', () => {
+            pwaPopup.style.display = 'none';
+            localStorage.setItem('vitaotub_pwa_entendido', 'true');
+        });
         return;
     }
     
-    if (jaInstalou) { pwaPopup.style.display = 'none'; if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none'; return; }
+    // Mobile: já instalou?
+    if (jaInstalou) {
+        pwaPopup.style.display = 'none';
+        if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'none';
+        return;
+    }
     
+    let deferredPrompt = null;
+    
+    // Funções auxiliares
     function preencherPopup(mensagem) {
         if (!popupContent) return;
         popupContent.innerHTML = mensagem;
@@ -109,6 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
             return;
         }
+        
         preencherPopup(`
             <h2>Bem-Vindo!</h2>
             <img src="../logo-app-popup.png" alt="Ícone do App" class="pwa-welcome-img" onerror="this.style.display='none'">
@@ -116,12 +181,15 @@ document.addEventListener("DOMContentLoaded", () => {
             <button id="pwa-install-btn" class="pwa-btn-install">Instalar App</button>
             <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
         `);
+        
         pwaPopup.style.display = 'flex';
+        
         document.getElementById('pwa-install-btn').addEventListener('click', async () => {
             if (deferredPrompt) {
                 pwaPopup.style.display = 'none';
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
+                
                 if (outcome === 'accepted') {
                     localStorage.setItem('vitaotub_pwa_installed', 'true');
                     localStorage.removeItem('vitaotub_pwa_rejected');
@@ -138,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (pwaFloatingBtn) pwaFloatingBtn.style.display = 'flex';
             }
         });
+        
         document.getElementById('pwa-close-btn').addEventListener('click', () => {
             pwaPopup.style.display = 'none';
             localStorage.setItem('vitaotub_pwa_rejected', 'true');
@@ -145,12 +214,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     
-    let deferredPrompt = null;
-    
+    // Evento beforeinstallprompt
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        console.log("beforeinstallprompt capturado!");
+        console.log("📲 beforeinstallprompt capturado!");
+        
         if (!jaRejeitou) {
             preencherPopup(`
                 <h2>Bem-Vindo!</h2>
@@ -160,11 +229,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button id="pwa-close-btn" class="pwa-btn-close">Agora não</button>
             `);
             pwaPopup.style.display = 'flex';
+            
             document.getElementById('pwa-install-btn').addEventListener('click', async () => {
                 if (deferredPrompt) {
                     pwaPopup.style.display = 'none';
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
+                    
                     if (outcome === 'accepted') {
                         localStorage.setItem('vitaotub_pwa_installed', 'true');
                         localStorage.removeItem('vitaotub_pwa_rejected');
@@ -176,6 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     deferredPrompt = null;
                 }
             });
+            
             document.getElementById('pwa-close-btn').addEventListener('click', () => {
                 pwaPopup.style.display = 'none';
                 localStorage.setItem('vitaotub_pwa_rejected', 'true');
@@ -186,19 +258,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
     
+    // Mostra o botão flutuante se o usuário já rejeitou
     if (jaRejeitou && pwaFloatingBtn) {
         pwaFloatingBtn.style.display = 'flex';
     }
     
+    // Fallback: mostra o popup padrão se beforeinstallprompt não disparar
     if (!jaRejeitou && !jaInstalou) {
         setTimeout(() => {
             if (pwaPopup.style.display !== 'flex' && !localStorage.getItem('vitaotub_pwa_rejected')) {
-                console.log("Mostrando popup padrão (beforeinstallprompt não disparou)");
+                console.log("📲 Mostrando popup padrão (beforeinstallprompt não disparou)");
                 mostrarPopupPadrao();
             }
         }, 3000);
     }
     
+    // Botão flutuante de instalação
     if (pwaFloatingBtn) {
         pwaFloatingBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
@@ -217,159 +292,262 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ==================== 5. CONTROLE DE SCROLL (MODAIS) ====================
-let scrollPosition = 0;
-function lockScroll() { scrollPosition = window.scrollY; document.body.style.overflow = 'hidden'; }
-function unlockScroll() { document.body.style.overflow = ''; window.scrollTo(0, scrollPosition); }
+// ============================================================
+// 5. CONTROLE DE SCROLL (MODAIS)
+// ============================================================
 
-// ==================== 6. ANIMAÇÃO DE ESTATÍSTICAS ====================
-const statsObserver = new IntersectionObserver((entries) => { 
-    entries.forEach(entry => { 
-        if (entry.isIntersecting) { 
-            const fills = entry.target.querySelectorAll('.demo-bar-fill, .bar-fill'); 
-            fills.forEach(fill => { 
-                const targetWidth = fill.getAttribute('data-width') || fill.parentElement.getAttribute('data-width') || "100%"; 
-                fill.style.width = targetWidth; 
-            }); 
-        } 
-    }); 
+let scrollPosition = 0;
+
+/**
+ * Bloqueia o scroll da página
+ */
+function lockScroll() {
+    scrollPosition = window.scrollY;
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Desbloqueia o scroll da página
+ */
+function unlockScroll() {
+    document.body.style.overflow = '';
+    window.scrollTo(0, scrollPosition);
+}
+
+// ============================================================
+// 6. ANIMAÇÃO DE ESTATÍSTICAS
+// ============================================================
+
+const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const fills = entry.target.querySelectorAll('.demo-bar-fill, .bar-fill');
+            fills.forEach(fill => {
+                const targetWidth = fill.getAttribute('data-width') || fill.parentElement.getAttribute('data-width') || "100%";
+                fill.style.width = targetWidth;
+            });
+        }
+    });
 }, { threshold: 0.1 });
+
 document.querySelectorAll('.stat-card, .demo-box, .demo-bar-item').forEach(el => statsObserver.observe(el));
 
-// ==================== 7. SISTEMA DE MODAL DE VÍDEO ====================
-function openVideo(videoId) { 
-    const modal = document.getElementById(CONFIG.modalId); 
-    const target = document.getElementById(CONFIG.iframeTargetId); 
-    if (modal && target) { 
-        target.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`; 
-        modal.classList.add('active'); 
-        lockScroll(); 
-    } 
-}
-function closeVideo() { 
-    const modal = document.getElementById(CONFIG.modalId); 
-    const target = document.getElementById(CONFIG.iframeTargetId); 
-    if (modal) { 
-        if (target) target.innerHTML = ''; 
-        modal.classList.remove('active'); 
-        unlockScroll(); 
-    } 
+// ============================================================
+// 7. MODAL DE VÍDEO (SITE PRINCIPAL)
+// ============================================================
+
+/**
+ * Abre o modal de vídeo
+ * @param {string} videoId - ID do vídeo do YouTube
+ */
+function openVideo(videoId) {
+    const modal = document.getElementById(CONFIG.modalId);
+    const target = document.getElementById(CONFIG.iframeTargetId);
+    
+    if (modal && target) {
+        target.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        modal.classList.add('active');
+        lockScroll();
+    }
 }
 
-// ==================== 8. MODAL DE PRIVACIDADE E TERMOS ====================
-async function openPrivacyModal() { await loadModalContent('./politica-de-privacidade.html'); }
-async function openTermsModal() { await loadModalContent('./termos-de-uso.html'); }
-async function loadModalContent(filePath) { 
-    const modal = document.getElementById(CONFIG.privacyModalId); 
-    const target = document.getElementById(CONFIG.privacyTargetId); 
-    if (modal && target) { 
-        modal.style.display = 'flex'; 
-        modal.classList.add('active'); 
-        lockScroll(); 
-        target.innerHTML = '<p>Carregando conteúdo...</p>'; 
-        try { 
-            const response = await fetch(filePath); 
-            if (!response.ok) throw new Error('Arquivo não encontrado'); 
-            target.innerHTML = await response.text(); 
-            initSwipeToClose(); 
-        } catch (error) { 
-            target.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar o conteúdo.</p><p><a href="${filePath}" target="_blank" style="color: var(--primary-purple);">Clique aqui para abrir em uma nova aba.</a></p>`; 
-        } 
-    } 
-}
-function closePrivacyModal() { 
-    const modal = document.getElementById(CONFIG.privacyModalId); 
-    if (modal) { 
-        modal.classList.remove('active'); 
-        setTimeout(() => { if (!modal.classList.contains('active')) modal.style.display = 'none'; }, 300); 
-        unlockScroll(); 
-    } 
-    const content = document.getElementById('privacy-modal-content'); 
-    if (content) { content.style.transform = ''; content.style.opacity = ''; } 
-}
-function initSwipeToClose() { 
-    const modal = document.getElementById(CONFIG.privacyModalId); 
-    const content = document.getElementById('privacy-modal-content'); 
-    if (!modal || !content) return; 
-    let startX = 0, currentX = 0, isDragging = false; 
-    content.addEventListener('touchstart', (e) => { 
-        startX = e.touches[0].clientX; 
-        isDragging = true; 
-        content.style.transition = 'none'; 
-    }, { passive: true }); 
-    content.addEventListener('touchmove', (e) => { 
-        if (!isDragging) return; 
-        currentX = e.touches[0].clientX; 
-        const diffX = currentX - startX; 
-        if (Math.abs(diffX) > 20) { 
-            content.style.transform = `translateX(${diffX}px)`; 
-            content.style.opacity = 1 - Math.abs(diffX) / 400; 
-        } 
-    }, { passive: true }); 
-    content.addEventListener('touchend', () => { 
-        if (!isDragging) return; 
-        isDragging = false; 
-        const diffX = currentX - startX; 
-        content.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; 
-        if (Math.abs(diffX) > 100) { 
-            content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; 
-            content.style.opacity = '0'; 
-            setTimeout(() => { closePrivacyModal(); }, 300); 
-        } else { 
-            content.style.transform = ''; 
-            content.style.opacity = ''; 
-        } 
-        currentX = 0; 
-    }); 
+/**
+ * Fecha o modal de vídeo
+ */
+function closeVideo() {
+    const modal = document.getElementById(CONFIG.modalId);
+    const target = document.getElementById(CONFIG.iframeTargetId);
+    
+    if (modal) {
+        if (target) target.innerHTML = '';
+        modal.classList.remove('active');
+        unlockScroll();
+    }
 }
 
-// ==================== 9. PROCESSAMENTO DO FORMULÁRIO DE CONTATO ====================
+// ============================================================
+// 8. MODAL DE PRIVACIDADE E TERMOS
+// ============================================================
+
+async function openPrivacyModal() {
+    await loadModalContent('./politica-de-privacidade.html');
+}
+
+async function openTermsModal() {
+    await loadModalContent('./termos-de-uso.html');
+}
+
+/**
+ * Carrega o conteúdo de um arquivo HTML no modal
+ * @param {string} filePath - Caminho do arquivo a ser carregado
+ */
+async function loadModalContent(filePath) {
+    const modal = document.getElementById(CONFIG.privacyModalId);
+    const target = document.getElementById(CONFIG.privacyTargetId);
+    
+    if (modal && target) {
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        lockScroll();
+        target.innerHTML = '<p>Carregando conteúdo...</p>';
+        
+        try {
+            const response = await fetch(filePath);
+            if (!response.ok) throw new Error('Arquivo não encontrado');
+            target.innerHTML = await response.text();
+            initSwipeToClose();
+        } catch (error) {
+            target.innerHTML = `
+                <h2>Erro</h2>
+                <p>Não foi possível carregar o conteúdo.</p>
+                <p><a href="${filePath}" target="_blank" style="color: var(--primary-purple);">Clique aqui para abrir em uma nova aba.</a></p>
+            `;
+        }
+    }
+}
+
+/**
+ * Fecha o modal de privacidade
+ */
+function closePrivacyModal() {
+    const modal = document.getElementById(CONFIG.privacyModalId);
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            if (!modal.classList.contains('active')) modal.style.display = 'none';
+        }, 300);
+        unlockScroll();
+    }
+    
+    const content = document.getElementById('privacy-modal-content');
+    if (content) {
+        content.style.transform = '';
+        content.style.opacity = '';
+    }
+}
+
+/**
+ * Inicializa o swipe to close no modal de privacidade
+ */
+function initSwipeToClose() {
+    const modal = document.getElementById(CONFIG.privacyModalId);
+    const content = document.getElementById('privacy-modal-content');
+    if (!modal || !content) return;
+    
+    let startX = 0, currentX = 0, isDragging = false;
+    
+    content.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        content.style.transition = 'none';
+    }, { passive: true });
+    
+    content.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX;
+        const diffX = currentX - startX;
+        if (Math.abs(diffX) > 20) {
+            content.style.transform = `translateX(${diffX}px)`;
+            content.style.opacity = 1 - Math.abs(diffX) / 400;
+        }
+    }, { passive: true });
+    
+    content.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diffX = currentX - startX;
+        content.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        
+        if (Math.abs(diffX) > 100) {
+            content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)';
+            content.style.opacity = '0';
+            setTimeout(() => { closePrivacyModal(); }, 300);
+        } else {
+            content.style.transform = '';
+            content.style.opacity = '';
+        }
+        currentX = 0;
+    });
+}
+
+// ============================================================
+// 9. FORMULÁRIO DE CONTATO
+// ============================================================
+
 const contactForm = document.getElementById('contact-form');
-if (contactForm) { 
-    contactForm.addEventListener('submit', function(e) { 
-        e.preventDefault(); 
-        const privacyCheck = document.getElementById('privacy-check'); 
-        if (!privacyCheck || !privacyCheck.checked) { 
-            alert("Por favor, confirme que você leu e concorda com a Política de Privacidade."); 
-            return; 
-        } 
-        const nome = contactForm.querySelector('input[name="nome"]').value; 
-        const email = contactForm.querySelector('input[name="email"]').value; 
-        const mensagem = contactForm.querySelector('textarea[name="mensagem"]').value; 
-        const assunto = encodeURIComponent(`Contato via Site - ${nome}`); 
-        const corpo = encodeURIComponent(`Nome: ${nome}\nE-mail: ${email}\n\nMensagem:\n${mensagem}`); 
-        window.location.href = `mailto:vitaotub@gmail.com?subject=${assunto}&body=${corpo}`; 
-        const toast = document.getElementById(CONFIG.toastContainerId); 
-        if (toast) { toast.classList.add('show'); lockScroll(); } 
-        contactForm.reset(); 
-    }); 
-}
-function closeToast() { 
-    const toast = document.getElementById(CONFIG.toastContainerId); 
-    if (toast) { toast.classList.remove('show'); unlockScroll(); } 
+
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const privacyCheck = document.getElementById('privacy-check');
+        if (!privacyCheck || !privacyCheck.checked) {
+            alert("Por favor, confirme que você leu e concorda com a Política de Privacidade.");
+            return;
+        }
+        
+        const nome = contactForm.querySelector('input[name="nome"]').value;
+        const email = contactForm.querySelector('input[name="email"]').value;
+        const mensagem = contactForm.querySelector('textarea[name="mensagem"]').value;
+        
+        const assunto = encodeURIComponent(`Contato via Site - ${nome}`);
+        const corpo = encodeURIComponent(`Nome: ${nome}\nE-mail: ${email}\n\nMensagem:\n${mensagem}`);
+        
+        window.location.href = `mailto:vitaotub@gmail.com?subject=${assunto}&body=${corpo}`;
+        
+        const toast = document.getElementById(CONFIG.toastContainerId);
+        if (toast) {
+            toast.classList.add('show');
+            lockScroll();
+        }
+        
+        contactForm.reset();
+    });
 }
 
-// ==================== 10. EVENTOS GLOBAIS ====================
-document.addEventListener('keydown', (e) => { 
-    if (e.key === 'Escape') { 
-        closeVideo(); 
-        closeToast(); 
-        closePrivacyModal(); 
-        closeMobileMenu(); 
-        fecharArtigoFullscreen(); 
-        fecharVideoModal(); 
-        fecharProjetoModal(); 
+/**
+ * Fecha o toast de confirmação
+ */
+function closeToast() {
+    const toast = document.getElementById(CONFIG.toastContainerId);
+    if (toast) {
+        toast.classList.remove('show');
+        unlockScroll();
+    }
+}
+
+// ============================================================
+// 10. EVENTOS GLOBAIS
+// ============================================================
+
+// Tecla ESC fecha modais e dropdowns
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeVideo();
+        closeToast();
+        closePrivacyModal();
+        closeMobileMenu();
+        fecharArtigoFullscreen();
+        fecharVideoModal();
+        fecharProjetoModal();
         fecharProjetoModalFeed();
-        const translateDropdown = document.getElementById('translate-dropdown'); 
-        if (translateDropdown) translateDropdown.classList.remove('active'); 
-    } 
+        
+        const translateDropdown = document.getElementById('translate-dropdown');
+        if (translateDropdown) translateDropdown.classList.remove('active');
+    }
 });
 
-// ===== CONTROLE DO DROPDOWN DE TRADUÇÃO =====
+// ============================================================
+// 11. CONTROLE DO DROPDOWN DE TRADUÇÃO
+// ============================================================
+
+// Fecha o dropdown ao clicar fora
 document.addEventListener('click', function(e) {
     const translateDropdown = document.getElementById('translate-dropdown');
     const translateToggle = document.getElementById('translate-toggle');
+    
     if (!translateDropdown || !translateToggle) return;
+    
     if (!translateDropdown.contains(e.target) && e.target !== translateToggle) {
         setTimeout(() => {
             translateDropdown.classList.remove('active');
@@ -377,15 +555,26 @@ document.addEventListener('click', function(e) {
     }
 });
 
+/**
+ * Alterna a visibilidade do dropdown de tradução
+ * @param {Event} e - Evento de clique
+ */
 function toggleTranslateDropdown(e) {
-    if (e) { e.stopPropagation(); e.preventDefault(); }
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
     const dropdown = document.getElementById('translate-dropdown');
     if (dropdown) dropdown.classList.toggle('active');
 }
 
-// ==================== 11. BOTÃO VOLTAR AO TOPO ====================
+// ============================================================
+// 12. BOTÃO VOLTAR AO TOPO
+// ============================================================
+
 const backToTopButton = document.getElementById('back-to-top');
-if (backToTopButton) { 
+
+if (backToTopButton) {
     // Inicialmente escondido
     backToTopButton.style.display = 'none';
     
@@ -398,39 +587,58 @@ if (backToTopButton) {
         }
     });
     
-    backToTopButton.addEventListener('click', function(e) { 
-        e.preventDefault(); 
-        window.scrollTo({ top: 0, behavior: 'smooth' }); 
-    }); 
+    // Clique volta ao topo suavemente
+    backToTopButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 } else {
     console.warn('⚠️ Botão "Voltar ao Topo" não encontrado no DOM!');
 }
 
-// ==================== 12. BANNER DE COOKIES (LGPD) ====================
-function initCookieBanner() { 
-    const banner = document.getElementById("lgpd-banner"); 
-    const btnAccept = document.getElementById("lgpd-accept"); 
-    const btnReject = document.getElementById("lgpd-reject"); 
-    if (!banner) return; 
-    if (!localStorage.getItem("vitaotub_cookies_accepted")) { 
-        setTimeout(() => { banner.classList.add("show"); }, 1000); 
-    } 
-    if (btnAccept) { 
-        btnAccept.onclick = function() { 
-            localStorage.setItem("vitaotub_cookies_accepted", "true"); 
-            banner.classList.remove("show"); 
-        }; 
-    } 
-    if (btnReject) { 
-        btnReject.onclick = function() { 
-            banner.classList.remove("show"); 
-        }; 
-    } 
+// ============================================================
+// 13. BANNER DE COOKIES (LGPD)
+// ============================================================
+
+function initCookieBanner() {
+    const banner = document.getElementById("lgpd-banner");
+    const btnAccept = document.getElementById("lgpd-accept");
+    const btnReject = document.getElementById("lgpd-reject");
+    
+    if (!banner) return;
+    
+    if (!localStorage.getItem("vitaotub_cookies_accepted")) {
+        setTimeout(() => {
+            banner.classList.add("show");
+        }, 1000);
+    }
+    
+    if (btnAccept) {
+        btnAccept.onclick = function() {
+            localStorage.setItem("vitaotub_cookies_accepted", "true");
+            banner.classList.remove("show");
+        };
+    }
+    
+    if (btnReject) {
+        btnReject.onclick = function() {
+            banner.classList.remove("show");
+        };
+    }
 }
+
 document.addEventListener("DOMContentLoaded", initCookieBanner);
 
-// ==================== 13. BOTÃO DE TRADUÇÃO FLUTUANTE ====================
+// ============================================================
+// 14. BOTÃO DE TRADUÇÃO FLUTUANTE
+// ============================================================
+
+/**
+ * Traduz a página para o idioma selecionado
+ * @param {string} lang - Código do idioma (pt, en, es, etc.)
+ */
 function translatePage(lang) {
+    // Se for português, remove o cookie de tradução
     if (lang === 'pt') {
         const select = document.querySelector('.goog-te-combo');
         if (select) {
@@ -448,71 +656,110 @@ function translatePage(lang) {
             document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.vitaotub.com; path=/;';
             window.location.reload();
         }
+        
         const dropdown = document.getElementById('translate-dropdown');
         if (dropdown) dropdown.classList.remove('active');
         return;
     }
+    
+    // Configura o cookie para o idioma desejado
     setGoogleTranslateCookie(lang);
+    
+    // Aguarda o seletor do Google Tradutor carregar
     const checkExist = setInterval(() => {
         const select = document.querySelector('.goog-te-combo');
         if (select) {
             clearInterval(checkExist);
             select.value = lang;
             select.dispatchEvent(new Event('change'));
+            
             const dropdown = document.getElementById('translate-dropdown');
             if (dropdown) dropdown.classList.remove('active');
+            
             updateActiveLanguage(lang);
         }
     }, 100);
+    
+    // Fallback: recarrega a página se o seletor não aparecer
     setTimeout(() => {
         if (!document.querySelector('.goog-te-combo')) window.location.reload();
     }, 3000);
 }
 
+/**
+ * Define o cookie de tradução do Google
+ * @param {string} lang - Código do idioma
+ */
 function setGoogleTranslateCookie(lang) {
     const date = new Date();
     date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
     const expires = date.toUTCString();
+    
     document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    document.cookie = lang === 'pt' ? `googtrans=/pt/pt; expires=${expires}; path=/` : `googtrans=/pt/${lang}; expires=${expires}; path=/`;
+    document.cookie = lang === 'pt'
+        ? `googtrans=/pt/pt; expires=${expires}; path=/`
+        : `googtrans=/pt/${lang}; expires=${expires}; path=/`;
 }
 
+/**
+ * Atualiza o idioma ativo no dropdown
+ * @param {string} lang - Código do idioma
+ */
 function updateActiveLanguage(lang) {
     document.querySelectorAll('.translate-option').forEach(btn => {
         btn.classList.remove('active-lang');
-        if (btn.getAttribute('data-lang') === lang) btn.classList.add('active-lang');
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active-lang');
+        }
     });
 }
 
+/**
+ * Inicializa o widget de tradução
+ */
 function initTranslateWidget() {
     const toggleBtn = document.getElementById('translate-toggle');
     const dropdown = document.getElementById('translate-dropdown');
+    
     if (!toggleBtn || !dropdown) return;
+    
     toggleBtn.removeEventListener('click', toggleTranslateDropdown);
     toggleBtn.addEventListener('click', toggleTranslateDropdown);
+    
+    // Verifica o idioma atual pelo cookie
     setTimeout(() => {
         const match = document.cookie.match(/googtrans=\/pt\/([^;]+)/);
         if (match && match[1]) updateActiveLanguage(match[1]);
     }, 1500);
 }
 
-// ==================== 14. BOTÃO DE TRADUÇÃO ARRASTÁVEL ====================
+// ============================================================
+// 15. BOTÃO DE TRADUÇÃO ARRASTÁVEL
+// ============================================================
+
 function initDraggableTranslate() {
     const widget = document.getElementById('translate-widget');
     const toggleBtn = document.getElementById('translate-toggle');
+    
     if (!widget || !toggleBtn) return;
-    if (localStorage.getItem('vitaotub_translate_hidden')) { widget.style.display = 'none'; return; }
+    
+    if (localStorage.getItem('vitaotub_translate_hidden')) {
+        widget.style.display = 'none';
+        return;
+    }
     
     let isDragging = false;
     let hasDragged = false;
     let startX, startY, startLeft, startBottom;
     let dragTimeout = null;
     
+    // Início do arraste (mouse)
     toggleBtn.addEventListener('mousedown', (e) => {
         isDragging = true;
         hasDragged = false;
         startX = e.clientX;
         startY = e.clientY;
+        
         const rect = widget.getBoundingClientRect();
         startLeft = rect.left;
         startBottom = window.innerHeight - rect.bottom;
@@ -520,17 +767,20 @@ function initDraggableTranslate() {
         e.preventDefault();
     });
     
+    // Início do arraste (touch)
     toggleBtn.addEventListener('touchstart', (e) => {
         isDragging = true;
         hasDragged = false;
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
+        
         const rect = widget.getBoundingClientRect();
         startLeft = rect.left;
         startBottom = window.innerHeight - rect.bottom;
         widget.style.transition = 'none';
     }, { passive: true });
     
+    // Movimento (mouse)
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         hasDragged = true;
@@ -540,6 +790,7 @@ function initDraggableTranslate() {
         widget.style.top = 'auto';
     });
     
+    // Movimento (touch)
     document.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
         hasDragged = true;
@@ -549,6 +800,7 @@ function initDraggableTranslate() {
         widget.style.top = 'auto';
     }, { passive: true });
     
+    // Fim do arraste (mouse)
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
@@ -560,6 +812,7 @@ function initDraggableTranslate() {
         }
     });
     
+    // Fim do arraste (touch)
     document.addEventListener('touchend', () => {
         if (isDragging) {
             isDragging = false;
@@ -571,7 +824,7 @@ function initDraggableTranslate() {
         }
     });
     
-    // === CLIQUE ===
+    // Clique (só se não houve arraste)
     toggleBtn.addEventListener('click', function(e) {
         if (hasDragged) {
             hasDragged = false;
@@ -581,94 +834,154 @@ function initDraggableTranslate() {
     });
 }
 
-// ==================== 15. MENU MOBILE (HAMBURGUER) ====================
-function toggleMobileMenu() { 
-    const menuToggle = document.getElementById('menu-toggle'); 
-    const mobileMenu = document.getElementById('mobile-menu'); 
-    if (!menuToggle || !mobileMenu) return; 
-    const isActive = mobileMenu.classList.contains('active'); 
-    if (isActive) { 
-        menuToggle.classList.remove('active'); 
-        mobileMenu.classList.remove('active'); 
-        menuToggle.setAttribute('aria-expanded', 'false'); 
-        menuToggle.setAttribute('aria-label', 'Abrir menu'); 
-        document.body.style.overflow = ''; 
-    } else { 
-        menuToggle.classList.add('active'); 
-        mobileMenu.classList.add('active'); 
-        menuToggle.setAttribute('aria-expanded', 'true'); 
-        menuToggle.setAttribute('aria-label', 'Fechar menu'); 
-    } 
-}
-function closeMobileMenu() { 
-    const menuToggle = document.getElementById('menu-toggle'); 
-    const mobileMenu = document.getElementById('mobile-menu'); 
-    if (!menuToggle || !mobileMenu) return; 
-    menuToggle.classList.remove('active'); 
-    mobileMenu.classList.remove('active'); 
-    menuToggle.setAttribute('aria-expanded', 'false'); 
-    menuToggle.setAttribute('aria-label', 'Abrir menu'); 
-    document.body.style.overflow = ''; 
-}
-function initMobileMenu() { 
-    const menuToggle = document.getElementById('menu-toggle'); 
-    if (!menuToggle) return; 
-    menuToggle.addEventListener('click', (e) => { e.stopPropagation(); toggleMobileMenu(); }); 
-    document.addEventListener('click', (e) => { 
-        const mobileMenu = document.getElementById('mobile-menu'); 
-        if (!mobileMenu || !mobileMenu.classList.contains('active')) return; 
-        if (!mobileMenu.contains(e.target) && e.target !== menuToggle) closeMobileMenu(); 
-    }); 
-    window.addEventListener('resize', () => { if (window.innerWidth > 850) closeMobileMenu(); }); 
-}
-document.addEventListener("DOMContentLoaded", initMobileMenu);
+// ============================================================
+// 16. MENU MOBILE (HAMBURGUER)
+// ============================================================
 
-// ==================== 16. BOTÃO DE TEMA (CLARO/ESCURO) ====================
-function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-    const themeBtn = document.getElementById('theme-toggle-btn');
-    if (document.body.classList.contains('light-mode')) {
-        localStorage.setItem('vitaotub_theme', 'light');
-        if (themeBtn) { themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
+/**
+ * Alterna a visibilidade do menu mobile
+ */
+function toggleMobileMenu() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (!menuToggle || !mobileMenu) return;
+    
+    const isActive = mobileMenu.classList.contains('active');
+    
+    if (isActive) {
+        menuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Abrir menu');
+        document.body.style.overflow = '';
     } else {
-        localStorage.setItem('vitaotub_theme', 'dark');
-        if (themeBtn) { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
+        menuToggle.classList.add('active');
+        mobileMenu.classList.add('active');
+        menuToggle.setAttribute('aria-expanded', 'true');
+        menuToggle.setAttribute('aria-label', 'Fechar menu');
     }
 }
 
+/**
+ * Fecha o menu mobile
+ */
+function closeMobileMenu() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (!menuToggle || !mobileMenu) return;
+    
+    menuToggle.classList.remove('active');
+    mobileMenu.classList.remove('active');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Abrir menu');
+    document.body.style.overflow = '';
+}
+
+/**
+ * Inicializa o menu mobile
+ */
+function initMobileMenu() {
+    const menuToggle = document.getElementById('menu-toggle');
+    if (!menuToggle) return;
+    
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMobileMenu();
+    });
+    
+    // Fecha o menu ao clicar fora
+    document.addEventListener('click', (e) => {
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (!mobileMenu || !mobileMenu.classList.contains('active')) return;
+        if (!mobileMenu.contains(e.target) && e.target !== menuToggle) {
+            closeMobileMenu();
+        }
+    });
+    
+    // Fecha o menu ao redimensionar para desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 850) closeMobileMenu();
+    });
+}
+
+document.addEventListener("DOMContentLoaded", initMobileMenu);
+
+// ============================================================
+// 17. BOTÃO DE TEMA (CLARO/ESCURO)
+// ============================================================
+
+/**
+ * Alterna entre os modos claro e escuro
+ */
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    
+    if (document.body.classList.contains('light-mode')) {
+        localStorage.setItem('vitaotub_theme', 'light');
+        if (themeBtn) {
+            themeBtn.innerHTML = '🌙';
+            themeBtn.title = 'Mudar para modo escuro';
+        }
+    } else {
+        localStorage.setItem('vitaotub_theme', 'dark');
+        if (themeBtn) {
+            themeBtn.innerHTML = '☀️';
+            themeBtn.title = 'Mudar para modo claro';
+        }
+    }
+}
+
+/**
+ * Inicializa o tema com base no localStorage
+ */
 function initThemeToggle() {
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (!themeBtn) return;
+    
     const savedTheme = localStorage.getItem('vitaotub_theme');
-    if (savedTheme === 'light') { document.body.classList.add('light-mode'); themeBtn.innerHTML = '🌙'; themeBtn.title = 'Mudar para modo escuro'; }
-    else { themeBtn.innerHTML = '☀️'; themeBtn.title = 'Mudar para modo claro'; }
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        themeBtn.innerHTML = '🌙';
+        themeBtn.title = 'Mudar para modo escuro';
+    } else {
+        themeBtn.innerHTML = '☀️';
+        themeBtn.title = 'Mudar para modo claro';
+    }
 }
 
-// ==================== 17. BOTÃO DE TEMA ARRASTÁVEL ====================
+// ============================================================
+// 18. BOTÃO DE TEMA ARRASTÁVEL
+// ============================================================
+
 function initDraggableTheme() {
     const themeBtn = document.getElementById('theme-toggle-btn');
+    
     if (!themeBtn) {
         console.warn('⚠️ Botão de tema não encontrado!');
         return;
     }
     console.log('✅ Botão de tema encontrado!');
     
-    if (localStorage.getItem('vitaotub_theme_hidden')) { 
-        themeBtn.style.display = 'none'; 
-        return; 
+    if (localStorage.getItem('vitaotub_theme_hidden')) {
+        themeBtn.style.display = 'none';
+        return;
     }
     
-    // === LÓGICA DE ARRASTE ===
     let isDragging = false;
     let hasDragged = false;
     let startX, startY, startTop, startRight;
     let dragTimeout = null;
     
+    // Início do arraste (mouse)
     themeBtn.addEventListener('mousedown', (e) => {
         isDragging = true;
         hasDragged = false;
         startX = e.clientX;
         startY = e.clientY;
+        
         const rect = themeBtn.getBoundingClientRect();
         startTop = rect.top;
         startRight = window.innerWidth - rect.right;
@@ -676,17 +989,20 @@ function initDraggableTheme() {
         e.preventDefault();
     });
     
+    // Início do arraste (touch)
     themeBtn.addEventListener('touchstart', (e) => {
         isDragging = true;
         hasDragged = false;
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
+        
         const rect = themeBtn.getBoundingClientRect();
         startTop = rect.top;
         startRight = window.innerWidth - rect.right;
         themeBtn.style.transition = 'none';
     }, { passive: true });
     
+    // Movimento (mouse)
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         hasDragged = true;
@@ -696,6 +1012,7 @@ function initDraggableTheme() {
         themeBtn.style.bottom = 'auto';
     });
     
+    // Movimento (touch)
     document.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
         hasDragged = true;
@@ -705,6 +1022,7 @@ function initDraggableTheme() {
         themeBtn.style.bottom = 'auto';
     }, { passive: true });
     
+    // Fim do arraste (mouse)
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
@@ -716,6 +1034,7 @@ function initDraggableTheme() {
         }
     });
     
+    // Fim do arraste (touch)
     document.addEventListener('touchend', () => {
         if (isDragging) {
             isDragging = false;
@@ -727,7 +1046,7 @@ function initDraggableTheme() {
         }
     });
     
-    // === CLIQUE ===
+    // Clique (só se não houve arraste)
     themeBtn.addEventListener('click', function(e) {
         if (hasDragged) {
             hasDragged = false;
@@ -737,7 +1056,10 @@ function initDraggableTheme() {
     });
 }
 
-// ==================== 18. MODAL DE PROJETOS (SITE PRINCIPAL) ====================
+// ============================================================
+// 19. MODAL DE PROJETOS (SITE PRINCIPAL)
+// ============================================================
+
 const projetosFiles = {
     1: 'projetos/projeto-1.html',
     2: 'projetos/projeto-2.html',
@@ -746,15 +1068,27 @@ const projetosFiles = {
     5: 'projetos/projeto-5.html'
 };
 
+/**
+ * Abre o modal de um projeto
+ * @param {number} projectId - ID do projeto
+ */
 function openProjectModal(projectId) {
     const modal = document.getElementById('project-modal');
     const body = document.getElementById('project-modal-body');
+    
     if (!modal || !body) return;
+    
     document.body.style.overflow = 'hidden';
     const filePath = projetosFiles[projectId];
-    if (!filePath) { body.innerHTML = '<p>Projeto não encontrado.</p>'; return; }
+    
+    if (!filePath) {
+        body.innerHTML = '<p>Projeto não encontrado.</p>';
+        return;
+    }
+    
     body.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-dim);">Carregando...</p>';
     modal.classList.add('active');
+    
     fetch(filePath)
         .then(response => {
             if (!response.ok) throw new Error('Arquivo não encontrado');
@@ -770,6 +1104,9 @@ function openProjectModal(projectId) {
         });
 }
 
+/**
+ * Fecha o modal de projetos
+ */
 function closeProjectModal() {
     const modal = document.getElementById('project-modal');
     if (modal) {
@@ -778,16 +1115,22 @@ function closeProjectModal() {
     }
 }
 
+/**
+ * Inicializa o swipe to close no modal de projetos
+ */
 function initProjectSwipeToClose() {
     const modal = document.getElementById('project-modal');
     const content = document.querySelector('.project-modal-content');
     if (!modal || !content) return;
+    
     let startX = 0, currentX = 0, isDragging = false;
+    
     content.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
         isDragging = true;
         content.style.transition = 'none';
     }, { passive: true });
+    
     content.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
         currentX = e.touches[0].clientX;
@@ -797,15 +1140,21 @@ function initProjectSwipeToClose() {
             content.style.opacity = 1 - Math.abs(diffX) / 400;
         }
     }, { passive: true });
+    
     content.addEventListener('touchend', () => {
         if (!isDragging) return;
         isDragging = false;
         const diffX = currentX - startX;
         content.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        
         if (Math.abs(diffX) > 100) {
             content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)';
             content.style.opacity = '0';
-            setTimeout(() => { closeProjectModal(); content.style.transform = ''; content.style.opacity = ''; }, 300);
+            setTimeout(() => {
+                closeProjectModal();
+                content.style.transform = '';
+                content.style.opacity = '';
+            }, 300);
         } else {
             content.style.transform = '';
             content.style.opacity = '';
@@ -814,13 +1163,18 @@ function initProjectSwipeToClose() {
     });
 }
 
+// Fecha o modal de projetos com ESC
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') { closeProjectModal(); }
+    if (e.key === 'Escape') {
+        closeProjectModal();
+    }
 });
 
+// Fecha o modal de projetos ao clicar no overlay
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('project-modal');
     const content = document.querySelector('.project-modal-content');
+    
     if (modal && modal.classList.contains('active') && content) {
         if (e.target === modal || e.target.classList.contains('project-modal-overlay')) {
             closeProjectModal();
@@ -828,7 +1182,14 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ==================== 19. FEED - NAVEGAÇÃO POR ABAS ====================
+// ============================================================
+// 20. FEED - NAVEGAÇÃO POR ABAS
+// ============================================================
+
+/**
+ * Muda a aba ativa no feed
+ * @param {string} aba - Nome da aba ('videos', 'artigos', 'projetos', 'sobre')
+ */
 function mudarAba(aba) {
     const btnVideos = document.getElementById('btn-tab-videos');
     const btnArtigos = document.getElementById('btn-tab-artigos');
@@ -839,34 +1200,64 @@ function mudarAba(aba) {
     const secaoProjetos = document.getElementById('secao-projetos');
     const secaoSobre = document.getElementById('secao-sobre');
     
+    // Esconde todas as seções
     if (secaoVideos) secaoVideos.style.display = 'none';
     if (secaoArtigos) secaoArtigos.style.display = 'none';
     if (secaoProjetos) secaoProjetos.style.display = 'none';
     if (secaoSobre) secaoSobre.style.display = 'none';
     
-    if (btnVideos) { btnVideos.classList.remove('active'); btnVideos.setAttribute('aria-pressed', 'false'); }
-    if (btnArtigos) { btnArtigos.classList.remove('active'); btnArtigos.setAttribute('aria-pressed', 'false'); }
-    if (btnProjetos) { btnProjetos.classList.remove('active'); btnProjetos.setAttribute('aria-pressed', 'false'); }
-    if (btnSobre) { btnSobre.classList.remove('active'); btnSobre.setAttribute('aria-pressed', 'false'); }
+    // Remove classe active de todos os botões
+    if (btnVideos) {
+        btnVideos.classList.remove('active');
+        btnVideos.setAttribute('aria-pressed', 'false');
+    }
+    if (btnArtigos) {
+        btnArtigos.classList.remove('active');
+        btnArtigos.setAttribute('aria-pressed', 'false');
+    }
+    if (btnProjetos) {
+        btnProjetos.classList.remove('active');
+        btnProjetos.setAttribute('aria-pressed', 'false');
+    }
+    if (btnSobre) {
+        btnSobre.classList.remove('active');
+        btnSobre.setAttribute('aria-pressed', 'false');
+    }
     
+    // Mostra a seção selecionada
     if (aba === 'videos') {
-        if (btnVideos) { btnVideos.classList.add('active'); btnVideos.setAttribute('aria-pressed', 'true'); }
+        if (btnVideos) {
+            btnVideos.classList.add('active');
+            btnVideos.setAttribute('aria-pressed', 'true');
+        }
         if (secaoVideos) secaoVideos.style.display = 'block';
     } else if (aba === 'artigos') {
-        if (btnArtigos) { btnArtigos.classList.add('active'); btnArtigos.setAttribute('aria-pressed', 'true'); }
+        if (btnArtigos) {
+            btnArtigos.classList.add('active');
+            btnArtigos.setAttribute('aria-pressed', 'true');
+        }
         if (secaoArtigos) secaoArtigos.style.display = 'block';
         if (!artigosCarregados) carregarTodosArtigos();
     } else if (aba === 'projetos') {
-        if (btnProjetos) { btnProjetos.classList.add('active'); btnProjetos.setAttribute('aria-pressed', 'true'); }
+        if (btnProjetos) {
+            btnProjetos.classList.add('active');
+            btnProjetos.setAttribute('aria-pressed', 'true');
+        }
         if (secaoProjetos) secaoProjetos.style.display = 'block';
         if (!projetosCarregados) carregarProjetos();
     } else if (aba === 'sobre') {
-        if (btnSobre) { btnSobre.classList.add('active'); btnSobre.setAttribute('aria-pressed', 'true'); }
+        if (btnSobre) {
+            btnSobre.classList.add('active');
+            btnSobre.setAttribute('aria-pressed', 'true');
+        }
         if (secaoSobre) secaoSobre.style.display = 'block';
     }
 }
 
-// ==================== 20. FEED - CARREGAR PROJETOS ====================
+// ============================================================
+// 21. FEED - CARREGAR PROJETOS
+// ============================================================
+
 let projetosCarregados = false;
 
 async function carregarProjetos() {
@@ -882,15 +1273,18 @@ async function carregarProjetos() {
     ];
     
     container.innerHTML = '';
+    
     projetos.forEach(proj => {
         const card = document.createElement('div');
         card.className = 'projeto-card-feed';
         card.onclick = function() { openProjectModalFeed(proj.id); };
+        
         const isYoutube = proj.plataforma === 'YouTube';
         const platformClass = isYoutube ? 'platform-youtube' : 'platform-github';
         const platformIcon = isYoutube
             ? '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'
             : '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>';
+        
         card.innerHTML = `
             <div class="projeto-card-feed-image"><img src="${proj.imagem}" alt="${proj.nome}" loading="lazy"></div>
             <div class="projeto-card-feed-info">
@@ -902,10 +1296,14 @@ async function carregarProjetos() {
         `;
         container.appendChild(card);
     });
+    
     projetosCarregados = true;
 }
 
-// ==================== 21. FEED - MODAL DE PROJETOS ====================
+// ============================================================
+// 22. FEED - MODAL DE PROJETOS
+// ============================================================
+
 function openProjectModalFeed(projectId) {
     const projetos = [
         { id: 1, nome: 'VitãoTub', plataforma: 'YouTube', descricao: 'Canal principal de tecnologia, segurança digital e games. Conteúdo diário sobre hardware, software, dicas de segurança e muito mais.', link: 'https://www.youtube.com/@vitaotub?sub_confirmation=1', imagem: '../projeto-001.jpg', inscritos: '16 mil+', videos: '200+' },
@@ -918,6 +1316,7 @@ function openProjectModalFeed(projectId) {
     const projeto = projetos.find(p => p.id === projectId);
     if (!projeto) return;
     
+    // Remove modal antigo se existir
     const modalAntigo = document.getElementById('projeto-modal-feed');
     if (modalAntigo) modalAntigo.remove();
     
@@ -949,9 +1348,15 @@ function openProjectModalFeed(projectId) {
         </div>
     `;
     
-    modal.addEventListener('click', function(e) { if (e.target === modal) fecharProjetoModalFeed(); });
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) fecharProjetoModalFeed();
+    });
+    
     document.body.appendChild(modal);
-    setTimeout(() => { modal.classList.add('active'); document.body.style.overflow = 'hidden'; }, 50);
+    setTimeout(() => {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }, 50);
 }
 
 function fecharProjetoModalFeed() {
@@ -963,7 +1368,10 @@ function fecharProjetoModalFeed() {
     }
 }
 
-// ==================== 22. FEED - CARREGAR VÍDEOS DO JSON (SCROLL INFINITO COM CLEANUP) ====================
+// ============================================================
+// 23. FEED - CARREGAR VÍDEOS DO JSON (SCROLL INFINITO)
+// ============================================================
+
 let todosOsVideos = [];
 let videosCarregados = 0;
 let estaCarregandoVideos = false;
@@ -973,8 +1381,8 @@ let abaObserver = null;
 
 // Verifica se o container existe e inicia o carregamento
 const ytContainer = document.getElementById('youtube-feed-container');
-if (ytContainer) { 
-    carregarVideosDoJSON(); 
+if (ytContainer) {
+    carregarVideosDoJSON();
 }
 
 /**
@@ -1026,7 +1434,7 @@ async function carregarVideosDoJSON() {
         // Carrega os primeiros 21 vídeos
         carregarProximosVideos();
 
-        // Configura o scroll infinito (CORRIGIDO)
+        // Configura o scroll infinito
         configurarScrollInfinitoVideos();
 
         // Configura o cleanup ao mudar de aba
@@ -1080,6 +1488,8 @@ function carregarProximosVideos() {
 
 /**
  * Cria um card de vídeo no formato do feed
+ * @param {Object} video - Objeto com id, title e date
+ * @returns {HTMLElement} Elemento do card
  */
 function criarCardVideo(video) {
     const videoId = video.id;
@@ -1118,7 +1528,7 @@ function criarCardVideo(video) {
 }
 
 /**
- * Configura o scroll infinito para os vídeos usando IntersectionObserver (CORRIGIDO)
+ * Configura o scroll infinito para os vídeos usando IntersectionObserver
  */
 function configurarScrollInfinitoVideos() {
     const container = document.getElementById('youtube-feed-container');
@@ -1136,7 +1546,7 @@ function configurarScrollInfinitoVideos() {
     sentinela.style.visibility = 'hidden';
     container.appendChild(sentinela);
 
-    // Configura o observer com rootMargin maior para carregar ANTES de chegar no fim
+    // Configura o observer com rootMargin para carregar ANTES de chegar no fim
     sentinelaObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !estaCarregandoVideos && videosCarregados < todosOsVideos.length && secaoVideosAtiva) {
@@ -1161,16 +1571,16 @@ function limparVideosCarregados() {
     if (!container) return;
 
     const cards = container.querySelectorAll('.feed-card');
-    if (cards.length > 21) { // ← ALTERADO: 20 → 21
+    if (cards.length > 21) {
         console.log('🧹 Limpando vídeos antigos da memória...');
         
         // Remove todos os cards EXCETO os 21 primeiros
-        for (let i = 21; i < cards.length; i++) { // ← ALTERADO: 20 → 21
+        for (let i = 21; i < cards.length; i++) {
             cards[i].remove();
         }
         
         // Atualiza o contador para 21
-        videosCarregados = 21; // ← ALTERADO: 20 → 21
+        videosCarregados = 21;
         
         // Reconecta o sentinela para continuar o scroll
         const sentinela = document.getElementById('scroll-sentinel-videos');
@@ -1231,7 +1641,10 @@ function configurarCleanupAoMudarAba() {
     });
 }
 
-// ==================== 23. FEED - TOOLTIPS ====================
+// ============================================================
+// 24. FEED - TOOLTIPS DOS BOTÕES
+// ============================================================
+
 function positionTooltips() {
     const buttons = document.querySelectorAll('.btn-video-share, .btn-video-youtube');
     buttons.forEach(button => {
@@ -1249,6 +1662,7 @@ function positionTooltip(e) {
     const OFFSET = 10;
     const spaceAbove = rect.top - OFFSET;
     const spaceBelow = window.innerHeight - rect.bottom - OFFSET;
+    
     let tooltipTop;
     if (spaceAbove >= TOOLTIP_HEIGHT) {
         tooltipTop = rect.top - OFFSET;
@@ -1271,11 +1685,16 @@ function hideTooltip(e) {
     button.style.removeProperty('--tooltip-direction');
 }
 
-// ==================== 24. FEED - MODAL DE VÍDEO EM TELA CHEIA ====================
+// ============================================================
+// 25. FEED - MODAL DE VÍDEO EM TELA CHEIA
+// ============================================================
+
 function abrirVideoModal(videoId) {
     let modal = document.getElementById('video-fullscreen-modal');
     if (!modal) {
-        modal = document.createElement('div'); modal.id = 'video-fullscreen-modal'; modal.className = 'video-fullscreen-modal';
+        modal = document.createElement('div');
+        modal.id = 'video-fullscreen-modal';
+        modal.className = 'video-fullscreen-modal';
         modal.innerHTML = `
             <button class="video-fullscreen-close" id="video-close-btn" aria-label="Fechar vídeo"><i class="fa-solid fa-xmark"></i></button>
             <div class="video-fullscreen-container" id="video-container"><iframe id="video-fullscreen-iframe" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe></div>
@@ -1286,79 +1705,159 @@ function abrirVideoModal(videoId) {
             </div>
         `;
         document.body.appendChild(modal);
-        modal.addEventListener('click', function(e) { if (e.target === modal) fecharVideoModal(); });
-        modal.addEventListener('click', function() { const tapHint = document.getElementById('video-tap-hint'); if (tapHint) tapHint.classList.remove('visible'); });
-        document.getElementById('video-share-btn').addEventListener('click', function(e) { e.stopPropagation(); const iframe = document.getElementById('video-fullscreen-iframe'); const currentSrc = iframe.src; const videoIdMatch = currentSrc.match(/embed\/([^?]+)/); if (videoIdMatch) compartilharVideoFeed(videoIdMatch[1]); });
-        document.getElementById('video-close-btn').addEventListener('click', function(e) { e.stopPropagation(); fecharVideoModal(); });
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) fecharVideoModal();
+        });
+        modal.addEventListener('click', function() {
+            const tapHint = document.getElementById('video-tap-hint');
+            if (tapHint) tapHint.classList.remove('visible');
+        });
+        document.getElementById('video-share-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const iframe = document.getElementById('video-fullscreen-iframe');
+            const currentSrc = iframe.src;
+            const videoIdMatch = currentSrc.match(/embed\/([^?]+)/);
+            if (videoIdMatch) compartilharVideoFeed(videoIdMatch[1]);
+        });
+        document.getElementById('video-close-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            fecharVideoModal();
+        });
     }
+    
     const iframe = document.getElementById('video-fullscreen-iframe');
     iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
-    modal.classList.add('active'); document.body.style.overflow = 'hidden';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
     const tapHint = document.getElementById('video-tap-hint');
-    if (tapHint) { tapHint.classList.add('visible'); setTimeout(() => { if (tapHint) tapHint.classList.remove('visible'); }, 4000); }
-    verificarOrientacao(); window.addEventListener('orientationchange', verificarOrientacao);
+    if (tapHint) {
+        tapHint.classList.add('visible');
+        setTimeout(() => {
+            if (tapHint) tapHint.classList.remove('visible');
+        }, 4000);
+    }
+    
+    verificarOrientacao();
+    window.addEventListener('orientationchange', verificarOrientacao);
     initVideoSwipeToClose();
 }
 
 function fecharVideoModal() {
     const modal = document.getElementById('video-fullscreen-modal');
     const iframe = document.getElementById('video-fullscreen-iframe');
-    if (modal) { modal.classList.remove('active'); if (iframe) iframe.src = ''; document.body.style.overflow = ''; }
+    if (modal) {
+        modal.classList.remove('active');
+        if (iframe) iframe.src = '';
+        document.body.style.overflow = '';
+    }
     window.removeEventListener('orientationchange', verificarOrientacao);
 }
 
 function verificarOrientacao() {
     const container = document.getElementById('video-container');
     if (!container) return;
-    if (window.innerWidth > window.innerHeight) { container.classList.add('landscape'); container.classList.remove('portrait'); }
-    else { container.classList.add('portrait'); container.classList.remove('landscape'); }
+    if (window.innerWidth > window.innerHeight) {
+        container.classList.add('landscape');
+        container.classList.remove('portrait');
+    } else {
+        container.classList.add('portrait');
+        container.classList.remove('landscape');
+    }
 }
 
 function initVideoSwipeToClose() {
-    const modal = document.getElementById('video-fullscreen-modal'); if (!modal) return;
+    const modal = document.getElementById('video-fullscreen-modal');
+    if (!modal) return;
+    
     let startX = 0, startY = 0, currentX = 0, currentY = 0, isDragging = false;
+    
     modal.addEventListener('touchstart', (e) => {
-        if (e.target === modal) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; isDragging = true; modal.style.transition = 'none'; }
-    }, { passive: true });
-    modal.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        currentX = e.touches[0].clientX; currentY = e.touches[0].clientY;
-        const diffX = currentX - startX; const diffY = currentY - startY;
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            if (Math.abs(diffX) > 20) { modal.style.transform = `translateX(${diffX}px)`; modal.style.opacity = 1 - Math.abs(diffX) / 400; }
-        } else if (diffY > 20) {
-            modal.style.transform = `translateY(${diffY}px)`; modal.style.opacity = 1 - Math.abs(diffY) / 500;
+        if (e.target === modal) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isDragging = true;
+            modal.style.transition = 'none';
         }
     }, { passive: true });
+    
+    modal.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
+        
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (Math.abs(diffX) > 20) {
+                modal.style.transform = `translateX(${diffX}px)`;
+                modal.style.opacity = 1 - Math.abs(diffX) / 400;
+            }
+        } else if (diffY > 20) {
+            modal.style.transform = `translateY(${diffY}px)`;
+            modal.style.opacity = 1 - Math.abs(diffY) / 500;
+        }
+    }, { passive: true });
+    
     modal.addEventListener('touchend', () => {
         if (!isDragging) return;
         isDragging = false;
-        const diffX = currentX - startX; const diffY = currentY - startY;
+        const diffX = currentX - startX;
+        const diffY = currentY - startY;
         modal.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        
         if (Math.abs(diffX) > 100 || diffY > 150) {
-            if (Math.abs(diffX) > Math.abs(diffY)) { modal.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)'; }
-            else { modal.style.transform = 'translateY(100%)'; }
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                modal.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)';
+            } else {
+                modal.style.transform = 'translateY(100%)';
+            }
             modal.style.opacity = '0';
-            setTimeout(() => { fecharVideoModal(); modal.style.transform = ''; modal.style.opacity = ''; }, 300);
-        } else { modal.style.transform = ''; modal.style.opacity = ''; }
-        currentX = 0; currentY = 0;
+            setTimeout(() => {
+                fecharVideoModal();
+                modal.style.transform = '';
+                modal.style.opacity = '';
+            }, 300);
+        } else {
+            modal.style.transform = '';
+            modal.style.opacity = '';
+        }
+        currentX = 0;
+        currentY = 0;
     });
 }
+
+// ============================================================
+// 26. FEED - COMPARTILHAR VÍDEO
+// ============================================================
 
 function compartilharVideoFeed(videoId) {
     const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
     const mensagem = `🎬 Vídeo publicado no Canal VitãoTub: ${videoUrl}`;
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    
     if (isMobile && navigator.share) {
-        navigator.share({ title: 'Vídeo do VitãoTub', text: 'Confira este vídeo no YouTube!', url: videoUrl })
-            .catch((err) => { if (err.name !== 'AbortError') console.error('Erro ao compartilhar:', err); });
+        navigator.share({
+            title: 'Vídeo do VitãoTub',
+            text: 'Confira este vídeo no YouTube!',
+            url: videoUrl
+        }).catch((err) => {
+            if (err.name !== 'AbortError') console.error('Erro ao compartilhar:', err);
+        });
         return;
     }
+    
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(mensagem)
-            .then(() => { alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.'); })
-            .catch(() => { fallbackCopy(mensagem); });
-    } else { fallbackCopy(mensagem); }
+            .then(() => {
+                alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+            })
+            .catch(() => {
+                fallbackCopy(mensagem);
+            });
+    } else {
+        fallbackCopy(mensagem);
+    }
 }
 
 function fallbackCopy(text) {
@@ -1368,20 +1867,35 @@ function fallbackCopy(text) {
     tempInput.style.opacity = '0';
     document.body.appendChild(tempInput);
     tempInput.select();
-    try { document.execCommand('copy'); alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.'); } catch (e) { alert('❌ Não foi possível copiar o link. Tente manualmente.'); }
+    
+    try {
+        document.execCommand('copy');
+        alert('✅ Link do vídeo copiado! Compartilhe com seus amigos.');
+    } catch (e) {
+        alert('❌ Não foi possível copiar o link. Tente manualmente.');
+    }
+    
     document.body.removeChild(tempInput);
 }
 
-// ==================== 25. FEED - SISTEMA DE ARTIGOS ====================
+// ============================================================
+// 27. FEED - SISTEMA DE ARTIGOS
+// ============================================================
+
 let todosArtigos = [];
 let artigosCarregados = false;
 let artigosExibidos = 0;
 
+/**
+ * Carrega todos os artigos do arquivo artigos.html
+ */
 async function carregarTodosArtigos() {
     const container = document.getElementById('artigos-feed-container');
     if (!container) return;
+    
     container.innerHTML = '<p style="text-align: center; color: #aaa;">Carregando artigos...</p>';
     todosArtigos = [];
+    
     for (const file of CONFIG.artigosFiles) {
         try {
             const response = await fetch(file);
@@ -1390,62 +1904,134 @@ async function carregarTodosArtigos() {
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlText, 'text/html');
             const artigos = doc.querySelectorAll('.artigo-card');
-            artigos.forEach(artigo => { todosArtigos.push({ element: artigo.cloneNode(true), data: new Date(artigo.getAttribute('data-data').split('/').reverse().join('-')), id: artigo.id }); });
-        } catch (error) { console.warn(`Erro ao carregar ${file}:`, error); }
+            
+            artigos.forEach(artigo => {
+                todosArtigos.push({
+                    element: artigo.cloneNode(true),
+                    data: new Date(artigo.getAttribute('data-data').split('/').reverse().join('-')),
+                    id: artigo.id
+                });
+            });
+        } catch (error) {
+            console.warn(`Erro ao carregar ${file}:`, error);
+        }
     }
+    
     todosArtigos.sort((a, b) => b.data - a.data);
-    if (todosArtigos.length > 0) { artigosCarregados = true; artigosExibidos = 0; container.innerHTML = ''; carregarMaisArtigos(); configurarScrollInfinitoArtigos(); initArtigoDestaque(); }
-    else { container.innerHTML = '<p style="text-align: center; color: #aaa;">Nenhum artigo encontrado.</p>'; }
+    
+    if (todosArtigos.length > 0) {
+        artigosCarregados = true;
+        artigosExibidos = 0;
+        container.innerHTML = '';
+        carregarMaisArtigos();
+        configurarScrollInfinitoArtigos();
+        initArtigoDestaque();
+    } else {
+        container.innerHTML = '<p style="text-align: center; color: #aaa;">Nenhum artigo encontrado.</p>';
+    }
 }
 
+/**
+ * Carrega mais artigos (lote por vez)
+ */
 function carregarMaisArtigos() {
     const container = document.getElementById('artigos-feed-container');
     const loading = document.getElementById('artigos-loading');
     if (!container) return;
+    
     const proximos = todosArtigos.slice(artigosExibidos, artigosExibidos + CONFIG.artigosIncremento);
-    if (proximos.length === 0) { if (loading) loading.style.display = 'none'; return; }
+    if (proximos.length === 0) {
+        if (loading) loading.style.display = 'none';
+        return;
+    }
+    
     proximos.forEach(artigo => {
         const card = artigo.element;
         card.style.cursor = 'pointer';
-        card.addEventListener('click', function(e) { if (e.target.closest('button') || e.target.closest('a') || e.target.closest('iframe')) return; abrirArtigoFullscreen(artigo.id); });
-        const btnLerMais = document.createElement('button'); btnLerMais.className = 'btn-ler-mais'; btnLerMais.innerHTML = '📖 Ler Artigo Completo';
-        btnLerMais.addEventListener('click', function(e) { e.stopPropagation(); abrirArtigoFullscreen(artigo.id); });
-        const meta = card.querySelector('.artigo-meta'); if (meta) { meta.after(btnLerMais); } else { card.appendChild(btnLerMais); }
+        
+        // Clique no card abre o artigo
+        card.addEventListener('click', function(e) {
+            if (e.target.closest('button') || e.target.closest('a') || e.target.closest('iframe')) return;
+            abrirArtigoFullscreen(artigo.id);
+        });
+        
+        // Botão "Ler Mais"
+        const btnLerMais = document.createElement('button');
+        btnLerMais.className = 'btn-ler-mais';
+        btnLerMais.innerHTML = '📖 Ler Artigo Completo';
+        btnLerMais.addEventListener('click', function(e) {
+            e.stopPropagation();
+            abrirArtigoFullscreen(artigo.id);
+        });
+        
+        const meta = card.querySelector('.artigo-meta');
+        if (meta) {
+            meta.after(btnLerMais);
+        } else {
+            card.appendChild(btnLerMais);
+        }
+        
         container.appendChild(card);
     });
+    
     artigosExibidos += proximos.length;
-    if (artigosExibidos >= todosArtigos.length && loading) { loading.style.display = 'none'; }
+    if (artigosExibidos >= todosArtigos.length && loading) {
+        loading.style.display = 'none';
+    }
+    
     initArtigoDestaque();
 }
 
+/**
+ * Configura o scroll infinito para artigos
+ */
 function configurarScrollInfinitoArtigos() {
     const loading = document.getElementById('artigos-loading');
+    
     window.addEventListener('scroll', () => {
-        const secaoArtigos = document.getElementById('secao-artigos'); if (!secaoArtigos || secaoArtigos.style.display === 'none') return;
-        const scrollBottom = window.innerHeight + window.scrollY; const pageBottom = document.body.offsetHeight - 300;
+        const secaoArtigos = document.getElementById('secao-artigos');
+        if (!secaoArtigos || secaoArtigos.style.display === 'none') return;
+        
+        const scrollBottom = window.innerHeight + window.scrollY;
+        const pageBottom = document.body.offsetHeight - 300;
+        
         if (scrollBottom >= pageBottom && artigosExibidos < todosArtigos.length) {
             if (loading) loading.style.display = 'block';
             carregarMaisArtigos();
-            if (artigosExibidos >= todosArtigos.length && loading) { loading.innerHTML = '<p>Todos os artigos foram carregados! 🎉</p>'; setTimeout(() => { loading.style.display = 'none'; }, 3000); }
+            
+            if (artigosExibidos >= todosArtigos.length && loading) {
+                loading.innerHTML = '<p>Todos os artigos foram carregados! 🎉</p>';
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                }, 3000);
+            }
         }
     });
 }
 
+/**
+ * Inicializa o destaque dos artigos no hover
+ */
 function initArtigoDestaque() {
     const artigos = document.querySelectorAll('.artigo-card');
     if (artigos.length === 0) return;
     
+    // Remove qualquer classe de destaque que possa ter sido aplicada automaticamente
     artigos.forEach(artigo => {
         artigo.classList.remove('artigo-destaque');
     });
     
+    // Adiciona evento de hover/focus
     artigos.forEach(artigo => {
+        // Desktop: hover
         artigo.addEventListener('mouseenter', function() {
             this.classList.add('artigo-destaque');
         });
         artigo.addEventListener('mouseleave', function() {
             this.classList.remove('artigo-destaque');
         });
+        
+        // Mobile: touch (feedback visual temporário)
         artigo.addEventListener('touchstart', function() {
             this.classList.add('artigo-destaque');
             setTimeout(() => {
@@ -1455,6 +2041,10 @@ function initArtigoDestaque() {
     });
 }
 
+/**
+ * Abre o artigo em tela cheia
+ * @param {string} artigoId - ID do artigo
+ */
 function abrirArtigoFullscreen(artigoId) {
     const artigo = document.getElementById(artigoId);
     if (!artigo) return;
@@ -1463,14 +2053,17 @@ function abrirArtigoFullscreen(artigoId) {
     const body = document.getElementById('artigo-fullscreen-body');
     if (!modal || !body) return;
     
+    // Clona o artigo para não alterar o original
     const conteudo = artigo.cloneNode(true);
     conteudo.style.cursor = 'default';
     conteudo.classList.remove('artigo-card');
     conteudo.classList.add('artigo-fullscreen-active');
     
+    // Remove o botão "Ler Mais" se existir
     const btnLerMais = conteudo.querySelector('.btn-ler-mais');
     if (btnLerMais) btnLerMais.remove();
     
+    // Garante que o corpo do artigo seja exibido
     const corpo = conteudo.querySelector('.artigo-corpo');
     if (corpo) {
         corpo.style.display = 'block';
@@ -1505,32 +2098,47 @@ function abrirArtigoFullscreen(artigoId) {
         corpo.classList.remove('hidden', 'oculto', 'fechado');
     }
     
+    // Limpa e insere o conteúdo
     body.innerHTML = '';
     body.appendChild(conteudo);
     
+    // Abre o modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     modal.scrollTop = 0;
     window.scrollTo(0, 0);
     
+    // Reinicia o swipe to close
     initArtigoSwipeToClose();
 }
 
+/**
+ * Fecha o modal de artigo
+ */
 function fecharArtigoFullscreen() {
     const modal = document.getElementById('artigo-fullscreen-modal');
-    if (modal) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 }
 
+/**
+ * Inicializa o swipe to close no modal de artigo
+ */
 function initArtigoSwipeToClose() {
     const modal = document.getElementById('artigo-fullscreen-modal');
     const content = document.querySelector('.artigo-fullscreen-content');
     if (!modal || !content) return;
+    
     let startX = 0, currentX = 0, isDragging = false;
+    
     content.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
         isDragging = true;
         content.style.transition = 'none';
     }, { passive: true });
+    
     content.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
         currentX = e.touches[0].clientX;
@@ -1540,42 +2148,84 @@ function initArtigoSwipeToClose() {
             content.style.opacity = 1 - Math.abs(diffX) / 400;
         }
     }, { passive: true });
+    
     content.addEventListener('touchend', () => {
         if (!isDragging) return;
         isDragging = false;
         const diffX = currentX - startX;
         content.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        
         if (Math.abs(diffX) > 100) {
             content.style.transform = diffX > 0 ? 'translateX(150%)' : 'translateX(-150%)';
             content.style.opacity = '0';
-            setTimeout(() => { fecharArtigoFullscreen(); content.style.transform = ''; content.style.opacity = ''; }, 300);
-        } else { content.style.transform = ''; content.style.opacity = ''; }
+            setTimeout(() => {
+                fecharArtigoFullscreen();
+                content.style.transform = '';
+                content.style.opacity = '';
+            }, 300);
+        } else {
+            content.style.transform = '';
+            content.style.opacity = '';
+        }
         currentX = 0;
     });
 }
 
+/**
+ * Compartilha um artigo
+ * @param {string} artigoId - ID do artigo
+ * @param {string} titulo - Título do artigo
+ */
 function compartilharArtigo(artigoId, titulo) {
     const link = `https://www.vitaotub.com/feed/index.html#${artigoId}`;
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    
     if (isMobile && navigator.share) {
-        navigator.share({ title: titulo || 'Artigo do VitãoTub', text: 'Confira este artigo!', url: link }).catch(() => {});
+        navigator.share({
+            title: titulo || 'Artigo do VitãoTub',
+            text: 'Confira este artigo!',
+            url: link
+        }).catch(() => {});
     } else {
         navigator.clipboard.writeText(link)
-            .then(() => { alert('Link do artigo copiado! Compartilhe com seus amigos.'); })
-            .catch(() => { fallbackCopy(link); });
+            .then(() => {
+                alert('Link do artigo copiado! Compartilhe com seus amigos.');
+            })
+            .catch(() => {
+                fallbackCopy(link);
+            });
     }
 }
 
+/**
+ * Verifica se há um artigo na URL para abrir automaticamente
+ */
 function verificarArtigoNaUrl() {
     const hash = window.location.hash;
     if (hash && hash.startsWith('#artigo-')) {
         const artigoId = hash.substring(1);
-        if (!artigosCarregados) { carregarTodosArtigos().then(() => { mudarAba('artigos'); setTimeout(() => { const artigo = document.getElementById(artigoId); if (artigo) abrirArtigoFullscreen(artigoId); }, 800); }); }
-        else { mudarAba('artigos'); setTimeout(() => { const artigo = document.getElementById(artigoId); if (artigo) abrirArtigoFullscreen(artigoId); }, 800); }
+        if (!artigosCarregados) {
+            carregarTodosArtigos().then(() => {
+                mudarAba('artigos');
+                setTimeout(() => {
+                    const artigo = document.getElementById(artigoId);
+                    if (artigo) abrirArtigoFullscreen(artigoId);
+                }, 800);
+            });
+        } else {
+            mudarAba('artigos');
+            setTimeout(() => {
+                const artigo = document.getElementById(artigoId);
+                if (artigo) abrirArtigoFullscreen(artigoId);
+            }, 800);
+        }
     }
 }
 
-// ==================== 26. INICIALIZAÇÃO ====================
+// ============================================================
+// 28. INICIALIZAÇÃO
+// ============================================================
+
 document.addEventListener("DOMContentLoaded", () => {
     initTranslateWidget();
     initDraggableTranslate();
@@ -1584,7 +2234,10 @@ document.addEventListener("DOMContentLoaded", () => {
     verificarArtigoNaUrl();
 });
 
-// ==================== 27. GOOGLE TRANSLATE INICIALIZAÇÃO ====================
+// ============================================================
+// 29. GOOGLE TRANSLATE INICIALIZAÇÃO
+// ============================================================
+
 function googleTranslateElementInit() {
     new google.translate.TranslateElement({
         pageLanguage: 'pt',
