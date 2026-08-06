@@ -429,10 +429,6 @@ button[type="submit"]:hover { transform: translateY(-3px); box-shadow: 0 8px 25p
     word-break: break-word;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    -webkit-hyphens: auto;
-    -moz-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
 }
 #privacy-content-target h1, #privacy-content-target h2, #privacy-content-target h3 { color: var(--text-main); font-family: 'Satoshi', sans-serif; margin-top: 1.5em; margin-bottom: 0.8em; text-align: left !important; hyphens: none !important; }
 #privacy-content-target h1 { font-size: 2rem; text-align: center !important; color: var(--primary-purple); margin-top: 0; padding-right: 40px; }
@@ -1479,6 +1475,84 @@ body.light-mode .projeto-card-feed-platform.platform-github { color: #24292e; bo
 /* ==================== 29. REMOVER TRAÇOS ROXOS EM PÁGINAS ESPECÍFICAS ==================== */
 .no-title-underline h2::after {
     display: none !important;
+}
+
+/* ==================== 33. CORREÇÃO MODAL DE PRIVACIDADE - MOBILE ==================== */
+@media (max-width: 600px) {
+    #privacy-modal .modal-content {
+        width: 90% !important;
+        max-height: 80vh !important;
+        padding: 20px 18px 25px 18px !important;
+        border-radius: 16px;
+        margin: 10px auto;
+        background: var(--modal-bg) !important;
+        border: 1px solid var(--border-color) !important;
+    }
+    
+    #privacy-content-target {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word !important;
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+        -webkit-hyphens: auto !important;
+        -moz-hyphens: auto !important;
+        -ms-hyphens: auto !important;
+        hyphens: auto !important;
+    }
+    
+    #privacy-content-target p,
+    #privacy-content-target li {
+        font-size: 0.92rem !important;
+        line-height: 1.6 !important;
+        text-align: justify !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        word-wrap: break-word !important;
+        -webkit-hyphens: auto !important;
+        -moz-hyphens: auto !important;
+        -ms-hyphens: auto !important;
+        hyphens: auto !important;
+        margin-bottom: 0.8em !important;
+    }
+    
+    #privacy-content-target h1 {
+        font-size: 1.3rem !important;
+        padding-right: 0 !important;
+        text-align: center !important;
+    }
+    
+    #privacy-content-target h2 {
+        font-size: 1.1rem !important;
+        padding-bottom: 8px !important;
+    }
+    
+    #privacy-content-target h3 {
+        font-size: 1rem !important;
+    }
+    
+    #privacy-content-target ul,
+    #privacy-content-target ol {
+        padding-left: 15px !important;
+        margin-bottom: 1em !important;
+    }
+    
+    #privacy-modal .modal-close-btn {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.9rem !important;
+        top: 5px !important;
+        right: 5px !important;
+    }
+    
+    .modal-swipe-indicator {
+        padding: 0 0 8px 0 !important;
+    }
+    
+    .modal-swipe-indicator span {
+        width: 30px !important;
+        height: 3px !important;
+    }
 }
 
 /* ==================== 30. ACESSIBILIDADE ==================== */
