@@ -2,7 +2,7 @@
    VITÃOTUB - ESTILOS UNIFICADOS (SEM BIO)
    Descrição: Tema escuro/claro unificado para site principal,
    meus-projetos e feed (PWA) - Bio mantém seu próprio CSS
-   Versão: 3.4 - Correção modal privacidade + 3 colunas desktop
+   Versão: 3.5 - Correção modal privacidade + 3 colunas desktop
    ============================================================ */
 
 /* ==================== 1. FONTES E VARIÁVEIS ==================== */
@@ -748,7 +748,7 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     top: calc(var(--tooltip-top) - 15px);
 }
 
-/* Artigos - ESPAÇAMENTO AUMENTADO */
+/* ==================== 26. ARTIGOS ==================== */
 .artigo-card {
     background-color: var(--card-bg-alt);
     border-radius: 12px;
@@ -759,8 +759,6 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
     cursor: pointer;
 }
-
-/* DESTAQUE APENAS NO HOVER OU FOCUS */
 .artigo-card:hover,
 .artigo-card:focus,
 .artigo-card.artigo-destaque {
@@ -771,20 +769,15 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
         inset 0 0 15px rgba(139, 92, 246, 0.05);
     transform: translateY(-3px);
 }
-
-/* Remove o destaque automático ao rolar - mantém apenas hover */
 .artigo-card.artigo-destaque:not(:hover) {
     border-color: rgba(139, 92, 246, 0.12);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transform: none;
 }
-
-/* Modo claro - ajuste da borda sóbria */
 body.light-mode .artigo-card {
     border-color: rgba(139, 92, 246, 0.15);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
-
 body.light-mode .artigo-card:hover,
 body.light-mode .artigo-card:focus,
 body.light-mode .artigo-card.artigo-destaque {
@@ -805,19 +798,16 @@ body.light-mode .artigo-card.artigo-destaque {
 .artigo-meta { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--border-color); margin-bottom: 0; }
 .artigo-data { color: var(--primary-purple); font-weight: 600; }
 .artigo-autor { color: var(--primary-blue); font-weight: 600; }
-
 .artigo-corpo p { margin-bottom: 14px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; text-justify: inter-word; text-indent: 1.5em; }
 
-/* Rodapé do artigo */
 .artigo-rodape { display: flex; justify-content: space-between; align-items: center; padding: clamp(8px, 1.5vw, 14px) clamp(10px, 2vw, 20px); border-top: 1px solid var(--border-color); gap: clamp(4px, 1vw, 8px); flex-wrap: wrap; overflow: hidden; }
 .artigo-rodape-social { display: flex; gap: clamp(2px, 0.5vw, 4px); flex-shrink: 0; flex-wrap: wrap; }
 .artigo-rodape-acoes { display: flex; gap: clamp(3px, 0.8vw, 6px); align-items: center; flex-shrink: 0; }
 
-/* Botão "Ler Mais" */
 .btn-ler-mais { display: flex; align-items: center; justify-content: center; height: 36px; padding: 0 16px; background: var(--gradient-brand); color: #ffffff; border: none; border-radius: 20px; font-size: clamp(0.8rem, 1.5vw, 0.85rem); font-weight: 600; cursor: pointer; transition: var(--transition-smooth); font-family: 'Satoshi', sans-serif; margin: 10px auto 15px auto; width: fit-content; }
 .btn-ler-mais:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
-/* Modal de artigo em tela cheia */
+/* ==================== 27. MODAL DE ARTIGO EM TELA CHEIA ==================== */
 .artigo-fullscreen-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: var(--modal-bg); overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .artigo-fullscreen-modal.active { display: block; }
 .artigo-fullscreen-content { width: 100%; max-width: 800px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; padding: 10px 20px 60px 20px; position: relative; background: var(--modal-bg); }
@@ -830,7 +820,7 @@ body.light-mode .artigo-card.artigo-destaque {
 .artigo-fullscreen-body .artigo-meta { padding: 10px 20px; margin-bottom: 15px; }
 .artigo-fullscreen-body .artigo-corpo { display: block !important; max-height: none; padding: 15px 20px; text-align: justify; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }
 
-/* Projetos no feed - ESPAÇAMENTO AUMENTADO */
+/* ==================== 28. PROJETOS NO FEED ==================== */
 #projetos-feed-container {
     display: flex;
     flex-direction: column;
@@ -849,7 +839,7 @@ body.light-mode .artigo-card.artigo-destaque {
 .projeto-card-feed-link { font-size: 0.8rem; color: var(--primary-purple); text-decoration: none; font-weight: 600; transition: color 0.3s ease; align-self: flex-start; }
 .projeto-card-feed-link:hover { color: var(--primary-blue); }
 
-/* Modal de projetos no feed */
+/* ==================== 29. MODAL DE PROJETOS NO FEED ==================== */
 .projeto-modal-overlay-feed {
     display: none;
     position: fixed;
@@ -891,7 +881,7 @@ body.light-mode .artigo-card.artigo-destaque {
 .projeto-modal-link-feed { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 24px; background: var(--gradient-brand); color: #ffffff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: all 0.3s ease; font-family: 'Satoshi', sans-serif; width: auto; min-width: 180px; max-width: 100%; }
 .projeto-modal-link-feed:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-/* Redes sociais */
+/* ==================== 30. REDES SOCIAIS E BOTÕES ==================== */
 .social-btn { display: inline-flex; align-items: center; justify-content: center; width: clamp(28px, 5vw, 36px); height: clamp(28px, 5vw, 36px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.7rem, 1.5vw, 1rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; }
 .social-btn.instagram:hover { color: #E1306C; border-color: #E1306C; box-shadow: 0 0 12px rgba(225, 48, 108, 0.5); transform: translateY(-2px); }
 .social-btn.youtube:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 12px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
@@ -901,12 +891,11 @@ body.light-mode .artigo-card.artigo-destaque {
 .social-btn.github:hover { color: #ffffff; border-color: #ffffff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
 .social-btn.telegram:hover { color: #0088cc; border-color: #0088cc; box-shadow: 0 0 12px rgba(0, 136, 204, 0.5); transform: translateY(-2px); }
 
-/* Botões de ação */
 .btn-action-icon { display: inline-flex; align-items: center; justify-content: center; width: clamp(32px, 6vw, 42px); height: clamp(32px, 6vw, 42px); background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 50%; font-size: clamp(0.9rem, 1.8vw, 1.2rem); text-decoration: none; cursor: pointer; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
 .btn-share-icon:hover { color: #8b5cf6; border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
 .btn-subscribe-icon:hover { color: #FF0000; border-color: #FF0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); transform: translateY(-2px); }
 
-/* Seção Pérolas - ESPAÇAMENTO AUMENTADO */
+/* ==================== 31. SEÇÃO PÉROLAS ==================== */
 .about-container { background: var(--about-bg); border-radius: 8px; padding: 30px 20px; text-align: center; border: 1px solid var(--border-color); }
 .about-profile h2 { color: var(--text-main); margin-bottom: 5px; font-family: 'Satoshi', sans-serif; }
 .about-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
@@ -920,10 +909,10 @@ body.light-mode .artigo-card.artigo-destaque {
 .perola-text { font-style: italic; font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px; text-indent: 0 !important; text-align: center !important; -webkit-hyphens: none !important; -moz-hyphens: none !important; -ms-hyphens: none !important; hyphens: none !important; }
 .perola-autor { font-size: 0.8rem; color: var(--text-dim); text-align: right !important; margin-bottom: 0; -webkit-hyphens: none !important; -moz-hyphens: none !important; -ms-hyphens: none !important; hyphens: none !important; }
 
-/* Loading de artigos */
+/* ==================== 32. LOADING DE ARTIGOS ==================== */
 .artigos-loading { text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.9rem; }
 
-/* ==================== 25.5 ARTIGOS-DICAS.HTML ==================== */
+/* ==================== 33. ARTIGOS-DICAS.HTML ==================== */
 .artigos-title {
     padding-top: 40px;
     margin-top: 30px;
@@ -1220,7 +1209,7 @@ body.light-mode #artigos-container .btn-action-icon {
     }
 }
 
-/* ==================== 26. MODAL DE VÍDEO EM TELA CHEIA (FEED) ==================== */
+/* ==================== 34. MODAL DE VÍDEO EM TELA CHEIA (FEED) ==================== */
 .video-fullscreen-modal { display: none; position: fixed; inset: 0; z-index: 99999; background: #000000; justify-content: center; align-items: center; flex-direction: column; }
 .video-fullscreen-modal.active { display: flex; }
 .video-fullscreen-close { position: fixed; top: 15px; right: 15px; z-index: 100001; width: 40px; height: 40px; background: transparent; border: 2px solid #ff0000; border-radius: 50%; color: #ffffff; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; opacity: 1; pointer-events: all; -webkit-tap-highlight-color: transparent; box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); }
@@ -1237,8 +1226,9 @@ body.light-mode #artigos-container .btn-action-icon {
 .video-fullscreen-container.landscape { align-items: center; padding-top: 0; }
 .video-fullscreen-container.landscape iframe { width: 100%; height: 100%; }
 
-/* ==================== 27. RESPONSIVIDADE ==================== */
+/* ==================== 35. RESPONSIVIDADE ==================== */
 @media (max-width: 1024px) { .geography-wrapper { width: 90%; } }
+
 @media (max-width: 850px) {
     .demographics-wrapper { grid-template-columns: 1fr; }
     .geo-content { grid-template-columns: 1fr; }
@@ -1261,10 +1251,10 @@ body.light-mode #artigos-container .btn-action-icon {
     .project-modal-close { width: 38px; height: 38px; font-size: 1.1rem; }
 }
 
-/* CORREÇÃO: Responsividade do container de vídeos */
+/* Tablet: 2 colunas */
 @media (min-width: 769px) {
     #youtube-feed-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
+        grid-template-columns: repeat(2, 1fr);
         gap: 18px;
     }
 }
@@ -1285,16 +1275,11 @@ body.light-mode #artigos-container .btn-action-icon {
     .lgpd-content p { text-align: justify !important; -webkit-hyphens: auto !important; -moz-hyphens: auto !important; -ms-hyphens: auto !important; hyphens: auto !important; overflow-wrap: break-word !important; }
     .lgpd-actions { display: flex; justify-content: flex-end; gap: 10px; }
     .lgpd-btn-main, .lgpd-btn-secondary { padding: 12px 20px; font-size: 0.9rem; flex: 1; }
-    
-    /* AJUSTE DOS BOTÕES PARA TABLET */
-    .theme-toggle-btn {
-        top: 80px !important;
-    }
-    .translate-widget {
-        bottom: 90px !important;
-    }
+    .theme-toggle-btn { top: 80px !important; }
+    .translate-widget { bottom: 90px !important; }
 }
 
+/* Mobile: ajustes gerais */
 @media (max-width: 600px) {
     .social-grid-center .stat-card { width: 100%; min-width: unset; }
     .project-modal-content { padding: 15px 18px 25px 18px; width: 100%; max-width: 100%; max-height: 100vh; height: 100vh; border-radius: 0; border: none; background: var(--bg-color); box-shadow: none; animation: none; }
@@ -1317,168 +1302,6 @@ body.light-mode #artigos-container .btn-action-icon {
     .projeto-modal-link-feed { padding: 10px 18px; font-size: 0.85rem; min-width: unset; width: 100%; justify-content: center; }
     
     /* CORREÇÃO MODAL DE PRIVACIDADE - MOBILE */
-    #privacy-modal .modal-content {
-        width: 95% !important;
-        max-height: 85vh !important;
-        padding: 15px 18px 20px 18px !important;
-        border-radius: 12px;
-        margin: 10px auto;
-    }
-    
-    #privacy-content-target p,
-    #privacy-content-target li {
-        font-size: 0.95rem !important;
-        line-height: 1.7 !important;
-        text-align: justify !important;
-        word-break: break-word !important;
-        overflow-wrap: break-word !important;
-        word-wrap: break-word !important;
-        -webkit-hyphens: auto !important;
-        -moz-hyphens: auto !important;
-        -ms-hyphens: auto !important;
-        hyphens: auto !important;
-    }
-    
-    #privacy-content-target h1 {
-        font-size: 1.5rem !important;
-        padding-right: 0 !important;
-    }
-    
-    #privacy-content-target h2 {
-        font-size: 1.2rem !important;
-    }
-    
-    #privacy-content-target h3 {
-        font-size: 1.05rem !important;
-    }
-    
-    #privacy-modal .modal-close-btn {
-        width: 34px !important;
-        height: 34px !important;
-        font-size: 1rem !important;
-        top: 8px !important;
-        right: 8px !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .theme-toggle-btn { 
-        top: 80px !important;
-        left: 12px;
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
-        z-index: 1003;
-    }
-    .translate-widget { 
-        bottom: 90px !important;
-        left: 12px;
-        z-index: 1002;
-    }
-    .translate-toggle {
-        width: 38px;
-        height: 38px;
-    }
-    .translate-dropdown { min-width: 170px; }
-    .translate-option { font-size: 0.85rem; padding: 8px 12px; }
-    .pwa-floating-btn { bottom: 130px; left: 12px; padding: 8px 12px; font-size: 0.8rem; gap: 6px; }
-    .pwa-floating-text { font-size: 0.8rem; }
-    .projects-title { padding-top: 25px; margin-top: 15px; }
-    .project-card { padding: 15px; gap: 15px; }
-    .project-image { height: 160px; max-height: 160px; }
-    .project-name { font-size: 1.1rem; }
-    .project-platform { font-size: 0.7rem; padding: 4px 12px; gap: 6px; border-width: 1.5px; }
-    .project-platform svg { width: 14px; height: 14px; }
-    .project-git a { font-size: 0.75rem; }
-    .project-description { font-size: 0.9rem; }
-    .video-meta-wrapper { flex-direction: row; flex-wrap: nowrap; justify-content: space-between; gap: 4px; }
-    .video-meta-right { flex-shrink: 0; gap: 4px; }
-    .video-meta-left { flex-shrink: 1; min-width: 0; gap: 1px; }
-    .video-date { font-size: 0.65rem; white-space: nowrap; }
-    .video-author { font-size: 0.6rem; white-space: nowrap; }
-    .btn-video-share, .btn-video-youtube { width: 30px; height: 30px; }
-    .btn-video-share svg, .btn-video-youtube svg { width: 13px; height: 13px; }
-    .video-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
-    .video-tap-hint { font-size: 0.75rem; padding: 6px 12px; }
-    .video-fullscreen-container.portrait { padding-top: 20%; }
-    .video-actions-bar { bottom: 40px; gap: 10px; }
-    .video-actions-bar .btn-action-icon { width: 38px; height: 38px; font-size: 1rem; }
-    .artigo-card { margin-bottom: 15px; }
-    .artigo-titulo { font-size: 1.1rem; }
-    .artigo-resumo { font-size: 0.85rem; }
-    .artigo-meta { font-size: 0.75rem; }
-    .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
-    .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
-    .projeto-card-feed { padding: 12px; gap: 12px; }
-    .projeto-card-feed-image { flex: 0 0 60px; height: 60px; }
-    .projeto-card-feed-nome { font-size: 0.9rem; }
-    .projeto-card-feed-descricao { font-size: 0.75rem; -webkit-line-clamp: 2; }
-    .feed-logo { width: 100px; height: 100px; }
-    .feed-title { font-size: 1.2rem; }
-    .logo-subscribe-btn { font-size: 1.1rem; padding: 4px 10px; }
-    .feed-tabs { flex-direction: column; align-items: center; }
-    .tab-btn { width: 100%; max-width: 250px; }
-}
-
-@media (max-width: 767px) {
-    .feed-header { padding: 15px 10px; }
-    .feed-logo { width: 120px; height: 120px; }
-    .feed-container { padding: 0 10px 40px; }
-    .translate-widget { bottom: 70px; }
-    .back-to-top { bottom: 12px; }
-    .artigo-fullscreen-content { padding: 10px 15px 50px 15px; }
-    .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
-}
-
-@media (orientation: landscape) {
-    .video-actions-bar { bottom: 30px; }
-    .video-actions-bar .btn-action-icon { width: 36px; height: 36px; font-size: 1rem; }
-}
-
-/* ==================== 28. MODO CLARO - AJUSTES ==================== */
-body.light-mode .project-modal-content { border-color: #ddd; }
-body.light-mode .project-modal-close { background: var(--card-bg); border-color: #ddd; color: var(--text-main); }
-body.light-mode .project-modal-close:hover, body.light-mode .project-modal-close:active { background: rgba(255, 0, 0, 0.7); border-color: #ff0000; color: #ffffff; }
-body.light-mode .project-modal-overlay { background: rgba(0, 0, 0, 0.7); }
-body.light-mode #privacy-modal .modal-content { background: #ffffff; border-color: #ddd; }
-body.light-mode #privacy-content-target p, body.light-mode #privacy-content-target li { color: #333; }
-body.light-mode #privacy-content-target h1, body.light-mode #privacy-content-target h2, body.light-mode #privacy-content-target h3 { color: #1a1a1a; }
-body.light-mode .artigo-fullscreen-modal { background: #ffffff; }
-body.light-mode .artigo-fullscreen-content { background: #ffffff; }
-body.light-mode .artigo-fullscreen-body { background: #ffffff; }
-body.light-mode .artigo-fullscreen-body .artigo-titulo { color: #1a1a1a; }
-body.light-mode .artigo-fullscreen-body .artigo-corpo p { color: #333; }
-body.light-mode .artigo-fullscreen-close { border-color: #ff0000; color: #ffffff; }
-body.light-mode .artigo-fullscreen-close:hover { background: rgba(255, 0, 0, 0.15); }
-body.light-mode .video-fullscreen-close { border-color: #ff0000; color: #ffffff; }
-body.light-mode .video-fullscreen-close:hover { background: rgba(255, 0, 0, 0.15); }
-body.light-mode .projeto-modal-overlay-feed { background: rgba(0, 0, 0, 0.75); }
-body.light-mode .projeto-modal-content-feed { background: #ffffff; border-color: #ddd; }
-body.light-mode .projeto-modal-close-feed { border-color: #ff0000; color: #ffffff; }
-body.light-mode .projeto-modal-close-feed:hover { background: rgba(255, 0, 0, 0.15); }
-body.light-mode .projeto-modal-titulo-feed { color: #1a1a1a; }
-body.light-mode .projeto-modal-descricao-feed { color: #333; }
-body.light-mode .projeto-modal-tag-feed { color: #555; background: #f0f0f0; border-color: #ddd; }
-body.light-mode .projeto-modal-link-feed { color: #ffffff; }
-body.light-mode .projeto-card-feed { background: #ffffff; border-color: #ddd; }
-body.light-mode .projeto-card-feed:hover { border-color: var(--primary-purple); }
-body.light-mode .projeto-card-feed-nome { color: #1a1a1a; }
-body.light-mode .projeto-card-feed-descricao { color: #555; }
-body.light-mode .projeto-card-feed-platform.platform-github { color: #24292e; border-color: #24292e; }
-
-@media (max-width: 600px) {
-    body.light-mode .project-modal { background: var(--bg-color); }
-    body.light-mode .project-modal-close { background: rgba(255, 255, 255, 0.9); border-color: rgba(0, 0, 0, 0.15); color: var(--text-main); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
-    body.light-mode .project-modal-close:hover, body.light-mode .project-modal-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; color: #ffffff; }
-}
-
-/* ==================== 29. REMOVER TRAÇOS ROXOS EM PÁGINAS ESPECÍFICAS ==================== */
-.no-title-underline h2::after {
-    display: none !important;
-}
-
-/* ==================== 33. CORREÇÃO MODAL DE PRIVACIDADE - MOBILE ==================== */
-@media (max-width: 600px) {
     #privacy-modal .modal-content {
         width: 90% !important;
         max-height: 80vh !important;
@@ -1555,7 +1378,124 @@ body.light-mode .projeto-card-feed-platform.platform-github { color: #24292e; bo
     }
 }
 
-/* ==================== 30. ACESSIBILIDADE ==================== */
+/* Mobile pequeno */
+@media (max-width: 480px) {
+    .theme-toggle-btn { 
+        top: 80px !important;
+        left: 12px;
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+        z-index: 1003;
+    }
+    .translate-widget { 
+        bottom: 90px !important;
+        left: 12px;
+        z-index: 1002;
+    }
+    .translate-toggle {
+        width: 38px;
+        height: 38px;
+    }
+    .translate-dropdown { min-width: 170px; }
+    .translate-option { font-size: 0.85rem; padding: 8px 12px; }
+    .pwa-floating-btn { bottom: 130px; left: 12px; padding: 8px 12px; font-size: 0.8rem; gap: 6px; }
+    .pwa-floating-text { font-size: 0.8rem; }
+    .projects-title { padding-top: 25px; margin-top: 15px; }
+    .project-card { padding: 15px; gap: 15px; }
+    .project-image { height: 160px; max-height: 160px; }
+    .project-name { font-size: 1.1rem; }
+    .project-platform { font-size: 0.7rem; padding: 4px 12px; gap: 6px; border-width: 1.5px; }
+    .project-platform svg { width: 14px; height: 14px; }
+    .project-git a { font-size: 0.75rem; }
+    .project-description { font-size: 0.9rem; }
+    .video-meta-wrapper { flex-direction: row; flex-wrap: nowrap; justify-content: space-between; gap: 4px; }
+    .video-meta-right { flex-shrink: 0; gap: 4px; }
+    .video-meta-left { flex-shrink: 1; min-width: 0; gap: 1px; }
+    .video-date { font-size: 0.65rem; white-space: nowrap; }
+    .video-author { font-size: 0.6rem; white-space: nowrap; }
+    .btn-video-share, .btn-video-youtube { width: 30px; height: 30px; }
+    .btn-video-share svg, .btn-video-youtube svg { width: 13px; height: 13px; }
+    .video-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
+    .video-tap-hint { font-size: 0.75rem; padding: 6px 12px; }
+    .video-fullscreen-container.portrait { padding-top: 20%; }
+    .video-actions-bar { bottom: 40px; gap: 10px; }
+    .video-actions-bar .btn-action-icon { width: 38px; height: 38px; font-size: 1rem; }
+    .artigo-card { margin-bottom: 15px; }
+    .artigo-titulo { font-size: 1.1rem; }
+    .artigo-resumo { font-size: 0.85rem; }
+    .artigo-meta { font-size: 0.75rem; }
+    .artigo-fullscreen-close { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1rem; }
+    .artigo-fullscreen-body .artigo-titulo { font-size: 1.2rem; }
+    .projeto-card-feed { padding: 12px; gap: 12px; }
+    .projeto-card-feed-image { flex: 0 0 60px; height: 60px; }
+    .projeto-card-feed-nome { font-size: 0.9rem; }
+    .projeto-card-feed-descricao { font-size: 0.75rem; -webkit-line-clamp: 2; }
+    .feed-logo { width: 100px; height: 100px; }
+    .feed-title { font-size: 1.2rem; }
+    .logo-subscribe-btn { font-size: 1.1rem; padding: 4px 10px; }
+    .feed-tabs { flex-direction: column; align-items: center; }
+    .tab-btn { width: 100%; max-width: 250px; }
+}
+
+@media (max-width: 767px) {
+    .feed-header { padding: 15px 10px; }
+    .feed-logo { width: 120px; height: 120px; }
+    .feed-container { padding: 0 10px 40px; }
+    .translate-widget { bottom: 70px; }
+    .back-to-top { bottom: 12px; }
+    .artigo-fullscreen-content { padding: 10px 15px 50px 15px; }
+    .artigo-fullscreen-body .artigo-titulo { font-size: 1.3rem; }
+}
+
+@media (orientation: landscape) {
+    .video-actions-bar { bottom: 30px; }
+    .video-actions-bar .btn-action-icon { width: 36px; height: 36px; font-size: 1rem; }
+}
+
+/* ==================== 36. MODO CLARO - AJUSTES ==================== */
+body.light-mode .project-modal-content { border-color: #ddd; }
+body.light-mode .project-modal-close { background: var(--card-bg); border-color: #ddd; color: var(--text-main); }
+body.light-mode .project-modal-close:hover, body.light-mode .project-modal-close:active { background: rgba(255, 0, 0, 0.7); border-color: #ff0000; color: #ffffff; }
+body.light-mode .project-modal-overlay { background: rgba(0, 0, 0, 0.7); }
+body.light-mode #privacy-modal .modal-content { background: #ffffff; border-color: #ddd; }
+body.light-mode #privacy-content-target p, body.light-mode #privacy-content-target li { color: #333; }
+body.light-mode #privacy-content-target h1, body.light-mode #privacy-content-target h2, body.light-mode #privacy-content-target h3 { color: #1a1a1a; }
+body.light-mode .artigo-fullscreen-modal { background: #ffffff; }
+body.light-mode .artigo-fullscreen-content { background: #ffffff; }
+body.light-mode .artigo-fullscreen-body { background: #ffffff; }
+body.light-mode .artigo-fullscreen-body .artigo-titulo { color: #1a1a1a; }
+body.light-mode .artigo-fullscreen-body .artigo-corpo p { color: #333; }
+body.light-mode .artigo-fullscreen-close { border-color: #ff0000; color: #ffffff; }
+body.light-mode .artigo-fullscreen-close:hover { background: rgba(255, 0, 0, 0.15); }
+body.light-mode .video-fullscreen-close { border-color: #ff0000; color: #ffffff; }
+body.light-mode .video-fullscreen-close:hover { background: rgba(255, 0, 0, 0.15); }
+body.light-mode .projeto-modal-overlay-feed { background: rgba(0, 0, 0, 0.75); }
+body.light-mode .projeto-modal-content-feed { background: #ffffff; border-color: #ddd; }
+body.light-mode .projeto-modal-close-feed { border-color: #ff0000; color: #ffffff; }
+body.light-mode .projeto-modal-close-feed:hover { background: rgba(255, 0, 0, 0.15); }
+body.light-mode .projeto-modal-titulo-feed { color: #1a1a1a; }
+body.light-mode .projeto-modal-descricao-feed { color: #333; }
+body.light-mode .projeto-modal-tag-feed { color: #555; background: #f0f0f0; border-color: #ddd; }
+body.light-mode .projeto-modal-link-feed { color: #ffffff; }
+body.light-mode .projeto-card-feed { background: #ffffff; border-color: #ddd; }
+body.light-mode .projeto-card-feed:hover { border-color: var(--primary-purple); }
+body.light-mode .projeto-card-feed-nome { color: #1a1a1a; }
+body.light-mode .projeto-card-feed-descricao { color: #555; }
+body.light-mode .projeto-card-feed-platform.platform-github { color: #24292e; border-color: #24292e; }
+
+@media (max-width: 600px) {
+    body.light-mode .project-modal { background: var(--bg-color); }
+    body.light-mode .project-modal-close { background: rgba(255, 255, 255, 0.9); border-color: rgba(0, 0, 0, 0.15); color: var(--text-main); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
+    body.light-mode .project-modal-close:hover, body.light-mode .project-modal-close:active { background: rgba(255, 0, 0, 0.8); border-color: #ff0000; color: #ffffff; }
+}
+
+/* ==================== 37. REMOVER TRAÇOS ROXOS ==================== */
+.no-title-underline h2::after {
+    display: none !important;
+}
+
+/* ==================== 38. ACESSIBILIDADE ==================== */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -1570,7 +1510,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     border-radius: 4px;
 }
 
-/* ==================== 31. RECUO DE PARÁGRAFOS ==================== */
+/* ==================== 39. RECUO DE PARÁGRAFOS ==================== */
 #privacy-content-target p,
 .project-modal-body .projeto-detalhe p,
 .artigo-fullscreen-body .artigo-corpo p,
@@ -1597,7 +1537,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     text-indent: 0 !important;
 }
 
-/* ==================== 32. EFEITO NEON NA MODAL DE ARTIGOS ==================== */
+/* ==================== 40. EFEITO NEON NA MODAL DE ARTIGOS ==================== */
 .artigo-fullscreen-modal.active .artigo-fullscreen-content {
     border: 2px solid var(--primary-purple);
     box-shadow: 
