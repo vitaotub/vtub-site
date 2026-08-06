@@ -626,17 +626,6 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     margin-top: 10px;
 }
 
-/* Desktop: 3 colunas com cards mais largos */
-@media (min-width: 1025px) {
-    #youtube-feed-container {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-    }
-    .feed-container { 
-        max-width: 1200px;
-    }
-}
-
 /* Tablet: 2 colunas */
 @media (min-width: 769px) and (max-width: 1024px) {
     #youtube-feed-container {
@@ -645,6 +634,17 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     }
     .feed-container { 
         max-width: 800px;
+    }
+}
+
+/* Desktop: 3 colunas com cards mais largos */
+@media (min-width: 1025px) {
+    #youtube-feed-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+    .feed-container { 
+        max-width: 1200px;
     }
 }
 
@@ -1249,14 +1249,6 @@ body.light-mode #artigos-container .btn-action-icon {
     #project-modal-body .modal-description { font-size: 1rem; line-height: 1.7; }
     #project-modal-body .modal-image-large { max-height: 280px; }
     .project-modal-close { width: 38px; height: 38px; font-size: 1.1rem; }
-}
-
-/* Tablet: 2 colunas */
-@media (min-width: 769px) {
-    #youtube-feed-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
-    }
 }
 
 @media (min-width: 768px) {
