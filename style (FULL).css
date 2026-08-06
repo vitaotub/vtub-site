@@ -2,7 +2,7 @@
    VITÃOTUB - ESTILOS UNIFICADOS (SEM BIO)
    Descrição: Tema escuro/claro unificado para site principal,
    meus-projetos e feed (PWA) - Bio mantém seu próprio CSS
-   Versão: 3.3 - Cards de vídeo mais largos no desktop
+   Versão: 3.4 - Correção modal privacidade + 3 colunas desktop
    ============================================================ */
 
 /* ==================== 1. FONTES E VARIÁVEIS ==================== */
@@ -418,7 +418,22 @@ button[type="submit"]:hover { transform: translateY(-3px); box-shadow: 0 8px 25p
 }
 .modal-swipe-indicator { display: flex; justify-content: center; padding: 0 0 12px 0; position: sticky; top: 0; z-index: 5; }
 .modal-swipe-indicator span { display: block; width: 40px; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
-#privacy-content-target p, #privacy-content-target li { text-align: justify !important; text-justify: inter-word !important; text-align-last: left; font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.2em; }
+#privacy-content-target p, 
+#privacy-content-target li { 
+    text-align: justify !important; 
+    text-justify: inter-word !important; 
+    text-align-last: left; 
+    font-size: 1.05rem; 
+    line-height: 1.8; 
+    margin-bottom: 1.2em;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
 #privacy-content-target h1, #privacy-content-target h2, #privacy-content-target h3 { color: var(--text-main); font-family: 'Satoshi', sans-serif; margin-top: 1.5em; margin-bottom: 0.8em; text-align: left !important; hyphens: none !important; }
 #privacy-content-target h1 { font-size: 2rem; text-align: center !important; color: var(--primary-purple); margin-top: 0; padding-right: 40px; }
 #privacy-content-target h2 { font-size: 1.4rem; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
@@ -555,7 +570,6 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    /* FORÇA A VISIBILIDADE */
     opacity: 1 !important;
     visibility: visible !important;
 }
@@ -620,10 +634,10 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 @media (min-width: 1025px) {
     #youtube-feed-container {
         grid-template-columns: repeat(3, 1fr);
-        gap: 24px; /* AUMENTADO: 20px → 24px para melhor espaçamento */
+        gap: 24px;
     }
     .feed-container { 
-        max-width: 1200px; /* AUMENTADO: 1000px → 1200px */
+        max-width: 1200px;
     }
 }
 
@@ -1268,6 +1282,23 @@ body.light-mode #artigos-container .btn-action-icon {
     #artigos-feed-container .artigo-card { margin-bottom: 0; }
 }
 
+@media (max-width: 768px) {
+    .video-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+    .lgpd-overlay { padding: 20px; width: 95%; bottom: 15px; }
+    .lgpd-container { flex-direction: column; align-items: stretch; gap: 15px; }
+    .lgpd-content p { text-align: justify !important; -webkit-hyphens: auto !important; -moz-hyphens: auto !important; -ms-hyphens: auto !important; hyphens: auto !important; overflow-wrap: break-word !important; }
+    .lgpd-actions { display: flex; justify-content: flex-end; gap: 10px; }
+    .lgpd-btn-main, .lgpd-btn-secondary { padding: 12px 20px; font-size: 0.9rem; flex: 1; }
+    
+    /* AJUSTE DOS BOTÕES PARA TABLET */
+    .theme-toggle-btn {
+        top: 80px !important;
+    }
+    .translate-widget {
+        bottom: 90px !important;
+    }
+}
+
 @media (max-width: 600px) {
     .social-grid-center .stat-card { width: 100%; min-width: unset; }
     .project-modal-content { padding: 15px 18px 25px 18px; width: 100%; max-width: 100%; max-height: 100vh; height: 100vh; border-radius: 0; border: none; background: var(--bg-color); box-shadow: none; animation: none; }
@@ -1282,15 +1313,56 @@ body.light-mode #artigos-container .btn-action-icon {
     #project-modal-body .modal-level { font-size: 0.75rem; padding: 4px 12px; }
     #project-modal-body .modal-platform { font-size: 0.75rem; padding: 4px 12px; gap: 6px; }
     #project-modal-body .modal-platform svg { width: 14px; height: 14px; }
-    #privacy-modal .modal-content { padding: 20px 15px !important; max-height: 85vh !important; }
-    #privacy-modal .modal-close-btn { width: 34px; height: 34px; font-size: 1rem; }
-    #privacy-content-target h1 { font-size: 1.5rem; }
     .projeto-modal-content-feed { max-width: 100%; margin: 10px; border-radius: 12px; }
     .projeto-modal-body-feed { padding: 15px 18px 20px; }
     .projeto-modal-titulo-feed { font-size: 1.2rem; }
     .projeto-modal-descricao-feed { font-size: 0.85rem; text-indent: 1.5em; }
     .projeto-modal-close-feed { width: 32px; height: 32px; font-size: 1rem; top: 8px; right: 8px; margin: 6px 6px 0 0; }
     .projeto-modal-link-feed { padding: 10px 18px; font-size: 0.85rem; min-width: unset; width: 100%; justify-content: center; }
+    
+    /* CORREÇÃO MODAL DE PRIVACIDADE - MOBILE */
+    #privacy-modal .modal-content {
+        width: 95% !important;
+        max-height: 85vh !important;
+        padding: 15px 18px 20px 18px !important;
+        border-radius: 12px;
+        margin: 10px auto;
+    }
+    
+    #privacy-content-target p,
+    #privacy-content-target li {
+        font-size: 0.95rem !important;
+        line-height: 1.7 !important;
+        text-align: justify !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        word-wrap: break-word !important;
+        -webkit-hyphens: auto !important;
+        -moz-hyphens: auto !important;
+        -ms-hyphens: auto !important;
+        hyphens: auto !important;
+    }
+    
+    #privacy-content-target h1 {
+        font-size: 1.5rem !important;
+        padding-right: 0 !important;
+    }
+    
+    #privacy-content-target h2 {
+        font-size: 1.2rem !important;
+    }
+    
+    #privacy-content-target h3 {
+        font-size: 1.05rem !important;
+    }
+    
+    #privacy-modal .modal-close-btn {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 1rem !important;
+        top: 8px !important;
+        right: 8px !important;
+    }
 }
 
 @media (max-width: 480px) {
