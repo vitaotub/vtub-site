@@ -609,7 +609,7 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 .tab-btn:hover { border-color: #8b5cf6; color: var(--text-main); }
 .tab-btn.active { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border-color: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); }
 
-/* Feed container - ESPAÇAMENTO REDUZIDO */
+/* Feed container */
 .feed-container { 
     max-width: 600px; 
     margin: 8px auto 30px auto;
@@ -617,39 +617,78 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 }
 
 /* ============================================================ */
-/* CONTAINER DE VÍDEOS - CORREÇÃO DE LAYOUT COM GRID */
+/* CONTAINER DE VÍDEOS - LAYOUT RESPONSIVO */
 /* ============================================================ */
 #youtube-feed-container {
     display: grid;
-    grid-template-columns: 1fr; /* Mobile: 1 coluna por padrão */
+    grid-template-columns: 1fr; /* Mobile: 1 coluna */
     gap: 20px;
     margin-top: 10px;
+    width: 100%;
 }
 
 /* Tablet: 2 colunas */
 @media (min-width: 769px) and (max-width: 1024px) {
+    .feed-container { 
+        max-width: 800px;
+    }
     #youtube-feed-container {
         grid-template-columns: repeat(2, 1fr);
         gap: 18px;
     }
-    .feed-container { 
-        max-width: 800px;
-    }
 }
 
-/* Desktop: 3 colunas com cards mais largos */
+/* Desktop: 3 colunas com largura total */
 @media (min-width: 1025px) {
+    .feed-container { 
+        max-width: 1200px;
+        padding: 0 30px 50px;
+    }
+    
     #youtube-feed-container {
         grid-template-columns: repeat(3, 1fr);
         gap: 24px;
     }
-    .feed-container { 
-        max-width: 1200px;
+    
+    /* 🔥 CORREÇÃO: Cards ocupam toda a largura disponível */
+    .feed-card {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .feed-card .video-thumbnail-container {
+        width: 100%;
+        padding-bottom: 56.25%; /* Mantém proporção 16:9 */
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .feed-card .video-thumbnail {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .feed-card .feed-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .feed-card .video-title {
+        font-size: 1.1rem;
+        line-height: 1.4;
+        flex: 1;
     }
 }
 
 /* ============================================================ */
-/* CARDS DE VÍDEO - LAYOUT ORIGINAL */
+/* CARDS DE VÍDEO - LAYOUT BASE (Mobile + Tablet) */
 /* ============================================================ */
 .feed-card { 
     background-color: var(--card-bg-alt); 
@@ -679,25 +718,121 @@ footer { padding: 60px 0; border-top: 1px solid var(--border-color); text-align:
 }
 
 /* Vídeos */
-.video-container, .video-thumbnail-container { position: relative; width: 100%; padding-bottom: 56.25%; background-color: #000; cursor: pointer; overflow: hidden; }
-.video-thumbnail { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; background-color: #1a1a1a; }
-.play-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.9); font-size: 3rem; filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5)); transition: transform 0.3s, color 0.3s; pointer-events: none; z-index: 2; }
-.video-thumbnail-container:hover .play-icon-overlay { transform: translate(-50%, -50%) scale(1.15); color: #ff0000; }
+.video-container, .video-thumbnail-container { 
+    position: relative; 
+    width: 100%; 
+    padding-bottom: 56.25%; 
+    background-color: #000; 
+    cursor: pointer; 
+    overflow: hidden; 
+}
+.video-thumbnail { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; 
+    background-color: #1a1a1a; 
+}
+.play-icon-overlay { 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    color: rgba(255, 255, 255, 0.9); 
+    font-size: 3rem; 
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5)); 
+    transition: transform 0.3s, color 0.3s; 
+    pointer-events: none; 
+    z-index: 2; 
+}
+.video-thumbnail-container:hover .play-icon-overlay { 
+    transform: translate(-50%, -50%) scale(1.15); 
+    color: #ff0000; 
+}
 
 /* Meta dos vídeos */
-.video-meta-wrapper { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; gap: 8px; flex-wrap: nowrap; }
-.video-meta-left { display: flex; flex-direction: column; gap: 2px; flex-shrink: 1; min-width: 0; }
-.video-meta-right { display: flex; gap: 8px; align-items: center; flex-shrink: 0; overflow: visible !important; position: relative; z-index: 5; }
-.video-date { font-size: 0.8rem; color: var(--primary-purple); font-weight: 600; white-space: nowrap; }
-.video-author { font-size: 0.75rem; color: var(--text-dim); white-space: nowrap; }
+.video-meta-wrapper { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-top: 6px; 
+    gap: 8px; 
+    flex-wrap: nowrap; 
+}
+.video-meta-left { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 2px; 
+    flex-shrink: 1; 
+    min-width: 0; 
+}
+.video-meta-right { 
+    display: flex; 
+    gap: 8px; 
+    align-items: center; 
+    flex-shrink: 0; 
+    overflow: visible !important; 
+    position: relative; 
+    z-index: 5; 
+}
+.video-date { 
+    font-size: 0.8rem; 
+    color: var(--primary-purple); 
+    font-weight: 600; 
+    white-space: nowrap; 
+}
+.video-author { 
+    font-size: 0.75rem; 
+    color: var(--text-dim); 
+    white-space: nowrap; 
+}
 
 /* Botões de vídeo */
-.btn-video-share, .btn-video-youtube { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; border: none; text-decoration: none; flex-shrink: 0; position: relative; }
-.btn-video-share { background: rgba(139, 92, 246, 0.15); color: var(--primary-purple); border: 2px solid rgba(139, 92, 246, 0.3); }
-.btn-video-share:hover { background: rgba(139, 92, 246, 0.25); border-color: var(--primary-purple); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); }
-.btn-video-youtube { background: #FF0000; color: #ffffff; border: 2px solid #FF0000; }
-.btn-video-youtube:hover { background: #cc0000; border-color: #cc0000; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4); }
-.btn-video-share svg, .btn-video-youtube svg { width: 18px; height: 18px; flex-shrink: 0; display: block; }
+.btn-video-share, .btn-video-youtube { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 38px; 
+    height: 38px; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    border: none; 
+    text-decoration: none; 
+    flex-shrink: 0; 
+    position: relative; 
+}
+.btn-video-share { 
+    background: rgba(139, 92, 246, 0.15); 
+    color: var(--primary-purple); 
+    border: 2px solid rgba(139, 92, 246, 0.3); 
+}
+.btn-video-share:hover { 
+    background: rgba(139, 92, 246, 0.25); 
+    border-color: var(--primary-purple); 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); 
+}
+.btn-video-youtube { 
+    background: #FF0000; 
+    color: #ffffff; 
+    border: 2px solid #FF0000; 
+}
+.btn-video-youtube:hover { 
+    background: #cc0000; 
+    border-color: #cc0000; 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4); 
+}
+.btn-video-share svg, .btn-video-youtube svg { 
+    width: 18px; 
+    height: 18px; 
+    flex-shrink: 0; 
+    display: block; 
+}
 
 /* Tooltips */
 .btn-video-share::after, .btn-video-youtube::after {
