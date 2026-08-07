@@ -10,7 +10,7 @@
  */
 
 // ==================== CONFIGURAÇÃO DO CACHE ====================
-const CACHE_NAME = 'vitaotub-cache-v3.4-20260807'; // ← SCROLL INFINITO CORRIGIDO
+const CACHE_NAME = 'vitaotub-cache-v3.5-20260806'; // ← SCROLL INFINITO CORRIGIDO
 
 // Arquivos para cache inicial (instalação)
 const urlsToCache = [
