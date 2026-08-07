@@ -2,22 +2,22 @@
    VITÃOTUB - VÍDEOS & LIVES (PÁGINA EXCLUSIVA)
    Descrição: Estilos exclusivos para a página videos-lives.html
    Prefixo: vl- (para evitar conflitos com outras páginas)
-   Versão: 1.0
+   Versão: 1.1 - Correções de layout e espaçamento
    ============================================================ */
 
 /* ==================== 1. CONTAINER PRINCIPAL ==================== */
 .vl-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 160px 20px 60px;
+    padding: 100px 20px 60px;
 }
 
 .vl-title-page {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 900;
     text-align: center;
     color: var(--text-main);
-    margin-bottom: 10px;
+    margin-bottom: 50px;
     position: relative;
     padding-bottom: 20px;
 }
@@ -32,13 +32,6 @@
     height: 4px;
     background: var(--gradient-brand);
     border-radius: 10px;
-}
-
-.vl-subtitle {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 1rem;
-    margin-bottom: 50px;
 }
 
 /* ==================== 2. GRID DE VÍDEOS ==================== */
@@ -396,11 +389,11 @@ body.light-mode .vl-modal-close:active i {
     }
     
     .vl-container {
-        padding: 140px 20px 40px;
+        padding: 90px 20px 40px;
     }
     
     .vl-title-page {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
 }
 
@@ -412,15 +405,11 @@ body.light-mode .vl-modal-close:active i {
     }
     
     .vl-container {
-        padding: 120px 16px 30px;
+        padding: 80px 16px 30px;
     }
     
     .vl-title-page {
-        font-size: 1.8rem;
-    }
-    
-    .vl-subtitle {
-        font-size: 0.9rem;
+        font-size: 1.5rem;
         margin-bottom: 30px;
     }
     
@@ -462,11 +451,11 @@ body.light-mode .vl-modal-close:active i {
 /* Mobile muito pequeno */
 @media (max-width: 480px) {
     .vl-container {
-        padding: 100px 12px 20px;
+        padding: 70px 12px 20px;
     }
     
     .vl-title-page {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
     
     .vl-title-page::after {
