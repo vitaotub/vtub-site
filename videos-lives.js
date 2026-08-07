@@ -168,17 +168,19 @@ function criarCardVl(video) {
         </div>
         <div class="vl-content">
             <h3 class="vl-title">${escapeHtmlVl(titulo)}</h3>
-            <div class="vl-meta">
-                <span class="vl-date">📅 ${escapeHtmlVl(dataPub)}</span>
-                <span class="vl-author">✍️ VitãoTub</span>
-            </div>
-            <div class="vl-actions">
-                <button class="vl-btn-share" onclick="event.stopPropagation(); compartilharVideoVl('${videoId}')" title="Compartilhar vídeo" aria-label="Compartilhar vídeo">
-                    <i class="fa-solid fa-share-nodes"></i>
-                </button>
-                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener" class="vl-btn-youtube" onclick="event.stopPropagation();" title="Assistir no YouTube" aria-label="Assistir no YouTube">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
+            <div class="vl-meta-actions">
+                <div class="vl-meta-left">
+                    <span class="vl-date">📅 ${escapeHtmlVl(dataPub)}</span>
+                    <span class="vl-author">✍️ VitãoTub</span>
+                </div>
+                <div class="vl-actions-right">
+                    <button class="vl-btn-share" onclick="event.stopPropagation(); compartilharVideoVl('${videoId}')" title="Compartilhar vídeo" aria-label="Compartilhar vídeo">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                    <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener" class="vl-btn-youtube" onclick="event.stopPropagation();" title="Assistir no YouTube" aria-label="Assistir no YouTube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
             </div>
         </div>
     `;

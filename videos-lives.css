@@ -2,14 +2,14 @@
    VITÃOTUB - VÍDEOS & LIVES (PÁGINA EXCLUSIVA)
    Descrição: Estilos exclusivos para a página videos-lives.html
    Prefixo: vl- (para evitar conflitos com outras páginas)
-   Versão: 1.1 - Correções de layout e espaçamento
+   Versão: 1.3 - Layout corrigido (data/autor na mesma linha dos botões)
    ============================================================ */
 
 /* ==================== 1. CONTAINER PRINCIPAL ==================== */
 .vl-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 100px 20px 60px;
+    padding: 130px 20px 60px;
 }
 
 .vl-title-page {
@@ -18,20 +18,7 @@
     text-align: center;
     color: var(--text-main);
     margin-bottom: 50px;
-    position: relative;
-    padding-bottom: 20px;
-}
-
-.vl-title-page::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: var(--gradient-brand);
-    border-radius: 10px;
+    padding-bottom: 0;
 }
 
 /* ==================== 2. GRID DE VÍDEOS ==================== */
@@ -126,7 +113,7 @@
 
 /* Conteúdo do card */
 .vl-content {
-    padding: 18px 20px 20px;
+    padding: 18px 20px 16px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -136,7 +123,7 @@
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-main);
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -144,60 +131,94 @@
     overflow: hidden;
 }
 
-.vl-meta {
+/* Meta + Ações na mesma linha (como no feed) */
+.vl-meta-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 14px;
-    font-size: 0.8rem;
+    margin-top: 8px;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+/* Lado esquerdo: data e autor */
+.vl-meta-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .vl-date {
+    font-size: 0.75rem;
     color: var(--primary-purple);
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .vl-author {
+    font-size: 0.65rem;
     color: var(--text-dim);
+    white-space: nowrap;
 }
 
-/* Ações do card */
-.vl-actions {
+/* Lado direito: botões */
+.vl-actions-right {
     display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: auto;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-color);
+    gap: 6px;
+    align-items: center;
+    flex-shrink: 0;
 }
 
+/* Botões de compartilhar e YouTube (igual ao feed) */
 .vl-btn-share,
 .vl-btn-youtube {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
     border: none;
     text-decoration: none;
-    font-size: 1.1rem;
+    flex-shrink: 0;
+    font-size: 0.95rem;
     background: transparent;
     color: var(--text-dim);
 }
 
-.vl-btn-share:hover {
-    color: var(--primary-purple);
+.vl-btn-share {
     background: rgba(139, 92, 246, 0.15);
+    color: var(--primary-purple);
+    border: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.vl-btn-share:hover {
+    background: rgba(139, 92, 246, 0.25);
+    border-color: var(--primary-purple);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.vl-btn-youtube {
+    background: #FF0000;
+    color: #ffffff;
+    border: 2px solid #FF0000;
 }
 
 .vl-btn-youtube:hover {
-    color: #FF0000;
-    background: rgba(255, 0, 0, 0.15);
+    background: #cc0000;
+    border-color: #cc0000;
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+}
+
+.vl-btn-share i,
+.vl-btn-youtube i {
+    font-size: 0.85rem;
 }
 
 /* ==================== 4. SENTINELA DO SCROLL INFINITO ==================== */
@@ -389,7 +410,7 @@ body.light-mode .vl-modal-close:active i {
     }
     
     .vl-container {
-        padding: 90px 20px 40px;
+        padding: 120px 20px 40px;
     }
     
     .vl-title-page {
@@ -405,7 +426,7 @@ body.light-mode .vl-modal-close:active i {
     }
     
     .vl-container {
-        padding: 80px 16px 30px;
+        padding: 110px 16px 30px;
     }
     
     .vl-title-page {
@@ -446,36 +467,52 @@ body.light-mode .vl-modal-close:active i {
     .vl-play-icon {
         font-size: 2.5rem;
     }
+    
+    .vl-btn-share,
+    .vl-btn-youtube {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+    
+    .vl-btn-share i,
+    .vl-btn-youtube i {
+        font-size: 0.7rem;
+    }
 }
 
 /* Mobile muito pequeno */
 @media (max-width: 480px) {
     .vl-container {
-        padding: 70px 12px 20px;
+        padding: 100px 12px 20px;
     }
     
     .vl-title-page {
         font-size: 1.3rem;
     }
     
-    .vl-title-page::after {
-        width: 60px;
-        height: 3px;
-    }
-    
     .vl-content {
-        padding: 14px 16px 16px;
+        padding: 14px 16px 14px;
     }
     
-    .vl-meta {
-        font-size: 0.7rem;
+    .vl-date {
+        font-size: 0.65rem;
+    }
+    
+    .vl-author {
+        font-size: 0.55rem;
     }
     
     .vl-btn-share,
     .vl-btn-youtube {
-        width: 32px;
-        height: 32px;
-        font-size: 0.9rem;
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+    }
+    
+    .vl-btn-share i,
+    .vl-btn-youtube i {
+        font-size: 0.6rem;
     }
     
     .vl-modal-close {
