@@ -1183,11 +1183,12 @@ button[type="submit"]:hover {
     transform: scale(1.15);
 }
 
-/* Tema claro - Modal de vídeo */
+/* 🔥 TEMA CLARO - Modal de vídeo: X vermelho com fundo transparente */
 body.light-mode .video-modal .modal-close,
 body.light-mode .video-modal .modal-close i {
-    color: #1a1a1a !important;
-    border-color: #8b5cf6 !important;
+    color: #ff0000 !important;
+    border-color: #ff0000 !important;
+    background: transparent !important;
     box-shadow: none !important;
 }
 
@@ -1195,10 +1196,11 @@ body.light-mode .video-modal .modal-close:hover,
 body.light-mode .video-modal .modal-close:active,
 body.light-mode .video-modal .modal-close:hover i,
 body.light-mode .video-modal .modal-close:active i {
-    color: #1a1a1a !important;
-    background: rgba(139, 92, 246, 0.12);
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2) !important;
-    border-color: #8b5cf6 !important;
+    color: #ff0000 !important;
+    background: rgba(255, 0, 0, 0.15) !important;
+    border-color: #ff0000 !important;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3) !important;
+    transform: scale(1.15);
 }
 
 .modal-overlay {
@@ -3619,9 +3621,9 @@ body.light-mode #artigos-container .btn-action-icon {
     width: 40px;
     height: 40px;
     background: transparent;
-    border: 2px solid #8b5cf6; /* Roxo */
+    border: 2px solid #8b5cf6;
     border-radius: 50%;
-    color: #ffffff; /* Branco no tema escuro */
+    color: #ffffff;
     font-size: 1.2rem;
     cursor: pointer;
     display: flex;
@@ -3642,11 +3644,12 @@ body.light-mode #artigos-container .btn-action-icon {
     transform: scale(1.1);
 }
 
-/* Tema claro - Modal de vídeo do feed */
+/* 🔥 TEMA CLARO - Modal de vídeo do feed: X vermelho com fundo transparente */
 body.light-mode .video-fullscreen-close,
 body.light-mode .video-fullscreen-close i {
-    color: #1a1a1a !important; /* Preto */
-    border-color: #8b5cf6 !important; /* Roxo */
+    color: #ff0000 !important;
+    border-color: #ff0000 !important;
+    background: transparent !important;
     box-shadow: none !important;
 }
 
@@ -3654,10 +3657,11 @@ body.light-mode .video-fullscreen-close:hover,
 body.light-mode .video-fullscreen-close:active,
 body.light-mode .video-fullscreen-close:hover i,
 body.light-mode .video-fullscreen-close:active i {
-    color: #1a1a1a !important;
-    background: rgba(139, 92, 246, 0.12);
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2) !important;
-    border-color: #8b5cf6 !important;
+    color: #ff0000 !important;
+    background: rgba(255, 0, 0, 0.15) !important;
+    border-color: #ff0000 !important;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3) !important;
+    transform: scale(1.1);
 }
 
 .video-tap-hint {
