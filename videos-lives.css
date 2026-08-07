@@ -1,0 +1,524 @@
+/* ============================================================
+   VITÃOTUB - VÍDEOS & LIVES (PÁGINA EXCLUSIVA)
+   Descrição: Estilos exclusivos para a página videos-lives.html
+   Prefixo: vl- (para evitar conflitos com outras páginas)
+   Versão: 1.0
+   ============================================================ */
+
+/* ==================== 1. CONTAINER PRINCIPAL ==================== */
+.vl-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 160px 20px 60px;
+}
+
+.vl-title-page {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    color: var(--text-main);
+    margin-bottom: 10px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.vl-title-page::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--gradient-brand);
+    border-radius: 10px;
+}
+
+.vl-subtitle {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 1rem;
+    margin-bottom: 50px;
+}
+
+/* ==================== 2. GRID DE VÍDEOS ==================== */
+#vl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.vl-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-dim);
+    padding: 40px 0;
+    font-size: 1.1rem;
+}
+
+/* ==================== 3. CARDS DE VÍDEO ==================== */
+.vl-card {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.vl-card:hover {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.25), 0 0 40px rgba(59, 130, 246, 0.15);
+    transform: translateY(-5px);
+}
+
+/* Thumbnail */
+.vl-thumbnail {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.vl-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.vl-card:hover .vl-thumbnail img {
+    transform: scale(1.05);
+}
+
+.vl-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 3.5rem;
+    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.8));
+    transition: transform 0.3s ease, color 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.9;
+}
+
+.vl-card:hover .vl-play-icon {
+    transform: translate(-50%, -50%) scale(1.15);
+    color: #ff0000;
+}
+
+.vl-thumbnail::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+    z-index: 1;
+}
+
+.vl-card:hover .vl-thumbnail::after {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Conteúdo do card */
+.vl-content {
+    padding: 18px 20px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.vl-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.vl-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    font-size: 0.8rem;
+}
+
+.vl-date {
+    color: var(--primary-purple);
+    font-weight: 600;
+}
+
+.vl-author {
+    color: var(--text-dim);
+}
+
+/* Ações do card */
+.vl-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.vl-btn-share,
+.vl-btn-youtube {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-decoration: none;
+    font-size: 1.1rem;
+    background: transparent;
+    color: var(--text-dim);
+}
+
+.vl-btn-share:hover {
+    color: var(--primary-purple);
+    background: rgba(139, 92, 246, 0.15);
+    transform: translateY(-2px);
+}
+
+.vl-btn-youtube:hover {
+    color: #FF0000;
+    background: rgba(255, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+/* ==================== 4. SENTINELA DO SCROLL INFINITO ==================== */
+#vl-sentinel {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: 'Satoshi', sans-serif;
+}
+
+#vl-sentinel.loading {
+    color: var(--primary-purple);
+}
+
+#vl-sentinel.done {
+    color: #2ecc71;
+}
+
+/* ==================== 5. LOADING ==================== */
+.vl-loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+/* ==================== 6. MODAL DE VÍDEO ==================== */
+.vl-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.vl-modal.active {
+    display: flex !important;
+}
+
+.vl-modal-overlay {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+}
+
+.vl-modal-content {
+    position: relative;
+    width: 92%;
+    max-width: 1000px;
+    background: #000;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: vlModalFadeIn 0.3s ease;
+}
+
+@keyframes vlModalFadeIn {
+    from { opacity: 0; transform: scale(0.95) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Botão de fechar (tema escuro) */
+.vl-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 2px solid #8b5cf6;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.vl-modal-close:hover,
+.vl-modal-close:active {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: #8b5cf6;
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+    transform: scale(1.1);
+}
+
+/* Tema claro - Modal de vídeo: X vermelho com fundo transparente */
+body.light-mode .vl-modal-close,
+body.light-mode .vl-modal-close i {
+    color: #ff0000 !important;
+    border-color: #ff0000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.light-mode .vl-modal-close:hover,
+body.light-mode .vl-modal-close:active,
+body.light-mode .vl-modal-close:hover i,
+body.light-mode .vl-modal-close:active i {
+    color: #ff0000 !important;
+    background: rgba(255, 0, 0, 0.15) !important;
+    border-color: #ff0000 !important;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3) !important;
+    transform: scale(1.1);
+}
+
+/* Player de vídeo */
+.vl-modal-video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+
+.vl-modal-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Ações do modal (compartilhar e YouTube) */
+.vl-modal-actions {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+}
+
+.vl-modal-share,
+.vl-modal-youtube {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-decoration: none;
+    font-size: 1.2rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.vl-modal-share:hover {
+    color: var(--primary-purple);
+    background: rgba(139, 92, 246, 0.3);
+    border-color: var(--primary-purple);
+    transform: translateY(-2px);
+}
+
+.vl-modal-youtube:hover {
+    color: #FF0000;
+    background: rgba(255, 0, 0, 0.3);
+    border-color: #FF0000;
+    transform: translateY(-2px);
+}
+
+/* ==================== 7. RESPONSIVIDADE ==================== */
+
+/* Tablet: 2 colunas */
+@media (max-width: 1024px) and (min-width: 769px) {
+    #vl-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+    
+    .vl-container {
+        padding: 140px 20px 40px;
+    }
+    
+    .vl-title-page {
+        font-size: 2.2rem;
+    }
+}
+
+/* Mobile: 1 coluna */
+@media (max-width: 768px) {
+    #vl-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .vl-container {
+        padding: 120px 16px 30px;
+    }
+    
+    .vl-title-page {
+        font-size: 1.8rem;
+    }
+    
+    .vl-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+    }
+    
+    .vl-title {
+        font-size: 1rem;
+    }
+    
+    .vl-modal-content {
+        width: 98%;
+        border-radius: 12px;
+    }
+    
+    .vl-modal-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+    
+    .vl-modal-actions {
+        bottom: 12px;
+        right: 12px;
+        gap: 8px;
+    }
+    
+    .vl-modal-share,
+    .vl-modal-youtube {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    
+    .vl-play-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* Mobile muito pequeno */
+@media (max-width: 480px) {
+    .vl-container {
+        padding: 100px 12px 20px;
+    }
+    
+    .vl-title-page {
+        font-size: 1.5rem;
+    }
+    
+    .vl-title-page::after {
+        width: 60px;
+        height: 3px;
+    }
+    
+    .vl-content {
+        padding: 14px 16px 16px;
+    }
+    
+    .vl-meta {
+        font-size: 0.7rem;
+    }
+    
+    .vl-btn-share,
+    .vl-btn-youtube {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+    
+    .vl-modal-close {
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+}
+
+/* ==================== 8. ACESSIBILIDADE ==================== */
+@media (prefers-reduced-motion: reduce) {
+    .vl-card,
+    .vl-card:hover,
+    .vl-thumbnail img,
+    .vl-play-icon,
+    .vl-modal-content,
+    .vl-modal-close,
+    .vl-modal-share,
+    .vl-modal-youtube {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        transform: none !important;
+    }
+}
+
+.vl-modal-close:focus-visible,
+.vl-btn-share:focus-visible,
+.vl-btn-youtube:focus-visible,
+.vl-modal-share:focus-visible,
+.vl-modal-youtube:focus-visible {
+    outline: 2px solid var(--primary-purple);
+    outline-offset: 3px;
+}
